@@ -104,7 +104,7 @@ def _entry_terms(t: dict) -> dict:
 def export(live_runs: list[Path] | None = None) -> Path:
     cat = load_catalog()
     corpus = {i["id"]: i for i in dv.load_corpus()}
-    a1_files = dv.headline_runs()
+    a1_files = dv.registry_runs()
     a1 = {}
     for p in a1_files:
         for c in json.loads(Path(p).read_text())["calls"]:

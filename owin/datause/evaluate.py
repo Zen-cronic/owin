@@ -243,6 +243,34 @@ def baseline_score(ids: set[str] | None = None) -> dict | None:
             "caveat": "rules written after reading the tuned split; it does not read table rows as a unit"}
 
 
+def _headline_key(key: str) -> list[Path]:
+    return [ROOT / f for f in json.loads(HEADLINE.read_text()).get(key, [])] if HEADLINE.exists() else []
+
+
+def registry_runs() -> list[Path]:
+    """The A1 runs the A3 registry reads (pinned to v2 so a new headline does not silently change the answer pack)."""
+    return _headline_key("registry_runs") or headline_runs()
+
+
+def reference_runs() -> list[Path]:
+    """v3 on the older items: reported for reference, NOT a clean test (v2's misses on them informed v3)."""
+    return _headline_key("reference_runs_not_clean")
+
+
+def latest() -> dict:
+    """What eval/datause/latest-score.json holds: the clean headline plus the labelled non-clean reference."""
+    keys = ("corpus", "run_files", "model", "prompt_versions", "quotes_rechecked_against_source", "acceptance",
+            "acceptance_v3fresh", "headline", "per_successful_run")
+    head = score(headline_runs())
+    out = {k: head[k] for k in keys}
+    ref = reference_runs()
+    if ref:
+        r = score(ref)
+        out["reference_old_corpus_not_clean"] = {"_about": "prompt v3 on the 37 older items; v2's misses on these informed v3, so this is NOT a clean test",
+                                                 **{k: r[k] for k in keys if k != "acceptance_v3fresh"}}
+    return out
+
+
 def headline_runs() -> list[Path]:
     if HEADLINE.exists():
         return [ROOT / f for f in json.loads(HEADLINE.read_text())["run_files"]]
@@ -261,6 +289,15 @@ POST_RUN_TENSIONS = [
     ("gemini-logs", "Labelled 55 (logs). The page also says datasets built from logs have no set retention; v2 answered null."),
     ("groq-batch", "Labelled excluded because batch is disabled under ZDR; Groq's table says 'Yes (feature disabled)'. The model "
                    "answers available. Judgment call."),
+    ("openrouter-inference-zdr (v3fresh)", "LABEL ERROR found after the v3 run (label NOT changed, per the pre-registration): the page "
+                                           "says 'OpenRouter itself has a ZDR policy; your prompts are not retained unless you specifically opt "
+                                           "in to prompt logging.', so retention_days should be 0, not null. v3 answered 0 on 3/3 runs. With "
+                                           "the corrected label the item is still a miss (training 'no' on 2/3 runs), so v3fresh stays 7/11."),
+    ("cerebras-predicted-outputs (v3fresh)", "Labelled zdr unspecified (no ZDR named). v3 answered available on 2/3 runs from 'No, we do not "
+                                             "store any prediction data.'; a reader could call that a ZDR-like control. Under that reading "
+                                             "v3fresh would be 8/11."),
+    ("xai-batch (v3fresh)", "The model claimed zdr excluded on 3/3 runs, but quoted the table row with pipes on 2 runs and the "
+                            "verbatim gate withheld it (raw model exact 3/3, system exact 1/3). The gate is working as designed."),
     ("mistral-batch, mistral-chat-completions", "opt_out rests on 'Training opt-out controls whether eligible data may be used'; "
                                                 "weak evidence, the model often answers unspecified."),
 ]

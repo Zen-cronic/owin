@@ -148,7 +148,7 @@ def test_headline_recomputes_from_recorded_runs():
 def test_relabel_is_disclosed_with_before_and_after():
     """together-serverless opt_in -> opt_out (product-improvement rule, after the v2 run): 24/30 -> 23/30, below the bar."""
     before = json.loads((ROOT / "eval" / "datause" / "v2-before-relabel-score.json").read_text())
-    after = dv.score(dv.headline_runs())
+    after = dv.score(dv._headline_key("previous_headline_runs"))
     assert before["acceptance"]["positive_items_exact"] == "24/30" and before["acceptance"]["passed"]
     assert after["acceptance"]["positive_items_exact"] == "23/30" and not after["acceptance"]["passed"]
     assert after["headline"]["fresh_heldout"]["items_exact_majority"] == "4/6"
@@ -172,7 +172,7 @@ def test_preregistered_v1_run_failed_and_is_still_reported():
 
 
 def test_demo_catch_is_measured():
-    res = dv.score(dv.headline_runs())
+    res = dv.score(dv.registry_runs())
     assert res["items"]["anthropic-mcp-connector"]["majority_exact"]
     assert res["items"]["anthropic-batch"]["majority_exact"]
 
@@ -190,7 +190,7 @@ def test_cli_score_datause_needs_no_key(monkeypatch):
     with redirect_stdout(buf):
         assert cli.main(["eval", "score", "--corpus", "datause", "--brief"]) == 0
     out = json.loads(buf.getvalue())
-    assert out["corpus"] == "datause" and out["prompt_versions"] == ["v2"]
+    assert out["corpus"] == "datause" and out["prompt_versions"] == ["v3"]
 
 
 def test_recorded_runs_contain_no_secret():
@@ -207,3 +207,19 @@ def test_v3fresh_labels_match_the_preregistration():
     for iid, gold in pre["items"].items():
         assert items[iid]["gold"] == gold, iid
         assert not items[iid].get("label_history"), iid
+
+
+def test_v3_headline_is_the_preregistered_split_only():
+    """README headline = v3 on v3fresh (labels committed before v3 existed); the old corpus is reference, labelled not clean."""
+    committed = _committed_score()
+    assert dv.latest() == committed
+    runs = [json.loads(p.read_text()) for p in dv.headline_runs()]
+    pre = json.loads((ROOT / "eval" / "datause" / "preregistration-v3.json").read_text())
+    assert all(d["prompt_version"] == "v3" and d["runs_per_item"] == 3 for d in runs)
+    assert {c["id"] for d in runs for c in d["calls"]} == set(pre["items"])
+    acc = committed["acceptance_v3fresh"]
+    assert acc["positive_items_exact"] == "7/11" and acc["negative_items_held"] == "2/2" and acc["passed"] is False
+    assert committed["headline"]["v3fresh"]["baseline_items_exact"] == "4/11"
+    ref = committed["reference_old_corpus_not_clean"]
+    assert "NOT a clean test" in ref["_about"] and ref["acceptance"]["positive_items_exact"] == "24/30"
+    assert any(k.startswith("openrouter-inference-zdr") for k, _ in dv.POST_RUN_TENSIONS)

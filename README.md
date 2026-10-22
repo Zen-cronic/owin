@@ -1,25 +1,37 @@
 # Owin
 
-**NVIDIA Nemotron Super on Nebius Token Factory read 30 real (AI vendor, feature) documentation pages (OpenAI, Anthropic, Google Gemini and Vertex, AWS Bedrock, Azure OpenAI, Groq, Mistral, Together, Fireworks) and got retention days, training use and ZDR status all exact, each with a verbatim quote, on 23 of 30 features. That is below our own 80% bar. It was 24 of 30 until a reviewer spot-check made one labelling rule explicit (product improvement on by default counts as use) and that rule changed one label after the run; we report the lower number. On a fresh held-out set labelled before the prompt was final it got 4 of 6. It held 7 of 7 pages that say nothing on the subject (21/21 runs) rather than guessing, at $0.005 and 11 s per successful run. A keyword baseline gets 7 of 30. Our first, pre-registered prompt scored 16 of 24.** Recompute it with `owin eval score --corpus datause --brief`.
+**Pre-registered split `v3fresh`: on 11 (vendor, feature) documentation pages that no prompt had ever seen (Cohere, Perplexity, xAI, OpenRouter, Cerebras, DeepInfra, Google Vertex), labelled and committed before the prompt was written, NVIDIA Nemotron Super on Nebius Token Factory got retention days, training use and ZDR status all exact, each with a verbatim quote, on 7 of 11. That fails our own pre-registered 80% bar. It held 2 of 2 pages that say nothing on the subject (6/6 runs) rather than guessing, at $0.004 and 9 s per successful run. A keyword baseline gets 4 of 11 and holds 0 of 2. On the older 30-feature corpus (splits `tuned`/`heldout`/`fresh`, not a clean test, because its misses shaped the prompt) prompt v2 scored 23/30 and prompt v3 scores 24/30.** Recompute it with `owin eval score --corpus datause --brief`.
 
 Owin moved (decision of 2026-10-21) from sub-processor notices to **AI data-use terms per feature**: for the AI endpoints a startup actually calls, what the vendor's own page says about retention, training use, zero data retention (ZDR) and region, each with the sentence that says it. The hero output is the AI section of a buyer's security questionnaire, filled in for your stack. The name is a codename for now.
 
 ## The number: AI data-use terms per feature
 
-| | Nemotron Super, prompt v2 (3 runs each) | Keyword baseline |
+**Clean, pre-registered (split `v3fresh`).** The 13 items were fetched with Tavily and labelled, and the labels were committed in `ffd6ff5` (`eval/datause/preregistration-v3.json`). Prompt v3 was then written from v2's misses on the older items only and frozen in `6434478` before any v3 call. Nothing was edited after scoring.
+
+| split `v3fresh` | Nemotron Super, prompt v3 (3 runs each) | Keyword baseline |
 |---|---|---|
-| 13 tuned features (prompt written on these) | **13/13** features, 34/39 runs | |
-| 11 held-out features (labelled before any prompt; v1 misses were seen before v2, so not clean) | 6/11, 18/33 runs | 1/11 |
-| 6 fresh held-out features (Together, Fireworks, Vertex x3, Anthropic code execution; labelled before v2 existed) | **4/6**, 10/18 runs (5/6 before the relabel) | 0/6 |
-| All 30 features | **23/30** (77%, below the 80% bar; 24/30 before the relabel) | 7/30 |
-| Pages that say nothing on the subject (rate limits, model lists, quickstarts) | **7/7 held**, 21/21 runs | 5/7 |
-| Pre-registered v1 prompt, first 24 features | 16/24: **failed** the 80% bar | 7/24 |
+| 11 new features, 7 vendors new to the corpus | **7/11** (64%, **fails** the 80% bar), 22/33 runs | 4/11 |
+| 2 new negatives (DeepSeek API terms, Perplexity search guide; both hard: data words, no data terms) | **2/2 held**, 6/6 runs | 0/2 |
+| Per field, positive runs: retention / training / ZDR | 29/33 / 30/33 / 27/33 | 5/11 / 8/11 / 8/11 |
+
+The misses: the model answered ZDR `available` from a link to another page (Vertex implicit caching) and from "we do not store any prediction data" (Cerebras Predicted Outputs). The verbatim gate withheld a correct xAI Batch `excluded` answer quoted as a table row on 2 of 3 runs. OpenRouter is the fourth miss. We also found one **labelling error of ours** after the run: OpenRouter says "your prompts are not retained unless you specifically opt in to prompt logging", so retention should be 0, not null. The label stays unchanged, as the pre-registration requires. The item still misses with the corrected label (training answered `no` on 2/3 runs), so the score stays 7/11. All of this is in `POST_RUN_TENSIONS` and the label audit.
+
+**Older corpus, for reference (not clean).**
+
+| | prompt v2 | prompt v3 (written from v2's misses here) | Keyword baseline |
+|---|---|---|---|
+| 13 `tuned` features (prompt written on these) | 13/13 | 12/13 | |
+| 11 `heldout` features | 6/11 | 6/11 | 1/11 |
+| 6 `fresh` features (labelled before v2) | 4/6 | 6/6 | 0/6 |
+| All 30 | 23/30 (24/30 before one disclosed relabel) | 24/30 | 7/30 |
+| 7 negatives | 7/7 | 7/7 | 5/7 |
+| Pre-registered v1 prompt, first 24 features | 16/24: **failed** | | 7/24 |
 
 - **Scored fields:** `retention_days`, `used_for_training` (yes / no / opt_in / opt_out / unspecified) and `zdr` (available / excluded / not_available / unspecified), per feature. An answer counts only if it matches the hand label. Every field the model asserts must quote the page **verbatim** (after markdown stripping), or code withholds that answer and marks it unspecified.
-- **Labels and their evidence:** `eval/datause/label-audit.md` lists every label with the sentence that justifies it, plus five label-rule tensions we found after scoring. One label was changed after the run, on a reviewer's spot-check: Together says prompts "may be used for product improvements" by default, so `used_for_training` is now `opt_out`, not `opt_in` (rule in `owin/datause/schema.py`, before-score in `eval/datause/v2-before-relabel-score.json`). The prompt was not changed, and the model's `opt_in` answer now counts as a miss. One person (the build agent) labelled everything; an independent spot-check is still owed.
+- **Labels and their evidence:** `eval/datause/label-audit.md` lists every label with the sentence that justifies it, plus five label-rule tensions we found after scoring. One label was changed after the run, on a reviewer's spot-check: Together says prompts "may be used for product improvements" by default, so `used_for_training` is now `opt_out`, not `opt_in` (rule in `owin/datause/schema.py`, before-score in `eval/datause/v2-before-relabel-score.json`). The prompt was not changed, and the model's `opt_in` answer now counts as a miss. One person (the build agent) labelled everything; an independent spot-check is still owed. The same agent labelled `v3fresh` and then wrote v3, so the pre-registration separates them by signed commit order, not by person. While writing v3 we removed four phrasings that echoed the new pages rather than the old misses (they are listed in the A1-v3 checkpoint entry).
 - **The questionnaire catch is measured:** Anthropic's MCP connector "is not covered by ZDR arrangements" and Message Batches keep data 29 days. Both are exact in 3 of 3 runs.
-- **Cost** is from Token Factory usage on 111 calls ($0.435 in total, $0.30 / $0.90 per M tokens); p95 latency is 29 s.
-- Raw pages are gitignored. Their provenance (URL, fetch time, sha256) is in `fixtures/manifest.json` under `datause`, and `owin eval score --corpus datause` works without them (it then says `quotes_rechecked_against_source: false`).
+- **Cost** is from Token Factory usage: v3 on `v3fresh` took 39 calls, $0.115 in total ($0.30 / $0.90 per M tokens), with p95 latency 16 s. v3 on the older items took 111 calls and $0.421.
+- Raw pages are gitignored. Their provenance (URL, fetch time, sha256) is in `fixtures/manifest.json` under `datause`, and `owin eval score --corpus datause` works without them (it then says `quotes_rechecked_against_source: false`). The `v3fresh` pages were fetched with Tavily (`fixtures/raw/datause-tavily/`, also gitignored).
 
 ```bash
 owin eval score --corpus datause --brief      # recompute, no key
@@ -95,7 +107,7 @@ pytest -q
 
 ## What we'll tell you before you find it
 
-- **Data-use number:** 30 features from 9 vendors is a small corpus, labelled by one agent, not independently. 23/30 is below our 80% bar, from one 3-run sweep, after one post-run relabel. The first prompt failed (16/24). The 11 original held-out items are no longer clean, because their v1 misses were read before v2 was written; only the 6 fresh items and the 7 negatives are clean tests of v2.
+- **Data-use number:** the clean number is 7/11 on `v3fresh`. That is 11 positives and 2 negatives, labelled by one agent, not independently, and scored in one 3-run sweep. It fails our 80% bar, and one item is worth 9 points. The same agent wrote the labels and then the prompt; the separation is the signed commit order (`ffd6ff5` before `6434478`). One labelling error of ours (OpenRouter retention) was found after the run and left unchanged; it does not change the score. The older 30-feature corpus (9 vendors) is not a clean test of v3 (24/30) or of v2 (23/30, after one post-run relabel), because each prompt was written after reading earlier misses on it. The first pre-registered prompt failed (16/24).
 - **The A1 data-use pages were fetched by plain HTTP** (browser user agent, cookie jar) on 2026-10-21. The answer pack's six demo pages were re-fetched with Tavily the same evening; A1 itself has not been re-scored on Tavily captures. The pages are the vendors' own docs. Some describe products the reader may not recognise (for example GPT-6 and Claude Fable models); we report what the page said on the fetch date.
 - **Training "no" vs "opt_in":** OpenAI's own table says "Data used for training: No" while its prose says "unless you explicitly opt in". Our label is `opt_in`, so a model giving the table's answer is scored wrong. Both mean "not used by default".
 - 17 documents is a small corpus. One person labelled them, by reading each clause.
