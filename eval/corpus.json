@@ -1,0 +1,262 @@
+{
+ "_about": "Gold labels v2 for the fixed schema (labelled 2026-10-21 by reading each clause in the fetched source; v1 = spikes/labels.json, window_days only, 2026-10-19). 'window' includes objection-by-termination when a deadline is stated (NVIDIA, Google). AWS gives 30 days' notice but no objection deadline, so exit_only. Negative controls must come back 'none' (held). Held-out items (kind=heldout) were fetched by curl 2026-10-21 and labelled after the prompt and baseline were frozen; neither was tuned on them.",
+ "items": [
+  {
+   "id": "vercel",
+   "kind": "labelled",
+   "file": "fixtures/raw/vercel-dpa.txt",
+   "url": "https://vercel.com/legal/dpa",
+   "gold": {
+    "window_type": "window",
+    "window_days": 5,
+    "unit": "calendar",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": false
+   }
+  },
+  {
+   "id": "supabase",
+   "kind": "labelled",
+   "file": "fixtures/raw/supabase-dpa.txt",
+   "url": "https://supabase.com/legal/dpa",
+   "gold": {
+    "window_type": "window",
+    "window_days": 5,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": false
+   }
+  },
+  {
+   "id": "mistral",
+   "kind": "labelled",
+   "file": "fixtures/raw/mistral-dpa.txt",
+   "url": "https://legal.mistral.ai/terms/data-processing-addendum",
+   "gold": {
+    "window_type": "window",
+    "window_days": 10,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": true
+   }
+  },
+  {
+   "id": "anthropic",
+   "kind": "labelled",
+   "file": "fixtures/raw/anthropic-dpa.txt",
+   "url": "https://www.anthropic.com/legal/data-processing-addendum",
+   "gold": {
+    "window_type": "window",
+    "window_days": 15,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": true
+   }
+  },
+  {
+   "id": "nebius",
+   "kind": "labelled",
+   "file": "fixtures/raw/nebius-dpa.txt",
+   "url": "https://docs.nebius.com/legal/dpa-inc",
+   "gold": {
+    "window_type": "window",
+    "window_days": 15,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": false
+   }
+  },
+  {
+   "id": "openai",
+   "kind": "labelled",
+   "file": "fixtures/raw/openai-dpa-wayback-20261020.txt",
+   "url": "https://web.archive.org/web/20261020000721/https://openai.com/policies/data-processing-addendum/",
+   "note": "The live page hides sections 1-5 in accordions (Tavily returns headings only; curl 403). Second source: the server-rendered Wayback capture of 2026-10-20.",
+   "gold": {
+    "window_type": "window",
+    "window_days": 30,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": false
+   }
+  },
+  {
+   "id": "stripe",
+   "kind": "labelled",
+   "file": "fixtures/raw/stripe-dpa.txt",
+   "url": "https://stripe.com/legal/dpa",
+   "gold": {
+    "window_type": "window",
+    "window_days": 30,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": false
+   }
+  },
+  {
+   "id": "nvidia",
+   "kind": "labelled",
+   "file": "fixtures/raw/nvidia-dpa.txt",
+   "url": "https://www.nvidia.com/en-us/agreements/data-processing-addendum/nvidia-cloud-services-data-processing-addendum",
+   "gold": {
+    "window_type": "window",
+    "window_days": 30,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": true
+   }
+  },
+  {
+   "id": "aws",
+   "kind": "labelled",
+   "file": "fixtures/raw/aws-dpa.txt",
+   "url": "https://d1.awsstatic.com/legal/aws-dpa/aws-dpa.pdf",
+   "gold": {
+    "window_type": "exit_only",
+    "window_days": null,
+    "unit": "n/a",
+    "clock_start": "n/a",
+    "deemed_consent_if_silent": false
+   }
+  },
+  {
+   "id": "google",
+   "kind": "labelled",
+   "file": "fixtures/raw/google-dpa.txt",
+   "url": "https://cloud.google.com/terms/data-processing-addendum",
+   "gold": {
+    "window_type": "window",
+    "window_days": 90,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": false
+   }
+  },
+  {
+   "id": "neg-openai-live",
+   "kind": "negative",
+   "file": "fixtures/raw/openai-dpa.txt",
+   "url": "https://openai.com/policies/data-processing-addendum/",
+   "note": "Thin evidence: the live page as Tavily extract returns it (accordion headings, no clause text). Must hold, never invent 30.",
+   "gold": {
+    "window_type": "none",
+    "window_days": null,
+    "unit": "n/a",
+    "clock_start": "n/a",
+    "deemed_consent_if_silent": false
+   }
+  },
+  {
+   "id": "neg-anthropic-list",
+   "kind": "negative",
+   "file": "fixtures/raw/anthropic-list.txt",
+   "url": "https://trust.anthropic.com/subprocessors",
+   "note": "A sub-processor list page with no objection clause. Must hold.",
+   "gold": {
+    "window_type": "none",
+    "window_days": null,
+    "unit": "n/a",
+    "clock_start": "n/a",
+    "deemed_consent_if_silent": false
+   }
+  },
+  {
+   "id": "cloudflare",
+   "kind": "heldout",
+   "file": "fixtures/raw/cloudflare-dpa.txt",
+   "url": "https://www.cloudflare.com/cloudflare-customer-dpa/",
+   "note": "Held-out: fetched and labelled 2026-10-21 after the prompt was frozen. 10 days to object despite 30 days' list notice",
+   "gold": {
+    "window_type": "window",
+    "window_days": 10,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": true
+   }
+  },
+  {
+   "id": "linear",
+   "kind": "heldout",
+   "file": "fixtures/raw/linear-dpa.txt",
+   "url": "https://linear.app/dpa",
+   "note": "Held-out: fetched and labelled 2026-10-21 after the prompt was frozen.",
+   "gold": {
+    "window_type": "window",
+    "window_days": 30,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": true
+   }
+  },
+  {
+   "id": "metaview",
+   "kind": "heldout",
+   "file": "fixtures/raw/metaview-dpa.txt",
+   "url": "https://www.metaview.ai/data-processing-agreement",
+   "note": "Held-out: fetched and labelled 2026-10-21 after the prompt was frozen. 7 days to object despite 14 days' notice",
+   "gold": {
+    "window_type": "window",
+    "window_days": 7,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": true
+   }
+  },
+  {
+   "id": "posthog",
+   "kind": "heldout",
+   "file": "fixtures/raw/posthog-dpa.txt",
+   "url": "https://posthog.com/dpa",
+   "note": "Held-out: fetched and labelled 2026-10-21 after the prompt was frozen. 7 days after receipt of the updated list, despite 14 days' notice; 30 days is the resolution period",
+   "gold": {
+    "window_type": "window",
+    "window_days": 7,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": false
+   }
+  },
+  {
+   "id": "resend",
+   "kind": "heldout",
+   "file": "fixtures/raw/resend-dpa.txt",
+   "url": "https://resend.com/legal/dpa",
+   "note": "Held-out: fetched and labelled 2026-10-21 after the prompt was frozen.",
+   "gold": {
+    "window_type": "window",
+    "window_days": 14,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": true
+   }
+  },
+  {
+   "id": "salesloft",
+   "kind": "heldout",
+   "file": "fixtures/raw/salesloft-dpa.txt",
+   "url": "https://www.salesloft.com/legal/data-processing-addendum",
+   "note": "Held-out: fetched and labelled 2026-10-21 after the prompt was frozen. trap: a 10-day discussion period follows the 30-day window",
+   "gold": {
+    "window_type": "window",
+    "window_days": 30,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": true
+   }
+  },
+  {
+   "id": "sentry",
+   "kind": "heldout",
+   "file": "fixtures/raw/sentry-dpa.txt",
+   "url": "https://sentry.io/legal/dpa/",
+   "note": "Held-out: fetched and labelled 2026-10-21 after the prompt was frozen. 'During this period [30 days' prior notice] you will have the opportunity to object'",
+   "gold": {
+    "window_type": "window",
+    "window_days": 30,
+    "unit": "unspecified",
+    "clock_start": "notice",
+    "deemed_consent_if_silent": false
+   }
+  }
+ ]
+}

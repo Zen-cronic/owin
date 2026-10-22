@@ -1,0 +1,154 @@
+{
+ "vercel": {
+  "url": "https://vercel.com/legal/dpa",
+  "file": "fixtures/raw/vercel-dpa.txt",
+  "method": "tavily_extract (no query), raw_content, 2026-10-21 (spike S1)",
+  "kind": "labelled",
+  "chars": 65160,
+  "sha256": "133b2729f4bef3f4b63e3c6f1aa3f5c8b2f9f5869c320c8ef9d0322a1f64f4f4"
+ },
+ "supabase": {
+  "url": "https://supabase.com/legal/dpa",
+  "file": "fixtures/raw/supabase-dpa.txt",
+  "method": "tavily_extract (no query), raw_content, 2026-10-21 (spike S1)",
+  "kind": "labelled",
+  "chars": 38189,
+  "sha256": "3db30caabc7bb97f1ea36074d03bd528f8ccd901ec96dd80649a4663d6001e9a"
+ },
+ "mistral": {
+  "url": "https://legal.mistral.ai/terms/data-processing-addendum",
+  "file": "fixtures/raw/mistral-dpa.txt",
+  "method": "tavily_extract (no query), raw_content, 2026-10-21 (spike S1)",
+  "kind": "labelled",
+  "chars": 21703,
+  "sha256": "0bcb933cfbb4fbabd7ea574a7e6eb5a78337e072761596fd575ec0ceffda920e"
+ },
+ "anthropic": {
+  "url": "https://www.anthropic.com/legal/data-processing-addendum",
+  "file": "fixtures/raw/anthropic-dpa.txt",
+  "method": "tavily_extract (no query), raw_content, 2026-10-21 (spike S1)",
+  "kind": "labelled",
+  "chars": 35023,
+  "sha256": "befd172df82d28df0b1796e17c227975da9aabaea603c9feec12eb81f543768d"
+ },
+ "nebius": {
+  "url": "https://docs.nebius.com/legal/dpa-inc",
+  "file": "fixtures/raw/nebius-dpa.txt",
+  "method": "tavily_extract (no query), raw_content, 2026-10-21 (spike S1)",
+  "kind": "labelled",
+  "chars": 53282,
+  "sha256": "eaa4a445a24c3e12691088ff360069ed3ea34cd61f20257b727119121f988cd5"
+ },
+ "openai": {
+  "url": "https://web.archive.org/web/20261020000721/https://openai.com/policies/data-processing-addendum/",
+  "file": "fixtures/raw/openai-dpa-wayback-20261020.txt",
+  "method": "curl web.archive.org id_ capture + owin.textnorm.html_to_text, 2026-10-21",
+  "kind": "labelled",
+  "chars": 20338,
+  "sha256": "b3af8c25770be18a06a044037544005050a6970366cd6d03e0bf77cc50dd2212"
+ },
+ "stripe": {
+  "url": "https://stripe.com/legal/dpa",
+  "file": "fixtures/raw/stripe-dpa.txt",
+  "method": "tavily_extract (no query), raw_content, 2026-10-21 (spike S1)",
+  "kind": "labelled",
+  "chars": 45498,
+  "sha256": "d0ad74609e73a189e1eb6a8f357d00de1ba64ef7645c10711f16db7f37997e67"
+ },
+ "nvidia": {
+  "url": "https://www.nvidia.com/en-us/agreements/data-processing-addendum/nvidia-cloud-services-data-processing-addendum",
+  "file": "fixtures/raw/nvidia-dpa.txt",
+  "method": "tavily_extract (no query), raw_content, 2026-10-21 (spike S1)",
+  "kind": "labelled",
+  "chars": 43110,
+  "sha256": "cdff97d1c70f0db61b17dcb30b8c48ab31a2a31afd535ae571068862097d4cbd"
+ },
+ "aws": {
+  "url": "https://d1.awsstatic.com/legal/aws-dpa/aws-dpa.pdf",
+  "file": "fixtures/raw/aws-dpa.txt",
+  "method": "tavily_extract (no query), raw_content, 2026-10-21 (spike S1)",
+  "kind": "labelled",
+  "chars": 29036,
+  "sha256": "453f823d09a42662bdbbfb757ae3e57eaeae358fd6c7ef442680a8a4ef3756a2"
+ },
+ "google": {
+  "url": "https://cloud.google.com/terms/data-processing-addendum",
+  "file": "fixtures/raw/google-dpa.txt",
+  "method": "tavily_extract (no query), raw_content, 2026-10-21 (spike S1)",
+  "kind": "labelled",
+  "chars": 112325,
+  "sha256": "3f5c750300b8f48926bad5141fda53f966d8399f313ea8175ff632e27dd031ef"
+ },
+ "neg-openai-live": {
+  "url": "https://openai.com/policies/data-processing-addendum/",
+  "file": "fixtures/raw/openai-dpa.txt",
+  "method": "tavily_extract (no query), raw_content, 2026-10-21 (spike S1)",
+  "kind": "negative",
+  "chars": 5616,
+  "sha256": "3e35e5ea859c84fe4464a4fc45b346516f506dc633f36d9f51cb09e5ec79f0ea"
+ },
+ "neg-anthropic-list": {
+  "url": "https://trust.anthropic.com/subprocessors",
+  "file": "fixtures/raw/anthropic-list.txt",
+  "method": "tavily_extract (no query), raw_content, 2026-10-21 (spike S1)",
+  "kind": "negative",
+  "chars": 5923,
+  "sha256": "a5406ea1130dba152ff33e2a8842e8fbb277ac157b17fa538f5bfa7450853378"
+ },
+ "cloudflare": {
+  "url": "https://www.cloudflare.com/cloudflare-customer-dpa/",
+  "file": "fixtures/raw/cloudflare-dpa.txt",
+  "method": "curl (browser UA) + owin.textnorm.html_to_text, 2026-10-21",
+  "kind": "heldout",
+  "chars": 62223,
+  "sha256": "7270f7af59892fda833418097d35023615739957baafe430c33c41e92d9bb037"
+ },
+ "linear": {
+  "url": "https://linear.app/dpa",
+  "file": "fixtures/raw/linear-dpa.txt",
+  "method": "curl (browser UA) + owin.textnorm.html_to_text, 2026-10-21",
+  "kind": "heldout",
+  "chars": 40682,
+  "sha256": "ad3853b673155ae1f096aa6a3a883fb31829949afcd33b946d292e833cbae389"
+ },
+ "metaview": {
+  "url": "https://www.metaview.ai/data-processing-agreement",
+  "file": "fixtures/raw/metaview-dpa.txt",
+  "method": "curl (browser UA) + owin.textnorm.html_to_text, 2026-10-21",
+  "kind": "heldout",
+  "chars": 46696,
+  "sha256": "1105e7f8b9ace9a23f0ef9e1ad985da3ee2adb1734a199dd9de1eadad16d6ddb"
+ },
+ "posthog": {
+  "url": "https://posthog.com/dpa",
+  "file": "fixtures/raw/posthog-dpa.txt",
+  "method": "curl (browser UA) + owin.textnorm.html_to_text, 2026-10-21",
+  "kind": "heldout",
+  "chars": 34524,
+  "sha256": "ea9c54f5016eee04cf637bf3cb820f57b9991673c630aeaa0129e6443b1f6faa"
+ },
+ "resend": {
+  "url": "https://resend.com/legal/dpa",
+  "file": "fixtures/raw/resend-dpa.txt",
+  "method": "curl (browser UA) + owin.textnorm.html_to_text, 2026-10-21",
+  "kind": "heldout",
+  "chars": 44918,
+  "sha256": "77681adf3f67614d88aa18858a04fb89e4937e38569037de814b713480ecebbd"
+ },
+ "salesloft": {
+  "url": "https://www.salesloft.com/legal/data-processing-addendum",
+  "file": "fixtures/raw/salesloft-dpa.txt",
+  "method": "curl (browser UA) + owin.textnorm.html_to_text, 2026-10-21",
+  "kind": "heldout",
+  "chars": 32903,
+  "sha256": "df414e215b4507ccf51b179f2661000c251cccdfd24e34e26de93c1fcaf4bb3e"
+ },
+ "sentry": {
+  "url": "https://sentry.io/legal/dpa/",
+  "file": "fixtures/raw/sentry-dpa.txt",
+  "method": "curl (browser UA) + owin.textnorm.html_to_text, 2026-10-21",
+  "kind": "heldout",
+  "chars": 48957,
+  "sha256": "47427a6b69e2ef49470a456418295f3d6da98fa53fa3c5c7a879f70935d79e75"
+ }
+}

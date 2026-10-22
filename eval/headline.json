@@ -1,0 +1,7 @@
+{
+ "_about": "Recorded runs that the README headline is computed from. Recompute: owin eval score",
+ "run_files": [
+  "eval/runs/20261021T202651-nemotron-3-super-120b-a12b.json",
+  "eval/runs/20261021T202832-nemotron-3-super-120b-a12b.json"
+ ]
+}

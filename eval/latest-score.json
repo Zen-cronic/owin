@@ -1,0 +1,30 @@
+{
+ "run_files": [
+  "eval/runs/20261021T202651-nemotron-3-super-120b-a12b.json",
+  "eval/runs/20261021T202832-nemotron-3-super-120b-a12b.json"
+ ],
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "quotes_rechecked_against_source": true,
+ "headline": {
+  "labelled_vendors_exact_majority": "10/10",
+  "labelled_runs_exact": "30/30",
+  "heldout_vendors_exact_majority": "7/7",
+  "heldout_runs_exact": "21/21",
+  "negative_controls_held": "6/6",
+  "consistent_vendors": "10/10",
+  "baseline_regex_exact": "8/10",
+  "baseline_regex_heldout_exact": "1/7",
+  "baseline_regex_window_only_exact": "15/17",
+  "baseline_regex_negatives_held": "2/2"
+ },
+ "per_successful_run": {
+  "successful_runs": 57,
+  "total_calls": 57,
+  "mean_latency_s": 6.1,
+  "p95_latency_s": 8.99,
+  "cost_per_successful_run_usd": 0.00173,
+  "total_cost_usd": 0.09878,
+  "tokens_in": 161955,
+  "tokens_out": 55771
+ }
+}

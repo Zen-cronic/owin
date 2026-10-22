@@ -1,0 +1,27 @@
+[project]
+name = "owin"
+version = "0.1.0"
+description = "Owin (Objection Window): reads each vendor's DPA, starts the sub-processor objection clock, and drafts the objection and your customer notice."
+authors = [{ name = "Kaung Zin Hein" }]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[project.scripts]
+owin = "owin.cli:main"
+
+[tool.poetry]
+packages = [{ include = "owin" }]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["live: calls paid/networked APIs (deselect with -m 'not live')"]
+addopts = "-m 'not live'"
+
+[build-system]
+requires = ["poetry-core>=2.0"]
+build-backend = "poetry.core.masonry.api"
