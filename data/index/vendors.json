@@ -1,0 +1,295 @@
+{
+ "_about": "Seed index of vendors an AI startup typically uses (28). watch_mode records what was verified on 2026-10-21: table / cards / linked_rows parse from a recorded Tavily extract; date_only = only a 'last updated' date is diffable; not_watchable = JS widget; dpa_only / list_in_dpa_* = no separate list page; unverified_http_200 = the list URL answered HTTP 200 to curl but has not been extracted with Tavily yet. terms_measured = the vendor's DPA is in eval/corpus.json.",
+ "vendors": [
+  {
+   "vendor": "openai",
+   "display": "OpenAI",
+   "category": "model API",
+   "list_url": "https://openai.com/policies/sub-processor-list/",
+   "watch_mode": "table",
+   "fixture": "fixtures/raw/openai-list.txt",
+   "fixture_method": "tavily_extract fixture 2026-10-21 (spike S1)",
+   "terms_measured": true
+  },
+  {
+   "vendor": "anthropic",
+   "display": "Anthropic",
+   "category": "model API",
+   "list_url": "https://trust.anthropic.com/subprocessors",
+   "watch_mode": "cards",
+   "fixture": "fixtures/raw/anthropic-list.txt",
+   "fixture_method": "tavily_extract fixture 2026-10-21 (spike S1)",
+   "terms_measured": true
+  },
+  {
+   "vendor": "stripe",
+   "display": "Stripe",
+   "category": "payments",
+   "list_url": "https://stripe.com/legal/service-providers",
+   "watch_mode": "linked_rows",
+   "fixture": "fixtures/raw/stripe-list.txt",
+   "fixture_method": "tavily_extract fixture 2026-10-21 (spike S1)",
+   "terms_measured": true
+  },
+  {
+   "vendor": "supabase",
+   "display": "Supabase",
+   "category": "database",
+   "list_url": "https://supabase.com/legal/customer-resources/subprocessor-list",
+   "watch_mode": "date_only_two_hop_pdf",
+   "fixture": "fixtures/raw/supabase-list.txt",
+   "fixture_method": "tavily_extract fixture 2026-10-21 (spike S1)",
+   "terms_measured": true
+  },
+  {
+   "vendor": "vercel",
+   "display": "Vercel",
+   "category": "hosting",
+   "list_url": "https://security.vercel.com/subprocessors",
+   "watch_mode": "not_watchable_js_widget",
+   "fixture": "fixtures/raw/vercel-trustpage-list.txt",
+   "fixture_method": "tavily_extract fixture 2026-10-21 (spike S1)",
+   "terms_measured": true
+  },
+  {
+   "vendor": "mistral",
+   "display": "Mistral AI",
+   "category": "model API",
+   "list_url": "https://legal.mistral.ai/terms/data-processing-addendum",
+   "watch_mode": "dpa_only",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": true
+  },
+  {
+   "vendor": "nebius",
+   "display": "Nebius",
+   "category": "GPU cloud / model API",
+   "list_url": "https://docs.nebius.com/legal/sub-processors_tofa",
+   "watch_mode": "unverified",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": true
+  },
+  {
+   "vendor": "nvidia",
+   "display": "NVIDIA",
+   "category": "model API",
+   "list_url": "https://www.nvidia.com/en-us/agreements/data-processing-addendum/nvidia-cloud-services-data-processing-addendum",
+   "watch_mode": "list_in_dpa_appendix",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": true
+  },
+  {
+   "vendor": "metaview",
+   "display": "Metaview",
+   "category": "recruiting AI",
+   "list_url": "https://www.metaview.ai/data-processing-agreement",
+   "watch_mode": "dpa_only",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": true
+  },
+  {
+   "vendor": "salesloft",
+   "display": "Salesloft",
+   "category": "sales engagement",
+   "list_url": "https://www.salesloft.com/legal/data-processing-addendum",
+   "watch_mode": "list_in_dpa_annex",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": true
+  },
+  {
+   "vendor": "linear",
+   "display": "Linear",
+   "category": "issue tracking",
+   "list_url": "https://linear.app/dpa",
+   "watch_mode": "dpa_only",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": true
+  },
+  {
+   "vendor": "cloudflare",
+   "display": "Cloudflare",
+   "category": "CDN",
+   "list_url": "https://www.cloudflare.com/gdpr/subprocessors/",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": true
+  },
+  {
+   "vendor": "posthog",
+   "display": "PostHog",
+   "category": "analytics",
+   "list_url": "https://posthog.com/subprocessors",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": true
+  },
+  {
+   "vendor": "resend",
+   "display": "Resend",
+   "category": "email",
+   "list_url": "https://resend.com/legal/subprocessors",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": true
+  },
+  {
+   "vendor": "sentry",
+   "display": "Sentry",
+   "category": "error monitoring",
+   "list_url": "https://sentry.io/legal/subprocessors/",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": true
+  },
+  {
+   "vendor": "aws",
+   "display": "AWS",
+   "category": "cloud",
+   "list_url": "https://aws.amazon.com/compliance/sub-processors/",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": true
+  },
+  {
+   "vendor": "google",
+   "display": "Google Cloud",
+   "category": "cloud",
+   "list_url": "https://cloud.google.com/terms/subprocessors",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": true
+  },
+  {
+   "vendor": "github",
+   "display": "GitHub",
+   "category": "source hosting",
+   "list_url": "https://docs.github.com/en/site-policy/privacy-policies/github-subprocessors",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": false
+  },
+  {
+   "vendor": "datadog",
+   "display": "Datadog",
+   "category": "observability",
+   "list_url": "https://www.datadoghq.com/subprocessors/",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": false
+  },
+  {
+   "vendor": "twilio",
+   "display": "Twilio",
+   "category": "messaging",
+   "list_url": "https://www.twilio.com/en-us/legal/sub-processors",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": false
+  },
+  {
+   "vendor": "hubspot",
+   "display": "HubSpot",
+   "category": "CRM",
+   "list_url": "https://legal.hubspot.com/sub-processors-page",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": false
+  },
+  {
+   "vendor": "atlassian",
+   "display": "Atlassian",
+   "category": "collaboration",
+   "list_url": "https://www.atlassian.com/legal/sub-processors",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": false
+  },
+  {
+   "vendor": "notion",
+   "display": "Notion",
+   "category": "docs",
+   "list_url": "https://www.notion.so/notion/Notion-s-List-of-Subprocessors-268fa5bcfa0f46b6bc29436b21676734",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": false
+  },
+  {
+   "vendor": "zoom",
+   "display": "Zoom",
+   "category": "meetings",
+   "list_url": "https://www.zoom.com/en/trust/subprocessors/",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": false
+  },
+  {
+   "vendor": "intercom",
+   "display": "Intercom",
+   "category": "support",
+   "list_url": "https://www.intercom.com/legal/security-third-parties",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": false
+  },
+  {
+   "vendor": "pinecone",
+   "display": "Pinecone",
+   "category": "vector DB",
+   "list_url": "https://www.pinecone.io/subprocessors/",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": false
+  },
+  {
+   "vendor": "clerk",
+   "display": "Clerk",
+   "category": "auth",
+   "list_url": "https://clerk.com/legal/subprocessors",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": false
+  },
+  {
+   "vendor": "gitlab",
+   "display": "GitLab",
+   "category": "source hosting",
+   "list_url": "https://about.gitlab.com/privacy/subprocessors/",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": false
+  },
+  {
+   "vendor": "figma",
+   "display": "Figma",
+   "category": "design",
+   "list_url": "https://www.figma.com/sub-processors/",
+   "watch_mode": "unverified_http_200",
+   "fixture": null,
+   "fixture_method": null,
+   "terms_measured": false
+  }
+ ]
+}

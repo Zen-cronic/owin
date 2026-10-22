@@ -61,6 +61,20 @@ def cmd_snapshots(a) -> int:
     return 0
 
 
+def cmd_sweep(a) -> int:
+    from pathlib import Path
+    from . import sweep
+    if a.seed_archive:
+        from . import replay
+        sweep.seed(replay.load_snapshot(a.seed_archive))
+    out = sweep.run(live=a.live, only=a.only.split(",") if a.only else None, record=Path(a.record) if a.record else None)
+    if a.brief:
+        out = {**{k: v for k, v in out.items() if k != "rows"},
+               "rows": [{k: r.get(k) for k in ("vendor", "state", "source_kind", "entities", "last_updated", "reason")} for r in out["rows"]]}
+    _print(out)
+    return 0
+
+
 def cmd_serve(a) -> int:
     from . import server
     print(f"Owin debug server on http://{a.host}:{a.port}/", file=sys.stderr)
@@ -98,6 +112,13 @@ def main(argv: list[str] | None = None) -> int:
     sn = sub.add_parser("snapshots", help="entity snapshots from raw captures")
     sn.add_argument("action", choices=["build"])
     sn.set_defaults(fn=cmd_snapshots)
+    sw = sub.add_parser("sweep", help="sweep the vendor index (Tavily, else labelled fixtures)")
+    sw.add_argument("--live", action=argparse.BooleanOptionalAction, default=True)
+    sw.add_argument("--only", default="")
+    sw.add_argument("--record", default="", help="write the sweep result to this JSON path")
+    sw.add_argument("--seed-archive", default="", help="accept a fixtures/snapshots/*.json as the baseline first")
+    sw.add_argument("--brief", action="store_true")
+    sw.set_defaults(fn=cmd_sweep)
     sv = sub.add_parser("serve", help="JSON API + debug page")
     sv.add_argument("--host", default="127.0.0.1")
     sv.add_argument("--port", type=int, default=8787)

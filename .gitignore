@@ -2,3 +2,4 @@
 .env.*
 fixtures/raw/
 __pycache__/
+var/

@@ -16,6 +16,13 @@ Owin (Objection Window) watches the vendors your startup uses. When one changes 
 - **Change one input:** `--promise-days 10` moves the notice due date to 2026-11-03 (13 days left). `--promise-days 45` raises `notice_inversion`.
 - **Safe states, all tested:** no change gives `no_change` and no alert. Thin evidence (the live OpenAI page shows headings only) gives `held` with no deadline. AWS-style terms give `exit_only`. A list that will not parse gives `not_watchable`. A passed deadline gives `window_closed`. Code computes every deadline and state from structured fields, and a test shows that model prose cannot change them.
 
+## The watch: Tavily sweep over 29 vendors
+
+`owin sweep --brief` fetches each vendor's list with Tavily `extract` (no query, whole page) and normalises it to an entity table. It then diffs that table against the last accepted snapshot. Owin reads four list formats: HTML tables (OpenAI), markdown tables, trust-centre cards (Anthropic's Vanta page, 20/20 entities) and linked rows (Stripe, 38). Cookie banners, nav, pagers, link syntax and bold text never produce a diff (tested).
+
+- **It catches stale data.** On 2026-10-21, Tavily returned OpenAI's list dated "July 9, 2026", while Wayback had "October 14, 2026" the same day. Owin marks that `stale_source`, holds, and keeps the newer state. A live "no change" needs a second, advanced-depth fetch that agrees.
+- **Without a Tavily key** (true on the build machine today), the sweep uses recorded Tavily fixtures and labels them `fixture`. Vendors with no fixture show as `unfetched` rather than as fake results. Recorded sweeps are in `eval/sweeps/`.
+
 ## The number
 
 | | Nemotron Super (3 runs each) | Regex baseline |
@@ -49,6 +56,7 @@ pytest -q
 - Deadline rules that the documents do not settle are assumptions, and each one is listed in the output. Unspecified days count as calendar days. The deadline is end of day in the earlier of your timezone and UTC. Public holidays are not modelled. The vendor is assumed not to engage before its window closes.
 - A page diff is evidence, not legal notice.
 - What Tavily returned for OpenAI's list on 2026-10-21 was dated "July 9, 2026", while Wayback the same day shows "October 14, 2026". The Tavily result was probably cached. Owin re-fetches before it declares "no change".
+- The sweep has run live on recorded Tavily output for 5 of the 29 indexed vendors. The other list URLs answered HTTP 200 but have not been extracted yet, because no Tavily API key is on the build machine. Supabase's list is a PDF and only its date is diffable. Vercel's list is a JS widget and is not watchable.
 - Owin drafts. It gives no legal advice and never says "compliant".
 
 License: MIT.

@@ -215,3 +215,73 @@ def diff(before: Snapshot, after: Snapshot) -> list[EntityChange]:
                     added[f] = new
             out.append(EntityChange("changed", k, a[k].name, b[k].cells(), a[k].cells(), fields, added))
     return out
+
+
+_IMG = re.compile(r"^!\[.*\]\(.*\)$")
+
+
+def vanta_cards(md: str) -> list[Entity]:
+    """Vanta-style trust-centre cards. Two layouts appear on one page:
+    A (paginated widget): Name / bullet / purpose / location / 'Products: ...'
+    B (full list):        Name / 'Products: ...' / purpose / location / [domain]
+    A widget repeats cards from the full list; keys collapse duplicates."""
+    lines = [l.strip() for l in md.splitlines() if l.strip() and not _IMG.match(l.strip())]
+    out: dict[str, Entity] = {}
+
+    def prod(l: str) -> str:
+        return clean_cell(re.sub(r"\[More Information\]\([^)]*\)", "", l.split(":", 1)[1]))
+
+    for j, l in enumerate(lines):
+        if not re.match(r"products?:", l.lower()):
+            continue
+        if j >= 4 and lines[j - 3] == "\u2022":  # layout A
+            name, purpose, loc = lines[j - 4], lines[j - 2], lines[j - 1]
+        elif j >= 1 and j + 2 < len(lines) and lines[j - 1] != "\u2022":  # layout B
+            name, purpose, loc = lines[j - 1], lines[j + 1], lines[j + 2]
+        else:
+            continue
+        name = clean_cell(name)
+        key = entity_key(name)
+        if not key or key in out or len(name) > 80:
+            continue
+        out[key] = Entity(name=name, key=key, purpose=clean_cell(purpose), locations=clean_cell(loc),
+                          services=prod(l), section="cards")
+    return list(out.values())
+
+
+_LINKROW = re.compile(r"^\[([^\]]{2,120})\]\((https?://[^)]+)\)\s*(.+)$")
+
+
+def linked_rows(md: str) -> list[Entity]:
+    """Stripe-style rows: '[Entity](privacy-url)data purpose location'. Rows for one entity across sections merge."""
+    out: dict[str, Entity] = {}
+    section = ""
+    for raw in md.splitlines():
+        l = raw.strip()
+        if re.fullmatch(r"\*\*[^*]{2,80}\*\*", l):
+            section = l.strip("*")
+            continue
+        m = _LINKROW.match(l)
+        if not m or "privacy" not in m.group(2).lower() and "legal" not in m.group(2).lower() and "terms" not in m.group(2).lower():
+            continue
+        name, rest = clean_cell(m.group(1)), clean_cell(m.group(3))
+        key = entity_key(name)
+        if not key:
+            continue
+        if key in out:
+            parts = set(out[key].purpose.split(" | ")) | {rest}
+            out[key].purpose = " | ".join(sorted(parts))
+        else:
+            out[key] = Entity(name=name, key=key, purpose=rest, section=section)
+    return list(out.values())
+
+
+def parse_any(content: str, *, is_html: bool = False) -> tuple[list[Entity], str | None, str]:
+    """Try every parser; keep the one that finds the most entities. Returns (entities, last_updated, parser)."""
+    if is_html:
+        ents, lu = parse(content, is_html=True)
+        return ents, lu, "html_table"
+    cands = [("markdown_table", entities_from_tables(markdown_tables(content))),
+             ("vanta_cards", vanta_cards(content)), ("linked_rows", linked_rows(content))]
+    name, ents = max(cands, key=lambda c: len(c[1]))
+    return ents, last_updated(content), (name if ents else "none")

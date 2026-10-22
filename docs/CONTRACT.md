@@ -78,3 +78,14 @@ The record holds `{record_id, version, decided_at, decided_by{name, role}, decis
 ## Entity snapshots (`owin.entities`)
 
 `Snapshot{vendor, source_url, retrieved, source_kind: archive|tavily|fixture|live, last_updated, entities: Entity{name, key, services, locations, purpose, section}[], content_sha256}`. Entities are keyed by a normalised name: lower case, no corporate suffix, no punctuation. Cells are compared as token sets, so markdown, links, pagers, duplicated tables and whitespace never produce a diff.
+
+## Sweep (`owin sweep [--no-live] [--only a,b] [--record path] [--seed-archive snapshot.json] [--brief]`, P3)
+
+The command returns `{run_at, tavily_key_present, live_requested, vendors, counts{state: n}, wall_s, rows[]}`. Each row is `{vendor, display, list_url, state, source_kind: tavily|fixture|unfetched, retrieved, latency_s, refetched, parser: html_table|markdown_table|vanta_cards|linked_rows|none, entities, last_updated, prev_last_updated, reason, material?, changes?[{kind, entity, why, new_locations?}], held?}`.
+
+The row `state` is one of `watching` (baseline accepted), `no_change`, `changed`, `stale_source` (held), `date_only_changed`, `not_watchable` or `unfetched`.
+
+- `stale_source` applies when the fetched page's "Last updated" is older than the accepted snapshot's. Owin holds and does not overwrite. This is a real case: on 2026-10-21 Tavily returned OpenAI's list dated July 9, 2026, while Wayback had October 14, 2026.
+- A live `no_change` needs a second, advanced-depth extract that agrees with the first. Fixture results say "no live re-fetch".
+- Tavily calls use `extract` with no `query`, so the page comes back whole and diffable, and `map` for discovery. Without `TAVILY_API_KEY`, results come from recorded fixtures labelled `fixture`. Vendors with no fixture are `unfetched`.
+- The vendor index is `data/index/vendors.json` (29 vendors, each with a `watch_mode` verified on 2026-10-21). Per-vendor state lives in `var/state/` (gitignored, or `OWIN_STATE_DIR`).
