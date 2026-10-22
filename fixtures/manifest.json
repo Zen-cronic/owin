@@ -262,6 +262,51 @@
    "sha256": "31afc3379547cddea0499f5b31a73c2bd8c3b3068a4d400c7a9ee7e20507691c",
    "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/data-retention.html"
   },
+  "cerebras-predicted-outputs": {
+   "url": "https://inference-docs.cerebras.ai/dedicated/predicted-outputs",
+   "file": "fixtures/raw/datause-tavily/cerebras-predicted-outputs.md",
+   "fetched_at": "2026-10-22T02:05:32Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "chars": 10769,
+   "sha256": "90c1dd3ca7fc0f40623d79ffe06d4787ec7edebfefeab66b4808700826f9e0b4",
+   "source_kind": "tavily"
+  },
+  "cerebras-prompt-caching": {
+   "url": "https://inference-docs.cerebras.ai/capabilities/prompt-caching",
+   "file": "fixtures/raw/datause-tavily/cerebras-prompt-caching.md",
+   "fetched_at": "2026-10-22T02:05:30Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "chars": 30677,
+   "sha256": "59e8943deede02c76aacdb1aa57625a7006573e983887e0bd6d41d750da938dc",
+   "source_kind": "tavily"
+  },
+  "cohere-data-commitments": {
+   "url": "https://cohere.com/enterprise-data-commitments",
+   "file": "fixtures/raw/datause-tavily/cohere-data-commitments.md",
+   "fetched_at": "2026-10-22T02:05:29Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "chars": 16533,
+   "sha256": "f80cdc6d3e914fe3df7f242c12b3c0a93783ec8095c2a33e5d2c63793604728a",
+   "source_kind": "tavily"
+  },
+  "deepinfra-data-privacy": {
+   "url": "https://docs.deepinfra.com/account/data-privacy",
+   "file": "fixtures/raw/datause-tavily/deepinfra-data-privacy.md",
+   "fetched_at": "2026-10-22T02:07:11Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "chars": 3360,
+   "sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "source_kind": "tavily"
+  },
+  "deepseek-open-platform-tos": {
+   "url": "https://cdn.deepseek.com/policies/en-US/deepseek-open-platform-terms-of-service.html",
+   "file": "fixtures/raw/datause-tavily/deepseek-open-platform-tos.md",
+   "fetched_at": "2026-10-22T02:05:31Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "chars": 23624,
+   "sha256": "280452143ac9a79ef0557840c4cfe5756e3d6e758875e74244ee77dab37e91c0",
+   "source_kind": "tavily"
+  },
   "fireworks-data-handling": {
    "url": "https://docs.fireworks.ai/guides/security_compliance/data_handling",
    "final_url": "https://docs.fireworks.ai/guides/security_compliance/data_handling",
@@ -412,6 +457,33 @@
    "chars": 4726,
    "sha256": "ba7b096201c6d2e1d237008b8d7043eaec53af13d3c1c4c6d1ae78908e9c80e7"
   },
+  "openrouter-zdr": {
+   "url": "https://openrouter.ai/docs/guides/features/zdr",
+   "file": "fixtures/raw/datause-tavily/openrouter-zdr.md",
+   "fetched_at": "2026-10-22T02:05:30Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "chars": 11970,
+   "sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "source_kind": "tavily"
+  },
+  "perplexity-best-practices": {
+   "url": "https://docs.perplexity.ai/docs/search/best-practices",
+   "file": "fixtures/raw/datause-tavily/perplexity-best-practices.md",
+   "fetched_at": "2026-10-22T02:05:32Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "chars": 190931,
+   "sha256": "42cb49fb9ed2be859b90c21845d6d533a3afb984a92ab19486c67d957884db8f",
+   "source_kind": "tavily"
+  },
+  "perplexity-privacy-security": {
+   "url": "https://docs.perplexity.ai/docs/resources/privacy-security",
+   "file": "fixtures/raw/datause-tavily/perplexity-privacy-security.md",
+   "fetched_at": "2026-10-22T02:05:30Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "chars": 4108,
+   "sha256": "b36c9cd7c56f8c144a9fe36094175145555473330f9ab58b73a920cd8bc3c239",
+   "source_kind": "tavily"
+  },
   "together-privacy": {
    "url": "https://docs.together.ai/docs/privacy-and-security",
    "final_url": "https://docs.together.ai/docs/privacy-and-security",
@@ -422,6 +494,15 @@
    "chars": 6711,
    "sha256": "8c328a3f9f9d1ae16f046f29e552c5a150202bf0aa0f79b9329f7edebe0934de"
   },
+  "vertex-context-cache": {
+   "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/context-cache/context-cache-overview",
+   "file": "fixtures/raw/datause-tavily/vertex-context-cache.md",
+   "fetched_at": "2026-10-22T02:05:30Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "chars": 12989,
+   "sha256": "00029dda746103b77f93361b07c5e9df365465d498097e39bfe08dcd68a8c578",
+   "source_kind": "tavily"
+  },
   "vertex-zdr": {
    "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention",
    "final_url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention",
@@ -431,6 +512,15 @@
    "html_bytes": 179614,
    "chars": 19526,
    "sha256": "bae5bb95062a45ad3a958e891bf5d109234d9e2ba51ead463627a4387ecec229"
+  },
+  "xai-faq-security": {
+   "url": "https://docs.x.ai/developers/faq/security",
+   "file": "fixtures/raw/datause-tavily/xai-faq-security.md",
+   "fetched_at": "2026-10-22T02:05:30Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "chars": 13550,
+   "sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "source_kind": "tavily"
   }
  },
  "datause_tavily": {

@@ -1,0 +1,99 @@
+{
+ "_about": "Pre-registration for prompt v3. Committed BEFORE prompt v3 was written. No prompt version (v1, v2) has ever been run on these items, and none of their pages were in the corpus before this commit.",
+ "registered_at": "2026-10-21T22:09:54-0400",
+ "labeller": "build agent (one labeller, not independent); the same agent then writes v3, which is disclosed",
+ "split": "v3fresh",
+ "items": {
+  "cohere-saas-api": {
+   "retention_days": 30,
+   "used_for_training": "opt_out",
+   "zdr": "available"
+  },
+  "perplexity-api": {
+   "retention_days": null,
+   "used_for_training": "no",
+   "zdr": "available"
+  },
+  "xai-chat": {
+   "retention_days": 30,
+   "used_for_training": "opt_in",
+   "zdr": "available"
+  },
+  "xai-batch": {
+   "retention_days": 30,
+   "used_for_training": "opt_in",
+   "zdr": "excluded"
+  },
+  "openrouter-inference-zdr": {
+   "retention_days": null,
+   "used_for_training": "unspecified",
+   "zdr": "available"
+  },
+  "openrouter-web-search": {
+   "retention_days": null,
+   "used_for_training": "unspecified",
+   "zdr": "excluded"
+  },
+  "cerebras-prompt-caching": {
+   "retention_days": 0,
+   "used_for_training": "unspecified",
+   "zdr": "available"
+  },
+  "cerebras-predicted-outputs": {
+   "retention_days": 0,
+   "used_for_training": "unspecified",
+   "zdr": "unspecified"
+  },
+  "vertex-implicit-caching": {
+   "retention_days": 1,
+   "used_for_training": "unspecified",
+   "zdr": "unspecified"
+  },
+  "deepinfra-inference": {
+   "retention_days": 0,
+   "used_for_training": "no",
+   "zdr": "unspecified"
+  },
+  "deepinfra-bulk": {
+   "retention_days": null,
+   "used_for_training": "no",
+   "zdr": "unspecified"
+  },
+  "neg-deepseek-platform-tos": {
+   "retention_days": null,
+   "used_for_training": "unspecified",
+   "zdr": "unspecified"
+  },
+  "neg-perplexity-search-best-practices": {
+   "retention_days": null,
+   "used_for_training": "unspecified",
+   "zdr": "unspecified"
+  }
+ },
+ "positives": 11,
+ "negatives": 2,
+ "new_vendors": [
+  "Cerebras",
+  "Cohere",
+  "DeepInfra",
+  "DeepSeek",
+  "Google Cloud (Vertex AI / Gemini Enterprise Agent Platform)",
+  "OpenRouter",
+  "Perplexity",
+  "xAI (docs branded SpaceXAI)"
+ ],
+ "fetch": "Tavily extract (no query, basic, markdown), 2026-10-22 UTC; text sha256 per item in corpus.json; raw pages gitignored",
+ "plan": {
+  "model": "nvidia/nemotron-3-super-120b-a12b on Nebius Token Factory",
+  "runs_per_item": 3,
+  "prompt": "v3 (to be written next, frozen in its own commit before scoring)",
+  "primary": "acceptance_v3fresh: positive items exact on a majority of 3 runs >= 80% (i.e. >= 9/11) AND negatives held >= 75% (2/2)",
+  "secondary": "per-field accuracy on v3fresh, baseline on v3fresh, v3 on the old 37 items (reported as NOT clean: v2 misses on them informed v3)",
+  "rules": [
+   "no label changes on v3fresh after any v3 run; disputes go to POST_RUN_TENSIONS",
+   "no prompt edits after scoring",
+   "report whatever the number is"
+  ]
+ },
+ "corpus_sha256_at_registration": "793ab548c423e06d4a38deb774a0e0e42d0c2d1c476719e40281c28ec0091700"
+}

@@ -51,7 +51,7 @@ def cmd_eval_datause(a) -> int:
         res = dv.score([Path(f) for f in a.file.split(",")] if a.file else dv.headline_runs())
     if a.brief:
         res = {k: res[k] for k in ("corpus", "run_files", "model", "prompt_versions", "quotes_rechecked_against_source", "acceptance",
-                                   "headline", "per_successful_run")}
+                                   "acceptance_v3fresh", "headline", "per_successful_run")}
     _print(res)
     return 0
 
@@ -163,7 +163,7 @@ def main(argv: list[str] | None = None) -> int:
     e.add_argument("action", choices=["run", "score", "audit"])
     e.add_argument("--corpus", choices=["dpa", "datause"], default="dpa",
                    help="dpa = P1 sub-processor objection windows; datause = AI data-use terms per feature")
-    e.add_argument("--split", choices=["", "tuned", "heldout", "negative"], default="", help="datause: run one split only")
+    e.add_argument("--split", choices=["", "tuned", "heldout", "fresh", "v3fresh"], default="", help="datause: run one split only")
     e.add_argument("--runs", type=int, default=3)
     e.add_argument("--model", default=tf.SUPER)
     e.add_argument("--only", default="")

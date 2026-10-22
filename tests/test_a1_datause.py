@@ -197,3 +197,13 @@ def test_recorded_runs_contain_no_secret():
     for p in (ROOT / "eval" / "datause" / "runs").glob("*.json"):
         t = p.read_text()
         assert "Bearer" not in t and "TOKEN_FACTORY_API_KEY" not in t
+
+
+def test_v3fresh_labels_match_the_preregistration():
+    """The v3fresh split was labelled and committed before prompt v3 existed; its labels may never drift."""
+    pre = json.loads((ROOT / "eval" / "datause" / "preregistration-v3.json").read_text())
+    items = {i["id"]: i for i in dv.load_corpus() if i["split"] == "v3fresh"}
+    assert set(items) == set(pre["items"]) and pre["positives"] >= 8 and pre["negatives"] >= 2
+    for iid, gold in pre["items"].items():
+        assert items[iid]["gold"] == gold, iid
+        assert not items[iid].get("label_history"), iid

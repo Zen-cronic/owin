@@ -139,6 +139,19 @@ def score(paths: Path | Sequence[Path] | None = None) -> dict:
     base = baseline_score(set(items))
     pos_ok = sum(v["majority_exact"] for v in pos.values())
     neg_ok = sum(v["majority_exact"] for v in neg.values())
+    # Pre-registered for prompt v3 (eval/datause/preregistration-v3.json): the same rule on split v3fresh only.
+    pos3 = {k: v for k, v in pos.items() if v["split"] == "v3fresh"}
+    neg3 = {k: v for k, v in neg.items() if v["split"] == "v3fresh"}
+    p3, n3 = sum(v["majority_exact"] for v in pos3.values()), sum(v["majority_exact"] for v in neg3.values())
+    accept_v3 = {
+        "rule": f"split v3fresh only: positive items exact (majority of runs) >= {ACCEPT_POSITIVE_SHARE:.0%} AND negative controls held >= {ACCEPT_NEGATIVE_SHARE:.0%}",
+        "positive_items_exact": _frac(p3, len(pos3)), "negative_items_held": _frac(n3, len(neg3)),
+        "passed": bool(pos3) and p3 / len(pos3) >= ACCEPT_POSITIVE_SHARE and bool(neg3) and n3 / len(neg3) >= ACCEPT_NEGATIVE_SHARE,
+    } if pos3 else None
+    field_acc_v3 = {f: _frac(sum(bool(r["_sys"]) and r["_sys"].get(f) == corpus[r["id"]]["gold"][f] for r in calls
+                                 if corpus[r["id"]]["kind"] != "negative" and corpus[r["id"]]["split"] == "v3fresh"),
+                             sum(corpus[r["id"]]["kind"] != "negative" and corpus[r["id"]]["split"] == "v3fresh" for r in calls))
+                    for f in SCORED_FIELDS}
     accept = {
         "rule": f"positive items exact (majority of runs) >= {ACCEPT_POSITIVE_SHARE:.0%} AND negative controls held >= {ACCEPT_NEGATIVE_SHARE:.0%}",
         "positive_items_exact": _frac(pos_ok, len(pos)),
@@ -155,12 +168,19 @@ def score(paths: Path | Sequence[Path] | None = None) -> dict:
         "prompt_versions": sorted({d.get("prompt_version", "v1") for d in datas}),
         "quotes_rechecked_against_source": rechecked,
         "acceptance": accept,
+        "acceptance_v3fresh": accept_v3,
         "headline": {
             "positive_items_exact_majority": _frac(pos_ok, len(pos)),
             "positive_runs_exact": _frac(sum(v["exact_runs"] for v in pos.values()), sum(v["n_runs"] for v in pos.values())),
             "tuned": split_line(pos, "tuned"),
             "heldout": split_line(pos, "heldout"),
             "fresh_heldout": split_line(pos, "fresh"),
+            "v3fresh": {**split_line(pos, "v3fresh"), "negative_items_held": _frac(n3, len(neg3)),
+                        "negative_runs_held": _frac(sum(v["exact_runs"] for v in neg3.values()), sum(v["n_runs"] for v in neg3.values())),
+                        "field_accuracy_positive_runs": field_acc_v3,
+                        "baseline_items_exact": _frac(base["v3fresh_exact"], base["v3fresh"]) if base else "n/a",
+                        "baseline_negatives_held": _frac(base["v3fresh_neg_held"], base["v3fresh_neg"]) if base else "n/a",
+                        "baseline_field_accuracy": base["v3fresh_field_accuracy"] if base else "n/a"},
             "negative_items_held": _frac(neg_ok, len(neg)),
             "negative_runs_held": _frac(sum(v["exact_runs"] for v in neg.values()), sum(v["n_runs"] for v in neg.values())),
             "raw_model_positive_runs_exact": _frac(sum(v["raw_model_exact_runs"] for v in pos.values()), sum(v["n_runs"] for v in pos.values())),
@@ -190,7 +210,8 @@ def baseline_score(ids: set[str] | None = None) -> dict | None:
     """Baseline over the same items as the scored runs (all corpus items when ids is None)."""
     out, acc = {}, {f: 0 for f in SCORED_FIELDS}
     n = {"positives": 0, "positive_exact": 0, "heldout": 0, "heldout_exact": 0, "fresh": 0, "fresh_exact": 0,
-         "negatives": 0, "negatives_held": 0}
+         "negatives": 0, "negatives_held": 0, "v3fresh": 0, "v3fresh_exact": 0, "v3fresh_neg": 0, "v3fresh_neg_held": 0}
+    acc3 = {f: 0 for f in SCORED_FIELDS}
     for it in load_corpus():
         if ids is not None and it["id"] not in ids:
             continue
@@ -203,15 +224,21 @@ def baseline_score(ids: set[str] | None = None) -> dict | None:
         if it["kind"] == "negative":
             n["negatives"] += 1
             n["negatives_held"] += hit
+            if it["split"] == "v3fresh":
+                n["v3fresh_neg"] += 1
+                n["v3fresh_neg_held"] += hit
             continue
         n["positives"] += 1
         n["positive_exact"] += hit
-        if it["split"] in ("heldout", "fresh"):
+        if it["split"] in ("heldout", "fresh", "v3fresh"):
             n[it["split"]] += 1
             n[f"{it['split']}_exact"] += hit
         for f in SCORED_FIELDS:
             acc[f] += t[f] == it["gold"][f]
-    return {**n, "field_accuracy": {f: _frac(v, n["positives"]) for f, v in acc.items()}, "items": out,
+            if it["split"] == "v3fresh":
+                acc3[f] += t[f] == it["gold"][f]
+    return {**n, "field_accuracy": {f: _frac(v, n["positives"]) for f, v in acc.items()},
+            "v3fresh_field_accuracy": {f: _frac(v, n["v3fresh"]) for f, v in acc3.items()}, "items": out,
             "rule": "keyword sentences, feature-named sentences first (see owin/datause/baseline.py)",
             "caveat": "rules written after reading the tuned split; it does not read table rows as a unit"}
 

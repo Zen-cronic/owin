@@ -1,5 +1,5 @@
 {
- "_about": "AI data-use terms per (vendor, feature), labelled 2026-10-21 by reading each fetched page. Scored: retention_days, used_for_training, zdr. Secondary (reported, not in the headline): retention_condition, region, third_party_access. Every non-empty evidence sentence is verbatim in the source (tests/test_a1_datause.py). split=heldout items were never used while writing or revising the prompt or the baseline. Label rules are in owin/datause/schema.py (LABEL_RULES). Label changes after a model run are recorded per item in label_history and in RELABELS (owin/datause/evaluate.py); the pre-change score is kept in eval/datause/v2-before-relabel-score.json.",
+ "_about": "AI data-use terms per (vendor, feature), labelled 2026-10-21 by reading each fetched page. Scored: retention_days, used_for_training, zdr. Secondary (reported, not in the headline): retention_condition, region, third_party_access. Every non-empty evidence sentence is verbatim in the source (tests/test_a1_datause.py). split=heldout items were never used while writing or revising the prompt or the baseline. Label rules are in owin/datause/schema.py (LABEL_RULES). Label changes after a model run are recorded per item in label_history and in RELABELS (owin/datause/evaluate.py); the pre-change score is kept in eval/datause/v2-before-relabel-score.json. split=v3fresh (13 items, 11 positives + 2 negatives, 7 vendors new to the corpus) was fetched with Tavily and labelled on 2026-10-21 BEFORE prompt v3 was written, and committed first (pre-registration, see eval/datause/preregistration-v3.json).",
  "items": [
   {
    "id": "openai-responses",
@@ -1123,6 +1123,396 @@
    "file": "fixtures/raw/datause/neg-fireworks-quickstart.txt",
    "fetched_at": "2026-10-21T21:09:45-0400",
    "source_sha256": "42b204c0cd246e08ee2ca0367e4346218157d10351c45274230040c895936be4"
+  },
+  {
+   "id": "cohere-saas-api",
+   "kind": "heldout",
+   "source": "cohere-data-commitments",
+   "vendor": "Cohere",
+   "feature": "SaaS Platform API (Chat, Embed, Rerank prompts and generations)",
+   "gold": {
+    "retention_days": 30,
+    "used_for_training": "opt_out",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "logged prompts and generations, 30 days",
+    "region": "unspecified",
+    "third_party_access": "yes"
+   },
+   "evidence": {
+    "retention": "We automatically delete logged prompts and generations after 30 days, unless we need it to comply with a legal requirement or customer contract, or unless your usage is flagged as potentially violating our terms, including our Usage Policy (e.g. abuse or misuse of our services).",
+    "training": "You can opt out from your prompts and generations being used to train Cohere models in your dashboard settings at any time.",
+    "zdr": "If you have been approved for zero data retention, Cohere does not log any customer prompts or generations.",
+    "region": "",
+    "third_party": "Access to logs containing prompts and generations is limited to authorized employees and service providers bound by confidentiality and security controls that require access for engineering support, legal compliance, and safety and security monitoring."
+   },
+   "label_note": "opt_out: the page offers an opt-out toggle, which implies use by default; it also says 'if you are opted in' once, so the default is not stated in one sentence. Judgment call, recorded before any v3 run.",
+   "split": "v3fresh",
+   "url": "https://cohere.com/enterprise-data-commitments",
+   "file": "fixtures/raw/datause-tavily/cohere-data-commitments.md",
+   "fetched_at": "2026-10-22T02:05:29Z",
+   "source_sha256": "f80cdc6d3e914fe3df7f242c12b3c0a93783ec8095c2a33e5d2c63793604728a"
+  },
+  {
+   "id": "perplexity-api",
+   "kind": "heldout",
+   "source": "perplexity-privacy-security",
+   "vendor": "Perplexity",
+   "feature": "API Platform (Agent API and Sonar requests)",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "no",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "not stated; varies by API, model and account",
+    "region": "unspecified",
+    "third_party_access": "yes"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "Under the API Terms of Service, Perplexity does not use Customer Content to train generative AI models.",
+    "zdr": "ZDR is available only to eligible customers through an account-level configuration under a written agreement with Perplexity.",
+    "region": "",
+    "third_party": "Some providers require limited retention as a condition of offering their models."
+   },
+   "label_note": "",
+   "split": "v3fresh",
+   "url": "https://docs.perplexity.ai/docs/resources/privacy-security",
+   "file": "fixtures/raw/datause-tavily/perplexity-privacy-security.md",
+   "fetched_at": "2026-10-22T02:05:30Z",
+   "source_sha256": "b36c9cd7c56f8c144a9fe36094175145555473330f9ab58b73a920cd8bc3c239"
+  },
+  {
+   "id": "xai-chat",
+   "kind": "heldout",
+   "source": "xai-faq-security",
+   "vendor": "xAI (docs branded SpaceXAI)",
+   "feature": "Chat Completions and stateless Responses API (api.x.ai)",
+   "gold": {
+    "retention_days": 30,
+    "used_for_training": "opt_in",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "requests and responses, 30 days for abuse auditing",
+    "region": "global by default; US regional endpoint available",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "By default, all API requests and responses are stored on our servers (encrypted at rest) for 30 days for auditing purposes in the event of suspected abuse or misuse.",
+    "training": "SpaceXSI never trains on your API inputs or outputs without your explicit permission.",
+    "zdr": "ZDR ensures that API request inputs (i.e., your prompt) and outputs (i.e., the tokens generated by the LLM) are never persisted to disk.",
+    "region": "To keep API request handling, model inference, moderation, and retained request data in the United States, use the US regional endpoint",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "v3fresh",
+   "url": "https://docs.x.ai/developers/faq/security",
+   "file": "fixtures/raw/datause-tavily/xai-faq-security.md",
+   "fetched_at": "2026-10-22T02:05:30Z",
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3"
+  },
+  {
+   "id": "xai-batch",
+   "kind": "heldout",
+   "source": "xai-faq-security",
+   "vendor": "xAI (docs branded SpaceXAI)",
+   "feature": "Batch API",
+   "gold": {
+    "retention_days": 30,
+    "used_for_training": "opt_in",
+    "zdr": "excluded"
+   },
+   "secondary": {
+    "retention_condition": "API-wide 30-day audit retention; batch requests stored until processed",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "By default, all API requests and responses are stored on our servers (encrypted at rest) for 30 days for auditing purposes in the event of suspected abuse or misuse.",
+    "training": "SpaceXSI never trains on your API inputs or outputs without your explicit permission.",
+    "zdr": "Batched requests are stored until they are processed, so the Batch API is unavailable under ZDR.",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "retention 30 comes from the API-wide default sentence; the batch row adds 'stored until processed', which states no longer period.",
+   "split": "v3fresh",
+   "url": "https://docs.x.ai/developers/faq/security",
+   "file": "fixtures/raw/datause-tavily/xai-faq-security.md",
+   "fetched_at": "2026-10-22T02:05:30Z",
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3"
+  },
+  {
+   "id": "openrouter-inference-zdr",
+   "kind": "heldout",
+   "source": "openrouter-zdr",
+   "vendor": "OpenRouter",
+   "feature": "Inference request routing with ZDR enforcement (provider.zdr, privacy settings)",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "not stated for OpenRouter itself; depends on the routed provider endpoint",
+    "region": "unspecified",
+    "third_party_access": "yes"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "",
+    "zdr": "You can enforce ZDR globally, per model group, per guardrail, or per request.",
+    "region": "",
+    "third_party": "OpenRouter works with providers to understand each of their data policies and structures the policy data in a way that gives you control over which providers you want to route to."
+   },
+   "label_note": "training unspecified: the page says ZDR providers cannot train, but says nothing about OpenRouter's own use under the default arrangement.",
+   "split": "v3fresh",
+   "url": "https://openrouter.ai/docs/guides/features/zdr",
+   "file": "fixtures/raw/datause-tavily/openrouter-zdr.md",
+   "fetched_at": "2026-10-22T02:05:30Z",
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8"
+  },
+  {
+   "id": "openrouter-web-search",
+   "kind": "heldout",
+   "source": "openrouter-zdr",
+   "vendor": "OpenRouter",
+   "feature": "Web Search plugin and server tools",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "excluded"
+   },
+   "secondary": {
+    "retention_condition": "",
+    "region": "unspecified",
+    "third_party_access": "yes"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "",
+    "zdr": "It does not apply to [plugins](/docs/guides/features/plugins) and tools you choose to enable, such as [web search](/docs/guides/features/server-tools/web-search).",
+    "region": "",
+    "third_party": "These may be operated by third-party services with their own data retention policies."
+   },
+   "label_note": "excluded: ZDR enforcement does not apply to web search; under enforced ZDR only the Firecrawl engine is rejected.",
+   "split": "v3fresh",
+   "url": "https://openrouter.ai/docs/guides/features/zdr",
+   "file": "fixtures/raw/datause-tavily/openrouter-zdr.md",
+   "fetched_at": "2026-10-22T02:05:30Z",
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8"
+  },
+  {
+   "id": "cerebras-prompt-caching",
+   "kind": "heldout",
+   "source": "cerebras-prompt-caching",
+   "vendor": "Cerebras",
+   "feature": "Prompt caching (automatic, Cerebras Inference)",
+   "gold": {
+    "retention_days": 0,
+    "used_for_training": "unspecified",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "in-memory only, TTL 5 minutes to 1 hour",
+    "region": "same data center as the serving model instance",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "All cached context remains ephemeral in memory and never persisted.",
+    "training": "",
+    "zdr": "Yes, it is fully ZDR-compliant.",
+    "region": "Cached tokens are stored in key-value stores colocated in the same data center as the model instance serving your traffic.",
+    "third_party": ""
+   },
+   "label_note": "0: never persisted; the in-memory TTL of at most 1 hour rounds to 0 days.",
+   "split": "v3fresh",
+   "url": "https://inference-docs.cerebras.ai/capabilities/prompt-caching",
+   "file": "fixtures/raw/datause-tavily/cerebras-prompt-caching.md",
+   "fetched_at": "2026-10-22T02:05:30Z",
+   "source_sha256": "59e8943deede02c76aacdb1aa57625a7006573e983887e0bd6d41d750da938dc"
+  },
+  {
+   "id": "cerebras-predicted-outputs",
+   "kind": "heldout",
+   "source": "cerebras-predicted-outputs",
+   "vendor": "Cerebras",
+   "feature": "Predicted Outputs (prediction parameter)",
+   "gold": {
+    "retention_days": 0,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "prediction data not stored",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "No, we do not store any prediction data.",
+    "training": "",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "Fetched as a negative-control candidate; the FAQ line makes it a positive (retention 0).",
+   "split": "v3fresh",
+   "url": "https://inference-docs.cerebras.ai/dedicated/predicted-outputs",
+   "file": "fixtures/raw/datause-tavily/cerebras-predicted-outputs.md",
+   "fetched_at": "2026-10-22T02:05:32Z",
+   "source_sha256": "90c1dd3ca7fc0f40623d79ffe06d4787ec7edebfefeab66b4808700826f9e0b4"
+  },
+  {
+   "id": "vertex-implicit-caching",
+   "kind": "heldout",
+   "source": "vertex-context-cache",
+   "vendor": "Google Cloud (Vertex AI / Gemini Enterprise Agent Platform)",
+   "feature": "Gemini implicit context caching",
+   "gold": {
+    "retention_days": 1,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "cached prefixes, at most 24 hours",
+    "region": "regions where Generative AI on Agent Platform is available",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "A cached prefix expires no later than 24 hours after it's created, and most entries are evicted earlier.",
+    "training": "",
+    "zdr": "",
+    "region": "Context caching is available in regions where Generative AI on Agent Platform is available.",
+    "third_party": ""
+   },
+   "label_note": "1 = 24 hours. zdr unspecified: the page only links to the ZDR page ('a link elsewhere is not an answer').",
+   "split": "v3fresh",
+   "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/context-cache/context-cache-overview",
+   "file": "fixtures/raw/datause-tavily/vertex-context-cache.md",
+   "fetched_at": "2026-10-22T02:05:30Z",
+   "source_sha256": "00029dda746103b77f93361b07c5e9df365465d498097e39bfe08dcd68a8c578"
+  },
+  {
+   "id": "deepinfra-inference",
+   "kind": "heldout",
+   "source": "deepinfra-data-privacy",
+   "vendor": "DeepInfra",
+   "feature": "Inference API (open models, real-time requests)",
+   "gold": {
+    "retention_days": 0,
+    "used_for_training": "no",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "memory only during inference",
+    "region": "unspecified",
+    "third_party_access": "no"
+   },
+   "evidence": {
+    "retention": "When using DeepInfra inference APIs, we do not store the data you submit to our APIs on disk.",
+    "training": "We do not use data you submit to our APIs for training models, except when using Google or Anthropic models, where the receiving company’s training policy applies.",
+    "zdr": "",
+    "region": "",
+    "third_party": "We do not share data you submit to our APIs with any third party, except when using Google or Anthropic models, where we are required to transfer data to those endpoints to fulfill the request."
+   },
+   "label_note": "zdr unspecified: no-storage is the default, but the page never names ZDR or a ZDR-like control.",
+   "split": "v3fresh",
+   "url": "https://docs.deepinfra.com/account/data-privacy",
+   "file": "fixtures/raw/datause-tavily/deepinfra-data-privacy.md",
+   "fetched_at": "2026-10-22T02:07:11Z",
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630"
+  },
+  {
+   "id": "deepinfra-bulk",
+   "kind": "heldout",
+   "source": "deepinfra-data-privacy",
+   "vendor": "DeepInfra",
+   "feature": "Bulk inference APIs",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "no",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "short retention period, no number",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "Once inference is complete and results are returned to you, the data is deleted from disk and memory after a short retention period.",
+    "training": "We do not use data you submit to our APIs for training models, except when using Google or Anthropic models, where the receiving company’s training policy applies.",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "null: 'a short retention period' states no number.",
+   "split": "v3fresh",
+   "url": "https://docs.deepinfra.com/account/data-privacy",
+   "file": "fixtures/raw/datause-tavily/deepinfra-data-privacy.md",
+   "fetched_at": "2026-10-22T02:07:11Z",
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630"
+  },
+  {
+   "id": "neg-deepseek-platform-tos",
+   "kind": "negative",
+   "source": "deepseek-open-platform-tos",
+   "vendor": "DeepSeek",
+   "feature": "Open Platform API (chat completions)",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "Hard negative: the API terms discuss Inputs, Outputs and personal information, but say nothing about retention periods, training on customer content, or ZDR.",
+   "split": "v3fresh",
+   "url": "https://cdn.deepseek.com/policies/en-US/deepseek-open-platform-terms-of-service.html",
+   "file": "fixtures/raw/datause-tavily/deepseek-open-platform-tos.md",
+   "fetched_at": "2026-10-22T02:05:31Z",
+   "source_sha256": "280452143ac9a79ef0557840c4cfe5756e3d6e758875e74244ee77dab37e91c0"
+  },
+  {
+   "id": "neg-perplexity-search-best-practices",
+   "kind": "negative",
+   "source": "perplexity-best-practices",
+   "vendor": "Perplexity",
+   "feature": "Search API",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "Hard negative: example search results mention training and privacy in unrelated news snippets.",
+   "split": "v3fresh",
+   "url": "https://docs.perplexity.ai/docs/search/best-practices",
+   "file": "fixtures/raw/datause-tavily/perplexity-best-practices.md",
+   "fetched_at": "2026-10-22T02:05:32Z",
+   "source_sha256": "42cb49fb9ed2be859b90c21845d6d533a3afb984a92ab19486c67d957884db8f"
   }
  ]
 }

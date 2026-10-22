@@ -14,6 +14,7 @@
   "negative_items_held": "7/7",
   "passed": false
  },
+ "acceptance_v3fresh": null,
  "headline": {
   "positive_items_exact_majority": "23/30",
   "positive_runs_exact": "62/90",
@@ -28,6 +29,24 @@
   "fresh_heldout": {
    "items_exact_majority": "4/6",
    "runs_exact": "10/18"
+  },
+  "v3fresh": {
+   "items_exact_majority": "0/0",
+   "runs_exact": "0/0",
+   "negative_items_held": "0/0",
+   "negative_runs_held": "0/0",
+   "field_accuracy_positive_runs": {
+    "retention_days": "0/0",
+    "used_for_training": "0/0",
+    "zdr": "0/0"
+   },
+   "baseline_items_exact": "0/0",
+   "baseline_negatives_held": "0/0",
+   "baseline_field_accuracy": {
+    "retention_days": "0/0",
+    "used_for_training": "0/0",
+    "zdr": "0/0"
+   }
   },
   "negative_items_held": "7/7",
   "negative_runs_held": "21/21",
