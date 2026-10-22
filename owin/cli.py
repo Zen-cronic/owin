@@ -17,8 +17,8 @@ def _print(obj) -> None:
 def cmd_eval(a) -> int:
     if a.corpus == "datause":
         return cmd_eval_datause(a)
-    if a.action == "audit":
-        print("audit is only defined for --corpus datause", file=sys.stderr)
+    if a.action in ("audit", "selective"):
+        print(f"{a.action} is only defined for --corpus datause", file=sys.stderr)
         return 2
     if a.action == "run":
         spent = tf.ledger_total()
@@ -39,6 +39,11 @@ def cmd_eval_datause(a) -> int:
     from .datause import evaluate as dv
     if a.action == "audit":
         _print({"wrote": str(dv.write_audit().relative_to(dv.ROOT))})
+        return 0
+    if a.action == "selective":
+        from .datause import selective
+        rep = selective.report(a.split or "v3fresh", [Path(f) for f in a.file.split(",")] if a.file else None)
+        _print(selective.brief(rep) if a.brief else rep)
         return 0
     if a.action == "run":
         spent = tf.ledger_total()
@@ -160,7 +165,8 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="owin")
     sub = p.add_subparsers(dest="cmd", required=True)
     e = sub.add_parser("eval", help="measurement harness")
-    e.add_argument("action", choices=["run", "score", "audit"])
+    e.add_argument("action", choices=["run", "score", "audit", "selective"],
+                   help="selective = auto-answer only when every run agrees; recomputed keyless from recorded runs")
     e.add_argument("--corpus", choices=["dpa", "datause"], default="dpa",
                    help="dpa = P1 sub-processor objection windows; datause = AI data-use terms per feature")
     e.add_argument("--split", choices=["", "tuned", "heldout", "fresh", "v3fresh"], default="", help="datause: run one split only")

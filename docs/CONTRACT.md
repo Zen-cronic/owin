@@ -143,7 +143,7 @@ These are the terms one vendor page states for one AI feature. There is one fiel
 
 ### Output (`type: "owin.answer_pack"`, `owin pack build`, `GET /api/pack`)
 
-`{type, version, pack_id, company, label, stated_at, stated_source, as_of, as_of_local, stack{endpoints[{path, feature, provider, provider_display, label, short, purpose}], providers}, counts{not_true, stale, held_unspecified, still_true}, headline{kicker, text}, catch, answers[], order[], watch{pages, pages_watched, last_checked, last_checked_local}, settings, provenance}`
+`{type, version, pack_id, company, label, stated_at, stated_source, as_of, as_of_local, stack{endpoints[{path, feature, provider, provider_display, label, short, purpose}], providers}, counts{not_true, stale, confirm, held_unspecified, still_true}, headline{kicker, text}, catch, answers[], order[], watch{pages, pages_watched, last_checked, last_checked_local}, settings, provenance}`
 
 - **answer:** `{id, number "01".."05", question, field, stated{text, claim}, badge, badge_label, answer (a deterministic sentence), as_of, as_of_local, cells[], stale_events[], endpoints_holding, endpoints}`.
 - **cell (one per endpoint):** `{endpoint, feature, feature_label, feature_short, provider, vendor_value, value_label, verdict: holds|disclosed|contradicts|held, reason, quote (verbatim), quote_display (table cells joined by " · "), quote_presence, reanchored, source_label, source_url, fetched_at, fetched_at_local, fetched_via, inherited_from, measured, origin, stale?, list_source?}`.
@@ -161,7 +161,10 @@ These are the terms one vendor page states for one AI feature. There is one fiel
    - Q04: vendor region text is free text and is never read. Only `settings.region[provider]` can hold or contradict; otherwise the cell is held.
    - Q05: a provider not in `providers` contradicts. `third_party_access=yes` without `includes_subprocessors` contradicts.
 3. **Stale** has two sources. (a) For Q05, the provider's sub-processor list: the entity diff between the last trusted observation on or before `stated_at` and the latest trusted observation is not empty. Observations marked `held` (stale_source: Tavily served an older "Last updated") are never used. (b) For any question, the cell's quote is checked absent (`null`) in the latest capture, and the extraction on that capture (`live_check`) does not reproduce the value with a verbatim quote. If it does reproduce the value, the cell re-anchors to that quote and is not stale.
-4. Badge: any `contradicts` gives `not_true`; else any stale event gives `stale`; else any `held` gives `held_unspecified`; else `still_true`.
+4. Badge: any `contradicts` gives `not_true`; else any stale event gives `stale`; else any `confirm` gives `confirm`; else any `held` gives `held_unspecified`; else `still_true`.
+5. Selective answering (P1, `owin/datause/selective.py`): a vendor field reaches a rule only when every extraction run agreed on it (registry `features[id].field_agreement[field].state == "auto"`; the runs are the 3 on the latest Tavily capture when they exist, else the 3 recorded A1 runs; an errored run breaks agreement). Otherwise the cell has `verdict: "confirm"`, `vendor_value: null` and `confirm{runs_agreeing, basis, options[{value, label, runs, quote, quote_display}]}`. Exception: when every option contradicts the stated claim, the cell is `contradicts`. Region never decides, so it is never `auto` or `confirm`. Buyer exports show a confirm cell as "Being confirmed" with no quote.
+
+`owin eval selective --corpus datause [--split v3fresh] [--file runs.json] [--brief]` recomputes keyless from recorded runs: `auto_answered`, `auto_correct`, `sent_to_confirm`, `confirm_majority_right`, `auto_misses` (with footnotes), negative controls, and labelled non-clean references.
 5. `set_feature(manifest, path, feature)` (`--set PATH=FEATURE`, `?set=PATH=FEATURE`) is the change-one-input path.
 
 ### Exports

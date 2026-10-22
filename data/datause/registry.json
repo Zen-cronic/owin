@@ -47,6 +47,72 @@
     "hold_reasons": [],
     "model_claimed": {}
    },
+   "field_agreement": {
+    "retention_days": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": 0,
+     "majority": 0,
+     "has_majority": true,
+     "options": [
+      {
+       "value": 0,
+       "no_terms": false,
+       "runs": 3,
+       "quote": "Conversation content (your prompts and Claude's outputs) is not retained by default; the exception is Covered Models, which require 30-day retention."
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    },
+    "used_for_training": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "opt_in",
+     "majority": "opt_in",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "opt_in",
+       "no_terms": false,
+       "runs": 3,
+       "quote": "Retained data is never used for model training without your express permission."
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    },
+    "zdr": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "available",
+     "majority": "available",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "available",
+       "no_terms": false,
+       "runs": 3,
+       "quote": "| Messages API | /v1/messages | Yes | Yes | Standard API calls for generating Claude responses. |"
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    },
+    "third_party_access": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "unspecified",
+     "majority": "unspecified",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "unspecified",
+       "no_terms": false,
+       "runs": 3,
+       "quote": ""
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    }
+   },
    "live_check": {
     "run_file": "eval/datause/registry-runs/20261021T212728-tavily-nemotron-3-super-120b-a12b.json",
     "model": "nvidia/nemotron-3-super-120b-a12b",
@@ -114,6 +180,72 @@
     "status": "ok",
     "hold_reasons": [],
     "model_claimed": {}
+   },
+   "field_agreement": {
+    "retention_days": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": 29,
+     "majority": 29,
+     "has_majority": true,
+     "options": [
+      {
+       "value": 29,
+       "no_terms": false,
+       "runs": 3,
+       "quote": "| Batch processing | /v1/messages/batches | No | No | 29-day retention; async storage required. See Batch processing."
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    },
+    "used_for_training": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "opt_in",
+     "majority": "opt_in",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "opt_in",
+       "no_terms": false,
+       "runs": 3,
+       "quote": "  Retained data is never used for model training without your express permission."
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    },
+    "zdr": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "excluded",
+     "majority": "excluded",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "excluded",
+       "no_terms": false,
+       "runs": 3,
+       "quote": "| Batch processing | /v1/messages/batches | No | No | 29-day retention; async storage required. See Batch processing."
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    },
+    "third_party_access": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "unspecified",
+     "majority": "unspecified",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "unspecified",
+       "no_terms": false,
+       "runs": 3,
+       "quote": ""
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    }
    },
    "live_check": {
     "run_file": "eval/datause/registry-runs/20261021T212728-tavily-nemotron-3-super-120b-a12b.json",
@@ -187,6 +319,78 @@
     "hold_reasons": [],
     "model_claimed": {}
    },
+   "field_agreement": {
+    "retention_days": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": null,
+     "majority": null,
+     "has_majority": true,
+     "options": [
+      {
+       "value": null,
+       "no_terms": false,
+       "runs": 3,
+       "quote": ""
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    },
+    "used_for_training": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "unspecified",
+     "majority": "unspecified",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "unspecified",
+       "no_terms": false,
+       "runs": 3,
+       "quote": ""
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    },
+    "zdr": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "excluded",
+     "majority": "excluded",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "excluded",
+       "no_terms": false,
+       "runs": 3,
+       "quote": "The MCP connector is not covered by ZDR arrangements."
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    },
+    "third_party_access": {
+     "state": "confirm",
+     "runs_agreeing": "2/3",
+     "value": null,
+     "majority": "unspecified",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "unspecified",
+       "no_terms": false,
+       "runs": 2,
+       "quote": ""
+      },
+      {
+       "value": "yes",
+       "no_terms": false,
+       "runs": 1,
+       "quote": "Once an MCP server is connected, Claude calls its tools when the user's request maps to a tool's described capability, either explicitly (\"search Jira for open bugs\") or implicitly (\"what's blocking the release?\" with a Jira server attached)."
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    }
+   },
    "live_check": {
     "run_file": "eval/datause/registry-runs/20261021T212728-tavily-nemotron-3-super-120b-a12b.json",
     "model": "nvidia/nemotron-3-super-120b-a12b",
@@ -255,6 +459,78 @@
     "hold_reasons": [],
     "model_claimed": {}
    },
+   "field_agreement": {
+    "retention_days": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": 30,
+     "majority": 30,
+     "has_majority": true,
+     "options": [
+      {
+       "value": 30,
+       "no_terms": false,
+       "runs": 3,
+       "quote": "By default, abuse monitoring logs are generated for all API feature usage and retained for up to 30 days, unless longer retention is required by law, or is reasonably necessary to protect our services or any third party from harm."
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    },
+    "used_for_training": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "opt_in",
+     "majority": "opt_in",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "opt_in",
+       "no_terms": false,
+       "runs": 3,
+       "quote": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us)."
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    },
+    "zdr": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "available",
+     "majority": "available",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "available",
+       "no_terms": false,
+       "runs": 3,
+       "quote": "| /v1/embeddings | No | 30 days | None | Yes | No |"
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    },
+    "third_party_access": {
+     "state": "confirm",
+     "runs_agreeing": "2/3",
+     "value": null,
+     "majority": "yes",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "yes",
+       "no_terms": false,
+       "runs": 2,
+       "quote": "OpenAI uses sub-processors to provide its services. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected processing region."
+      },
+      {
+       "value": "unspecified",
+       "no_terms": false,
+       "runs": 1,
+       "quote": ""
+      }
+     ],
+     "basis": "3 runs on the latest capture (tavily)"
+    }
+   },
    "live_check": {
     "run_file": "eval/datause/registry-runs/20261021T212728-tavily-nemotron-3-super-120b-a12b.json",
     "model": "nvidia/nemotron-3-super-120b-a12b",
@@ -322,6 +598,78 @@
     "status": "ok",
     "hold_reasons": [],
     "model_claimed": {}
+   },
+   "field_agreement": {
+    "retention_days": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": 30,
+     "majority": 30,
+     "has_majority": true,
+     "options": [
+      {
+       "value": 30,
+       "no_terms": false,
+       "runs": 3,
+       "quote": "/v1/chat/completions\nNo\n30 days\nNone, see below for exceptions\nYes, see below for limitations\nYes, see below for limitations"
+      }
+     ],
+     "basis": "3 recorded A1 runs"
+    },
+    "used_for_training": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "opt_in",
+     "majority": "opt_in",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "opt_in",
+       "no_terms": false,
+       "runs": 3,
+       "quote": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us)."
+      }
+     ],
+     "basis": "3 recorded A1 runs"
+    },
+    "zdr": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "available",
+     "majority": "available",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "available",
+       "no_terms": false,
+       "runs": 3,
+       "quote": "Additionally, Zero Data Retention changes some endpoint behavior: the store parameter for /v1/responses and v1/chat/completions will always be treated as false, even if the request attempts to set the value to true."
+      }
+     ],
+     "basis": "3 recorded A1 runs"
+    },
+    "third_party_access": {
+     "state": "confirm",
+     "runs_agreeing": "2/3",
+     "value": null,
+     "majority": "unspecified",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "unspecified",
+       "no_terms": false,
+       "runs": 2,
+       "quote": ""
+      },
+      {
+       "value": "yes",
+       "no_terms": false,
+       "runs": 1,
+       "quote": "Data transmitted to third-party services over network connections is subject to their data retention policies."
+      }
+     ],
+     "basis": "3 recorded A1 runs"
+    }
    }
   },
   "openai-responses": {
@@ -363,6 +711,185 @@
     "status": "ok",
     "hold_reasons": [],
     "model_claimed": {}
+   },
+   "field_agreement": {
+    "retention_days": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": 30,
+     "majority": 30,
+     "has_majority": true,
+     "options": [
+      {
+       "value": 30,
+       "no_terms": false,
+       "runs": 3,
+       "quote": "By default, abuse monitoring logs are generated for all API feature usage and retained for up to 30 days, unless longer retention is required by law, or is reasonably necessary to protect our services or any third party from harm."
+      }
+     ],
+     "basis": "3 recorded A1 runs"
+    },
+    "used_for_training": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "opt_in",
+     "majority": "opt_in",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "opt_in",
+       "no_terms": false,
+       "runs": 3,
+       "quote": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us)."
+      }
+     ],
+     "basis": "3 recorded A1 runs"
+    },
+    "zdr": {
+     "state": "confirm",
+     "runs_agreeing": "2/3",
+     "value": null,
+     "majority": "available",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "unspecified",
+       "no_terms": false,
+       "runs": 1,
+       "quote": "/v1/responses | No | 30 days | None, see below for exceptions | Yes, see below for limitations | Yes, see below for limitations"
+      },
+      {
+       "value": "available",
+       "no_terms": false,
+       "runs": 2,
+       "quote": "/v1/responses\nNo\n30 days\nNone, see below for exceptions\nYes, see below for limitations\nYes, see below for limitations"
+      }
+     ],
+     "basis": "3 recorded A1 runs"
+    },
+    "third_party_access": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "yes",
+     "majority": "yes",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "yes",
+       "no_terms": false,
+       "runs": 3,
+       "quote": "Data transmitted to third-party services over network connections is subject to their data retention policies."
+      }
+     ],
+     "basis": "3 recorded A1 runs"
+    }
+   }
+  },
+  "thin-anthropic-rate-limits": {
+   "feature_id": "thin-anthropic-rate-limits",
+   "provider": "anthropic",
+   "label": "Thin evidence: Anthropic rate-limits page only",
+   "page": "anthropic-rate-limits",
+   "source_url": "https://platform.claude.com/docs/en/api/rate-limits",
+   "corpus_id": "neg-anthropic-rate-limits",
+   "inherits": {},
+   "origin": "a1_recorded",
+   "measured": true,
+   "run_file": "eval/datause/runs/20261021T211425-all-nemotron-3-super-120b-a12b.json",
+   "runs_agreeing": "3/3",
+   "model": "nvidia/nemotron-3-super-120b-a12b",
+   "prompt_version": "v2",
+   "captured_at": "2026-10-21T20:51:02-0400",
+   "capture_kind": "urllib",
+   "source_sha256": "3da9815448eca543cfe08fae88e59a1d1682a8d556940bb70c32cae2c4ff938d",
+   "terms": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified",
+    "region": "unspecified",
+    "third_party_access": "unspecified",
+    "retention_quote": "",
+    "training_quote": "",
+    "zdr_quote": "",
+    "region_quote": "",
+    "third_party_quote": "",
+    "retention_condition": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "no_terms",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "field_agreement": {
+    "retention_days": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": null,
+     "majority": null,
+     "has_majority": true,
+     "options": [
+      {
+       "value": null,
+       "no_terms": false,
+       "runs": 3,
+       "quote": ""
+      }
+     ],
+     "basis": "3 recorded A1 runs"
+    },
+    "used_for_training": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "unspecified",
+     "majority": "unspecified",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "unspecified",
+       "no_terms": false,
+       "runs": 3,
+       "quote": ""
+      }
+     ],
+     "basis": "3 recorded A1 runs"
+    },
+    "zdr": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "unspecified",
+     "majority": "unspecified",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "unspecified",
+       "no_terms": false,
+       "runs": 3,
+       "quote": ""
+      }
+     ],
+     "basis": "3 recorded A1 runs"
+    },
+    "third_party_access": {
+     "state": "auto",
+     "runs_agreeing": "3/3",
+     "value": "unspecified",
+     "majority": "unspecified",
+     "has_majority": true,
+     "options": [
+      {
+       "value": "unspecified",
+       "no_terms": false,
+       "runs": 3,
+       "quote": ""
+      }
+     ],
+     "basis": "3 recorded A1 runs"
+    }
    }
   }
  }

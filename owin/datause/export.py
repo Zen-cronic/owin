@@ -35,7 +35,10 @@ def to_share(pack: dict) -> dict:
             "number": a["number"], "question": a["question"], "answer": a["stated"].get("text", ""),
             "status": a["badge"], "status_label": a["badge_label"], "as_of": a["as_of"], "as_of_local": a["as_of_local"],
             "changes": [{"text": a["answer"]}] if a["badge"] == "stale" else [],
-            "endpoints": [{"endpoint": c["endpoint"], "provider": c["provider"], "vendor_says": c["value_label"],
+            # A cell held for confirmation is the startup's own review step; the buyer sees only that it is pending.
+            "endpoints": [{"endpoint": c["endpoint"], "provider": c["provider"],
+                           "vendor_says": "Being confirmed" if c["verdict"] == "confirm" else c["value_label"],
+                           "pending_confirmation": c["verdict"] == "confirm",
                            "quote": c["quote"], "quote_display": c.get("quote_display") or c["quote"],
                            "source_url": c["source_url"], "source_label": c["source_label"],
                            "fetched_at": c["fetched_at"], "fetched_at_local": c["fetched_at_local"]} for c in a["cells"]],
@@ -66,6 +69,7 @@ h2 { font: 600 17px/1.35 Archivo, "Helvetica Neue", Arial, sans-serif; margin: 0
 .badge.not_true { background: var(--act); color: var(--ink); padding: 1px 6px; border-radius: 3px; }
 .badge.stale { border: 1px solid var(--ink); padding: 0 6px; border-radius: 3px; }
 .badge.held_unspecified { color: var(--muted); }
+.badge.confirm { border: 1px dashed var(--ink); padding: 0 6px; border-radius: 3px; }
 .body { margin-left: 44px; }
 section.q.not_true .body { border: 1px solid var(--ink); border-radius: 4px; padding: 12px; }
 section.q.stale .body { border-left: 2px solid var(--ink); padding-left: 12px; }
@@ -85,6 +89,7 @@ footer { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 12px;
 _ICON = {"still_true": '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
          "not_true": '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.8l5.6 10H1.4z M7 5.5v3 M7 10v.6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>',
          "held_unspecified": '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 7h5" stroke="currentColor" stroke-width="1.4"/></svg>',
+         "confirm": '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M5 5.2a2 2 0 1 1 2.6 1.9c-.4.2-.6.5-.6.9v.8 M7 10.2v.6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>',
          "stale": '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M11.5 6.5A4.5 4.5 0 1 0 10 10.2 M11.5 2.8v3.7H7.8" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>'}
 
 
@@ -115,7 +120,9 @@ def to_html(pack: dict) -> str:
             out.append(f"<p class=\"change\">{_e(ch['text'])}</p>")
         out.append("<table><thead><tr><th>Endpoint</th><th>Vendor page says</th><th>Vendor sentence</th></tr></thead><tbody>")
         for c in a["endpoints"]:
-            quote = f"<blockquote>“{_e(c['quote_display'])}”</blockquote>" if c["quote"] else "<span class=\"src\">The vendor's page does not say.</span>"
+            quote = (f"<blockquote>“{_e(c['quote_display'])}”</blockquote>" if c["quote"] else
+                     "<span class=\"src\">Being confirmed against the vendor's page.</span>" if c.get("pending_confirmation") else
+                     "<span class=\"src\">The vendor's page does not say.</span>")
             src = (f"<div class=\"src\"><a href=\"{_e(c['source_url'])}\">{_e(c['source_label'])} ↗</a> · fetched "
                    f"{_e(c['fetched_at_local'])}</div>")
             out.append(f"<tr><td class=\"ep\">{_e(c['endpoint'])}</td><td>{_e(c['vendor_says'])}</td><td>{quote}{src}</td></tr>")

@@ -5,6 +5,12 @@ Each feature's DataUseTerms come from recorded Nemotron runs, never from a hand-
 - a feature outside the corpus uses a Tavily-fed extraction run (`origin: tavily_extraction`, measured=false).
 Every feature in the demo stack is also re-extracted from its Tavily capture (`live_check`). When that
 live check disagrees with the recorded value on a field, the answer pack holds that field.
+
+Selective answering (`field_agreement`): per answer field that a rule reads, the pack auto-answers only when
+every run agrees (owin/datause/selective.py). The runs used are the 3 on the latest capture of the page
+(the Tavily live check) when they exist, else the recorded A1 runs. A unanimous live value that differs from
+the recorded value is also a disagreement. Anything else is `confirm`: held for a person, with each value
+and its quote.
 """
 from __future__ import annotations
 
@@ -20,6 +26,7 @@ from ..textnorm import sha256
 from . import evaluate as dv
 from .extract import PROMPT_VERSION, extract
 from .schema import QUOTE_OF, SCORED_FIELDS
+from .selective import agreement
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data" / "datause"
@@ -29,6 +36,20 @@ LIVE_RUNS = ROOT / "eval" / "datause" / "registry-runs"
 TAVILY_RAW = ROOT / "fixtures" / "raw" / "datause-tavily"
 ANSWER_FIELDS = tuple(QUOTE_OF)  # retention_days, used_for_training, zdr, region, third_party_access
 UNSCORED_ANSWER_FIELDS = ("region", "third_party_access")
+# Fields a pack rule reads. Region is free text and never decides, so it is never auto or confirm.
+DECIDING_FIELDS = ("retention_days", "used_for_training", "zdr", "third_party_access")
+
+
+def field_agreement(runs: list[dict | None], recorded: dict | None, basis: str) -> dict:
+    out = {}
+    for f in DECIDING_FIELDS:
+        a = agreement(runs, f)
+        if a["state"] == "auto" and recorded is not None and f in SCORED_FIELDS and recorded.get(f) != a["value"]:
+            a = {**a, "state": "confirm", "value": None, "disagrees_with_recorded": recorded.get(f),
+                 "options": a["options"] + [{"value": recorded.get(f), "no_terms": False, "runs": "recorded",
+                                             "quote": recorded.get(QUOTE_OF[f], "")}]}
+        out[f] = {**a, "basis": basis}
+    return out
 
 
 def load_catalog() -> dict:
@@ -140,6 +161,14 @@ def export(live_runs: list[Path] | None = None) -> Path:
                       "capture_kind": m["page_source_kind"], "source_sha256": lv["source_sha256"], "terms": _entry_terms(lv["terms"])}
         else:
             entry |= {"origin": "none", "measured": False, "terms": None, "runs_agreeing": lv_agree or "0/0"}
+        if fid in live:
+            entry["field_agreement"] = field_agreement([c.get("terms") for c in live[fid]], entry.get("terms"),
+                                                       f"{len(live[fid])} runs on the latest capture ({live_meta[fid]['page_source_kind']})")
+        elif f["corpus_id"] and f["corpus_id"] in a1:
+            entry["field_agreement"] = field_agreement([c.get("terms") for _, c in a1[f["corpus_id"]]], None,
+                                                       f"{len(a1[f['corpus_id']])} recorded A1 runs")
+        else:
+            entry["field_agreement"] = {}
         if fid in live:
             base = entry.get("terms") or {}
             entry["live_check"] = {

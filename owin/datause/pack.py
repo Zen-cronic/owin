@@ -10,11 +10,16 @@ The trust split: code computes every verdict and badge from enums, integers and 
 `claim`, the settings, and observation hashes/entity diffs). Quotes, retention conditions, region text and
 the stated `text` are copied to the output as evidence and never read by a rule.
 
+Selective answering: a vendor field reaches a rule only when every extraction run agreed on it
+(`field_agreement` in the registry, computed by owin/datause/selective.py). Otherwise the cell is `confirm`:
+no rule runs on it, and the differing values and their quotes are shown for a person to choose.
+
 Badges (per question, most severe wins):
   not_true          an endpoint's vendor field contradicts the stated claim
   stale             a page the answer relies on changed after the answer was written
                     (sub-processor list entity diff since `stated_at`, or the quote is gone from the latest
                     capture and the extraction on that capture does not reproduce the value)
+  confirm           the extraction runs disagree on a field an endpoint needs; a person confirms
   held_unspecified  an endpoint's vendor page does not say (or a needed setting is missing); never a guess
   still_true        every endpoint supports the claim
 """
@@ -43,8 +48,10 @@ QUESTIONS = [
 ]
 QUOTE_FIELD = {"used_for_training": "training_quote", "retention_days": "retention_quote", "zdr": "zdr_quote",
                "region": "region_quote", "third_party_access": "third_party_quote"}
-SEVERITY = ["not_true", "stale", "held_unspecified", "still_true"]
-BADGE_LABEL = {"not_true": "Not true", "stale": "Stale", "held_unspecified": "Held · unspecified", "still_true": "Still true"}
+SEVERITY = ["not_true", "stale", "confirm", "held_unspecified", "still_true"]
+BADGE_LABEL = {"not_true": "Not true", "stale": "Stale", "confirm": "Confirm", "held_unspecified": "Held · unspecified",
+               "still_true": "Still true"}
+CONFIRM = object()  # sentinel: the runs disagree on this field
 NULL = {"retention_days": None, "used_for_training": "unspecified", "zdr": "unspecified", "region": "unspecified",
         "third_party_access": "unspecified"}
 
@@ -81,7 +88,10 @@ def _value(entry: dict, f: str, reg: dict) -> tuple[object, dict, str | None]:
     """The field value a rule may use, the entry it came from, and an inherited-from feature id.
 
     A field counts only when the A1 gate marked its quote verbatim; anything else is the null value.
+    When the extraction runs disagree on the field (selective answering), the value is CONFIRM.
     """
+    if (entry.get("field_agreement") or {}).get(f, {}).get("state") == "confirm":
+        return CONFIRM, entry, None
     t = entry.get("terms") or {}
     v = t.get(f, NULL[f])
     ok = v not in (None, "unspecified") and bool((t.get("verbatim") or {}).get(f))
@@ -89,6 +99,8 @@ def _value(entry: dict, f: str, reg: dict) -> tuple[object, dict, str | None]:
         return v, entry, None
     parent = (entry.get("inherits") or {}).get(f)
     if parent and parent in reg:
+        if (reg[parent].get("field_agreement") or {}).get(f, {}).get("state") == "confirm":
+            return CONFIRM, reg[parent], parent
         pt = reg[parent].get("terms") or {}
         pv = pt.get(f, NULL[f])
         if pv not in (None, "unspecified") and bool((pt.get("verbatim") or {}).get(f)):
@@ -167,6 +179,31 @@ def quote_display(q: str) -> str:
 
 # Rules, one per question. Each returns (verdict, value_label, reason). Verdicts: holds | disclosed | contradicts | held.
 
+_VALUE_LABEL = {
+    "used_for_training": {"no": "Not used", "opt_in": "Not used unless you opt in", "opt_out": "Used unless you opt out",
+                          "yes": "Used", "unspecified": "Page does not say"},
+    "zdr": {"available": "ZDR available", "excluded": "Not covered by ZDR", "not_available": "No ZDR offered",
+            "unspecified": "Page does not say"},
+    "third_party_access": {"yes": "Others see it", "no": "No one else sees it", "unspecified": "Page does not say"},
+}
+
+
+def option_label(f: str, opt: dict) -> str:
+    if opt.get("no_terms"):
+        return "No reading (run failed)"
+    v = opt.get("value")
+    if f == "retention_days":
+        return "No period stated" if v is None else ("Not retained" if v == 0 else f"{v} days")
+    return _VALUE_LABEL.get(f, {}).get(v, str(v))
+
+
+def _confirm_cell(entry: dict, f: str) -> dict:
+    a = entry["field_agreement"][f]
+    return {"runs_agreeing": a["runs_agreeing"], "basis": a.get("basis"),
+            "options": [{"value": o["value"], "label": option_label(f, o), "runs": o["runs"], "quote": o.get("quote") or "",
+                         "quote_display": quote_display(o.get("quote") or "")} for o in a["options"]]}
+
+
 def _rule_training(v, claim, ep, settings):
     want = claim.get("training")
     if want not in ("not_used", "used"):
@@ -241,7 +278,8 @@ def _sentence(qid: str, badge: str, cells: list[dict], stated: dict, stale: list
     n = len(cells)
     bad = [c["endpoint"] for c in cells if c["verdict"] == "contradicts"]
     held = [c["endpoint"] for c in cells if c["verdict"] == "held"]
-    ok = n - len(bad) - len(held)
+    conf = [c["endpoint"] for c in cells if c["verdict"] == "confirm"]
+    ok = n - len(bad) - len(held) - len(conf)
     if badge == "not_true":
         return f"You answer “{stated['text']}” That holds for {ok} of {n} endpoints, not for {', '.join(bad)}."
     if badge == "stale":
@@ -250,6 +288,9 @@ def _sentence(qid: str, badge: str, cells: list[dict], stated: dict, stale: list
             return (f"{s['provider_display']} updated its sub-processor list on {s['after']['last_updated']} "
                     f"(was {s['before']['last_updated']}), after this answer was written ({stated_at}). Review the change.")
         return f"A sentence this answer relies on changed on {s['provider_display']}'s page after it was written. Review the change."
+    if badge == "confirm":
+        return (f"Holds for {ok} of {n} endpoints. Owin's readings of the vendor's page disagree for {', '.join(conf)}, "
+                "so it asks you to confirm which value is right.")
     if badge == "held_unspecified" and not ok:
         return ("The vendor pages do not say for any of your endpoints, so Owin does not answer this question. "
                 "Confirm your settings.")
@@ -298,15 +339,31 @@ def build(manifest: dict | None = None, *, reg: dict | None = None, obs: dict | 
         for ep in eps:
             entry = reg[ep["feature"]]
             v, src, inherited = _value(entry, field, reg)
-            if field == "retention_days":
+            confirm = None
+            if v is CONFIRM:
+                confirm = _confirm_cell(src, field)
+                # A disagreement never hides a contradiction that holds under every reading.
+                outs = [RULES[field](NULL[field] if o["value"] is None and field != "retention_days" else o["value"], claim, ep, settings)
+                        if field != "retention_days" else _rule_retention(o["value"], claim, ep, settings, zdr=None)
+                        for o in confirm["options"]]
+                if outs and all(o[0] == "contradicts" for o in outs):
+                    verdict, label, reason = outs[0]
+                    reason = "every reading of the vendor's page contradicts the stated answer"
+                else:
+                    verdict, label = "confirm", "Readings disagree: " + " or ".join(dict.fromkeys(o["label"] for o in confirm["options"]))
+                    reason = (f"the {confirm['runs_agreeing'].split('/')[1]} readings of the vendor's page disagree "
+                              f"({confirm['runs_agreeing']} agree), so Owin does not answer; confirm which is right")
+                v = None
+            elif field == "retention_days":
                 zv, _, _ = _value(entry, "zdr", reg)
-                verdict, label, reason = _rule_retention(v, claim, ep, settings, zdr=zv)
+                verdict, label, reason = _rule_retention(v, claim, ep, settings, zdr=None if zv is CONFIRM else zv)
             else:
                 verdict, label, reason = RULES[field](v, claim, ep, settings)
             page = src["page"]
             po = (obs["pages"].get(page) or {}).get("observations", [])
             latest = _latest(po)
-            ev = _quote_evidence(src, field, po) if v not in (None, "unspecified") or field == "retention_days" else {"quote": "", "stale": None}
+            ev = _quote_evidence(src, field, po) if confirm is None and (v not in (None, "unspecified") or field == "retention_days") \
+                else {"quote": "", "stale": None}
             cell = {"endpoint": ep["path"], "feature": ep["feature"], "feature_label": ep["label"], "feature_short": ep["short"],
                     "provider": ep["provider"],
                     "vendor_value": v, "value_label": label, "verdict": verdict, "reason": reason,
@@ -316,7 +373,8 @@ def build(manifest: dict | None = None, *, reg: dict | None = None, obs: dict | 
                     "fetched_at": latest["observed_at"] if latest else src.get("captured_at"),
                     "fetched_at_local": _local(latest["observed_at"]) if latest else None,
                     "fetched_via": latest["source_kind"] if latest else src.get("capture_kind"),
-                    "inherited_from": inherited, "measured": src.get("measured"), "origin": src.get("origin")}
+                    "inherited_from": inherited, "measured": src.get("measured"), "origin": src.get("origin"),
+                    "confirm": confirm, "thin_evidence": bool(cat["features"].get(ep["feature"], {}).get("thin_evidence"))}
             if ev.get("stale"):
                 stale.append({**ev["stale"], "endpoint": ep["path"], "provider_display": ep["provider_display"]})
                 cell["stale"] = True
@@ -333,6 +391,8 @@ def build(manifest: dict | None = None, *, reg: dict | None = None, obs: dict | 
             badge = "not_true"
         elif stale:
             badge = "stale"
+        elif "confirm" in verdicts:
+            badge = "confirm"
         elif "held" in verdicts:
             badge = "held_unspecified"
         else:
@@ -349,6 +409,7 @@ def build(manifest: dict | None = None, *, reg: dict | None = None, obs: dict | 
                         "badge_label": BADGE_LABEL[badge], "answer": _sentence(qid, badge, cells, st, dedup_stale, stated["stated_at"]),
                         "as_of": as_of, "as_of_local": _local(as_of), "cells": cells, "stale_events": dedup_stale,
                         "endpoints_holding": sum(c["verdict"] in ("holds", "disclosed") for c in cells),
+                        "endpoints_confirm": sum(c["verdict"] == "confirm" for c in cells),
                         "endpoints": len(cells)})
 
     order = sorted(answers, key=lambda a: (SEVERITY.index(a["badge"]), a["number"]))
@@ -381,13 +442,17 @@ def _headline(counts: dict, catch: dict | None, answers: list[dict], eps: list[d
     if counts["not_true"]:
         kicker = f"{counts['not_true']} not true" + (f" · {counts['stale']} stale" if counts["stale"] else "")
     elif counts["stale"]:
-        kicker = f"{counts['stale']} stale"
+        kicker = f"{counts['stale']} stale" + (f" · {counts['confirm']} to confirm" if counts["confirm"] else "")
+    elif counts["confirm"]:
+        kicker = f"{counts['confirm']} to confirm"
     else:
         kicker = None
     if catch:
         text = catch["sentence"]
-    elif counts["stale"] or counts["held_unspecified"]:
-        text = f"No answer is contradicted by your {len(eps)} endpoints; {counts['stale']} stale, {counts['held_unspecified']} held."
+    elif counts["stale"] or counts["held_unspecified"] or counts["confirm"]:
+        parts = [f"{counts['stale']} stale" if counts["stale"] else "", f"{counts['confirm']} to confirm" if counts["confirm"] else "",
+                 f"{counts['held_unspecified']} held" if counts["held_unspecified"] else ""]
+        text = f"No answer is contradicted by your {len(eps)} endpoints; " + ", ".join(x for x in parts if x) + "."
     else:
         text = f"All {len(answers)} answers hold for your {len(eps)} endpoints."
     return {"kicker": kicker, "text": text}

@@ -46,6 +46,12 @@
    "label": "Anthropic, sub-processors",
    "kind": "subprocessor_list",
    "provider": "anthropic"
+  },
+  "anthropic-rate-limits": {
+   "url": "https://platform.claude.com/docs/en/api/rate-limits",
+   "label": "Anthropic, rate limits (no data-use terms)",
+   "kind": "datause",
+   "provider": "anthropic"
   }
  },
  "features": {
@@ -106,6 +112,17 @@
    "corpus_id": "openai-responses",
    "inherits": {},
    "short": "OpenAI Responses"
+  },
+  "thin-anthropic-rate-limits": {
+   "provider": "anthropic",
+   "label": "Thin evidence: Anthropic rate-limits page only",
+   "feature": "Messages API (/v1/messages)",
+   "page": "anthropic-rate-limits",
+   "corpus_id": "neg-anthropic-rate-limits",
+   "inherits": {},
+   "short": "a page with no data-use terms",
+   "thin_evidence": true,
+   "_note": "Negative control from the A1 corpus: a real Anthropic page that states no retention, training or ZDR terms. Used by the 'Try thin evidence' judge path to show Owin holds instead of inventing."
   }
  }
 }

@@ -1,7 +1,7 @@
 {
  "type": "owin.answer_pack",
  "version": 1,
- "pack_id": "8b69cf5f51f82a2a",
+ "pack_id": "3631aa43a7c32513",
  "company": "Lumen Notes Inc.",
  "label": "DEMO COMPANY (fictional). Lumen Notes, its endpoints, settings and trust-page answers are invented for the replay. Every vendor sentence, URL and fetch time is real and comes from data/datause/registry.json and data/datause/observations.json.",
  "stated_at": "2026-09-01",
@@ -55,6 +55,7 @@
  "counts": {
   "not_true": 1,
   "stale": 1,
+  "confirm": 0,
   "held_unspecified": 2,
   "still_true": 1
  },
@@ -126,7 +127,9 @@
      "fetched_via": "tavily",
      "inherited_from": "anthropic-messages",
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": null,
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/summarize",
@@ -149,7 +152,9 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": null,
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/digest",
@@ -172,7 +177,9 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": null,
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/embed",
@@ -195,11 +202,14 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": false,
-     "origin": "tavily_extraction"
+     "origin": "tavily_extraction",
+     "confirm": null,
+     "thin_evidence": false
     }
    ],
    "stale_events": [],
    "endpoints_holding": 4,
+   "endpoints_confirm": 0,
    "endpoints": 4
   },
   {
@@ -240,7 +250,9 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": null,
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/summarize",
@@ -263,7 +275,9 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": null,
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/digest",
@@ -286,7 +300,9 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": null,
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/embed",
@@ -309,11 +325,14 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": false,
-     "origin": "tavily_extraction"
+     "origin": "tavily_extraction",
+     "confirm": null,
+     "thin_evidence": false
     }
    ],
    "stale_events": [],
    "endpoints_holding": 3,
+   "endpoints_confirm": 0,
    "endpoints": 4
   },
   {
@@ -357,7 +376,9 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": null,
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/summarize",
@@ -380,7 +401,9 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": null,
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/digest",
@@ -403,7 +426,9 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": null,
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/embed",
@@ -426,11 +451,14 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": false,
-     "origin": "tavily_extraction"
+     "origin": "tavily_extraction",
+     "confirm": null,
+     "thin_evidence": false
     }
    ],
    "stale_events": [],
    "endpoints_holding": 3,
+   "endpoints_confirm": 0,
    "endpoints": 4
   },
   {
@@ -473,7 +501,9 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": null,
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/summarize",
@@ -496,7 +526,9 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": null,
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/digest",
@@ -519,7 +551,9 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": null,
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/embed",
@@ -542,11 +576,14 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": false,
-     "origin": "tavily_extraction"
+     "origin": "tavily_extraction",
+     "confirm": null,
+     "thin_evidence": false
     }
    ],
    "stale_events": [],
    "endpoints_holding": 0,
+   "endpoints_confirm": 0,
    "endpoints": 4
   },
   {
@@ -576,10 +613,10 @@
      "feature_label": "Anthropic Messages API with mcp_servers (MCP connector)",
      "feature_short": "Anthropic's MCP connector",
      "provider": "anthropic",
-     "vendor_value": "unspecified",
-     "value_label": "Anthropic",
-     "verdict": "holds",
-     "reason": null,
+     "vendor_value": null,
+     "value_label": "Readings disagree: Page does not say or Others see it",
+     "verdict": "confirm",
+     "reason": "the 3 readings of the vendor's page disagree (2/3 agree), so Owin does not answer; confirm which is right",
      "quote": "",
      "quote_display": "",
      "quote_presence": null,
@@ -591,7 +628,28 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": {
+      "runs_agreeing": "2/3",
+      "basis": "3 runs on the latest capture (tavily)",
+      "options": [
+       {
+        "value": "unspecified",
+        "label": "Page does not say",
+        "runs": 2,
+        "quote": "",
+        "quote_display": ""
+       },
+       {
+        "value": "yes",
+        "label": "Others see it",
+        "runs": 1,
+        "quote": "Once an MCP server is connected, Claude calls its tools when the user's request maps to a tool's described capability, either explicitly (\"search Jira for open bugs\") or implicitly (\"what's blocking the release?\" with a Jira server attached).",
+        "quote_display": "Once an MCP server is connected, Claude calls its tools when the user's request maps to a tool's described capability, either explicitly (\"search Jira for open bugs\") or implicitly (\"what's blocking the release?\" with a Jira server attached)."
+       }
+      ]
+     },
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/summarize",
@@ -614,7 +672,9 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": null,
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/digest",
@@ -637,7 +697,9 @@
      "fetched_via": "tavily",
      "inherited_from": null,
      "measured": true,
-     "origin": "a1_recorded"
+     "origin": "a1_recorded",
+     "confirm": null,
+     "thin_evidence": false
     },
     {
      "endpoint": "/api/embed",
@@ -645,13 +707,13 @@
      "feature_label": "OpenAI Embeddings",
      "feature_short": "OpenAI Embeddings",
      "provider": "openai",
-     "vendor_value": "yes",
-     "value_label": "OpenAI and its sub-processors",
-     "verdict": "holds",
-     "reason": null,
-     "quote": "OpenAI uses sub-processors to provide its services. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected processing region.",
-     "quote_display": "OpenAI uses sub-processors to provide its services. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected processing region.",
-     "quote_presence": "verbatim",
+     "vendor_value": null,
+     "value_label": "Readings disagree: Others see it or Page does not say",
+     "verdict": "confirm",
+     "reason": "the 3 readings of the vendor's page disagree (2/3 agree), so Owin does not answer; confirm which is right",
+     "quote": "",
+     "quote_display": "",
+     "quote_presence": null,
      "reanchored": null,
      "source_label": "OpenAI, your data",
      "source_url": "https://developers.openai.com/api/docs/guides/your-data",
@@ -661,6 +723,27 @@
      "inherited_from": null,
      "measured": false,
      "origin": "tavily_extraction",
+     "confirm": {
+      "runs_agreeing": "2/3",
+      "basis": "3 runs on the latest capture (tavily)",
+      "options": [
+       {
+        "value": "yes",
+        "label": "Others see it",
+        "runs": 2,
+        "quote": "OpenAI uses sub-processors to provide its services. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected processing region.",
+        "quote_display": "OpenAI uses sub-processors to provide its services. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected processing region."
+       },
+       {
+        "value": "unspecified",
+        "label": "Page does not say",
+        "runs": 1,
+        "quote": "",
+        "quote_display": ""
+       }
+      ]
+     },
+     "thin_evidence": false,
      "stale": true,
      "list_source": {
       "label": "OpenAI, sub-processor list",
@@ -733,7 +816,8 @@
      "endpoint": "/api/embed"
     }
    ],
-   "endpoints_holding": 4,
+   "endpoints_holding": 2,
+   "endpoints_confirm": 2,
    "endpoints": 4
   }
  ],

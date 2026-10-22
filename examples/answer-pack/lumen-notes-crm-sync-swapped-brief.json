@@ -1,5 +1,5 @@
 {
- "pack_id": "d41bd45fce53f65e",
+ "pack_id": "a7826f803f52290c",
  "as_of_local": "2026-10-21 21:23 EDT",
  "headline": {
   "kicker": "1 stale",
@@ -8,6 +8,7 @@
  "counts": {
   "not_true": 0,
   "stale": 1,
+  "confirm": 0,
   "held_unspecified": 1,
   "still_true": 3
  },
@@ -72,7 +73,7 @@
     "/api/crm-sync": "Anthropic",
     "/api/summarize": "Anthropic",
     "/api/digest": "Anthropic",
-    "/api/embed": "OpenAI and its sub-processors"
+    "/api/embed": "Readings disagree: Others see it or Page does not say"
    }
   }
  ]

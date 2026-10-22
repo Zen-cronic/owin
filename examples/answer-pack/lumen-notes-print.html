@@ -21,6 +21,7 @@ h2 { font: 600 17px/1.35 Archivo, "Helvetica Neue", Arial, sans-serif; margin: 0
 .badge.not_true { background: var(--act); color: var(--ink); padding: 1px 6px; border-radius: 3px; }
 .badge.stale { border: 1px solid var(--ink); padding: 0 6px; border-radius: 3px; }
 .badge.held_unspecified { color: var(--muted); }
+.badge.confirm { border: 1px dashed var(--ink); padding: 0 6px; border-radius: 3px; }
 .body { margin-left: 44px; }
 section.q.not_true .body { border: 1px solid var(--ink); border-radius: 4px; padding: 12px; }
 section.q.stale .body { border-left: 2px solid var(--ink); padding-left: 12px; }
@@ -38,7 +39,7 @@ footer { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 12px;
 </style></head><body><main>
 <header>
 <h1>Security review: AI and data</h1>
-<p class="meta">Lumen Notes Inc. · answers as of <span class="mono">2026-10-21 21:23 EDT</span> · pack <span class="mono">8b69cf5f51f82a2a</span></p>
+<p class="meta">Lumen Notes Inc. · answers as of <span class="mono">2026-10-21 21:23 EDT</span> · pack <span class="mono">3631aa43a7c32513</span></p>
 <p class="label">DEMO COMPANY (fictional). Lumen Notes, its endpoints, settings and trust-page answers are invented for the replay. Every vendor sentence, URL and fetch time is real and comes from data/datause/registry.json and data/datause/observations.json.</p>
 </header>
 <section class="q still_true"><div class="qhead"><span class="num">01</span><h2>Is our data used to train AI models?</h2><span class="badge still_true"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Still true</span></div>
@@ -82,10 +83,10 @@ footer { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 12px;
 <p class="answer">Anthropic and OpenAI, under their published sub-processor lists.</p>
 <p class="change">OpenAI updated its sub-processor list on October 14, 2026 (was June 2, 2026), after this answer was written (2026-09-01). Review the change.</p>
 <table><thead><tr><th>Endpoint</th><th>Vendor page says</th><th>Vendor sentence</th></tr></thead><tbody>
-<tr><td class="ep">/api/crm-sync</td><td>Anthropic</td><td><span class="src">The vendor's page does not say.</span><div class="src"><a href="https://platform.claude.com/docs/en/agents-and-tools/mcp-connector">Anthropic, MCP connector ↗</a> · fetched 2026-10-21 21:23 EDT</div></td></tr>
+<tr><td class="ep">/api/crm-sync</td><td>Being confirmed</td><td><span class="src">Being confirmed against the vendor's page.</span><div class="src"><a href="https://platform.claude.com/docs/en/agents-and-tools/mcp-connector">Anthropic, MCP connector ↗</a> · fetched 2026-10-21 21:23 EDT</div></td></tr>
 <tr><td class="ep">/api/summarize</td><td>Anthropic</td><td><span class="src">The vendor's page does not say.</span><div class="src"><a href="https://platform.claude.com/docs/en/manage-claude/api-and-data-retention">Anthropic, API and data retention ↗</a> · fetched 2026-10-21 21:23 EDT</div></td></tr>
 <tr><td class="ep">/api/digest</td><td>Anthropic</td><td><span class="src">The vendor's page does not say.</span><div class="src"><a href="https://platform.claude.com/docs/en/manage-claude/api-and-data-retention">Anthropic, API and data retention ↗</a> · fetched 2026-10-21 21:23 EDT</div></td></tr>
-<tr><td class="ep">/api/embed</td><td>OpenAI and its sub-processors</td><td><blockquote>“OpenAI uses sub-processors to provide its services. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected processing region.”</blockquote><div class="src"><a href="https://developers.openai.com/api/docs/guides/your-data">OpenAI, your data ↗</a> · fetched 2026-10-21 21:23 EDT</div></td></tr>
+<tr><td class="ep">/api/embed</td><td>Being confirmed</td><td><span class="src">Being confirmed against the vendor's page.</span><div class="src"><a href="https://developers.openai.com/api/docs/guides/your-data">OpenAI, your data ↗</a> · fetched 2026-10-21 21:23 EDT</div></td></tr>
 </tbody></table></div></section>
-<footer>Every sentence above is quoted verbatim from the vendor's own page, with its link and fetch time. Statuses are computed by code from structured fields, never from model prose. Read-only share id <span class="mono">d9b6ab6612e2ec55</span>.</footer>
+<footer>Every sentence above is quoted verbatim from the vendor's own page, with its link and fetch time. Statuses are computed by code from structured fields, never from model prose. Read-only share id <span class="mono">554acc3d8df2fb35</span>.</footer>
 </main></body></html>

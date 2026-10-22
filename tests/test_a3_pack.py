@@ -41,7 +41,7 @@ def cell(p, qid, path):
 
 def test_demo_badges(demo):
     assert badges(demo) == DEMO_BADGES
-    assert demo["counts"] == {"not_true": 1, "stale": 1, "held_unspecified": 2, "still_true": 1}
+    assert demo["counts"] == {"not_true": 1, "stale": 1, "confirm": 0, "held_unspecified": 2, "still_true": 1}
     assert demo["order"][:2] == ["Q03", "Q05"]
 
 
@@ -80,7 +80,9 @@ def test_stale_example_is_the_real_openai_list_change(demo):
     # Tavily served an older copy ("July 9, 2026") on 2026-10-22; it is held and never used as the latest.
     held = ev["held_observations"]
     assert held and held[0]["source_kind"] == "tavily" and held[0]["last_updated"] == "July 9, 2026"
-    assert all(c["verdict"] == "holds" for c in q5["cells"])
+    # Selective answering: the readings disagree on third-party access for two endpoints, so those cells ask a person.
+    assert {c["endpoint"]: c["verdict"] for c in q5["cells"]} == {
+        "/api/crm-sync": "confirm", "/api/summarize": "holds", "/api/digest": "holds", "/api/embed": "confirm"}
 
 
 def test_change_one_input_flips_q03_to_still_true():
@@ -175,7 +177,8 @@ def test_not_true_outranks_stale_and_stale_outranks_held():
     assert badges(pack.build(m))["Q05"] == "not_true"
     m2 = pack.load_demo()
     m2["stated"]["stated_at"] = "2026-10-21"  # written after the Oct 14 change was captured: nothing to flag
-    assert badges(pack.build(m2))["Q05"] == "still_true"
+    # Nothing is stale, but two endpoints' readings disagree on third-party access: confirm, never still_true.
+    assert badges(pack.build(m2))["Q05"] == "confirm"
 
 
 def test_region_is_never_computed_from_vendor_free_text():
