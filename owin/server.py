@@ -5,7 +5,9 @@ GET /api/score                                                ->  measurement he
 GET /api/pack?set=/api/crm-sync=anthropic-messages&format=json|brief|share|csv|html  ->  answer pack (A3)
 POST /api/pack  (body: a stack manifest, docs/CONTRACT.md)    ->  answer pack for that stack
 GET /pack/print                                               ->  print-ready HTML (save as PDF)
-GET /                                                         ->  debug page
+GET /                                                         ->  the answer screen (owin/web/, owin/webui.py)
+GET /api/catalog, /api/watch                                  ->  features for the swap control; per-page watch status
+GET /debug                                                    ->  unstyled replay debug page
 Stateless per request, on a ThreadingHTTPServer, so concurrent judges do not block each other.
 """
 from __future__ import annotations
@@ -15,7 +17,7 @@ from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
-from . import evaluate, replay
+from . import evaluate, replay, webui
 
 PAGE = """<!doctype html><meta charset="utf-8"><title>Owin debug</title>
 <h1>Owin debug page (unstyled)</h1>
@@ -36,8 +38,14 @@ go();
 
 def handle(path: str, qs: dict) -> tuple[int, str, str]:
     q = {k: v[0] for k, v in qs.items()}
-    if path == "/":
+    if path == "/debug":
         return 200, "text/html; charset=utf-8", PAGE
+    if (st := webui.static(path)) is not None:
+        return st
+    if path == "/api/catalog":
+        return 200, "application/json", json.dumps(webui.catalog())
+    if path == "/api/watch":
+        return 200, "application/json", json.dumps(webui.watch())
     if path == "/api/replay":
         try:
             pd = int(q["promise_days"]) if q.get("promise_days") else None

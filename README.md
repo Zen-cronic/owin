@@ -29,7 +29,7 @@ owin eval run --corpus datause --runs 3       # live; needs TOKEN_FACTORY_API_KE
 
 ## The answer pack: your security review, per endpoint (A3)
 
-`owin pack build --format brief` (no key, no network). `owin serve`, then `GET /api/pack`, `GET /pack/print` or `POST /api/pack` with your own stack manifest.
+`owin pack build --format brief` (no key, no network). `owin serve`, then open http://127.0.0.1:8787/ for the answer screen (static HTML/CSS/JS in `owin/web/`, no build step), or `GET /api/pack`, `GET /pack/print` or `POST /api/pack` with your own stack manifest.
 
 Input: a stack manifest (each endpoint mapped to a vendor feature, e.g. `/api/crm-sync -> anthropic-mcp-connector`), your own settings, and the answers your trust page already gives (`fixtures/demo/stack.json`, fictional Lumen Notes). Output: five questionnaire answers, each with a per-endpoint cell, the vendor's verbatim sentence, its link and fetch time, an as-of time and a badge. **Code computes every badge from structured fields; quotes and your answer text are never read by a rule (tested).**
 
@@ -54,7 +54,7 @@ Owin (Objection Window) watches the vendors your startup uses. When one changes 
 
 ## The replay: a real change, start here
 
-`owin replay --brief` (or `owin serve`, then open http://127.0.0.1:8787/)
+`owin replay --brief` (or `owin serve`, then open http://127.0.0.1:8787/debug)
 
 **OpenAI updated its sub-processor list on 2026-10-14.** The two sides of the change are the Wayback captures of [2026-07-08](https://web.archive.org/web/20260708120959/https://openai.com/policies/sub-processor-list/) ("Last updated June 2, 2026") and [2026-10-21](https://web.archive.org/web/20261021154629/https://openai.com/policies/sub-processor-list/) ("Last updated October 14, 2026"). It added OAI International, Inc. and new processing locations for Microsoft (Belgium, Denmark, Malaysia, New Zealand) and Google Cloud (Singapore). It also removed four entities. The company is fictional, and so are its DPA wording and its five customers ("Lumen Notes", `fixtures/demo/company.json`).
 
