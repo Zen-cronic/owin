@@ -1,6 +1,35 @@
 # Owin
 
-**NVIDIA Nemotron Super on Nebius Token Factory read the sub-processor objection terms of 17 real vendor DPAs, all five fields exact with a verbatim quote, in 51 of 51 runs (7 of the 17 held out), at $0.0017 and 6.1 s per successful run. It held 6 of 6 thin-evidence controls rather than inventing a window. A regex baseline tuned on the same documents gets 9 of 17.** Recompute it with `owin eval score`.
+**NVIDIA Nemotron Super on Nebius Token Factory read 30 real (AI vendor, feature) documentation pages (OpenAI, Anthropic, Google Gemini and Vertex, AWS Bedrock, Azure OpenAI, Groq, Mistral, Together, Fireworks) and got retention days, training use and ZDR status all exact, each with a verbatim quote, on 24 of 30 features. On a fresh held-out set labelled before the prompt was final it got 5 of 6. It held 7 of 7 pages that say nothing on the subject (21/21 runs) rather than guessing, at $0.005 and 11 s per successful run. A keyword baseline gets 7 of 30. Our first, pre-registered prompt scored 16 of 24 and failed our own 80% bar; the number above is repair attempt 1.** Recompute it with `owin eval score --corpus datause --brief`.
+
+Owin moved (decision of 2026-10-21) from sub-processor notices to **AI data-use terms per feature**: for the AI endpoints a startup actually calls, what the vendor's own page says about retention, training use, zero data retention (ZDR) and region, each with the sentence that says it. The hero output is the AI section of a buyer's security questionnaire, filled in for your stack. The name is a codename for now.
+
+## The number: AI data-use terms per feature
+
+| | Nemotron Super, prompt v2 (3 runs each) | Keyword baseline |
+|---|---|---|
+| 13 tuned features (prompt written on these) | **13/13** features, 34/39 runs | |
+| 11 held-out features (labelled before any prompt; v1 misses were seen before v2, so not clean) | 6/11, 18/33 runs | 1/11 |
+| 6 fresh held-out features (Together, Fireworks, Vertex x3, Anthropic code execution; labelled before v2 existed) | **5/6**, 13/18 runs | 0/6 |
+| All 30 features | **24/30** (80%) | 7/30 |
+| Pages that say nothing on the subject (rate limits, model lists, quickstarts) | **7/7 held**, 21/21 runs | 5/7 |
+| Pre-registered v1 prompt, first 24 features | 16/24: **failed** the 80% bar | 7/24 |
+
+- **Scored fields:** `retention_days`, `used_for_training` (yes / no / opt_in / opt_out / unspecified) and `zdr` (available / excluded / not_available / unspecified), per feature. An answer counts only if it matches the hand label. Every field the model asserts must quote the page **verbatim** (after markdown stripping), or code withholds that answer and marks it unspecified.
+- **Labels and their evidence:** `eval/datause/label-audit.md` lists every label with the sentence that justifies it, plus five label-rule tensions we found after scoring. We did not change any label after a model run. One person (the build agent) labelled everything; an independent spot-check is still owed.
+- **The questionnaire catch is measured:** Anthropic's MCP connector "is not covered by ZDR arrangements" and Message Batches keep data 29 days. Both are exact in 3 of 3 runs.
+- **Cost** is from Token Factory usage on 111 calls ($0.435 in total, $0.30 / $0.90 per M tokens); p95 latency is 29 s.
+- Raw pages are gitignored. Their provenance (URL, fetch time, sha256) is in `fixtures/manifest.json` under `datause`, and `owin eval score --corpus datause` works without them (it then says `quotes_rechecked_against_source: false`).
+
+```bash
+owin eval score --corpus datause --brief      # recompute, no key
+owin eval audit --corpus datause              # rewrite eval/datause/label-audit.md
+owin eval run --corpus datause --runs 3       # live; needs TOKEN_FACTORY_API_KEY and fixtures/raw/datause/
+```
+
+## Previous subject: sub-processor objection windows (P1 to P3)
+
+NVIDIA Nemotron Super on Nebius Token Factory read the sub-processor objection terms of 17 real vendor DPAs, all five fields exact with a verbatim quote, in 51 of 51 runs (7 of the 17 held out), at $0.0017 and 6.1 s per successful run. It held 6 of 6 thin-evidence controls rather than inventing a window. A regex baseline tuned on the same documents gets 9 of 17. Recompute it with `owin eval score`.
 
 Owin (Objection Window) watches the vendors your startup uses. When one changes its sub-processor list, Owin reads that vendor's DPA and shows how many days you have to object and which of your customers you have to tell. It then drafts the notice you owe your own customers and your updated sub-processor page, plus the objection to the vendor for the rare case where you do object. A person sends everything.
 
@@ -47,6 +76,9 @@ pytest -q
 
 ## What we'll tell you before you find it
 
+- **Data-use number:** 30 features from 9 vendors is a small corpus, labelled by one agent, not independently. 80% sits exactly on our bar, from one 3-run sweep. The first prompt failed (16/24). The 11 original held-out items are no longer clean, because their v1 misses were read before v2 was written; only the 6 fresh items and the 7 negatives are clean tests of v2.
+- **Data-use pages were fetched by plain HTTP** (browser user agent, cookie jar) on 2026-10-21, not by Tavily: no Tavily key was available to the build agent. The pages are the vendors' own docs. Some describe products the reader may not recognise (for example GPT-6 and Claude Fable models); we report what the page said on the fetch date.
+- **Training "no" vs "opt_in":** OpenAI's own table says "Data used for training: No" while its prose says "unless you explicitly opt in". Our label is `opt_in`, so a model giving the table's answer is scored wrong. Both mean "not used by default".
 - 17 documents is a small corpus. One person labelled them, by reading each clause.
 - The prompt and baseline were written after reading the first 10 clauses. Only the 7 held-out DPAs test generalisation.
 - The live OpenAI DPA hides its clauses in accordions, so a fetch returns headings only. The scored OpenAI item uses the server-rendered Wayback capture of 2026-10-20. The live page is a negative control, and it holds.

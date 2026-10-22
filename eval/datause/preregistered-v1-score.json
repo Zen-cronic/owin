@@ -1,0 +1,62 @@
+{
+ "corpus": "datause",
+ "run_files": [
+  "eval/datause/runs/20261021T210812-all-nemotron-3-super-120b-a12b.json"
+ ],
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "prompt_versions": [
+  "v1"
+ ],
+ "quotes_rechecked_against_source": true,
+ "acceptance": {
+  "rule": "positive items exact (majority of runs) >= 80% AND negative controls held >= 75%",
+  "positive_items_exact": "16/24",
+  "negative_items_held": "5/5",
+  "passed": false
+ },
+ "headline": {
+  "positive_items_exact_majority": "16/24",
+  "positive_runs_exact": "47/72",
+  "tuned": {
+   "items_exact_majority": "10/13",
+   "runs_exact": "29/39"
+  },
+  "heldout": {
+   "items_exact_majority": "6/11",
+   "runs_exact": "18/33"
+  },
+  "fresh_heldout": {
+   "items_exact_majority": "0/0",
+   "runs_exact": "0/0"
+  },
+  "negative_items_held": "5/5",
+  "negative_runs_held": "14/15",
+  "raw_model_positive_runs_exact": "51/72",
+  "consistent_items": "17/29",
+  "field_accuracy_positive_runs": {
+   "retention_days": "66/72",
+   "used_for_training": "58/72",
+   "zdr": "62/72"
+  },
+  "baseline_positive_items_exact": "7/24",
+  "baseline_heldout_items_exact": "1/11",
+  "baseline_fresh_items_exact": "0/0",
+  "baseline_negatives_held": "5/5",
+  "baseline_field_accuracy": {
+   "retention_days": "11/24",
+   "used_for_training": "18/24",
+   "zdr": "14/24"
+  }
+ },
+ "per_successful_run": {
+  "successful_runs": 61,
+  "total_calls": 87,
+  "errors": 2,
+  "mean_latency_s": 17.15,
+  "p95_latency_s": 34.39,
+  "cost_per_successful_run_usd": 0.00576,
+  "total_cost_usd": 0.35149,
+  "tokens_in": 503709,
+  "tokens_out": 222643
+ }
+}

@@ -150,5 +150,287 @@
   "kind": "heldout",
   "chars": 48957,
   "sha256": "47427a6b69e2ef49470a456418295f3d6da98fa53fa3c5c7a879f70935d79e75"
+ },
+ "datause": {
+  "anthropic-batch": {
+   "chars": 27996,
+   "fetched_at": "2026-10-21T20:49:40-0400",
+   "file": "fixtures/raw/datause/anthropic-batch.txt",
+   "final_url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+   "html_bytes": 1293961,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "e3d2d31a1179f948c56d9ef779d73e2a34857dc8226c08c43976629ed3a86f38",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing"
+  },
+  "anthropic-code-execution": {
+   "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool",
+   "final_url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool",
+   "file": "fixtures/raw/datause/anthropic-code-execution.txt",
+   "fetched_at": "2026-10-21T21:09:15-0400",
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "html_bytes": 1660206,
+   "chars": 30055,
+   "sha256": "3a5b99ba3fc38d73fb75dce9e58217f92409331f2b8ae435c9acacf49a3013d7"
+  },
+  "anthropic-files": {
+   "chars": 18993,
+   "fetched_at": "2026-10-21T20:49:40-0400",
+   "file": "fixtures/raw/datause/anthropic-files.txt",
+   "final_url": "https://platform.claude.com/docs/en/build-with-claude/files",
+   "html_bytes": 894085,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "4fd014f4d15e881e0e4a32d4da2faa2b5e7e794bcc119b38a48221e002758da0",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/files"
+  },
+  "anthropic-mcp-connector": {
+   "chars": 25806,
+   "fetched_at": "2026-10-21T20:49:41-0400",
+   "file": "fixtures/raw/datause/anthropic-mcp-connector.txt",
+   "final_url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+   "html_bytes": 1415360,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "16b1866a3d301d85655bd1141e71ef636fc282cfe77bd2be7e81ef90804b3f65",
+   "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector"
+  },
+  "anthropic-privacy-retention": {
+   "chars": 3727,
+   "fetched_at": "2026-10-21T20:49:41-0400",
+   "file": "fixtures/raw/datause/anthropic-privacy-retention.txt",
+   "final_url": "https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data",
+   "html_bytes": 106449,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "b9c312c911ea2c1ca189d8879c5a5fdbdad27b89efea5e5ffe2519b25315f321",
+   "url": "https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data"
+  },
+  "anthropic-retention": {
+   "chars": 29537,
+   "fetched_at": "2026-10-21T20:49:39-0400",
+   "file": "fixtures/raw/datause/anthropic-retention.txt",
+   "final_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+   "html_bytes": 581519,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "225d4668c86558ff0285296bd32e3be28bcd2689f18da5f18b1c324d57f73fae",
+   "url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention"
+  },
+  "azure-openai-abuse-monitoring": {
+   "chars": 6666,
+   "fetched_at": "2026-10-21T20:51:01-0400",
+   "file": "fixtures/raw/datause/azure-openai-abuse-monitoring.txt",
+   "final_url": "https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/abuse-monitoring",
+   "html_bytes": 53977,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "e9b0243b23c0b99652c37f6c9435adc446664a6fbf5ea0f713aa13dc6b1654aa",
+   "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/abuse-monitoring"
+  },
+  "azure-openai-data-privacy": {
+   "chars": 18687,
+   "fetched_at": "2026-10-21T20:49:44-0400",
+   "file": "fixtures/raw/datause/azure-openai-data-privacy.txt",
+   "final_url": "https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/openai/data-privacy",
+   "html_bytes": 72125,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "fb87ca2d7118dbb7840346601b4cfc3bc3c143cb7e2dcaa759dd68c9198a33e0",
+   "url": "https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/openai/data-privacy"
+  },
+  "bedrock-abuse-detection": {
+   "chars": 3944,
+   "fetched_at": "2026-10-21T20:49:44-0400",
+   "file": "fixtures/raw/datause/bedrock-abuse-detection.txt",
+   "final_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/abuse-detection.html",
+   "html_bytes": 16160,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "6a68eeb3efac53c7cf04bebe00474e1af176261af14a985738974125665fe1a6",
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/abuse-detection.html"
+  },
+  "bedrock-data-protection": {
+   "chars": 3731,
+   "fetched_at": "2026-10-21T20:49:44-0400",
+   "file": "fixtures/raw/datause/bedrock-data-protection.txt",
+   "final_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html",
+   "html_bytes": 15999,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "f6cb99010facf46fb737ca0913dfc972725b4ae36f33e3ecd74e7f0d3d8266a1",
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html"
+  },
+  "bedrock-data-retention": {
+   "chars": 17598,
+   "fetched_at": "2026-10-21T20:51:01-0400",
+   "file": "fixtures/raw/datause/bedrock-data-retention.txt",
+   "final_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/data-retention.html",
+   "html_bytes": 44396,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "31afc3379547cddea0499f5b31a73c2bd8c3b3068a4d400c7a9ee7e20507691c",
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/data-retention.html"
+  },
+  "fireworks-data-handling": {
+   "url": "https://docs.fireworks.ai/guides/security_compliance/data_handling",
+   "final_url": "https://docs.fireworks.ai/guides/security_compliance/data_handling",
+   "file": "fixtures/raw/datause/fireworks-data-handling.txt",
+   "fetched_at": "2026-10-21T21:09:14-0400",
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "html_bytes": 347164,
+   "chars": 4659,
+   "sha256": "a5d166598d523bed731cc14c74de97a12500fff77a70d0e8c2ae92f4280679c9"
+  },
+  "gemini-logs-policy": {
+   "chars": 9201,
+   "fetched_at": "2026-10-21T20:49:44-0400",
+   "file": "fixtures/raw/datause/gemini-logs-policy.txt",
+   "final_url": "https://ai.google.dev/gemini-api/docs/logs-policy",
+   "html_bytes": 95680,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "65fe4b54fde26662a5380f28e7aba3dc98572eaf5e14159f30315be98f5d4f9b",
+   "url": "https://ai.google.dev/gemini-api/docs/logs-policy"
+  },
+  "gemini-terms": {
+   "chars": 23999,
+   "fetched_at": "2026-10-21T20:49:42-0400",
+   "file": "fixtures/raw/datause/gemini-terms.txt",
+   "final_url": "https://ai.google.dev/gemini-api/terms",
+   "html_bytes": 113016,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "2c0ca6b13578f429fe6a07bfb11b041a7180698e6e669f66a5c2af3f9eeeb728",
+   "url": "https://ai.google.dev/gemini-api/terms"
+  },
+  "groq-your-data": {
+   "chars": 5887,
+   "fetched_at": "2026-10-21T20:49:44-0400",
+   "file": "fixtures/raw/datause/groq-your-data.txt",
+   "final_url": "https://console.groq.com/docs/your-data",
+   "html_bytes": 303054,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "667da52a072d9510712a153111a45f5085c8b84b7be3f2117b714deeadad5012",
+   "url": "https://console.groq.com/docs/your-data"
+  },
+  "mistral-help-training": {
+   "chars": 2736,
+   "fetched_at": "2026-10-21T20:49:45-0400",
+   "file": "fixtures/raw/datause/mistral-help-training.txt",
+   "final_url": "https://help.mistral.ai/en/articles/347617-do-you-use-my-user-data-to-train-your-artificial-intelligence-models",
+   "html_bytes": 111547,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "d8427ad53179a6e598c92a5c8907f5b1ad509af82c6a474f0cc85e49f020492b",
+   "url": "https://help.mistral.ai/en/articles/347617-do-you-use-my-user-data-to-train-your-artificial-intelligence-models"
+  },
+  "mistral-help-zdr": {
+   "chars": 4029,
+   "fetched_at": "2026-10-21T20:51:01-0400",
+   "file": "fixtures/raw/datause/mistral-help-zdr.txt",
+   "final_url": "https://help.mistral.ai/en/articles/347612-can-i-activate-zero-data-retention-zdr",
+   "html_bytes": 118121,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "9b67339a39286275318bf330195150c1b97487e63dee60d59cfde380f4430a80",
+   "url": "https://help.mistral.ai/en/articles/347612-can-i-activate-zero-data-retention-zdr"
+  },
+  "neg-anthropic-rate-limits": {
+   "chars": 24005,
+   "fetched_at": "2026-10-21T20:51:02-0400",
+   "file": "fixtures/raw/datause/neg-anthropic-rate-limits.txt",
+   "final_url": "https://platform.claude.com/docs/en/api/rate-limits",
+   "html_bytes": 539614,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "3da9815448eca543cfe08fae88e59a1d1682a8d556940bb70c32cae2c4ff938d",
+   "url": "https://platform.claude.com/docs/en/api/rate-limits"
+  },
+  "neg-bedrock-what-is": {
+   "chars": 5472,
+   "fetched_at": "2026-10-21T20:51:03-0400",
+   "file": "fixtures/raw/datause/neg-bedrock-what-is.txt",
+   "final_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html",
+   "html_bytes": 24430,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "d8c385fef5d28ece626d8b54af79444903592d06e8e457770c34a5a7edec885b",
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html"
+  },
+  "neg-fireworks-quickstart": {
+   "url": "https://docs.fireworks.ai/getting-started/quickstart",
+   "final_url": "https://docs.fireworks.ai/getting-started/quickstart",
+   "file": "fixtures/raw/datause/neg-fireworks-quickstart.txt",
+   "fetched_at": "2026-10-21T21:09:45-0400",
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "html_bytes": 1215809,
+   "chars": 25297,
+   "sha256": "42b204c0cd246e08ee2ca0367e4346218157d10351c45274230040c895936be4"
+  },
+  "neg-gemini-models": {
+   "chars": 18502,
+   "fetched_at": "2026-10-21T20:51:03-0400",
+   "file": "fixtures/raw/datause/neg-gemini-models.txt",
+   "final_url": "https://ai.google.dev/gemini-api/docs/models",
+   "html_bytes": 155949,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "fe379502f050aa4a1b8ba48bec409a77f6fc236143af2e77fe56c41b78395fb8",
+   "url": "https://ai.google.dev/gemini-api/docs/models"
+  },
+  "neg-groq-rate-limits": {
+   "chars": 5877,
+   "fetched_at": "2026-10-21T20:51:03-0400",
+   "file": "fixtures/raw/datause/neg-groq-rate-limits.txt",
+   "final_url": "https://console.groq.com/docs/rate-limits",
+   "html_bytes": 321032,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "f472b3901f8d425176c48133f687e44d742341f850a26429fb7f55faa96570a3",
+   "url": "https://console.groq.com/docs/rate-limits"
+  },
+  "neg-openai-rate-limits": {
+   "chars": 33368,
+   "fetched_at": "2026-10-21T20:51:02-0400",
+   "file": "fixtures/raw/datause/neg-openai-rate-limits.txt",
+   "final_url": "https://developers.openai.com/api/docs/guides/rate-limits",
+   "html_bytes": 481392,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "c095940996890cfc5e91c81ca8f9cba373e98af843aa82f16e8225cd593d0cb5",
+   "url": "https://developers.openai.com/api/docs/guides/rate-limits"
+  },
+  "neg-together-quickstart": {
+   "url": "https://docs.together.ai/docs/quickstart",
+   "final_url": "https://docs.together.ai/docs/quickstart",
+   "file": "fixtures/raw/datause/neg-together-quickstart.txt",
+   "fetched_at": "2026-10-21T21:09:45-0400",
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "html_bytes": 717217,
+   "chars": 12400,
+   "sha256": "69d2a33e8b1dfad4283d9567ed14ca14073465627281a1b04cee7dac605c0b81"
+  },
+  "openai-your-data": {
+   "chars": 67831,
+   "fetched_at": "2026-10-21T20:49:39-0400",
+   "file": "fixtures/raw/datause/openai-your-data.txt",
+   "final_url": "https://developers.openai.com/api/docs/guides/your-data",
+   "html_bytes": 649388,
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7",
+   "url": "https://developers.openai.com/api/docs/guides/your-data"
+  },
+  "openrouter-provider-logging": {
+   "url": "https://openrouter.ai/docs/guides/privacy/provider-logging",
+   "final_url": "https://openrouter.ai/docs/guides/privacy/provider-logging",
+   "file": "fixtures/raw/datause/openrouter-provider-logging.txt",
+   "fetched_at": "2026-10-21T21:09:14-0400",
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "html_bytes": 432519,
+   "chars": 4726,
+   "sha256": "ba7b096201c6d2e1d237008b8d7043eaec53af13d3c1c4c6d1ae78908e9c80e7"
+  },
+  "together-privacy": {
+   "url": "https://docs.together.ai/docs/privacy-and-security",
+   "final_url": "https://docs.together.ai/docs/privacy-and-security",
+   "file": "fixtures/raw/datause/together-privacy.txt",
+   "fetched_at": "2026-10-21T21:09:14-0400",
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "html_bytes": 410545,
+   "chars": 6711,
+   "sha256": "8c328a3f9f9d1ae16f046f29e552c5a150202bf0aa0f79b9329f7edebe0934de"
+  },
+  "vertex-zdr": {
+   "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention",
+   "final_url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention",
+   "file": "fixtures/raw/datause/vertex-zdr.txt",
+   "fetched_at": "2026-10-21T21:09:14-0400",
+   "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+   "html_bytes": 179614,
+   "chars": 19526,
+   "sha256": "bae5bb95062a45ad3a958e891bf5d109234d9e2ba51ead463627a4387ecec229"
+  }
  }
 }

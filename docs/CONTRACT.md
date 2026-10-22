@@ -89,3 +89,24 @@ The row `state` is one of `watching` (baseline accepted), `no_change`, `changed`
 - A live `no_change` needs a second, advanced-depth extract that agrees with the first. Fixture results say "no live re-fetch".
 - Tavily calls use `extract` with no `query`, so the page comes back whole and diffable, and `map` for discovery. Without `TAVILY_API_KEY`, results come from recorded fixtures labelled `fixture`. Vendors with no fixture are `unfetched`.
 - The vendor index is `data/index/vendors.json` (29 vendors, each with a `watch_mode` verified on 2026-10-21). Per-vendor state lives in `var/state/` (gitignored, or `OWIN_STATE_DIR`).
+
+## DataUseTerms (`owin.datause.schema.DataUseTerms`, Pivot A, A1)
+
+These are the terms one vendor page states for one AI feature. There is one field per security-questionnaire question, so the answer pack (A3) fills each question from one field and its verbatim quote.
+
+| questionnaire question | field | type | set by |
+|---|---|---|---|
+| Is our data used to train the provider's models? | `used_for_training`, `training_quote` | `"yes" \| "no" \| "opt_in" \| "opt_out" \| "unspecified"`, str | model |
+| How long are prompts and outputs retained? | `retention_days`, `retention_condition`, `retention_quote` | `int \| null` (0 = not retained by default; null = until deleted, unstated, or silent), str, str | model |
+| Is zero data retention available for this feature? | `zdr`, `zdr_quote` | `"available" \| "excluded" \| "not_available" \| "unspecified"`, str | model |
+| Where is the data processed or stored? | `region`, `region_quote` | str (free text, `"unspecified"` if silent), str | model |
+| Which other parties can see it? | `third_party_access`, `third_party_quote` | `"yes" \| "no" \| "unspecified"`, str | model |
+| | `verbatim` | `{field: bool}` | code |
+| | `model_claimed` | `{field: value}`: answers the model gave that code withheld | code |
+| | `status` | `"ok" \| "partial" \| "no_terms"` | code |
+| | `hold_reasons` | str[] | code |
+
+- **The trust split:** a field the model asserts (anything other than null or `"unspecified"`) must have a quote found verbatim in the page after markdown stripping (`owin.textnorm.is_verbatim`, minimum 20 characters). Otherwise code resets the field to null or `"unspecified"`, records the claim in `model_claimed` and sets `status: "partial"`. A questionnaire answer is never produced from a withheld field.
+- **Labelling rules:** these are in `owin.datause.schema.LABEL_RULES`, and the prompt states the same rules.
+- **`owin eval score --corpus datause [--brief] [--file a.json]`:** returns `{corpus, run_files, model, prompt_versions, quotes_rechecked_against_source, acceptance{rule, positive_items_exact, negative_items_held, passed}, headline{positive_items_exact_majority, positive_runs_exact, tuned, heldout, fresh_heldout, negative_items_held, negative_runs_held, raw_model_positive_runs_exact, consistent_items, field_accuracy_positive_runs, baseline_*}, per_successful_run{...}, items{<id>: {kind, split, vendor, feature, gold, runs, exact_runs, n_runs, majority_exact, raw_model_exact_runs, consistent, withheld_fields, mismatched_fields, third_party_runs_exact, errors}}, baseline}`.
+- **Corpus:** each item in `eval/datause/corpus.json` is `{id, kind: tuned|heldout|negative, split: tuned|heldout|fresh, source, vendor, feature, url, file, fetched_at, source_sha256, gold{retention_days, used_for_training, zdr}, secondary{retention_condition, region, third_party_access}, evidence{retention, training, zdr, region, third_party}, label_note}`.

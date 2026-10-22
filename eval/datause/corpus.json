@@ -1,0 +1,1115 @@
+{
+ "_about": "AI data-use terms per (vendor, feature), labelled 2026-10-21 by reading each fetched page. Scored: retention_days, used_for_training, zdr. Secondary (reported, not in the headline): retention_condition, region, third_party_access. Every non-empty evidence sentence is verbatim in the source (tests/test_a1_datause.py). split=heldout items were never used while writing or revising the prompt or the baseline. Label rules are in owin/datause/schema.py (LABEL_RULES).",
+ "items": [
+  {
+   "id": "openai-responses",
+   "kind": "tuned",
+   "source": "openai-your-data",
+   "vendor": "OpenAI",
+   "feature": "Responses API (/v1/responses)",
+   "gold": {
+    "retention_days": 30,
+    "used_for_training": "opt_in",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "abuse-monitoring logs and stored response state, 30 days by default",
+    "region": "configurable (data residency projects)",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "Except as noted below, the Responses API has a 30 day Application State retention period by default, or when the store parameter is set to true.",
+    "training": "As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
+    "zdr": "/v1/responses No 30 days None, see below for exceptions Yes, see below for limitations",
+    "region": "Data residency controls are a project configuration option that allow you to configure the location of infrastructure OpenAI uses to provide services.",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "tuned",
+   "url": "https://developers.openai.com/api/docs/guides/your-data",
+   "file": "fixtures/raw/datause/openai-your-data.txt",
+   "fetched_at": "2026-10-21T20:49:39-0400",
+   "source_sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7"
+  },
+  {
+   "id": "openai-chat-completions",
+   "kind": "tuned",
+   "source": "openai-your-data",
+   "vendor": "OpenAI",
+   "feature": "Chat Completions API (/v1/chat/completions)",
+   "gold": {
+    "retention_days": 30,
+    "used_for_training": "opt_in",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "abuse-monitoring logs, 30 days; no application state",
+    "region": "configurable (data residency projects)",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "/v1/chat/completions No 30 days None, see below for exceptions",
+    "training": "As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
+    "zdr": "/v1/chat/completions No 30 days None, see below for exceptions Yes, see below for limitations",
+    "region": "Data residency controls are a project configuration option that allow you to configure the location of infrastructure OpenAI uses to provide services.",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "tuned",
+   "url": "https://developers.openai.com/api/docs/guides/your-data",
+   "file": "fixtures/raw/datause/openai-your-data.txt",
+   "fetched_at": "2026-10-21T20:49:39-0400",
+   "source_sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7"
+  },
+  {
+   "id": "openai-batches",
+   "kind": "tuned",
+   "source": "openai-your-data",
+   "vendor": "OpenAI",
+   "feature": "Batch API (/v1/batches)",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "opt_in",
+    "zdr": "excluded"
+   },
+   "secondary": {
+    "retention_condition": "application state retained until deleted (abuse logs 30 days)",
+    "region": "configurable (data residency projects)",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "/v1/batches No 30 days Until deleted No No",
+    "training": "As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
+    "zdr": "/v1/batches No 30 days Until deleted No No",
+    "region": "Data residency controls are a project configuration option that allow you to configure the location of infrastructure OpenAI uses to provide services.",
+    "third_party": ""
+   },
+   "label_note": "retention_days null because content stays until the customer deletes it; the 30-day abuse-log period is shorter than that, so the fixed number would understate retention.",
+   "split": "tuned",
+   "url": "https://developers.openai.com/api/docs/guides/your-data",
+   "file": "fixtures/raw/datause/openai-your-data.txt",
+   "fetched_at": "2026-10-21T20:49:39-0400",
+   "source_sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7"
+  },
+  {
+   "id": "openai-files",
+   "kind": "heldout",
+   "source": "openai-your-data",
+   "vendor": "OpenAI",
+   "feature": "Files API (/v1/files)",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "opt_in",
+    "zdr": "excluded"
+   },
+   "secondary": {
+    "retention_condition": "until deleted",
+    "region": "configurable (data residency projects)",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "/v1/files No 30 days Until deleted* No No",
+    "training": "As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
+    "zdr": "/v1/files No 30 days Until deleted* No No",
+    "region": "Data residency controls are a project configuration option that allow you to configure the location of infrastructure OpenAI uses to provide services.",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "heldout",
+   "url": "https://developers.openai.com/api/docs/guides/your-data",
+   "file": "fixtures/raw/datause/openai-your-data.txt",
+   "fetched_at": "2026-10-21T20:49:39-0400",
+   "source_sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7"
+  },
+  {
+   "id": "openai-audio-transcriptions",
+   "kind": "heldout",
+   "source": "openai-your-data",
+   "vendor": "OpenAI",
+   "feature": "Audio transcriptions (/v1/audio/transcriptions)",
+   "gold": {
+    "retention_days": 0,
+    "used_for_training": "opt_in",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "no abuse-monitoring or application-state retention",
+    "region": "configurable (data residency projects)",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "/v1/audio/transcriptions No None None Yes No",
+    "training": "As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
+    "zdr": "/v1/audio/transcriptions No None None Yes No",
+    "region": "Data residency controls are a project configuration option that allow you to configure the location of infrastructure OpenAI uses to provide services.",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "heldout",
+   "url": "https://developers.openai.com/api/docs/guides/your-data",
+   "file": "fixtures/raw/datause/openai-your-data.txt",
+   "fetched_at": "2026-10-21T20:49:39-0400",
+   "source_sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7"
+  },
+  {
+   "id": "anthropic-messages",
+   "kind": "tuned",
+   "source": "anthropic-retention",
+   "vendor": "Anthropic",
+   "feature": "Messages API (/v1/messages)",
+   "gold": {
+    "retention_days": 0,
+    "used_for_training": "opt_in",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "not retained by default; Covered Models need 30-day retention; flagged content and legal holds excepted",
+    "region": "configurable (inference_geo)",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "Conversation content (your prompts and Claude's outputs) is not retained by default; the exception is Covered Models, which require 30-day retention.",
+    "training": "Retained data is never used for model training without your express permission.",
+    "zdr": "Messages API/v1/messagesYesYesStandard API calls for generating Claude responses.",
+    "region": "Data residency/v1/messages with inference_geoYesYes",
+    "third_party": ""
+   },
+   "label_note": "This docs page says 0 by default while Anthropic's privacy-center article (item anthropic-api-privacy) says inputs/outputs are deleted within 30 days. Both labels follow their own page; the disagreement is a real stale/contradictory-answer case.",
+   "split": "tuned",
+   "url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+   "file": "fixtures/raw/datause/anthropic-retention.txt",
+   "fetched_at": "2026-10-21T20:49:39-0400",
+   "source_sha256": "225d4668c86558ff0285296bd32e3be28bcd2689f18da5f18b1c324d57f73fae"
+  },
+  {
+   "id": "anthropic-batch",
+   "kind": "tuned",
+   "source": "anthropic-retention",
+   "vendor": "Anthropic",
+   "feature": "Message Batches API (/v1/messages/batches)",
+   "gold": {
+    "retention_days": 29,
+    "used_for_training": "opt_in",
+    "zdr": "excluded"
+   },
+   "secondary": {
+    "retention_condition": "stored up to 29 days after batch creation",
+    "region": "configurable (inference_geo)",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "Batch processing/v1/messages/batchesNoNo29-day retention; async storage required.",
+    "training": "Retained data is never used for model training without your express permission.",
+    "zdr": "Batch processing/v1/messages/batchesNoNo29-day retention; async storage required.",
+    "region": "Data residency/v1/messages with inference_geoYesYes",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "tuned",
+   "url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+   "file": "fixtures/raw/datause/anthropic-retention.txt",
+   "fetched_at": "2026-10-21T20:49:39-0400",
+   "source_sha256": "225d4668c86558ff0285296bd32e3be28bcd2689f18da5f18b1c324d57f73fae"
+  },
+  {
+   "id": "anthropic-files",
+   "kind": "heldout",
+   "source": "anthropic-retention",
+   "vendor": "Anthropic",
+   "feature": "Files API (/v1/files)",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "opt_in",
+    "zdr": "excluded"
+   },
+   "secondary": {
+    "retention_condition": "until explicitly deleted or configured expiration",
+    "region": "configurable (inference_geo)",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "Files API/v1/filesNoNoFiles retained until explicitly deleted or they reach their configured expiration.",
+    "training": "Retained data is never used for model training without your express permission.",
+    "zdr": "Files API/v1/filesNoNoFiles retained until explicitly deleted or they reach their configured expiration.",
+    "region": "Data residency/v1/messages with inference_geoYesYes",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "heldout",
+   "url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+   "file": "fixtures/raw/datause/anthropic-retention.txt",
+   "fetched_at": "2026-10-21T20:49:39-0400",
+   "source_sha256": "225d4668c86558ff0285296bd32e3be28bcd2689f18da5f18b1c324d57f73fae"
+  },
+  {
+   "id": "anthropic-mcp-connector",
+   "kind": "tuned",
+   "source": "anthropic-mcp-connector",
+   "vendor": "Anthropic",
+   "feature": "MCP connector (/v1/messages with mcp_servers)",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "excluded"
+   },
+   "secondary": {
+    "retention_condition": "Anthropic standard data retention policy (no number on this page)",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "Data exchanged with MCP servers, including tool definitions and execution results, is retained according to Anthropic's standard data retention policy.",
+    "training": "",
+    "zdr": "The MCP connector is not covered by ZDR arrangements.",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "tuned",
+   "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+   "file": "fixtures/raw/datause/anthropic-mcp-connector.txt",
+   "fetched_at": "2026-10-21T20:49:41-0400",
+   "source_sha256": "16b1866a3d301d85655bd1141e71ef636fc282cfe77bd2be7e81ef90804b3f65"
+  },
+  {
+   "id": "anthropic-batch-page",
+   "kind": "heldout",
+   "source": "anthropic-batch",
+   "vendor": "Anthropic",
+   "feature": "Message Batches API (/v1/messages/batches)",
+   "gold": {
+    "retention_days": 29,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "up to 29 days after batch creation",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "Batch processing stores request and response data for up to 29 days after batch creation.",
+    "training": "",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "zdr unspecified on purpose: this page only links out ('To learn how zero data retention (ZDR) applies to this feature, see API and data retention.'). The model must not import the answer from the other page.",
+   "split": "heldout",
+   "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+   "file": "fixtures/raw/datause/anthropic-batch.txt",
+   "fetched_at": "2026-10-21T20:49:40-0400",
+   "source_sha256": "e3d2d31a1179f948c56d9ef779d73e2a34857dc8226c08c43976629ed3a86f38"
+  },
+  {
+   "id": "anthropic-api-privacy",
+   "kind": "tuned",
+   "source": "anthropic-privacy-retention",
+   "vendor": "Anthropic",
+   "feature": "Anthropic API inputs and outputs (standard retention)",
+   "gold": {
+    "retention_days": 30,
+    "used_for_training": "unspecified",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "deleted within 30 days unless Files API, ZDR agreement or usage-policy enforcement",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "For Anthropic API users, we automatically delete inputs and outputs on our backend within 30 days of receipt or generation, except:",
+    "training": "",
+    "zdr": "When you and we have agreed otherwise (e.g. zero data retention agreement)",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "zdr=available is a judgment call: the page names a zero data retention agreement as an exception to standard retention, which implies one can be agreed.",
+   "split": "tuned",
+   "url": "https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data",
+   "file": "fixtures/raw/datause/anthropic-privacy-retention.txt",
+   "fetched_at": "2026-10-21T20:49:41-0400",
+   "source_sha256": "b9c312c911ea2c1ca189d8879c5a5fdbdad27b89efea5e5ffe2519b25315f321"
+  },
+  {
+   "id": "anthropic-flagged",
+   "kind": "heldout",
+   "source": "anthropic-privacy-retention",
+   "vendor": "Anthropic",
+   "feature": "Content flagged by trust and safety systems",
+   "gold": {
+    "retention_days": 730,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "inputs/outputs up to 2 years if flagged; classification scores up to 7 years",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "We retain inputs and outputs for up to 2 years and trust and safety classification scores for up to 7 years if your chat is flagged by our automated trust and safety systems as violating our Usage Policy.",
+    "training": "",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "2 years = 730 days.",
+   "split": "heldout",
+   "url": "https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data",
+   "file": "fixtures/raw/datause/anthropic-privacy-retention.txt",
+   "fetched_at": "2026-10-21T20:49:41-0400",
+   "source_sha256": "b9c312c911ea2c1ca189d8879c5a5fdbdad27b89efea5e5ffe2519b25315f321"
+  },
+  {
+   "id": "gemini-paid",
+   "kind": "tuned",
+   "source": "gemini-terms",
+   "vendor": "Google",
+   "feature": "Gemini API, paid tier (billing-enabled Cloud project)",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "no",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "logged for a limited period for abuse detection (no number stated)",
+    "region": "any country where Google or its agents maintain facilities",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "For Paid Services, Google logs prompts and responses for a limited period of time, solely for detecting and preventing violations of the",
+    "training": "When you use Paid Services, including, for example, the paid quota of the Gemini API, Google doesn't use your prompts (including associated system instructions, cached content, and files such as images, videos, or documents) or responses to improve our products",
+    "zdr": "",
+    "region": "This data may be stored transiently or cached in any country in which Google or its agents maintain facilities.",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "tuned",
+   "url": "https://ai.google.dev/gemini-api/terms",
+   "file": "fixtures/raw/datause/gemini-terms.txt",
+   "fetched_at": "2026-10-21T20:49:42-0400",
+   "source_sha256": "2c0ca6b13578f429fe6a07bfb11b041a7180698e6e669f66a5c2af3f9eeeb728"
+  },
+  {
+   "id": "gemini-free",
+   "kind": "tuned",
+   "source": "gemini-terms",
+   "vendor": "Google",
+   "feature": "Gemini API, unpaid (free) tier",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "yes",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "not stated",
+    "region": "unspecified",
+    "third_party_access": "yes"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "When you use Unpaid Services, including, for example, Google AI Studio and the unpaid quota on Gemini API, Google uses the content you submit to the Services and any generated responses to provide, improve, and develop Google products and services and machine learning technologies",
+    "zdr": "",
+    "region": "",
+    "third_party": "To help with quality and improve our products, human reviewers may read, annotate, and process your API input and output."
+   },
+   "label_note": "EEA/Switzerland/UK users get the paid-tier terms; the label is the default (non-EEA) answer. third_party=yes is human reviewers (Google side) and is not scored.",
+   "split": "tuned",
+   "url": "https://ai.google.dev/gemini-api/terms",
+   "file": "fixtures/raw/datause/gemini-terms.txt",
+   "fetched_at": "2026-10-21T20:49:42-0400",
+   "source_sha256": "2c0ca6b13578f429fe6a07bfb11b041a7180698e6e669f66a5c2af3f9eeeb728"
+  },
+  {
+   "id": "gemini-logs",
+   "kind": "heldout",
+   "source": "gemini-logs-policy",
+   "vendor": "Google",
+   "feature": "Gemini API logs (AI Studio logs and datasets)",
+   "gold": {
+    "retention_days": 55,
+    "used_for_training": "opt_in",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "default maximum 55 days, configurable 7/14/28/55; datasets have no set retention",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "Logs are retained for a default maximum period of 55 days.",
+    "training": "By default, because logging is only available for billing-enabled projects, prompts and responses within logs are not used for product improvement or development",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "heldout",
+   "url": "https://ai.google.dev/gemini-api/docs/logs-policy",
+   "file": "fixtures/raw/datause/gemini-logs-policy.txt",
+   "fetched_at": "2026-10-21T20:49:44-0400",
+   "source_sha256": "65fe4b54fde26662a5380f28e7aba3dc98572eaf5e14159f30315be98f5d4f9b"
+  },
+  {
+   "id": "bedrock-default",
+   "kind": "tuned",
+   "source": "bedrock-data-retention",
+   "vendor": "AWS",
+   "feature": "Amazon Bedrock inference, default retention mode",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "depends on the model's own retention policy",
+    "region": "destination Region when cross-region inference is on",
+    "third_party_access": "no"
+   },
+   "evidence": {
+    "retention": "Actual retention depends on the model — consult the model's terms for specifics.",
+    "training": "",
+    "zdr": "Zero data retention. No request or response data is written to durable storage by AWS or shared with the model provider.",
+    "region": "If cross-region inference is enabled for these models, retained inputs and outputs are stored in destination Regions (that is, the Region where your inference request is processed).",
+    "third_party": "The model provider does not receive it."
+   },
+   "label_note": "",
+   "split": "tuned",
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/data-retention.html",
+   "file": "fixtures/raw/datause/bedrock-data-retention.txt",
+   "fetched_at": "2026-10-21T20:51:01-0400",
+   "source_sha256": "31afc3379547cddea0499f5b31a73c2bd8c3b3068a4d400c7a9ee7e20507691c"
+  },
+  {
+   "id": "bedrock-claude-fable",
+   "kind": "heldout",
+   "source": "bedrock-data-retention",
+   "vendor": "AWS",
+   "feature": "Claude Fable 5 on Amazon Bedrock (aws_review mode)",
+   "gold": {
+    "retention_days": 30,
+    "used_for_training": "unspecified",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "retained within the AWS boundary up to 30 days for human review",
+    "region": "destination Region when cross-region inference is on",
+    "third_party_access": "no"
+   },
+   "evidence": {
+    "retention": "For models requiring aws_review (currently Claude Fable 5 and Claude Fable 5.1): user prompts and completions are retained within the AWS boundary for up to 30 days and may be reviewed by AWS to meet the human review requirement the model provider imposes as a condition of access.",
+    "training": "",
+    "zdr": "If your organization requires zero data retention for compliance reasons and you need access to these models, contact your AWS account manager to discuss eligibility.",
+    "region": "If cross-region inference is enabled for these models, retained inputs and outputs are stored in destination Regions (that is, the Region where your inference request is processed).",
+    "third_party": "Your content is not shared with the model provider."
+   },
+   "label_note": "zdr=available is a judgment call: ZDR for these models is per-account on request ('discuss eligibility'), the same footing as OpenAI's approval-gated ZDR.",
+   "split": "heldout",
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/data-retention.html",
+   "file": "fixtures/raw/datause/bedrock-data-retention.txt",
+   "fetched_at": "2026-10-21T20:51:01-0400",
+   "source_sha256": "31afc3379547cddea0499f5b31a73c2bd8c3b3068a4d400c7a9ee7e20507691c"
+  },
+  {
+   "id": "bedrock-provider-access",
+   "kind": "heldout",
+   "source": "bedrock-data-protection",
+   "vendor": "AWS",
+   "feature": "Amazon Bedrock model-provider access to prompts",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "not stated on this page",
+    "region": "unspecified",
+    "third_party_access": "no"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "",
+    "zdr": "",
+    "region": "",
+    "third_party": "Because the model providers don't have access to those accounts, they don't have access to Amazon Bedrock logs or to customer prompts and completions."
+   },
+   "label_note": "The scored fields are all unspecified on this page (it links to separate retention pages); only third_party_access is stated.",
+   "split": "heldout",
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html",
+   "file": "fixtures/raw/datause/bedrock-data-protection.txt",
+   "fetched_at": "2026-10-21T20:49:44-0400",
+   "source_sha256": "f6cb99010facf46fb737ca0913dfc972725b4ae36f33e3ecd74e7f0d3d8266a1"
+  },
+  {
+   "id": "azure-openai-inference",
+   "kind": "tuned",
+   "source": "azure-openai-data-privacy",
+   "vendor": "Microsoft",
+   "feature": "Azure OpenAI inference (standard deployment, models sold by Azure)",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "opt_in",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "flagged content kept for human review; no period stated",
+    "region": "customer-specified geography unless Global or DataZone deployment",
+    "third_party_access": "no"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "are NOT used to train any generative AI foundation models without your permission or instruction.",
+    "zdr": "If the customer has been approved for modified abuse monitoring (learn more at Abuse Monitoring)), the data storage and human review process described above is not performed.",
+    "region": "Prompts and responses are processed within the customer-specified geography (unless you are using a Global or DataZone deployment type), but may be processed between regions within the geography for operational purposes (including performance and capacity management).",
+    "third_party": "are NOT available to OpenAI or other providers of Models sold by Azure."
+   },
+   "label_note": "zdr=available maps Azure's 'modified abuse monitoring' (storage not performed) onto ZDR; Azure does not use the term ZDR.",
+   "split": "tuned",
+   "url": "https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/openai/data-privacy",
+   "file": "fixtures/raw/datause/azure-openai-data-privacy.txt",
+   "fetched_at": "2026-10-21T20:49:44-0400",
+   "source_sha256": "fb87ca2d7118dbb7840346601b4cfc3bc3c143cb7e2dcaa759dd68c9198a33e0"
+  },
+  {
+   "id": "groq-inference",
+   "kind": "tuned",
+   "source": "groq-your-data",
+   "vendor": "Groq",
+   "feature": "Groq chat completions (/openai/v1/chat/completions)",
+   "gold": {
+    "retention_days": 30,
+    "used_for_training": "unspecified",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "not retained by default; reliability/abuse logs up to 30 days",
+    "region": "United States (GCP)",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "These logs are retained for up to 30 days, unless legally required to retain longer.",
+    "training": "",
+    "zdr": "All customers may enable Zero Data Retention (ZDR) in Data Controls settings.",
+    "region": "All customer data is retained in Google Cloud Platform (GCP) buckets located in the United States.",
+    "third_party": ""
+   },
+   "label_note": "retention 30 follows the rule that abuse-monitoring/reliability logs count (the page's own summary table gives 'Up to 30 days' for Inference).",
+   "split": "tuned",
+   "url": "https://console.groq.com/docs/your-data",
+   "file": "fixtures/raw/datause/groq-your-data.txt",
+   "fetched_at": "2026-10-21T20:49:44-0400",
+   "source_sha256": "667da52a072d9510712a153111a45f5085c8b84b7be3f2117b714deeadad5012"
+  },
+  {
+   "id": "groq-batch",
+   "kind": "heldout",
+   "source": "groq-your-data",
+   "vendor": "Groq",
+   "feature": "Groq Batch API (/openai/v1/batches)",
+   "gold": {
+    "retention_days": 30,
+    "used_for_training": "unspecified",
+    "zdr": "excluded"
+   },
+   "secondary": {
+    "retention_condition": "input/output files 30 days unless deleted earlier",
+    "region": "United States (GCP)",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "Batch Processing (/openai/v1/batches): Input and output files retained for 30 days unless deleted earlier by the customer.",
+    "training": "",
+    "zdr": "As noted above, this also means that features that rely on data retention to function will be disabled.",
+    "region": "All customer data is retained in Google Cloud Platform (GCP) buckets located in the United States.",
+    "third_party": ""
+   },
+   "label_note": "zdr=excluded is a judgment call: the table says 'Yes (feature disabled)'; batch cannot run under ZDR, so ZDR does not cover batch use.",
+   "split": "heldout",
+   "url": "https://console.groq.com/docs/your-data",
+   "file": "fixtures/raw/datause/groq-your-data.txt",
+   "fetched_at": "2026-10-21T20:49:44-0400",
+   "source_sha256": "667da52a072d9510712a153111a45f5085c8b84b7be3f2117b714deeadad5012"
+  },
+  {
+   "id": "mistral-studio-payg",
+   "kind": "heldout",
+   "source": "mistral-help-training",
+   "vendor": "Mistral",
+   "feature": "Mistral Studio API, pay-as-you-go",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "opt_out",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "not stated",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "Customers retain full control over this processing and have the right to opt out at any time.",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "zdr unspecified: the page only lists 'Can I activate Zero Data Retention (ZDR)?' as a related-article link.",
+   "split": "heldout",
+   "url": "https://help.mistral.ai/en/articles/347617-do-you-use-my-user-data-to-train-your-artificial-intelligence-models",
+   "file": "fixtures/raw/datause/mistral-help-training.txt",
+   "fetched_at": "2026-10-21T20:49:45-0400",
+   "source_sha256": "d8427ad53179a6e598c92a5c8907f5b1ad509af82c6a474f0cc85e49f020492b"
+  },
+  {
+   "id": "mistral-chat-completions",
+   "kind": "tuned",
+   "source": "mistral-help-zdr",
+   "vendor": "Mistral",
+   "feature": "Mistral chat completions (/v1/chat/completions, pay-as-you-go)",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "opt_out",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "not stated for the default; not retained under ZDR",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "Training opt-out controls whether eligible data may be used to improve Mistral’s models.",
+    "zdr": "Zero Data Retention (ZDR) is available only with pay-as-you-go and only for stateless API calls.",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "used_for_training=opt_out is inferred from 'Training opt-out controls whether eligible data may be used'; weaker evidence than a direct statement.",
+   "split": "tuned",
+   "url": "https://help.mistral.ai/en/articles/347612-can-i-activate-zero-data-retention-zdr",
+   "file": "fixtures/raw/datause/mistral-help-zdr.txt",
+   "fetched_at": "2026-10-21T20:51:01-0400",
+   "source_sha256": "9b67339a39286275318bf330195150c1b97487e63dee60d59cfde380f4430a80"
+  },
+  {
+   "id": "mistral-batch",
+   "kind": "heldout",
+   "source": "mistral-help-zdr",
+   "vendor": "Mistral",
+   "feature": "Mistral batch processing files",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "opt_out",
+    "zdr": "excluded"
+   },
+   "secondary": {
+    "retention_condition": "not stated",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "Training opt-out controls whether eligible data may be used to improve Mistral’s models.",
+    "zdr": "ZDR does not apply to stateful APIs or products, including agents, batch processing files, conversations, libraries, /v1/files, Vibe Work, and Chat.",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "heldout",
+   "url": "https://help.mistral.ai/en/articles/347612-can-i-activate-zero-data-retention-zdr",
+   "file": "fixtures/raw/datause/mistral-help-zdr.txt",
+   "fetched_at": "2026-10-21T20:51:01-0400",
+   "source_sha256": "9b67339a39286275318bf330195150c1b97487e63dee60d59cfde380f4430a80"
+  },
+  {
+   "id": "neg-openai-rate-limits",
+   "kind": "negative",
+   "source": "neg-openai-rate-limits",
+   "vendor": "OpenAI",
+   "feature": "Responses API (/v1/responses)",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "Negative control: a real page from the same vendor (rate limits / model list / overview) that states no retention, training or ZDR terms. The right answer is null/unspecified; anything else is a guess from general knowledge.",
+   "split": "tuned",
+   "url": "https://developers.openai.com/api/docs/guides/rate-limits",
+   "file": "fixtures/raw/datause/neg-openai-rate-limits.txt",
+   "fetched_at": "2026-10-21T20:51:02-0400",
+   "source_sha256": "c095940996890cfc5e91c81ca8f9cba373e98af843aa82f16e8225cd593d0cb5"
+  },
+  {
+   "id": "neg-anthropic-rate-limits",
+   "kind": "negative",
+   "source": "neg-anthropic-rate-limits",
+   "vendor": "Anthropic",
+   "feature": "Messages API (/v1/messages)",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "Negative control: a real page from the same vendor (rate limits / model list / overview) that states no retention, training or ZDR terms. The right answer is null/unspecified; anything else is a guess from general knowledge.",
+   "split": "tuned",
+   "url": "https://platform.claude.com/docs/en/api/rate-limits",
+   "file": "fixtures/raw/datause/neg-anthropic-rate-limits.txt",
+   "fetched_at": "2026-10-21T20:51:02-0400",
+   "source_sha256": "3da9815448eca543cfe08fae88e59a1d1682a8d556940bb70c32cae2c4ff938d"
+  },
+  {
+   "id": "neg-gemini-models",
+   "kind": "negative",
+   "source": "neg-gemini-models",
+   "vendor": "Google",
+   "feature": "Gemini API, paid tier",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "Negative control: a real page from the same vendor (rate limits / model list / overview) that states no retention, training or ZDR terms. The right answer is null/unspecified; anything else is a guess from general knowledge.",
+   "split": "heldout",
+   "url": "https://ai.google.dev/gemini-api/docs/models",
+   "file": "fixtures/raw/datause/neg-gemini-models.txt",
+   "fetched_at": "2026-10-21T20:51:03-0400",
+   "source_sha256": "fe379502f050aa4a1b8ba48bec409a77f6fc236143af2e77fe56c41b78395fb8"
+  },
+  {
+   "id": "neg-groq-rate-limits",
+   "kind": "negative",
+   "source": "neg-groq-rate-limits",
+   "vendor": "Groq",
+   "feature": "Groq chat completions",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "Negative control: a real page from the same vendor (rate limits / model list / overview) that states no retention, training or ZDR terms. The right answer is null/unspecified; anything else is a guess from general knowledge.",
+   "split": "heldout",
+   "url": "https://console.groq.com/docs/rate-limits",
+   "file": "fixtures/raw/datause/neg-groq-rate-limits.txt",
+   "fetched_at": "2026-10-21T20:51:03-0400",
+   "source_sha256": "f472b3901f8d425176c48133f687e44d742341f850a26429fb7f55faa96570a3"
+  },
+  {
+   "id": "neg-bedrock-what-is",
+   "kind": "negative",
+   "source": "neg-bedrock-what-is",
+   "vendor": "AWS",
+   "feature": "Amazon Bedrock inference",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "Negative control: a real page from the same vendor (rate limits / model list / overview) that states no retention, training or ZDR terms. The right answer is null/unspecified; anything else is a guess from general knowledge.",
+   "split": "heldout",
+   "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html",
+   "file": "fixtures/raw/datause/neg-bedrock-what-is.txt",
+   "fetched_at": "2026-10-21T20:51:03-0400",
+   "source_sha256": "d8c385fef5d28ece626d8b54af79444903592d06e8e457770c34a5a7edec885b"
+  },
+  {
+   "id": "together-serverless",
+   "kind": "heldout",
+   "source": "together-privacy",
+   "vendor": "Together AI",
+   "feature": "Together serverless inference",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "opt_in",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "stored by default until the customer deletes it",
+    "region": "no region selection for serverless endpoints",
+    "third_party_access": "no"
+   },
+   "evidence": {
+    "retention": "By default, Together stores the prompts you send and the responses models return, and may use them for product improvements.",
+    "training": "Data sharing for training other models is opt-in and not enabled by default.",
+    "zdr": "Organization admins can turn storage off in privacy settings, which enables zero data retention (ZDR): request content is then not persisted or used for any secondary purpose.",
+    "region": "",
+    "third_party": "This data is not shared with third parties, and you can delete it at any time."
+   },
+   "label_note": "retention_days null: stored by default with no period ('you can delete it at any time'). 'product improvements' is not model training; training follows the explicit opt-in sentence.",
+   "split": "fresh",
+   "url": "https://docs.together.ai/docs/privacy-and-security",
+   "file": "fixtures/raw/datause/together-privacy.txt",
+   "fetched_at": "2026-10-21T21:09:14-0400",
+   "source_sha256": "8c328a3f9f9d1ae16f046f29e552c5a150202bf0aa0f79b9329f7edebe0934de"
+  },
+  {
+   "id": "fireworks-inference",
+   "kind": "heldout",
+   "source": "fireworks-data-handling",
+   "vendor": "Fireworks AI",
+   "feature": "Fireworks serverless inference (open models)",
+   "gold": {
+    "retention_days": 0,
+    "used_for_training": "unspecified",
+    "zdr": "available"
+   },
+   "secondary": {
+    "retention_condition": "not logged or stored by default",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "Fireworks does not log or store prompt or generation data for any open models, without explicit user opt-in.",
+    "training": "",
+    "zdr": "Fireworks has Zero Data Retention by default.",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "fresh",
+   "url": "https://docs.fireworks.ai/guides/security_compliance/data_handling",
+   "file": "fixtures/raw/datause/fireworks-data-handling.txt",
+   "fetched_at": "2026-10-21T21:09:14-0400",
+   "source_sha256": "a5d166598d523bed731cc14c74de97a12500fff77a70d0e8c2ae92f4280679c9"
+  },
+  {
+   "id": "vertex-grounding-maps",
+   "kind": "heldout",
+   "source": "vertex-zdr",
+   "vendor": "Google Cloud",
+   "feature": "Grounding with Google Maps (Gemini Enterprise Agent Platform)",
+   "gold": {
+    "retention_days": 30,
+    "used_for_training": "opt_in",
+    "zdr": "excluded"
+   },
+   "secondary": {
+    "retention_condition": "stored 30 days; cannot be disabled",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "Google stores prompts and contextual information that customers may provide, and generated output for thirty (30) days for the purposes of creating grounded results,",
+    "training": "won't use your data to train or fine-tune any AI/ML models without your prior permission or instruction.",
+    "zdr": "There is no way to disable the storage of this information if you use Grounding with Google Maps.",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "fresh",
+   "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention",
+   "file": "fixtures/raw/datause/vertex-zdr.txt",
+   "fetched_at": "2026-10-21T21:09:14-0400",
+   "source_sha256": "bae5bb95062a45ad3a958e891bf5d109234d9e2ba51ead463627a4387ecec229"
+  },
+  {
+   "id": "vertex-grounding-search",
+   "kind": "heldout",
+   "source": "vertex-zdr",
+   "vendor": "Google Cloud",
+   "feature": "Grounding with Google Search (Gemini Enterprise Agent Platform)",
+   "gold": {
+    "retention_days": 3,
+    "used_for_training": "opt_in",
+    "zdr": "excluded"
+   },
+   "secondary": {
+    "retention_condition": "query logs up to 3 days; cannot be disabled",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "queries derived from End User prompts and contextual information that Customer may provide along with the prompts that are not associated with any Customer or its End Users for up to three (3) days,",
+    "training": "won't use your data to train or fine-tune any AI/ML models without your prior permission or instruction.",
+    "zdr": "There is no way to disable the storage of this information if you use Grounding with Google Search.",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "fresh",
+   "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention",
+   "file": "fixtures/raw/datause/vertex-zdr.txt",
+   "fetched_at": "2026-10-21T21:09:14-0400",
+   "source_sha256": "bae5bb95062a45ad3a958e891bf5d109234d9e2ba51ead463627a4387ecec229"
+  },
+  {
+   "id": "vertex-deep-research",
+   "kind": "heldout",
+   "source": "vertex-zdr",
+   "vendor": "Google Cloud",
+   "feature": "Deep Research agent (Gemini Enterprise Agent Platform)",
+   "gold": {
+    "retention_days": 7,
+    "used_for_training": "opt_in",
+    "zdr": "excluded"
+   },
+   "secondary": {
+    "retention_condition": "session data 7 days; cannot be disabled",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "Deep Research agent session data — Google stores prompts and session data - including search results and generated images - via the Interactions API for a period of seven (7) days.",
+    "training": "won't use your data to train or fine-tune any AI/ML models without your prior permission or instruction.",
+    "zdr": "This feature cannot be disabled when using the Deep Research agent.",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "",
+   "split": "fresh",
+   "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention",
+   "file": "fixtures/raw/datause/vertex-zdr.txt",
+   "fetched_at": "2026-10-21T21:09:14-0400",
+   "source_sha256": "bae5bb95062a45ad3a958e891bf5d109234d9e2ba51ead463627a4387ecec229"
+  },
+  {
+   "id": "anthropic-code-execution",
+   "kind": "heldout",
+   "source": "anthropic-code-execution",
+   "vendor": "Anthropic",
+   "feature": "Code execution tool (/v1/messages with code_execution)",
+   "gold": {
+    "retention_days": 30,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "container data up to 30 days",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "Container data, including execution artifacts, uploaded files, and outputs, is retained for up to 30 days.",
+    "training": "",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "zdr unspecified on purpose: the page only links out ('For ZDR eligibility across all features, see API and data retention.').",
+   "split": "fresh",
+   "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool",
+   "file": "fixtures/raw/datause/anthropic-code-execution.txt",
+   "fetched_at": "2026-10-21T21:09:15-0400",
+   "source_sha256": "3a5b99ba3fc38d73fb75dce9e58217f92409331f2b8ae435c9acacf49a3013d7"
+  },
+  {
+   "id": "neg-together-quickstart",
+   "kind": "negative",
+   "source": "neg-together-quickstart",
+   "vendor": "Together AI",
+   "feature": "Together serverless inference",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "Fresh negative control: a quickstart page whose only data-handling words are navigation links ('Zero Data Retention', 'Privacy'). Must return null/unspecified.",
+   "split": "fresh",
+   "url": "https://docs.together.ai/docs/quickstart",
+   "file": "fixtures/raw/datause/neg-together-quickstart.txt",
+   "fetched_at": "2026-10-21T21:09:45-0400",
+   "source_sha256": "69d2a33e8b1dfad4283d9567ed14ca14073465627281a1b04cee7dac605c0b81"
+  },
+  {
+   "id": "neg-fireworks-quickstart",
+   "kind": "negative",
+   "source": "neg-fireworks-quickstart",
+   "vendor": "Fireworks AI",
+   "feature": "Fireworks serverless inference (open models)",
+   "gold": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "unspecified"
+   },
+   "secondary": {
+    "retention_condition": "",
+    "region": "unspecified",
+    "third_party_access": "unspecified"
+   },
+   "evidence": {
+    "retention": "",
+    "training": "",
+    "zdr": "",
+    "region": "",
+    "third_party": ""
+   },
+   "label_note": "Fresh negative control: a quickstart page whose only data-handling words are navigation links ('Zero Data Retention', 'Privacy'). Must return null/unspecified.",
+   "split": "fresh",
+   "url": "https://docs.fireworks.ai/getting-started/quickstart",
+   "file": "fixtures/raw/datause/neg-fireworks-quickstart.txt",
+   "fetched_at": "2026-10-21T21:09:45-0400",
+   "source_sha256": "42b204c0cd246e08ee2ca0367e4346218157d10351c45274230040c895936be4"
+  }
+ ]
+}

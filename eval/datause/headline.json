@@ -1,0 +1,6 @@
+{
+ "_about": "Recorded runs the README data-use headline is computed from. Recompute with no key: owin eval score --corpus datause --brief. The pre-registered v1 run failed the 80% bar (16/24 positive items); v2 is repair attempt 1, scored on the v1 items plus a fresh held-out split (6 positives, 2 negatives) labelled before v2 was written. Recompute v1: owin eval score --corpus datause --file eval/datause/runs/20261021T210812-all-nemotron-3-super-120b-a12b.json",
+ "run_files": ["eval/datause/runs/20261021T211425-all-nemotron-3-super-120b-a12b.json"],
+ "preregistered_run": "eval/datause/runs/20261021T210812-all-nemotron-3-super-120b-a12b.json",
+ "prompt_tuning_runs": ["eval/datause/runs/20261021T205956-tuned-nemotron-3-super-120b-a12b.json", "eval/datause/runs/20261021T210303-tuned-nemotron-3-super-120b-a12b.json"]
+}

@@ -15,6 +15,11 @@ def _print(obj) -> None:
 
 
 def cmd_eval(a) -> int:
+    if a.corpus == "datause":
+        return cmd_eval_datause(a)
+    if a.action == "audit":
+        print("audit is only defined for --corpus datause", file=sys.stderr)
+        return 2
     if a.action == "run":
         spent = tf.ledger_total()
         if spent >= a.budget:
@@ -26,6 +31,27 @@ def cmd_eval(a) -> int:
         res = evaluate.score([Path(f) for f in a.file.split(",")] if a.file else evaluate.headline_runs())
     if a.brief:
         res = {k: res[k] for k in ("run_files", "model", "quotes_rechecked_against_source", "headline", "per_successful_run")}
+    _print(res)
+    return 0
+
+
+def cmd_eval_datause(a) -> int:
+    from .datause import evaluate as dv
+    if a.action == "audit":
+        _print({"wrote": str(dv.write_audit().relative_to(dv.ROOT))})
+        return 0
+    if a.action == "run":
+        spent = tf.ledger_total()
+        if spent >= a.budget:
+            print(f"budget cap reached: ledger total ${spent:.4f} >= ${a.budget}", file=sys.stderr)
+            return 2
+        path = dv.run(runs=a.runs, model=a.model, only=a.only.split(",") if a.only else None, split=a.split or None)
+        res = dv.score(path)
+    else:
+        res = dv.score([Path(f) for f in a.file.split(",")] if a.file else dv.headline_runs())
+    if a.brief:
+        res = {k: res[k] for k in ("corpus", "run_files", "model", "prompt_versions", "quotes_rechecked_against_source", "acceptance",
+                                   "headline", "per_successful_run")}
     _print(res)
     return 0
 
@@ -86,7 +112,10 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="owin")
     sub = p.add_subparsers(dest="cmd", required=True)
     e = sub.add_parser("eval", help="measurement harness")
-    e.add_argument("action", choices=["run", "score"])
+    e.add_argument("action", choices=["run", "score", "audit"])
+    e.add_argument("--corpus", choices=["dpa", "datause"], default="dpa",
+                   help="dpa = P1 sub-processor objection windows; datause = AI data-use terms per feature")
+    e.add_argument("--split", choices=["", "tuned", "heldout", "negative"], default="", help="datause: run one split only")
     e.add_argument("--runs", type=int, default=3)
     e.add_argument("--model", default=tf.SUPER)
     e.add_argument("--only", default="")
