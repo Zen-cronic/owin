@@ -28,6 +28,8 @@ No key, no network, no login: the app and every number run from committed files.
 
 CLI equivalents: `owin pack build --format brief`, `--set /api/crm-sync=anthropic-messages`, `--set /api/crm-sync=thin-anthropic-rate-limits`. `pytest -q` runs the tests.
 
+**Container and hosting.** `docker build -t owin . && docker run -p 8080:8080 owin` serves the same app on port 8080 in demo mode (no keys; `GET /healthz` reports the mode). [DEPLOY.md](DEPLOY.md) has the exact steps for a public Nebius Serverless AI endpoint (`cpu-d3`, `2vcpu-8gb`), the post-deploy check `scripts/smoke.sh <url>`, and the daily refresh job (`owin job daily`) on Nebius Serverless AI jobs.
+
 ## The number, in full
 
 **Selective answering.** One cell is one (feature, field) pair: retention days, training use, ZDR. Nemotron reads the vendor page three times. A cell is answered automatically only when at least two readings succeeded and every successful reading agrees on it after the verbatim-quote gate; a reading that errored abstains rather than counting as a disagreement (a field without a verbatim sentence from the page becomes "not stated"). Anything else goes to a person as **Confirm**, with each reading's value and sentence. Code applies the rule to structured fields; it never reads model prose.

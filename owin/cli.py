@@ -116,6 +116,28 @@ def cmd_sweep(a) -> int:
     return 0
 
 
+def cmd_job(a) -> int:
+    """A2 daily refresh, one process (the Nebius Serverless Job entrypoint): `owin sweep --live` then
+    `owin pack refresh`. Writes go to $OWIN_STATE_DIR (a mounted bucket); the endpoint reads them from there."""
+    import time
+    from . import config, sweep
+    from .datause import observations, registry
+    sd = config.state_dir()
+    if sd is None:
+        print("OWIN_STATE_DIR is not set; refusing to write refreshed state into the image", file=sys.stderr)
+        return 2
+    stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    rec = config.write_path(f"var/sweeps/{stamp}.json")
+    sw = sweep.run(live=a.fetch, record=rec)
+    pages = sorted(registry.load_catalog()["pages"])
+    ref = observations.refresh(pages, fetch=a.fetch)
+    _print({"job": "daily", "at": stamp, "mode": config.mode(), "fetch": a.fetch, "state_dir": str(sd),
+            "sweep": {"record": str(rec), "counts": sw["counts"], "vendors": sw["vendors"]},
+            "pack_refresh": {"tavily_calls": ref["tavily_calls"], "observations": ref["observations"],
+                             "fetched": {p: v.get("source_kind") for p, v in ref["fetched"].items()}}})
+    return 0
+
+
 def _pack_manifest(a) -> dict:
     from .datause import pack
     m = json.loads(Path(a.stack).read_text()) if a.stack else pack.load_demo()
@@ -170,8 +192,11 @@ def cmd_pack(a) -> int:
 
 def cmd_serve(a) -> int:
     from . import server
-    print(f"Owin debug server on http://{a.host}:{a.port}/", file=sys.stderr)
-    server.serve(a.host, a.port)
+    import os
+    from . import config
+    host, port = a.host or os.environ.get("OWIN_HOST", "127.0.0.1"), a.port or int(os.environ.get("PORT", 8787))
+    print(f"Owin on http://{host}:{port}/ (mode: {config.mode()})", file=sys.stderr, flush=True)
+    server.serve(host, port)
     return 0
 
 
@@ -219,6 +244,11 @@ def main(argv: list[str] | None = None) -> int:
     sw.add_argument("--seed-archive", default="", help="accept a fixtures/snapshots/*.json as the baseline first")
     sw.add_argument("--brief", action="store_true")
     sw.set_defaults(fn=cmd_sweep)
+    jb = sub.add_parser("job", help="scheduled jobs (A2): `owin job daily` = sweep --live + pack refresh into $OWIN_STATE_DIR")
+    jb.add_argument("name", choices=["daily"])
+    jb.add_argument("--fetch", action=argparse.BooleanOptionalAction, default=True,
+                    help="--no-fetch re-records from captures on disk with no Tavily calls (a free wiring check)")
+    jb.set_defaults(fn=cmd_job)
     pk = sub.add_parser("pack", help="security-review answer pack (AI and data section), per endpoint")
     pk.add_argument("action", choices=["build", "refresh", "registry", "extract", "evidence"],
                     help="build = compute the pack (no network); refresh = re-fetch pages via Tavily and record observations; "
@@ -234,8 +264,8 @@ def main(argv: list[str] | None = None) -> int:
     pk.add_argument("--budget", type=float, default=3.0)
     pk.set_defaults(fn=cmd_pack)
     sv = sub.add_parser("serve", help="JSON API + debug page")
-    sv.add_argument("--host", default="127.0.0.1")
-    sv.add_argument("--port", type=int, default=8787)
+    sv.add_argument("--host", default=None, help="default: $OWIN_HOST or 127.0.0.1")
+    sv.add_argument("--port", type=int, default=None, help="default: $PORT or 8787")
     sv.set_defaults(fn=cmd_serve)
     a = p.parse_args(argv)
     return a.fn(a)

@@ -36,7 +36,8 @@ def static(path: str) -> tuple[int, str, str] | None:
 
 
 def _load(rel: str) -> dict:
-    return json.loads((ROOT / rel).read_text(encoding="utf-8"))
+    from . import config
+    return json.loads(config.read_path(rel).read_text(encoding="utf-8"))
 
 
 def catalog() -> dict:

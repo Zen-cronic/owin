@@ -107,11 +107,13 @@ async function load({ recompute = false } = {}) {
   app.setAttribute('aria-busy', 'true');
   if (recompute) { app.classList.add('recomputing'); say('Recomputing from your change…'); }
   try {
-    const [pack, catalog, watch] = await Promise.all([
+    const [pack, catalog, watch, health] = await Promise.all([
       getJSON('/api/pack' + setQuery()),
       state.catalog ? state.catalog : getJSON('/api/catalog'),
       state.watch ? state.watch : getJSON('/api/watch').catch(() => null),
+      state.health ? state.health : getJSON('/healthz').catch(() => null),
     ]);
+    state.health = health;
     if (seq !== state.seq) return;
     state.pack = pack; state.catalog = catalog; state.watch = watch;
     history.replaceState(null, '', location.pathname + setQuery() + location.hash);
@@ -211,6 +213,7 @@ function render() {
     'Every vendor sentence, link and fetch time is real and was fetched by Owin.'];
   if (staleEv) foot.push(`The ${staleEv.provider_display} list change comes from Wayback captures of ${fmtIsoDay(staleEv.before.observed_at)} and ${fmtIsoDay(staleEv.after.observed_at)}.`);
   foot.push('ZDR settings are as the company states them; Owin cannot see vendor consoles.');
+  if (state.health && state.health.mode === 'demo') foot.push('Demo mode: every answer is computed from recorded Nemotron runs and committed page captures; no request calls a paid API.');
   $('foot').textContent = foot.join(' ');
 
   requestAnimationFrame(link);

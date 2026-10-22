@@ -14,6 +14,7 @@ import json
 import time
 from pathlib import Path
 
+from .. import config
 from ..decide import parse_page_date
 from ..entities import Snapshot, parse_any
 from ..textnorm import is_present, match_form, sha256
@@ -21,7 +22,8 @@ from . import fetch as fetchmod
 from . import registry
 
 ROOT = Path(__file__).resolve().parents[2]
-OBS = ROOT / "data" / "datause" / "observations.json"
+OBS_REL = "data/datause/observations.json"
+OBS = ROOT / OBS_REL
 SNAP = ROOT / "fixtures" / "snapshots"
 MANIFEST = ROOT / "fixtures" / "manifest.json"
 
@@ -49,7 +51,8 @@ def page_quotes(page: str) -> dict[str, str]:
 
 
 def load() -> dict:
-    return json.loads(OBS.read_text()) if OBS.exists() else {"pages": {}}
+    p = config.read_path(OBS_REL)
+    return json.loads(p.read_text()) if p.exists() else {"pages": {}}
 
 
 def _add(obs: dict, page: str, o: dict) -> None:
@@ -77,7 +80,7 @@ def _datause_obs(page: str, rec: dict, text: str | None, kind: str) -> dict:
 
 
 def _list_obs(page: str, snap_file: str, *, held_reason: str | None = None) -> dict:
-    s = Snapshot.from_dict(json.loads((SNAP / snap_file).read_text()))
+    s = Snapshot.from_dict(json.loads(config.read_path(f"fixtures/snapshots/{snap_file}").read_text()))
     o = {"observed_at": s.retrieved, "source_kind": s.source_kind, "url": s.source_url, "sha256": s.content_sha256,
          "snapshot": f"fixtures/snapshots/{snap_file}", "last_updated": s.last_updated, "entities": len(s.entities)}
     if held_reason:
@@ -106,7 +109,7 @@ def record(pages: list[str] | None = None) -> Path:
                 _add(obs, page, _datause_obs(page, tv, p.read_text() if p.exists() else None, tv["source_kind"]))
             continue
         for f in ARCHIVED_LISTS.get(page, []):
-            if (SNAP / f).exists():
+            if config.read_path(f"fixtures/snapshots/{f}").exists():
                 _add(obs, page, _list_obs(page, f))
         tv = man.get("datause_tavily", {}).get(page)
         if tv and tv.get("sha256"):
@@ -116,10 +119,10 @@ def record(pages: list[str] | None = None) -> Path:
                 stamp = _utc(tv["fetched_at"]).replace("-", "").replace(":", "")[:8]
                 name = f"{page}-tavily-{stamp}.json"
                 s = Snapshot(meta["provider"], meta["url"], _utc(tv["fetched_at"]), "tavily", lu, ents, tv["sha256"])
-                (SNAP / name).write_text(json.dumps(s.to_dict(), indent=1) + "\n")
+                config.write_atomic(f"fixtures/snapshots/{name}", json.dumps(s.to_dict(), indent=1) + "\n")
             name = f"{page}-tavily-{_utc(tv['fetched_at']).replace('-', '').replace(':', '')[:8]}.json"
-            if (SNAP / name).exists():
-                cur = json.loads((SNAP / name).read_text())
+            if config.read_path(f"fixtures/snapshots/{name}").exists():
+                cur = json.loads(config.read_path(f"fixtures/snapshots/{name}").read_text())
                 newest = max((parse_page_date(x.get("last_updated")) for x in obs["pages"][page]["observations"]
                               if x.get("last_updated") and not x.get("held")), default=None)
                 cd = parse_page_date(cur.get("last_updated"))
@@ -130,8 +133,7 @@ def record(pages: list[str] | None = None) -> Path:
                      "fixtures/raw/. quotes_present maps a quote id (sha256 of its match form, 16 hex) to 'verbatim', "
                      "'table_insensitive' or null (gone).")
     obs["recorded_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-    OBS.write_text(json.dumps(obs, indent=1) + "\n")
-    return OBS
+    return config.write_atomic(OBS_REL, json.dumps(obs, indent=1) + "\n")
 
 
 def refresh(pages: list[str], *, fetch: bool = True) -> dict:
@@ -143,4 +145,4 @@ def refresh(pages: list[str], *, fetch: bool = True) -> dict:
     record()
     return {"fetched": {p: {k: r.get(k) for k in ("source_kind", "fetched_at", "chars", "latency_s", "tavily_error", "error")}
                         for p, r in res.items() if p in pages},
-            "observations": str(OBS.relative_to(ROOT)), "tavily_calls": len(pages) if fetch else 0}
+            "observations": OBS_REL, "tavily_calls": len(pages) if fetch else 0}

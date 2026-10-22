@@ -31,6 +31,7 @@ import json
 from datetime import date, datetime, timezone
 from pathlib import Path
 
+from .. import config
 from ..decide import local_label, parse_page_date
 from ..entities import Snapshot, diff
 from ..textnorm import sha256
@@ -152,8 +153,8 @@ def _list_change(page: str, obs: dict, stated_at: date) -> dict | None:
     b, l = _basis(po, stated_at), _latest(po)
     if not b or not l or b is l or not b.get("snapshot") or not l.get("snapshot"):
         return None
-    sb = Snapshot.from_dict(json.loads((ROOT / b["snapshot"]).read_text()))
-    sl = Snapshot.from_dict(json.loads((ROOT / l["snapshot"]).read_text()))
+    sb = Snapshot.from_dict(json.loads(config.read_path(b["snapshot"]).read_text()))
+    sl = Snapshot.from_dict(json.loads(config.read_path(l["snapshot"]).read_text()))
     ch = diff(sb, sl)
     if not ch:
         return None

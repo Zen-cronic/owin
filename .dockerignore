@@ -1,0 +1,20 @@
+# Allowlist: only what the app and the refresh job need. Secrets (.env), raw page captures (fixtures/raw/),
+# local state (var/), the spend ledger, tests, spikes and design files never enter the image.
+*
+!pyproject.toml
+!poetry.lock
+!README.md
+!FACTS.md
+!LICENSE
+!owin/
+!data/
+!eval/
+!fixtures/demo/
+!fixtures/snapshots/
+!fixtures/manifest.json
+**/__pycache__
+**/*.pyc
+**/.env
+**/.env.*
+fixtures/raw
+var

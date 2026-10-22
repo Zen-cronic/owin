@@ -11,6 +11,7 @@ GET /pack/print                                               ->  print-ready HT
 GET /                                                         ->  the answer screen (owin/web/, owin/webui.py)
 GET /api/catalog, /api/watch                                  ->  features for the swap control; per-page watch status
 GET /debug                                                    ->  unstyled replay debug page
+GET /healthz                                                  ->  liveness + mode (demo | live), no secrets
 Stateless per request, on a ThreadingHTTPServer, so concurrent judges do not block each other.
 """
 from __future__ import annotations
@@ -20,7 +21,9 @@ from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
-from . import evaluate, replay, webui
+import os
+
+from . import config, evaluate, replay, webui
 
 PAGE = """<!doctype html><meta charset="utf-8"><title>Owin debug</title>
 <h1>Owin debug page (unstyled)</h1>
@@ -41,6 +44,8 @@ go();
 
 def handle(path: str, qs: dict) -> tuple[int, str, str]:
     q = {k: v[0] for k, v in qs.items()}
+    if path == "/healthz":
+        return 200, "application/json", json.dumps(healthz())
     if path == "/debug":
         return 200, "text/html; charset=utf-8", PAGE
     if (st := webui.static(path)) is not None:
@@ -68,6 +73,15 @@ def handle(path: str, qs: dict) -> tuple[int, str, str]:
         res = evaluate.score(evaluate.headline_runs())
         return 200, "application/json", json.dumps({k: res[k] for k in ("headline", "per_successful_run", "quotes_rechecked_against_source")})
     return 404, "application/json", json.dumps({"error": "not found"})
+
+
+def healthz() -> dict:
+    """Liveness for the platform and the smoke test. Reports which keys exist, never their values."""
+    from .datause import registry
+    ok = bool(registry.load())
+    return {"ok": ok, "mode": config.mode(), "keys": config.keys_present(),
+            "state_dir": config.state_dir() is not None,
+            "serving": "recorded runs and committed captures; no request calls a paid API"}
 
 
 def selective_summary() -> dict:
@@ -142,12 +156,28 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(code)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(data)))
+        self.send_header("X-Owin-Mode", config.mode())
         self.end_headers()
         self.wfile.write(data)
+
+    def do_HEAD(self):
+        u = urlparse(self.path)
+        code, ctype, body = handle(u.path, parse_qs(u.query))
+        self.send_response(code)
+        self.send_header("Content-Type", ctype)
+        self.send_header("Content-Length", str(len(body.encode())))
+        self.end_headers()
 
     def log_message(self, fmt, *args):  # access log without query strings
         pass
 
 
-def serve(host: str = "127.0.0.1", port: int = 8787) -> None:
-    ThreadingHTTPServer((host, port), Handler).serve_forever()
+class Server(ThreadingHTTPServer):
+    daemon_threads = True  # one thread per request; a slow client never blocks another judge
+    request_queue_size = 64
+
+
+def serve(host: str | None = None, port: int | None = None) -> None:
+    host = host or os.environ.get("OWIN_HOST", "127.0.0.1")
+    port = int(port or os.environ.get("PORT", 8787))
+    Server((host, port), Handler).serve_forever()

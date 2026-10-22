@@ -21,7 +21,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
 from pathlib import Path
 
-from .. import tokenfactory as tf
+from .. import config, tokenfactory as tf
 from ..textnorm import sha256
 from . import evaluate as dv
 from .extract import PROMPT_VERSION, extract
@@ -188,7 +188,7 @@ def export(live_runs: list[Path] | None = None) -> Path:
 
 
 def load() -> dict:
-    return json.loads(REGISTRY.read_text())["features"]
+    return json.loads(config.read_path("data/datause/registry.json").read_text())["features"]
 
 
 def source_digest(text: str) -> str:
