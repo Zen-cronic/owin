@@ -34,7 +34,7 @@ from pathlib import Path
 from ..decide import local_label, parse_page_date
 from ..entities import Snapshot, diff
 from ..textnorm import sha256
-from . import observations as obsmod, registry
+from . import evidence as evmod, observations as obsmod, registry
 
 ROOT = Path(__file__).resolve().parents[2]
 DEMO = ROOT / "fixtures" / "demo" / "stack.json"
@@ -162,11 +162,14 @@ def _list_change(page: str, obs: dict, stated_at: date) -> dict | None:
     changed = [c.name for c in ch if c.kind == "changed"]
     cf = next((c for c in ch if c.kind == "changed" and c.key == "cloudflare"), None) or next(
         (c for c in ch if c.kind in ("changed", "added")), None)
+    # The entries a reader should look at: the changed entry named in the example, then what was added.
+    cited = [c for c in ch if c is cf] + [c for c in ch if c.kind == "added" and c is not cf][:2]
     return {"kind": "list_changed", "page": page, "before": {k: b.get(k) for k in ("observed_at", "last_updated", "url", "source_kind", "sha256")},
             "after": {k: l.get(k) for k in ("observed_at", "last_updated", "url", "source_kind", "sha256")},
             "added": added, "removed": removed, "changed": changed,
             "example": {"entity": cf.name, "kind": cf.kind, "fields": cf.changed_fields,
                         "after_cells": cf.after} if cf else None,
+            "cited": [evmod.list_entry(c.name, c.kind, c.before, c.after, c.changed_fields) for c in cited],
             "held_observations": [{k: o.get(k) for k in ("observed_at", "source_kind", "last_updated", "held")} for o in po if o.get("held")]}
 
 
@@ -209,7 +212,11 @@ def _confirm_cell(entry: dict, f: str) -> dict:
     return {"runs_agreeing": a["runs_agreeing"], "basis": a.get("basis"),
             "readings_ok": a.get("readings_ok"), "readings_failed": a.get("readings_failed", 0),
             "options": [{"value": o["value"], "label": option_label(f, o), "runs": o["runs"], "quote": o.get("quote") or "",
-                         "quote_display": quote_display(o.get("quote") or "")} for o in a["options"]]}
+                         "quote_display": quote_display(o.get("quote") or ""),
+                         "evidence": evmod.for_quote(o.get("quote") or "", f),
+                         # A reading that cited text but whose quote failed the verbatim gate counts as "not stated".
+                         "quote_failed_gate": bool(o.get("quote")) and o["value"] in (None, "unspecified")}
+                        for o in a["options"]]}
 
 
 def _rule_training(v, claim, ep, settings):
@@ -375,6 +382,7 @@ def build(manifest: dict | None = None, *, reg: dict | None = None, obs: dict | 
                     "provider": ep["provider"],
                     "vendor_value": v, "value_label": label, "verdict": verdict, "reason": reason,
                     "quote": ev.get("quote") or "", "quote_display": quote_display(ev.get("quote") or ""),
+                    "evidence": evmod.for_quote(ev.get("quote") or "", field),
                     "quote_presence": ev.get("presence"), "reanchored": ev.get("reanchored"),
                     "source_label": cat["pages"][page]["label"], "source_url": src["source_url"],
                     "fetched_at": latest["observed_at"] if latest else src.get("captured_at"),
@@ -392,6 +400,8 @@ def build(manifest: dict | None = None, *, reg: dict | None = None, obs: dict | 
                 cell["list_source"] = {"label": cat["pages"][lc["page"]]["label"], "url": cat["pages"][lc["page"]]["url"],
                                        "last_updated": lc["after"]["last_updated"], "was": lc["before"]["last_updated"],
                                        "captured": lc["after"]["url"]}
+                # Q05's change is cited as the list entries that changed, never as the feature page's sentence.
+                cell["list_evidence"] = lc["cited"]
             cells.append(cell)
         verdicts = {c["verdict"] for c in cells}
         if "contradicts" in verdicts:

@@ -190,6 +190,7 @@ function render() {
   document.title = `Owin · ${p.company}`;
 
   renderCatch(p, byId, staleEv);
+  renderSummary(p);
 
   // Stack
   $('panes').hidden = false;
@@ -213,6 +214,18 @@ function render() {
   $('foot').textContent = foot.join(' ');
 
   requestAnimationFrame(link);
+}
+
+// Summary: the counts for every answer, in the hero's right column (stacked under the headline on mobile).
+function renderSummary(p) {
+  const c = p.counts;
+  const rows = [['not_true', 'Not true'], ['stale', 'Stale'], ['confirm', 'To confirm'], ['held_unspecified', 'Not stated'], ['still_true', 'Still true']]
+    .filter(([k]) => c[k] || k === 'still_true' || k === 'not_true');
+  $('summary').replaceChildren(
+    el('h2', {}, `${p.answers.length} answers · ${p.stack.endpoints.length} endpoints · ${p.stack.providers.length} providers`),
+    el('dl', {}, rows.map(([k, label]) => el('div', { class: 'sm ' + (BADGE[k] || {}).cls + (c[k] ? '' : ' zero') },
+      el('dt', {}, icon((BADGE[k] || {}).icon), label), el('dd', {}, String(c[k] || 0))))),
+    el('p', {}, `${p.watch.pages_watched} vendor pages watched, checked ${fmtLocal(p.watch.last_checked_local)}`));
 }
 
 function renderCatch(p, byId, staleEv) {
@@ -245,49 +258,68 @@ function renderCatch(p, byId, staleEv) {
   }
 }
 
-// Legend: what the answer digits mean (01-05 = the five questions) and how each state is drawn.
+// Chips: one encoding for "this endpoint affects this answer", the same word and icon as the answer badges.
+const CHIP = {
+  contradicts: { cls: 'bad', icon: 'warn', word: 'Not true' },
+  stale: { cls: 'stale', icon: 'stale', word: 'Stale' },
+  confirm: { cls: 'confirm', icon: 'ask', word: 'Confirm' },
+  held: { cls: 'held', icon: 'held', word: 'Not stated' },
+};
+
+// Answers that no endpoint's vendor page states (e.g. region) are said once under the stack, not on every row.
+function heldEverywhere(p) {
+  return p.answers.filter((a) => a.cells.length && a.cells.every((c) => c.verdict === 'held' && !c.stale)).map((a) => a.number).sort();
+}
+
 function legend(p) {
   const nums = el('p', { class: 'legend' }, el('span', { class: 'lh' }, 'Answers'),
     el('span', { class: 'li' }, [...p.answers].sort((x, y) => x.number.localeCompare(y.number)).map((a) => el('span', {}, el('i', {}, a.number), QSHORT[a.number] || a.question))));
-  const used = new Set(p.answers.flatMap((a) => a.cells.map((c) => (c.stale ? 'stale' : c.verdict))));
-  const keys = [['contradicts', 'on', 'not true'], ['stale', 'ol', 'stale'], ['confirm', 'c', 'confirm'], ['held', 'h', 'page does not say'], ['holds', 'ok', 'holds']]
-    .filter(([v]) => used.has(v) || v === 'holds');
-  const marks = el('p', { class: 'legend' }, el('span', { class: 'lh' }, 'Marks'),
-    el('span', { class: 'li' }, keys.map(([, cls, word]) => el('span', {}, el('i', { class: cls }, '01'), word))));
-  return el('div', { class: 'legends' }, nums, marks);
+  const kids = [nums];
+  const he = heldEverywhere(p);
+  if (he.length) kids.push(el('p', { class: 'legend note' }, el('span', { class: 'lh' }, 'Not stated'),
+    el('span', {}, `No vendor page states answer${he.length > 1 ? 's' : ''} ${he.join(', ')} for any endpoint, so Owin leaves ${he.length > 1 ? 'them' : 'it'} for you to confirm.`)));
+  return el('div', { class: 'legends' }, kids);
 }
 
 function endpointRow(p, s, staleEv) {
-  const { ep, cells, worst } = s;
+  const { ep, cells } = s;
   const causing = p.catch && p.catch.endpoint === ep.path;
-  const isStale = worst === 1 && !causing;
   const changed = Object.prototype.hasOwnProperty.call(state.sets, ep.path);
+  const he = new Set(heldEverywhere(p));
 
   // Finding: the endpoint's most severe cell, in the API's own words.
   let finding = null;
   const bad = Object.values(cells).find((x) => x.v === 'contradicts');
   const stale = Object.values(cells).find((x) => x.v === 'stale');
-  const held = Object.values(cells).filter((x) => x.v === 'held');
-  const conf = Object.values(cells).filter((x) => x.v === 'confirm');
-  if (bad) finding = el('p', { class: 'finding' }, `${bad.c.value_label}. Breaks answer ${bad.a.number}.`);
+  const conf = Object.values(cells).filter((x) => x.v === 'confirm' || (x.c.stale && x.c.verdict === 'confirm'));
+  if (bad) finding = el('p', { class: 'finding' }, `${bad.c.value_label}.`);
   else if (stale && staleEv) finding = el('p', { class: 'finding' }, `${staleEv.provider_display} changed its sub-processor list on `, el('span', { class: 'nw' }, fmtLong(staleEv.after.last_updated, false)), '.');
-  else if (conf.length) finding = el('p', { class: 'finding' }, `Readings of the vendor page disagree for answer${conf.length > 1 ? 's' : ''} ${conf.map((x) => x.a.number).join(', ')}. Confirm.`);
-  else if (held.length) finding = el('p', { class: 'finding dim' }, `Page does not say for answer${held.length > 1 ? 's' : ''} ${held.map((x) => x.a.number).join(', ')}.`);
+  else if (conf.length) finding = el('p', { class: 'finding' }, 'Readings of the vendor page disagree.');
 
-  const digits = Object.keys(cells).sort().map((n) => {
-    const v = cells[n].v;
-    const c = cells[n].c;
-    const cls = v === 'contradicts' ? 'on' : v === 'stale' ? 'ol' : v === 'confirm' ? 'c' : v === 'held' ? 'h' : 'ok';
-    const word = v === 'contradicts' ? 'not true' : v === 'stale' ? 'stale' : v === 'confirm' ? 'confirm' : v === 'held' ? 'page does not say' : 'holds';
-    const also = c.stale && c.verdict === 'confirm' ? ', confirm' : '';
-    return el('span', { class: cls, title: `Answer ${n} (${QSHORT[n] || ''}): ${word}${also}` }, n, el('span', { class: 'sr' }, ` ${word}${also}`));
-  });
+  // Only the answers this endpoint affects, as chips. Stale and confirm on one cell give two chips.
+  const chips = [];
+  for (const n of Object.keys(cells).sort()) {
+    const { c } = cells[n];
+    const states = [];
+    if (c.verdict === 'contradicts') states.push('contradicts');
+    if (c.stale) states.push('stale');
+    if (c.verdict === 'confirm') states.push('confirm');
+    if (c.verdict === 'held' && !he.has(n)) states.push('held');
+    for (const v of states) {
+      const k = CHIP[v];
+      chips.push(el('li', { class: 'chip ' + k.cls, title: `Answer ${n} (${QSHORT[n] || ''}): ${k.word.toLowerCase()}` }, icon(k.icon), el('span', { class: 'mono' }, n), ' ', k.word));
+    }
+  }
+  const ORDER = ['bad', 'stale', 'confirm', 'held'];
+  chips.sort((x, y) => ORDER.indexOf(x.classList[1]) - ORDER.indexOf(y.classList[1]));
+  const feeds = chips.length ? el('ul', { class: 'chips', 'aria-label': 'Answers this endpoint affects' }, chips)
+    : el('p', { class: 'finding dim' }, 'Supports every answer its page states.');
 
-  const row = el('div', { class: 'ep-row' + (causing ? ' sel' : '') + (isStale ? ' stale' : '') + (changed ? ' changed' : ''), id: 'ep-' + slug(ep.path), 'data-path': ep.path },
+  const row = el('div', { class: 'ep-row' + (causing ? ' sel' : '') + (changed ? ' changed' : ''), id: 'ep-' + slug(ep.path), 'data-path': ep.path },
     el('div', { class: 'path' }, ep.path),
     featureSelect(ep),
     finding,
-    el('div', { class: 'feeds' }, 'Answers', el('b', {}, digits)));
+    feeds);
   row.addEventListener('mouseenter', () => relate(ep.path, null));
   row.addEventListener('mouseleave', () => relate(null, null));
   return row;
@@ -343,10 +375,32 @@ function sourceLine(cells) {
   return el('p', { class: 'src' }, kids);
 }
 
+// Evidence: a sentence is quoted; a table row is shown as key/value with the answering cell marked; a list
+// entry is quoted as an item. Table text is never flattened into a pull-quote.
+function evidenceView(ev, fallback) {
+  if (!ev) return fallback ? el('blockquote', {}, `“${fallback.replace(/^[\s|·]+|[\s|·]+$/g, '')}”`) : null;
+  if (ev.kind === 'sentence') return el('blockquote', {}, `“${ev.text}”`);
+  if (ev.kind === 'list_entry') return el('figure', { class: 'ev' }, el('figcaption', {}, 'List item on the page'), el('blockquote', { class: 'li' }, `“${ev.text}”`));
+  const keyed = ev.rows.some((r) => r.key);
+  return el('figure', { class: 'ev' },
+    el('figcaption', {}, ev.match_key ? `Table row on the page · answer in “${ev.match_key}”` : 'Table row on the page'),
+    el('table', { class: 'kv' + (keyed ? '' : ' nokey') }, el('tbody', {}, ev.rows.map((r) =>
+      el('tr', { class: r.match ? 'hit' : null }, keyed ? el('th', { scope: 'row' }, r.key || '') : null, el('td', {}, r.value))))));
+}
+
+// A sub-processor list entry that changed (or was added), with the changed cells marked and their old value.
+function listEntryView(le) {
+  return el('figure', { class: 'ev' },
+    el('figcaption', {}, el('b', {}, le.entity), ` · ${le.change === 'added' ? 'added to the list' : le.change === 'removed' ? 'removed from the list' : 'entry changed'}`),
+    el('table', { class: 'kv' + (le.change === 'added' ? ' added' : '') }, el('tbody', {}, le.rows.map((r) =>
+      el('tr', { class: r.match ? 'hit' : null }, el('th', { scope: 'row' }, r.key),
+        el('td', {}, r.value, r.was != null ? el('span', { class: 'was' }, `Was: ${r.was || '(empty)'}`) : null))))));
+}
+
 function quoteBlock(cells) {
   const c = cells.find((x) => x.quote_display || x.quote);
   if (!c) return [];
-  return [el('blockquote', {}, `“${(c.quote_display || c.quote).replace(/^[\s|·]+|[\s|·]+$/g, '')}”`), sourceLine([c])];
+  return [evidenceView(c.evidence, c.quote_display || c.quote), sourceLine([c])];
 }
 
 function perEndpoint(a) {
@@ -359,19 +413,34 @@ function perEndpoint(a) {
   }));
 }
 
-// Confirm: the readings of the vendor page disagree, so Owin shows each value with its sentence and does not pick.
+// The other reading that shows the same evidence, so a gated-out reading does not repeat the table.
+function sameEvidence(o, opts) {
+  const k = JSON.stringify(o.evidence);
+  return opts.find((x) => x !== o && !x.quote_failed_gate && x.evidence && JSON.stringify(x.evidence) === k);
+}
+
+// Confirm: the successful readings of the vendor page disagree, so Owin shows each value with its evidence
+// and does not pick. One row per reading: the value left, how many readings gave it right-aligned.
 function confirmBlock(a) {
   const cc = a.cells.filter((c) => c.verdict === 'confirm' && c.confirm);
   if (!cc.length) return [];
   return cc.map((c) => {
-    const [n, of] = c.confirm.runs_agreeing.split('/');
+    const [n, ok] = c.confirm.runs_agreeing.split('/');
+    const failed = c.confirm.readings_failed || 0;
+    const total = +ok + failed;
+    const head = `Owin read ${c.source_label} ${total} times` + (failed ? `; ${failed} reading${failed > 1 ? 's' : ''} failed and ${failed > 1 ? 'were' : 'was'} left out` : '') +
+      `. ${n} of ${ok} agree, so it does not pick one.`;
     return el('div', { class: 'confirm-box' },
-      el('p', { class: 'ch' }, el('span', { class: 'mono nw' }, c.endpoint), ` · Owin read ${c.source_label} ${of} times and got ${c.confirm.options.length} answers (${n} of ${of} agree). It does not pick one.`),
+      el('p', { class: 'ch' }, el('span', { class: 'mono nw' }, c.endpoint), ' · ', head),
       el('ul', {}, c.confirm.options.map((o) => el('li', {},
-        el('b', {}, o.label), el('span', { class: 'runs' }, o.runs === 'recorded' ? 'recorded value' : `${o.runs} of ${of} readings`),
-        o.quote && o.value != null && o.value !== 'unspecified'
-          ? el('blockquote', {}, `“${(o.quote_display || o.quote).replace(/^[\s|·]+|[\s|·]+$/g, '')}”`)
-          : el('p', { class: 'dim' }, o.no_terms ? 'This reading failed and returned nothing.' : 'This reading found no sentence on the page that answers it.')))),
+        el('div', { class: 'rh' }, el('b', {}, o.label), el('span', { class: 'runs' }, o.runs === 'recorded' ? 'recorded value' : `${o.runs} of ${ok}`)),
+        o.quote_failed_gate
+          ? (sameEvidence(o, c.confirm.options)
+            ? el('p', { class: 'dim' }, `This reading cited the same ${o.evidence && o.evidence.kind === 'table_row' ? 'table row' : 'text'} as “${sameEvidence(o, c.confirm.options).label}”, but its quote did not match the page word for word, so it counts as not stated.`)
+            : [el('p', { class: 'dim' }, 'This reading cited the text below, but its quote did not match the page word for word, so it counts as not stated.'), evidenceView(o.evidence, o.quote_display || o.quote)])
+          : o.quote && o.value != null && o.value !== 'unspecified'
+            ? evidenceView(o.evidence, o.quote_display || o.quote)
+            : el('p', { class: 'dim' }, o.no_terms ? 'This reading returned no value for this question.' : 'This reading found nothing on the page that answers it.')))),
       el('p', { class: 'src' }, el('a', { class: 'nw', href: c.source_url, target: '_blank', rel: 'noopener' }, `Open ${c.source_label} ↗`),
         c.fetched_at_local ? el('span', { class: 'nw' }, `fetched ${fmtLocal(c.fetched_at_local)}`) : null));
   });
@@ -391,7 +460,9 @@ function answerRow(p, a, staleEv) {
     if (isCatch) body.append(fixPanel(p, a));
   } else if (a.badge === 'stale') {
     const sc = a.cells.filter((c) => c.stale);
-    body.append(...quoteBlock(sc));
+    const entries = sc.flatMap((c) => c.list_evidence || []);
+    if (entries.length) body.append(el('div', { class: 'entries' }, entries.map(listEntryView)));
+    else body.append(...quoteBlock(sc));
     const ls = sc.map((c) => c.list_source).find(Boolean);
     if (ls) body.append(el('p', { class: 'src' }, el('a', { class: 'nw', href: ls.url, target: '_blank', rel: 'noopener' }, `${ls.label} ↗`),
       el('span', { class: 'nw' }, `updated ${fmtLong(ls.last_updated)} (was ${fmtLong(ls.was, false)})`)));
@@ -510,7 +581,8 @@ function relate(path, answer) {
   const rows = document.querySelectorAll('.ep-row[data-path]'), arts = document.querySelectorAll('#answers .ans');
   rows.forEach((r) => r.classList.remove('dimmed')); arts.forEach((x) => x.classList.remove('dimmed'));
   if (path) {
-    const hit = new Set(p.answers.filter((a) => a.cells.some((c) => c.endpoint === path && ((c.verdict !== 'holds' && c.verdict !== 'disclosed') || c.stale))).map((a) => 'q-' + a.id));
+    const he = new Set(heldEverywhere(p));
+    const hit = new Set(p.answers.filter((a) => !he.has(a.number) && a.cells.some((c) => c.endpoint === path && ((c.verdict !== 'holds' && c.verdict !== 'disclosed') || c.stale))).map((a) => 'q-' + a.id));
     if (hit.size) arts.forEach((x) => x.classList.toggle('dimmed', !hit.has(x.id)));
   } else if (answer) {
     const hit = new Set(answer.cells.filter((c) => c.verdict === 'contradicts' || c.stale || c.verdict === 'held' || c.verdict === 'confirm').map((c) => c.endpoint));

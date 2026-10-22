@@ -1,0 +1,222 @@
+{
+ "_about": "Evidence type per quote id (sentence | table_row | list_entry), built by `owin pack evidence` from the Tavily captures. Display only; no rule reads it.",
+ "pages_missing": [],
+ "quotes": {
+  "05067289fef46e89": {
+   "kind": "sentence",
+   "page": "anthropic-retention"
+  },
+  "0ecaaed33d3cb49a": {
+   "kind": "list_entry",
+   "text": "Retained data is never used for model training without your express permission.",
+   "page": "anthropic-retention"
+  },
+  "22ee597c89062884": {
+   "kind": "sentence",
+   "page": "anthropic-mcp-connector"
+  },
+  "2c81866dfc902b02": {
+   "kind": "table_row",
+   "header": [
+    "Feature",
+    "Endpoint",
+    "ZDR eligible",
+    "HIPAA eligible",
+    "Details"
+   ],
+   "cells": [
+    "Batch processing",
+    "/v1/messages/batches",
+    "No",
+    "No",
+    "29-day retention; async storage required. See Batch processing."
+   ],
+   "quote_cell": null,
+   "page": "anthropic-retention"
+  },
+  "53dae04a9337dfc1": {
+   "kind": "table_row",
+   "header": [
+    "Endpoint",
+    "Data used for training",
+    "Abuse monitoring retention",
+    "Application state retention",
+    "Zero Data Retention eligible",
+    "Private Retention with PSP and Safety Retention eligible"
+   ],
+   "cells": [
+    "/v1/responses",
+    "No",
+    "30 days",
+    "None, see below for exceptions",
+    "Yes, see below for limitations",
+    "Yes, see below for limitations"
+   ],
+   "quote_cell": null,
+   "page": "openai-your-data"
+  },
+  "65642f365f71bfa0": {
+   "kind": "table_row",
+   "header": [
+    "Endpoint",
+    "Data used for training",
+    "Abuse monitoring retention",
+    "Application state retention",
+    "Zero Data Retention eligible",
+    "Private Retention with PSP and Safety Retention eligible"
+   ],
+   "cells": [
+    "/v1/responses",
+    "No",
+    "30 days",
+    "None, see below for exceptions",
+    "Yes, see below for limitations",
+    "Yes, see below for limitations"
+   ],
+   "quote_cell": null,
+   "page": "openai-your-data"
+  },
+  "706595c4150f4cec": {
+   "kind": "sentence",
+   "page": "openai-your-data"
+  },
+  "73f9c9906d7ad952": {
+   "kind": "list_entry",
+   "text": "Only what is technically necessary for the feature to work is retained. Conversation content (your prompts and Claude's outputs) is not retained by default; the exception is Covered Models, which require 30-day retention.",
+   "page": "anthropic-retention"
+  },
+  "86be41f752bc8d6e": {
+   "kind": "table_row",
+   "header": [
+    "Endpoint or feature",
+    "Service",
+    "Storage regions",
+    "Processing regions",
+    "Supported models and snapshots",
+    "Regional processing snapshot exceptions",
+    "Notes"
+   ],
+   "cells": [
+    "/v1/responses",
+    "Responses",
+    "All listed regions",
+    "United States, Europe (EEA + Switzerland), United Arab Emirates",
+    "gpt-6-astra, gpt-6.1-sol, gpt-6-sol, gpt-6-luna, gpt-5.5-pro-2026-04-23, gpt-5.4-pro-2026-03-05, gpt-5.2-pro-2025-12-11, gpt-5-pro-2025-10-06, gpt-5.6-sol, gpt-5.6-terra, gpt-5.6-luna, gpt-5.5-2026-04-23, gpt-5.4-2026-03-05, gpt-5-2025-08-07, gpt-5.4-mini-2026-03-17, gpt-5.4-nano-2026-03-17, gpt-5.2-2025-12-11, gpt-5.1-2025-11-13, gpt-5-mini-2025-08-07, gpt-5-nano-2025-08-07, gpt-4.1-2025-04-14, gpt-4.1-mini-2025-04-14, gpt-4.1-nano-2025-04-14, o3-2025-04-16, o4-mini-2025-04-16, o1-pro, o1-pro-2025-03-19, o3-mini-2025-01-31, o1-2024-12-17, gpt-4o-2024-11-20, gpt-4o-2024-08-06, gpt-4o-mini-2024-07-18, gpt-4-turbo-2024-04-09, gpt-4-0613, gpt-3.5-turbo-0125",
+    "United Arab Emirates: gpt-5.5-pro-2026-04-23, gpt-5.6-luna, gpt-5.5-2026-04-23, gpt-5.2-2025-12-11",
+    "Fast mode is not available with EU data residency for GPT-6 Astra, GPT-6.1 Sol, GPT-6 Sol, or GPT-6 Luna. GPT-6.1 Sol supports only US and EU data residency."
+   ],
+   "quote_cell": null,
+   "page": "openai-your-data"
+  },
+  "941c1e5e47b4d9d9": {
+   "kind": "table_row",
+   "header": [
+    "Feature",
+    "Endpoint",
+    "ZDR eligible",
+    "HIPAA eligible",
+    "Details"
+   ],
+   "cells": [
+    "Messages API",
+    "/v1/messages",
+    "Yes",
+    "Yes",
+    "Standard API calls for generating Claude responses."
+   ],
+   "quote_cell": null,
+   "page": "anthropic-retention"
+  },
+  "a97e2a0824f56fc4": {
+   "kind": "sentence",
+   "page": "anthropic-mcp-connector"
+  },
+  "c18e360ddb124f6c": {
+   "kind": "table_row",
+   "header": [
+    "Endpoint",
+    "Data used for training",
+    "Abuse monitoring retention",
+    "Application state retention",
+    "Zero Data Retention eligible",
+    "Private Retention with PSP and Safety Retention eligible"
+   ],
+   "cells": [
+    "/v1/chat/completions",
+    "No",
+    "30 days",
+    "None, see below for exceptions",
+    "Yes, see below for limitations",
+    "Yes, see below for limitations"
+   ],
+   "quote_cell": null,
+   "page": "openai-your-data"
+  },
+  "cf1e1b761935e140": {
+   "kind": "list_entry",
+   "text": "Data transmitted to third-party services over network connections is subject to their data retention policies.",
+   "page": "openai-your-data"
+  },
+  "e6ad723372251e91": {
+   "kind": "sentence",
+   "page": "openai-your-data"
+  },
+  "e9794a7c31893030": {
+   "kind": "sentence",
+   "page": "openai-your-data"
+  },
+  "e9f2a425406c641c": {
+   "kind": "sentence",
+   "page": "openai-your-data"
+  },
+  "ecdac620c0ae552c": {
+   "kind": "table_row",
+   "header": [
+    "Feature",
+    "Endpoint",
+    "ZDR eligible",
+    "HIPAA eligible",
+    "Details"
+   ],
+   "cells": [
+    "Messages API",
+    "/v1/messages",
+    "Yes",
+    "Yes",
+    "Standard API calls for generating Claude responses."
+   ],
+   "quote_cell": null,
+   "page": "anthropic-retention"
+  },
+  "f2bbd25c33067a99": {
+   "kind": "sentence",
+   "page": "openai-your-data"
+  },
+  "fa8c46f6ce50d0a9": {
+   "kind": "table_row",
+   "header": [
+    "Endpoint",
+    "Data used for training",
+    "Abuse monitoring retention",
+    "Application state retention",
+    "Zero Data Retention eligible",
+    "Private Retention with PSP and Safety Retention eligible"
+   ],
+   "cells": [
+    "/v1/embeddings",
+    "No",
+    "30 days",
+    "None",
+    "Yes",
+    "No"
+   ],
+   "quote_cell": null,
+   "page": "openai-your-data"
+  },
+  "fc73da46915db9c7": {
+   "kind": "list_entry",
+   "text": "MCP servers (used with the remote MCP server tool) are third-party services, and data sent to an MCP server is subject to their data retention policies.",
+   "page": "openai-your-data"
+  }
+ }
+}

@@ -132,6 +132,10 @@ def cmd_pack(a) -> int:
         pages = a.pages.split(",") if a.pages else sorted(cat["pages"])
         _print(observations.refresh(pages, fetch=a.fetch))
         return 0
+    if a.action == "evidence":
+        from .datause import evidence
+        _print({"wrote": str(evidence.build_index().relative_to(registry.ROOT))})
+        return 0
     if a.action == "registry":
         _print({"wrote": str(registry.export().relative_to(registry.ROOT))})
         return 0
@@ -216,7 +220,7 @@ def main(argv: list[str] | None = None) -> int:
     sw.add_argument("--brief", action="store_true")
     sw.set_defaults(fn=cmd_sweep)
     pk = sub.add_parser("pack", help="security-review answer pack (AI and data section), per endpoint")
-    pk.add_argument("action", choices=["build", "refresh", "registry", "extract"],
+    pk.add_argument("action", choices=["build", "refresh", "registry", "extract", "evidence"],
                     help="build = compute the pack (no network); refresh = re-fetch pages via Tavily and record observations; "
                          "registry = export data/datause/registry.json from recorded runs; extract = Nemotron on Tavily captures")
     pk.add_argument("--stack", default="", help="stack manifest JSON (default: fixtures/demo/stack.json)")

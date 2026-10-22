@@ -25,11 +25,15 @@
   </section>
 
   <section class="num" aria-labelledby="num-h">
-    <h2 id="num-h">The number</h2>
-    <p class="big" id="big">Recomputing from recorded runs…</p>
+    <h2 id="num-h">The number, recomputed from recorded runs when this page loads</h2>
+    <p class="big" id="big">Recomputing…</p>
+    <div class="stats" id="stats" aria-live="polite"></div>
     <p class="sub" id="sub"></p>
+    <div class="recompute">
+      <a href="/api/selective">Recompute it now: /api/selective ↗</a>
+      <code class="cmd" tabindex="0" aria-label="Command to recompute locally">owin eval selective --corpus datause --split v3fresh</code>
+    </div>
     <p class="fn" id="fn"></p>
-    <p class="src" id="numsrc"><a href="/api/selective">Recompute it now: /api/selective ↗</a><span class="mono">owin eval selective --corpus datause --split v3fresh</span></p>
   </section>
 
   <section aria-labelledby="paths-h">
