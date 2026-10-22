@@ -61,6 +61,16 @@ def cmd_eval_datause(a) -> int:
     return 0
 
 
+def cmd_facts(a) -> int:
+    from . import facts
+    if a.action == "write":
+        _print({"wrote": str(facts.write().relative_to(facts.ROOT))})
+        return 0
+    bad = facts.check()
+    _print({"facts": len(facts.FACTS), "drifted": [{"id": i, "expected": e, "actual": v} for i, e, v in bad]})
+    return 1 if bad else 0
+
+
 def cmd_fixtures(a) -> int:
     from . import fixtures
     _print({"wrote": str(fixtures.write().relative_to(fixtures.ROOT))})
@@ -177,6 +187,9 @@ def main(argv: list[str] | None = None) -> int:
     e.add_argument("--budget", type=float, default=3.0, help="refuse to run when the usage ledger total reaches this (USD)")
     e.add_argument("--brief", action="store_true")
     e.set_defaults(fn=cmd_eval)
+    fa = sub.add_parser("facts", help="claims ledger: recompute every README/UI number (check) or regenerate FACTS.md (write)")
+    fa.add_argument("action", choices=["check", "write"])
+    fa.set_defaults(fn=cmd_facts)
     fx = sub.add_parser("fixtures", help="fixture provenance")
     fx.add_argument("action", choices=["manifest"])
     fx.set_defaults(fn=cmd_fixtures)

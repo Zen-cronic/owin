@@ -1,7 +1,7 @@
 [project]
 name = "owin"
 version = "0.1.0"
-description = "Owin (Objection Window): reads each vendor's DPA, starts the sub-processor objection clock, and drafts the objection and your customer notice."
+description = "Owin: fills the AI-and-data section of a security review per endpoint, quoting each vendor's own sentence, and asks a person when its readings disagree."
 authors = [{ name = "Kaung Zin Hein" }]
 license = "MIT"
 readme = "README.md"
