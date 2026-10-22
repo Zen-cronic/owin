@@ -7,7 +7,7 @@ Every feature in the demo stack is also re-extracted from its Tavily capture (`l
 live check disagrees with the recorded value on a field, the answer pack holds that field.
 
 Selective answering (`field_agreement`): per answer field that a rule reads, the pack auto-answers only when
-every run agrees (owin/datause/selective.py). The runs used are the 3 on the latest capture of the page
+at least 2 runs succeeded and every successful run agrees (an errored run abstains; owin/datause/selective.py). The runs used are the 3 on the latest capture of the page
 (the Tavily live check) when they exist, else the recorded A1 runs. A unanimous live value that differs from
 the recorded value is also a disagreement. Anything else is `confirm`: held for a person, with each value
 and its quote.

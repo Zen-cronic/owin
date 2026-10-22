@@ -1,4 +1,4 @@
-"""P1 selective answering: auto-answer a cell only when every run agrees on it; otherwise ask a person."""
+"""P1 selective answering: auto-answer a cell only when every successful run agrees on it (at least 2; errored runs abstain); otherwise ask a person."""
 import json
 
 import pytest
@@ -14,9 +14,32 @@ def test_agreement_is_strict():
     r = selective.agreement([a, b, a], "zdr")
     assert r["state"] == "confirm" and r["runs_agreeing"] == "2/3" and r["majority"] == "excluded"
     assert [o["value"] for o in r["options"]] == ["excluded", "unspecified"] and r["options"][0]["quote"] == "q1"
-    # An errored run breaks agreement even when the other runs agree.
-    assert selective.agreement([a, None, a], "zdr")["state"] == "confirm"
+    # An errored run abstains: two successful readings that agree are enough.
+    r = selective.agreement([a, None, a], "zdr")
+    assert r["state"] == "auto" and r["value"] == "excluded" and r["runs_agreeing"] == "2/2"
+    assert (r["readings_ok"], r["readings_failed"], r["readings_total"]) == (2, 1, 3)
+    # ...but one successful reading is never enough, and an errored run never counts as a value.
+    assert selective.agreement([a, None, None], "zdr")["state"] == "confirm"
     assert selective.agreement([None, None, None], "zdr")["state"] == "confirm"
+    r = selective.agreement([a, None, b], "zdr")
+    assert r["state"] == "confirm" and r["runs_agreeing"] == "1/2" and [o["value"] for o in r["options"]] == ["excluded", "unspecified"]
+
+
+def test_errored_run_abstains_in_pack_too():
+    """Same rule in the pack: a field whose successful readings agree reaches the rule even if a run failed."""
+    a = {"zdr": "excluded", "zdr_quote": "The MCP connector is not covered by ZDR arrangements."}
+    reg = json.loads(json.dumps(registry.load()))
+    reg["anthropic-mcp-connector"]["field_agreement"]["zdr"] = {**selective.agreement([a, None, a], "zdr"), "basis": "test"}
+    p = pack.build(reg=reg)
+    assert next(x for x in p["answers"] if x["id"] == "Q03")["badge"] == "not_true"
+    reg["anthropic-mcp-connector"]["field_agreement"]["zdr"] = {**selective.agreement([a, None, None], "zdr"), "basis": "test"}
+    q3 = next(x for x in pack.build(reg=reg)["answers"] if x["id"] == "Q03")
+    assert q3["badge"] == "confirm"
+
+
+def test_no_special_case_left_in_pack():
+    import inspect
+    assert "never hides a contradiction" not in inspect.getsource(pack)
 
 
 def test_v3fresh_selective_numbers_recompute_from_recorded_runs():
@@ -32,6 +55,8 @@ def test_v3fresh_selective_numbers_recompute_from_recorded_runs():
     assert r["negative_controls"]["auto_correct"] == "6/6"
     ref = r["reference_not_clean"]
     assert (ref["v3_old"]["auto_answered"], ref["v3_old"]["auto_correct"]) == ("80/90", "77/80")
+    # v2 old has one errored run (anthropic-mcp-connector); it abstains, so its 3 cells auto-answer on 2/2.
+    assert (ref["v2_old"]["auto_answered"], ref["v2_old"]["auto_correct"]) == ("77/90", "72/77")
 
 
 def test_cli_selective(capsys):

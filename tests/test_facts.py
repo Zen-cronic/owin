@@ -38,7 +38,7 @@ def test_readme_numbers_match_the_ledger():
     assert f"${_f('cost.call')} per reading" in README
     assert f"about **${round(_f('cost.feature'), 3)}**" in README
     assert f"mean {round(_f('lat.mean'), 1)} s, p95 {round(_f('lat.p95'), 1)} s" in README
-    assert "80/90" in README and "77/80" in README and "74/90" in README and "69/74" in README
+    assert "80/90" in README and "77/80" in README and "77/90" in README and "72/77" in README
     assert _f("model") in README and _f("demo.quote").split(" is ")[1].rstrip(".") in README
     assert _f("v3.passed") is False and "fails our own 80% bar" in README
 

@@ -51,6 +51,9 @@
     "retention_days": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": 0,
      "majority": 0,
      "has_majority": true,
@@ -67,6 +70,9 @@
     "used_for_training": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "opt_in",
      "majority": "opt_in",
      "has_majority": true,
@@ -83,6 +89,9 @@
     "zdr": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "available",
      "majority": "available",
      "has_majority": true,
@@ -99,6 +108,9 @@
     "third_party_access": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "unspecified",
      "majority": "unspecified",
      "has_majority": true,
@@ -185,6 +197,9 @@
     "retention_days": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": 29,
      "majority": 29,
      "has_majority": true,
@@ -201,6 +216,9 @@
     "used_for_training": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "opt_in",
      "majority": "opt_in",
      "has_majority": true,
@@ -217,6 +235,9 @@
     "zdr": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "excluded",
      "majority": "excluded",
      "has_majority": true,
@@ -233,6 +254,9 @@
     "third_party_access": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "unspecified",
      "majority": "unspecified",
      "has_majority": true,
@@ -323,6 +347,9 @@
     "retention_days": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": null,
      "majority": null,
      "has_majority": true,
@@ -339,6 +366,9 @@
     "used_for_training": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "unspecified",
      "majority": "unspecified",
      "has_majority": true,
@@ -355,6 +385,9 @@
     "zdr": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "excluded",
      "majority": "excluded",
      "has_majority": true,
@@ -371,6 +404,9 @@
     "third_party_access": {
      "state": "confirm",
      "runs_agreeing": "2/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": null,
      "majority": "unspecified",
      "has_majority": true,
@@ -463,6 +499,9 @@
     "retention_days": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": 30,
      "majority": 30,
      "has_majority": true,
@@ -479,6 +518,9 @@
     "used_for_training": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "opt_in",
      "majority": "opt_in",
      "has_majority": true,
@@ -495,6 +537,9 @@
     "zdr": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "available",
      "majority": "available",
      "has_majority": true,
@@ -511,6 +556,9 @@
     "third_party_access": {
      "state": "confirm",
      "runs_agreeing": "2/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": null,
      "majority": "yes",
      "has_majority": true,
@@ -603,6 +651,9 @@
     "retention_days": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": 30,
      "majority": 30,
      "has_majority": true,
@@ -619,6 +670,9 @@
     "used_for_training": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "opt_in",
      "majority": "opt_in",
      "has_majority": true,
@@ -635,6 +689,9 @@
     "zdr": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "available",
      "majority": "available",
      "has_majority": true,
@@ -651,6 +708,9 @@
     "third_party_access": {
      "state": "confirm",
      "runs_agreeing": "2/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": null,
      "majority": "unspecified",
      "has_majority": true,
@@ -716,6 +776,9 @@
     "retention_days": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": 30,
      "majority": 30,
      "has_majority": true,
@@ -732,6 +795,9 @@
     "used_for_training": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "opt_in",
      "majority": "opt_in",
      "has_majority": true,
@@ -748,6 +814,9 @@
     "zdr": {
      "state": "confirm",
      "runs_agreeing": "2/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": null,
      "majority": "available",
      "has_majority": true,
@@ -770,6 +839,9 @@
     "third_party_access": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "yes",
      "majority": "yes",
      "has_majority": true,
@@ -829,6 +901,9 @@
     "retention_days": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": null,
      "majority": null,
      "has_majority": true,
@@ -845,6 +920,9 @@
     "used_for_training": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "unspecified",
      "majority": "unspecified",
      "has_majority": true,
@@ -861,6 +939,9 @@
     "zdr": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "unspecified",
      "majority": "unspecified",
      "has_majority": true,
@@ -877,6 +958,9 @@
     "third_party_access": {
      "state": "auto",
      "runs_agreeing": "3/3",
+     "readings_ok": 3,
+     "readings_failed": 0,
+     "readings_total": 3,
      "value": "unspecified",
      "majority": "unspecified",
      "has_majority": true,

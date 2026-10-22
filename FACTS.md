@@ -6,7 +6,7 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 
 | id | claim | value | source |
 |---|---|---|---|
-| `sel.auto` | Answers Owin filled on its own on split v3fresh (3/3 agreement) | **27/33** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.auto` | Answers Owin filled on its own on split v3fresh (every successful reading agrees, at least 2) | **27/33** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.correct` | Correct among the auto-filled answers | **26/27** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.confirm` | Answers sent to a person to confirm | **6** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.majority` | Confirm cells where the majority reading would have been right | **2/6** | `owin eval selective --corpus datause --split v3fresh` |
@@ -15,7 +15,7 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | `sel.miss` | The one confident miss (self-disclosed label error, kept per pre-registration) | **openrouter-inference-zdr retention_days** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.neg` | Negative-control cells auto-answered correctly (page says nothing; Owin answers 'not stated') | **6/6** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.ref.v3old` | Reference, NOT clean: v3 on the older items, auto / correct | **80/90, 77/80** | `owin eval selective --corpus datause --split v3fresh` |
-| `sel.ref.v2old` | Reference, NOT clean: v2 on the older items, auto / correct | **74/90, 69/74** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.ref.v2old` | Reference, NOT clean: v2 on the older items, auto / correct | **77/90, 72/77** | `owin eval selective --corpus datause --split v3fresh` |
 | `v3.items` | Pre-registered v3 on v3fresh: items with all three fields exact (majority of runs) | **7/11** | `owin eval score --corpus datause --brief` |
 | `v3.neg` | v3fresh negatives held | **2/2** | `owin eval score --corpus datause --brief` |
 | `v3.base` | Keyword baseline on v3fresh, items exact | **4/11** | `owin eval score --corpus datause --brief` |
@@ -45,7 +45,7 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | claim | enforced by |
 |---|---|
 | Code, not the model, decides every answer; quotes and stated text are never read by a rule | `tests/test_a3_pack.py` ::test_model_and_stated_prose_cannot_change_any_badge |
-| An answer is auto-filled only when every reading agrees; otherwise Confirm | `tests/test_selective.py` |
+| An answer is auto-filled only when at least 2 readings succeeded and every successful reading agrees (an errored reading abstains); otherwise Confirm | `tests/test_selective.py` |
 | Every asserted value carries a verbatim sentence from the vendor's page | `owin/datause/extract.py::validate`, `tests/test_a1_datause.py` |
 | Region text never decides an answer | `tests/test_a3_pack.py::test_region_is_never_computed_from_vendor_free_text` |
 | Tavily `extract` fetches the evidence pages; an older copy is held, never used | `data/datause/observations.json`, `tests/test_ui.py::test_watch_holds_the_stale_tavily_copy_of_the_openai_list` |

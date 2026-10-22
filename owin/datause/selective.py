@@ -1,7 +1,8 @@
 """Selective answering: Owin answers a field on its own only when every extraction run agrees on it.
 
-One cell = one (feature, scored field). A cell is `auto` when all runs return the same value for that field
-after the verbatim-quote gate (a run that errored or returned no terms breaks agreement). Every other cell is
+One cell = one (feature, scored field). A cell is `auto` when at least 2 runs succeeded and every successful
+run returns the same value for that field after the verbatim-quote gate. A run that errored or returned no
+terms abstains (it neither agrees nor disagrees). Every other cell is
 `confirm`: held for a person, shown with the differing values and their quotes. The rule reads only the
 gated structured values, never model prose; the pack (owin/datause/pack.py) uses the same `agreement` function.
 
@@ -22,22 +23,32 @@ from .schema import QUOTE_OF, SCORED_FIELDS
 _MISSING = "__no_terms__"
 
 
+MIN_READINGS = 2
+
+
 def agreement(runs: Sequence[dict | None], field: str) -> dict:
-    """Per-field agreement over gated run terms (None = an errored run). Decides auto vs confirm."""
-    vals = [(t or {}).get(field, _MISSING) if t else _MISSING for t in runs]
+    """Per-field agreement over gated run terms. Decides auto vs confirm.
+
+    An errored run (None, or no terms) abstains: it is neither a vote for nor against any value. A cell is
+    `auto` only when at least MIN_READINGS runs succeeded and every successful reading gives the same value.
+    """
+    ok = [t for t in runs if t]
+    failed = len(runs) - len(ok)
+    vals = [t.get(field, _MISSING) for t in ok]
     votes = Counter(json.dumps(v) for v in vals)
     top, n = votes.most_common(1)[0] if votes else (json.dumps(_MISSING), 0)
-    unanimous = bool(runs) and n == len(runs) and json.loads(top) != _MISSING
-    majority = json.loads(top) if n * 2 > len(runs) and json.loads(top) != _MISSING else _MISSING
+    unanimous = len(ok) >= MIN_READINGS and n == len(ok) and json.loads(top) != _MISSING
+    majority = json.loads(top) if n * 2 > len(ok) and json.loads(top) != _MISSING else _MISSING
     seen, options = set(), []
-    for t, v in zip(runs, vals):
+    for t, v in zip(ok, vals):
         k = json.dumps(v)
         if k in seen:
             continue
         seen.add(k)
         options.append({"value": None if v == _MISSING else v, "no_terms": v == _MISSING,
-                        "runs": votes[k], "quote": (t or {}).get(QUOTE_OF.get(field, ""), "") if t else ""})
-    return {"state": "auto" if unanimous else "confirm", "runs_agreeing": f"{n}/{len(runs)}",
+                        "runs": votes[k], "quote": t.get(QUOTE_OF.get(field, ""), "")})
+    return {"state": "auto" if unanimous else "confirm", "runs_agreeing": f"{n}/{len(ok)}",
+            "readings_ok": len(ok), "readings_failed": failed, "readings_total": len(runs),
             "value": json.loads(top) if unanimous else None,
             "majority": None if majority == _MISSING else majority, "has_majority": majority != _MISSING,
             "options": options}
@@ -96,8 +107,9 @@ def report(split: str = "v3fresh", files: Sequence[Path] | None = None) -> dict:
     head = evaluate(head_files, split=split or None)
     misses = [{**m, "footnote": FOOTNOTES.get((m["item"], m["field"]))} for m in head["auto_misses"]]
     out = {
-        "rule": "a cell (feature x scored field) is auto-answered only when every run agrees on that field after the "
-                "verbatim-quote gate; otherwise it is sent to a person to confirm",
+        "rule": "a cell (feature x scored field) is auto-answered only when at least 2 runs succeeded and every "
+                "successful run agrees on that field after the verbatim-quote gate (an errored run abstains); "
+                "otherwise it is sent to a person to confirm",
         "split": split or "all", "run_files": [str(Path(p).resolve().relative_to(dv.ROOT)) for p in head_files],
         "quotes_rechecked_against_source": all(dv._source(i) is not None for i in dv.load_corpus()),
         "headline": {**head, "auto_misses": misses},

@@ -176,7 +176,7 @@ def main(argv: list[str] | None = None) -> int:
     sub = p.add_subparsers(dest="cmd", required=True)
     e = sub.add_parser("eval", help="measurement harness")
     e.add_argument("action", choices=["run", "score", "audit", "selective"],
-                   help="selective = auto-answer only when every run agrees; recomputed keyless from recorded runs")
+                   help="selective = auto-answer only when every successful run agrees (at least 2; errored runs abstain); recomputed keyless from recorded runs")
     e.add_argument("--corpus", choices=["dpa", "datause"], default="dpa",
                    help="dpa = P1 sub-processor objection windows; datause = AI data-use terms per feature")
     e.add_argument("--split", choices=["", "tuned", "heldout", "fresh", "v3fresh"], default="", help="datause: run one split only")

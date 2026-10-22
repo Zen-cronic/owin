@@ -10,7 +10,8 @@ The trust split: code computes every verdict and badge from enums, integers and 
 `claim`, the settings, and observation hashes/entity diffs). Quotes, retention conditions, region text and
 the stated `text` are copied to the output as evidence and never read by a rule.
 
-Selective answering: a vendor field reaches a rule only when every extraction run agreed on it
+Selective answering: a vendor field reaches a rule only when at least 2 extraction runs succeeded and every
+successful run agreed on it (an errored run abstains)
 (`field_agreement` in the registry, computed by owin/datause/selective.py). Otherwise the cell is `confirm`:
 no rule runs on it, and the differing values and their quotes are shown for a person to choose.
 
@@ -197,9 +198,16 @@ def option_label(f: str, opt: dict) -> str:
     return _VALUE_LABEL.get(f, {}).get(v, str(v))
 
 
+def _agree_text(c: dict) -> str:
+    n, ok = c["runs_agreeing"].split("/")
+    s = f"{n} of {ok} readings agree"
+    return s + (f"; {c['readings_failed']} failed and abstained" if c.get("readings_failed") else "")
+
+
 def _confirm_cell(entry: dict, f: str) -> dict:
     a = entry["field_agreement"][f]
     return {"runs_agreeing": a["runs_agreeing"], "basis": a.get("basis"),
+            "readings_ok": a.get("readings_ok"), "readings_failed": a.get("readings_failed", 0),
             "options": [{"value": o["value"], "label": option_label(f, o), "runs": o["runs"], "quote": o.get("quote") or "",
                          "quote_display": quote_display(o.get("quote") or "")} for o in a["options"]]}
 
@@ -340,19 +348,18 @@ def build(manifest: dict | None = None, *, reg: dict | None = None, obs: dict | 
             entry = reg[ep["feature"]]
             v, src, inherited = _value(entry, field, reg)
             confirm = None
-            if v is CONFIRM:
+            stack_only = field == "third_party_access" and ep["provider"] not in ((claim.get("providers") or []))
+            if stack_only:
+                # Decided by the stack alone: the answer omits a provider an endpoint calls. No vendor value is read,
+                # so whether the readings agree on that page does not matter.
+                verdict, label, reason = "contradicts", f"{ep['provider_display']} (not in your answer)", \
+                    "your answer does not list this provider, and this endpoint sends it data"
+                v = None if v is CONFIRM else v
+            elif v is CONFIRM:
                 confirm = _confirm_cell(src, field)
-                # A disagreement never hides a contradiction that holds under every reading.
-                outs = [RULES[field](NULL[field] if o["value"] is None and field != "retention_days" else o["value"], claim, ep, settings)
-                        if field != "retention_days" else _rule_retention(o["value"], claim, ep, settings, zdr=None)
-                        for o in confirm["options"]]
-                if outs and all(o[0] == "contradicts" for o in outs):
-                    verdict, label, reason = outs[0]
-                    reason = "every reading of the vendor's page contradicts the stated answer"
-                else:
-                    verdict, label = "confirm", "Readings disagree: " + " or ".join(dict.fromkeys(o["label"] for o in confirm["options"]))
-                    reason = (f"the {confirm['runs_agreeing'].split('/')[1]} readings of the vendor's page disagree "
-                              f"({confirm['runs_agreeing']} agree), so Owin does not answer; confirm which is right")
+                verdict, label = "confirm", "Readings disagree: " + " or ".join(dict.fromkeys(o["label"] for o in confirm["options"]))
+                reason = (f"the successful readings of the vendor's page disagree ({_agree_text(confirm)}), "
+                          "so Owin does not answer; confirm which is right")
                 v = None
             elif field == "retention_days":
                 zv, _, _ = _value(entry, "zdr", reg)

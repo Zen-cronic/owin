@@ -62,7 +62,7 @@ PACK = "owin pack build --format brief"
 
 # (id, claim as written, expected value, source, compute)
 FACTS = [
-    ("sel.auto", "Answers Owin filled on its own on split v3fresh (3/3 agreement)", "27/33", SEL,
+    ("sel.auto", "Answers Owin filled on its own on split v3fresh (every successful reading agrees, at least 2)", "27/33", SEL,
      lambda: _sel()["headline"]["auto_answered"]),
     ("sel.correct", "Correct among the auto-filled answers", "26/27", SEL, lambda: _sel()["headline"]["auto_correct"]),
     ("sel.confirm", "Answers sent to a person to confirm", 6, SEL, lambda: _sel()["headline"]["sent_to_confirm"]),
@@ -77,7 +77,7 @@ FACTS = [
      lambda: _sel()["negative_controls"]["auto_correct"]),
     ("sel.ref.v3old", "Reference, NOT clean: v3 on the older items, auto / correct", "80/90, 77/80", SEL,
      lambda: f"{_sel()['reference_not_clean']['v3_old']['auto_answered']}, {_sel()['reference_not_clean']['v3_old']['auto_correct']}"),
-    ("sel.ref.v2old", "Reference, NOT clean: v2 on the older items, auto / correct", "74/90, 69/74", SEL,
+    ("sel.ref.v2old", "Reference, NOT clean: v2 on the older items, auto / correct", "77/90, 72/77", SEL,
      lambda: f"{_sel()['reference_not_clean']['v2_old']['auto_answered']}, {_sel()['reference_not_clean']['v2_old']['auto_correct']}"),
     ("v3.items", "Pre-registered v3 on v3fresh: items with all three fields exact (majority of runs)", "7/11", SCORE,
      lambda: _score()["headline"]["v3fresh"]["items_exact_majority"]),
@@ -145,7 +145,7 @@ def render() -> str:
     lines += ["", "## Qualitative claims and where they are enforced", "",
               "| claim | enforced by |", "|---|---|",
               "| Code, not the model, decides every answer; quotes and stated text are never read by a rule | `tests/test_a3_pack.py` ::test_model_and_stated_prose_cannot_change_any_badge |",
-              "| An answer is auto-filled only when every reading agrees; otherwise Confirm | `tests/test_selective.py` |",
+              "| An answer is auto-filled only when at least 2 readings succeeded and every successful reading agrees (an errored reading abstains); otherwise Confirm | `tests/test_selective.py` |",
               "| Every asserted value carries a verbatim sentence from the vendor's page | `owin/datause/extract.py::validate`, `tests/test_a1_datause.py` |",
               "| Region text never decides an answer | `tests/test_a3_pack.py::test_region_is_never_computed_from_vendor_free_text` |",
               "| Tavily `extract` fetches the evidence pages; an older copy is held, never used | `data/datause/observations.json`, `tests/test_ui.py::test_watch_holds_the_stale_tavily_copy_of_the_openai_list` |",
