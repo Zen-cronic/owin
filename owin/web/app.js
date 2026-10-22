@@ -8,13 +8,15 @@ const NS = 'http://www.w3.org/2000/svg';
 const MOBILE = matchMedia('(max-width:900px)');
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)');
 const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const RANK = { contradicts: 0, stale: 1, held: 2, disclosed: 3, holds: 3 };
+const RANK = { contradicts: 0, stale: 1, confirm: 2, held: 3, disclosed: 4, holds: 4 };
+const QSHORT = { '01': 'training', '02': 'retention', '03': 'ZDR', '04': 'region', '05': 'who sees it' };
 
 const ICON = {
   warn: '<path d="M8 1.8 15 14H1z"/><path d="M8 6v3.6M8 11.6v.1"/>',
   check: '<path d="m3 8.5 3.2 3L13 4.5"/>',
   held: '<circle cx="8" cy="8" r="6"/><path d="M5.5 8h5"/>',
   stale: '<path d="M13 8a5 5 0 1 1-1.5-3.6"/><path d="M13 2.5v2.8h-2.8"/>',
+  ask: '<circle cx="8" cy="8" r="6"/><path d="M6.2 6.3a1.9 1.9 0 1 1 2.5 1.8c-.5.2-.7.5-.7 1v.4"/><path d="M8 11.3v.1"/>',
   slash: '<circle cx="8" cy="8" r="6"/><path d="m3.8 12.2 8.4-8.4"/>',
   chev: '<path d="m4 6 4 4 4-4"/>',
   eye: '<path d="M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/>',
@@ -22,6 +24,7 @@ const ICON = {
 const BADGE = {
   not_true: { cls: 'bad', icon: 'warn' },
   stale: { cls: 'stale', icon: 'stale' },
+  confirm: { cls: 'confirm', icon: 'ask' },
   held_unspecified: { cls: 'held', icon: 'held' },
   still_true: { cls: 'ok', icon: 'check' },
 };
@@ -133,6 +136,7 @@ function recomputedLine(p) {
   const c = p.counts, parts = [];
   if (c.not_true) parts.push(`${c.not_true} not true`);
   if (c.stale) parts.push(`${c.stale} stale`);
+  if (c.confirm) parts.push(`${c.confirm} to confirm`);
   if (c.held_unspecified) parts.push(`${c.held_unspecified} held`);
   parts.push(`${c.still_true} still true`);
   return `Recomputed at ${nowET()}: ${parts.join(', ')}.`;
@@ -161,14 +165,14 @@ function renderInlineError(e) {
 // Derived per-endpoint status from the cells (code-computed verdicts only).
 function endpointStatus(p) {
   const by = {};
-  for (const ep of p.stack.endpoints) by[ep.path] = { ep, cells: {}, worst: 3 };
+  for (const ep of p.stack.endpoints) by[ep.path] = { ep, cells: {}, worst: 4 };
   for (const a of p.answers) {
     for (const c of a.cells) {
       const v = c.stale ? 'stale' : c.verdict;
       const s = by[c.endpoint];
       if (!s) continue;
       s.cells[a.number] = { v, c, a };
-      s.worst = Math.min(s.worst, RANK[v] ?? 3);
+      s.worst = Math.min(s.worst, RANK[v] ?? 4);
     }
   }
   return by;
@@ -194,9 +198,7 @@ function render() {
   $('stack-meta').textContent = `${p.stack.endpoints.length} endpoints · ${p.stack.providers.length} providers`;
   const eps = Object.values(status).sort((x, y) => x.worst - y.worst);
   $('endpoints').replaceChildren(...eps.map((s) => endpointRow(p, s, staleEv)),
-    el('p', { class: 'legend', 'aria-hidden': 'true' }, 'Answer numbers:',
-      el('span', {}, el('i', { class: 'on' }, '03'), 'not true'), el('span', {}, el('i', { class: 'ol' }, '05'), 'stale'),
-      el('span', {}, el('i', {}, '04'), 'page does not say'), el('span', {}, el('i', { class: 'ok' }, '01'), 'holds')));
+    legend(p));
   renderPages(p);
 
   // Answers
@@ -218,6 +220,7 @@ function renderCatch(p, byId, staleEv) {
   const bits = [];
   if (c.not_true) bits.push(el('b', {}, `${c.not_true} not true`));
   if (c.stale) bits.push(el('span', { class: 'st' }, `${c.stale} stale${staleEv ? ' since ' + fmtLong(staleEv.after.last_updated, false) : ''}`));
+  if (c.confirm) bits.push(el('span', { class: 'st' }, `${c.confirm} to confirm`));
   if (!c.not_true && c.held_unspecified) bits.push(el('span', {}, `${c.held_unspecified} held`));
   if (!bits.length) bits.push(el('span', {}, `All ${p.answers.length} answers still true`));
   const parts = [icon(c.not_true || c.stale ? 'warn' : 'check')];
@@ -234,10 +237,24 @@ function renderCatch(p, byId, staleEv) {
   } else {
     h.replaceChildren(...withPaths(p.headline.text, 'ep'));
     const staleA = p.answers.find((a) => a.badge === 'stale');
-    todo.replaceChildren(staleA
-      ? el('button', { class: 'btn primary', id: 'review', onclick: () => openChange(staleA.id) }, `Review answer ${+staleA.number}`)
-      : el('button', { class: 'btn primary', onclick: () => toggleMenu(true) }, 'Export answers'));
+    const confA = p.answers.find((a) => a.badge === 'confirm');
+    const confBtn = confA && el('button', { class: staleA ? 'btn ghost' : 'btn primary', id: 'confirm-go', onclick: () => goTo(confA.id) }, `Confirm answer ${+confA.number}`);
+    todo.replaceChildren(...(staleA
+      ? [el('button', { class: 'btn primary', id: 'review', onclick: () => openChange(staleA.id) }, `Review answer ${+staleA.number}`), confBtn]
+      : confA ? [confBtn] : [el('button', { class: 'btn primary', onclick: () => toggleMenu(true) }, 'Export answers')]).filter(Boolean));
   }
+}
+
+// Legend: what the answer digits mean (01-05 = the five questions) and how each state is drawn.
+function legend(p) {
+  const nums = el('p', { class: 'legend' }, el('span', { class: 'lh' }, 'Answers'),
+    el('span', { class: 'li' }, [...p.answers].sort((x, y) => x.number.localeCompare(y.number)).map((a) => el('span', {}, el('i', {}, a.number), QSHORT[a.number] || a.question))));
+  const used = new Set(p.answers.flatMap((a) => a.cells.map((c) => (c.stale ? 'stale' : c.verdict))));
+  const keys = [['contradicts', 'on', 'not true'], ['stale', 'ol', 'stale'], ['confirm', 'c', 'confirm'], ['held', 'h', 'page does not say'], ['holds', 'ok', 'holds']]
+    .filter(([v]) => used.has(v) || v === 'holds');
+  const marks = el('p', { class: 'legend' }, el('span', { class: 'lh' }, 'Marks'),
+    el('span', { class: 'li' }, keys.map(([, cls, word]) => el('span', {}, el('i', { class: cls }, '01'), word))));
+  return el('div', { class: 'legends' }, nums, marks);
 }
 
 function endpointRow(p, s, staleEv) {
@@ -251,22 +268,26 @@ function endpointRow(p, s, staleEv) {
   const bad = Object.values(cells).find((x) => x.v === 'contradicts');
   const stale = Object.values(cells).find((x) => x.v === 'stale');
   const held = Object.values(cells).filter((x) => x.v === 'held');
+  const conf = Object.values(cells).filter((x) => x.v === 'confirm');
   if (bad) finding = el('p', { class: 'finding' }, `${bad.c.value_label}. Breaks answer ${bad.a.number}.`);
   else if (stale && staleEv) finding = el('p', { class: 'finding' }, `${staleEv.provider_display} changed its sub-processor list on `, el('span', { class: 'nw' }, fmtLong(staleEv.after.last_updated, false)), '.');
+  else if (conf.length) finding = el('p', { class: 'finding' }, `Readings of the vendor page disagree for answer${conf.length > 1 ? 's' : ''} ${conf.map((x) => x.a.number).join(', ')}. Confirm.`);
   else if (held.length) finding = el('p', { class: 'finding dim' }, `Page does not say for answer${held.length > 1 ? 's' : ''} ${held.map((x) => x.a.number).join(', ')}.`);
 
   const digits = Object.keys(cells).sort().map((n) => {
     const v = cells[n].v;
-    const cls = v === 'contradicts' ? 'on' : v === 'stale' ? 'ol' : v === 'held' ? 'h' : null;
-    const word = v === 'contradicts' ? 'not true' : v === 'stale' ? 'stale' : v === 'held' ? 'held' : 'holds';
-    return el('span', { class: cls, title: `Answer ${n}: ${word}` }, n);
+    const c = cells[n].c;
+    const cls = v === 'contradicts' ? 'on' : v === 'stale' ? 'ol' : v === 'confirm' ? 'c' : v === 'held' ? 'h' : 'ok';
+    const word = v === 'contradicts' ? 'not true' : v === 'stale' ? 'stale' : v === 'confirm' ? 'confirm' : v === 'held' ? 'page does not say' : 'holds';
+    const also = c.stale && c.verdict === 'confirm' ? ', confirm' : '';
+    return el('span', { class: cls, title: `Answer ${n} (${QSHORT[n] || ''}): ${word}${also}` }, n, el('span', { class: 'sr' }, ` ${word}${also}`));
   });
 
   const row = el('div', { class: 'ep-row' + (causing ? ' sel' : '') + (isStale ? ' stale' : '') + (changed ? ' changed' : ''), id: 'ep-' + slug(ep.path), 'data-path': ep.path },
     el('div', { class: 'path' }, ep.path),
     featureSelect(ep),
     finding,
-    el('div', { class: 'feeds' }, 'answers', el('b', {}, digits)));
+    el('div', { class: 'feeds' }, 'Answers', el('b', {}, digits)));
   row.addEventListener('mouseenter', () => relate(ep.path, null));
   row.addEventListener('mouseleave', () => relate(null, null));
   return row;
@@ -332,9 +353,28 @@ function perEndpoint(a) {
   const short = (path) => path.replace(/^\/api/, '');
   return el('dl', { class: 'per' }, a.cells.map((c) => {
     const v = c.stale ? 'stale' : c.verdict;
-    return el('div', { class: v === 'contradicts' ? 'x' : v === 'held' ? 'h' : null },
-      el('dt', {}, short(c.endpoint)), el('dd', {}, v === 'held' ? 'Page does not say' : c.value_label));
+    const vv = c.verdict === 'confirm' ? 'confirm' : v;
+    return el('div', { class: vv === 'contradicts' ? 'x' : vv === 'held' ? 'h' : vv === 'confirm' ? 'c' : null },
+      el('dt', {}, short(c.endpoint)), el('dd', {}, vv === 'held' ? 'Page does not say' : vv === 'confirm' ? 'Confirm' : c.value_label));
   }));
+}
+
+// Confirm: the readings of the vendor page disagree, so Owin shows each value with its sentence and does not pick.
+function confirmBlock(a) {
+  const cc = a.cells.filter((c) => c.verdict === 'confirm' && c.confirm);
+  if (!cc.length) return [];
+  return cc.map((c) => {
+    const [n, of] = c.confirm.runs_agreeing.split('/');
+    return el('div', { class: 'confirm-box' },
+      el('p', { class: 'ch' }, el('span', { class: 'mono nw' }, c.endpoint), ` · Owin read ${c.source_label} ${of} times and got ${c.confirm.options.length} answers (${n} of ${of} agree). It does not pick one.`),
+      el('ul', {}, c.confirm.options.map((o) => el('li', {},
+        el('b', {}, o.label), el('span', { class: 'runs' }, o.runs === 'recorded' ? 'recorded value' : `${o.runs} of ${of} readings`),
+        o.quote && o.value != null && o.value !== 'unspecified'
+          ? el('blockquote', {}, `“${(o.quote_display || o.quote).replace(/^[\s|·]+|[\s|·]+$/g, '')}”`)
+          : el('p', { class: 'dim' }, o.no_terms ? 'This reading failed and returned nothing.' : 'This reading found no sentence on the page that answers it.')))),
+      el('p', { class: 'src' }, el('a', { class: 'nw', href: c.source_url, target: '_blank', rel: 'noopener' }, `Open ${c.source_label} ↗`),
+        c.fetched_at_local ? el('span', { class: 'nw' }, `fetched ${fmtLocal(c.fetched_at_local)}`) : null));
+  });
 }
 
 function answerRow(p, a, staleEv) {
@@ -360,6 +400,9 @@ function answerRow(p, a, staleEv) {
       body.append(el('p', { class: 'next' }, el('button', { class: 'btn ghost small', id: `review-${a.id}`, 'aria-expanded': 'false', 'aria-controls': `change-${a.id}`, onclick: () => openChange(a.id) }, 'Review the change')));
       body.append(changePanel(a, ev));
     }
+  } else if (a.badge === 'confirm') {
+    body.append(...confirmBlock(a));
+    if (mixed) body.append(perEndpoint(a));
   } else if (a.badge === 'held_unspecified') {
     const reasons = [...new Set(a.cells.filter((c) => c.verdict === 'held' && c.reason).map((c) => c.reason))];
     reasons.forEach((r) => body.append(el('p', { class: 'dim' }, r.charAt(0).toUpperCase() + r.slice(1) + '.')));
@@ -371,6 +414,10 @@ function answerRow(p, a, staleEv) {
       if (q && !seen.has(c.source_url)) { seen.add(c.source_url); picks.push(c); }
     }
     picks.slice(0, 2).forEach((c) => body.append(...quoteBlock([c])));
+  }
+  // A confirm cell inside an answer whose badge is driven by something else still shows its readings.
+  if (a.badge !== 'confirm' && a.cells.some((c) => c.verdict === 'confirm')) {
+    body.append(el('details', { class: 'more' }, el('summary', {}, `${a.cells.filter((c) => c.verdict === 'confirm').length} endpoint readings to confirm`), confirmBlock(a)));
   }
 
   const art = el('article', { class: 'ans' + (isCatch ? ' sel' : '') + (a.badge === 'stale' ? ' stale' : ''), id: 'q-' + a.id, 'data-badge': a.badge, tabindex: '-1', 'aria-labelledby': `h-${a.id}` },
@@ -441,6 +488,13 @@ function openFix(qid, mode) {
   target.focus({ preventScroll: true });
   requestAnimationFrame(link);
 }
+function goTo(qid) {
+  showTab('t-ans');
+  const art = $(`q-${qid}`);
+  art.scrollIntoView({ block: 'start', behavior: REDUCED.matches ? 'auto' : 'smooth' });
+  art.focus({ preventScroll: true });
+  requestAnimationFrame(link);
+}
 function openChange(qid) {
   showTab('t-ans');
   const panel = openPanel(`change-${qid}`);
@@ -456,10 +510,10 @@ function relate(path, answer) {
   const rows = document.querySelectorAll('.ep-row[data-path]'), arts = document.querySelectorAll('#answers .ans');
   rows.forEach((r) => r.classList.remove('dimmed')); arts.forEach((x) => x.classList.remove('dimmed'));
   if (path) {
-    const hit = new Set(p.answers.filter((a) => a.cells.some((c) => c.endpoint === path && (c.verdict !== 'holds' || c.stale))).map((a) => 'q-' + a.id));
+    const hit = new Set(p.answers.filter((a) => a.cells.some((c) => c.endpoint === path && ((c.verdict !== 'holds' && c.verdict !== 'disclosed') || c.stale))).map((a) => 'q-' + a.id));
     if (hit.size) arts.forEach((x) => x.classList.toggle('dimmed', !hit.has(x.id)));
   } else if (answer) {
-    const hit = new Set(answer.cells.filter((c) => c.verdict === 'contradicts' || c.stale || c.verdict === 'held').map((c) => c.endpoint));
+    const hit = new Set(answer.cells.filter((c) => c.verdict === 'contradicts' || c.stale || c.verdict === 'held' || c.verdict === 'confirm').map((c) => c.endpoint));
     if (hit.size && hit.size < answer.cells.length) rows.forEach((r) => r.classList.toggle('dimmed', !hit.has(r.dataset.path)));
   }
 }

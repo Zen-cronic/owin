@@ -71,7 +71,7 @@ def evaluate(paths: Sequence[Path], split: str | None = None, kinds: tuple[str, 
     conf = [c for c in cells if c["state"] == "confirm"]
     ok = [c for c in auto if c["correct"]]
     return {
-        "cells": len(cells), "items": len({c["item"] for c in cells}),
+        "cells": len(cells), "items": len({c["item"] for c in cells}), "vendors": len({c["vendor"] for c in cells}),
         "auto_answered": f"{len(auto)}/{len(cells)}", "auto_correct": f"{len(ok)}/{len(auto)}",
         "auto_precision": round(len(ok) / len(auto), 4) if auto else None,
         "sent_to_confirm": len(conf),
@@ -116,7 +116,8 @@ def report(split: str = "v3fresh", files: Sequence[Path] | None = None) -> dict:
 
 def brief(rep: dict) -> dict:
     h = rep["headline"]
-    return {"split": rep["split"], "auto_answered": h["auto_answered"], "auto_correct": h["auto_correct"],
+    return {"split": rep["split"], "cells": h["cells"], "items": h["items"], "vendors": h["vendors"],
+            "auto_answered": h["auto_answered"], "auto_correct": h["auto_correct"],
             "sent_to_confirm": h["sent_to_confirm"], "confirm_majority_right": h["confirm_majority_right"],
             "auto_misses": h["auto_misses"],
             "reference_not_clean": {k: {x: v[x] for x in ("auto_answered", "auto_correct", "sent_to_confirm")}

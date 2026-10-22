@@ -467,6 +467,11 @@ _CATCH_TEXT = {
 }
 
 
+def _lower_first(s: str) -> str:
+    """Sentence-case a label mid-sentence without lowering acronyms ("Not covered by ZDR" -> "not covered by ZDR")."""
+    return s[:1].lower() + s[1:]
+
+
 def _catch(answers: list[dict], stated: dict) -> dict | None:
     for a in answers:  # questionnaire order: the first failing answer leads
         if a["badge"] != "not_true":
@@ -477,7 +482,7 @@ def _catch(answers: list[dict], stated: dict) -> dict | None:
             ex = sorted(set((a["stated"].get("claim") or {}).get("exceptions") or []) |
                         {x["endpoint"] for x in a["cells"] if x["verdict"] == "contradicts"})
             fix = {"claim": {**a["stated"]["claim"], "exceptions": ex},
-                   "text": "Yes, except: " + "; ".join(f"{x['endpoint']} ({x['feature_label']}, {x['value_label'].lower()})"
+                   "text": "Yes, except: " + "; ".join(f"{x['endpoint']} ({x['feature_label']}, {_lower_first(_VALUE_LABEL['zdr'].get(x['vendor_value'], x['value_label']))})"
                                                        for x in a["cells"] if x["endpoint"] in ex) + "."}
         others = sum(x["badge"] == "not_true" for x in answers)
         return {"question": a["id"], "number": a["number"], "endpoint": c["endpoint"], "feature": c["feature"],

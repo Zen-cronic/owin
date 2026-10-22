@@ -1,7 +1,10 @@
 """Minimal JSON API and unstyled debug page. The real UI is designed separately (docs/design/).
 
 GET /api/replay?promise_days=10&as_of=now&decision=accepted  ->  replay event JSON (docs/CONTRACT.md)
-GET /api/score                                                ->  measurement headline (recomputed)
+GET /api/score                                                ->  P1 DPA measurement headline (recomputed)
+GET /api/selective                                            ->  the line-one number, recomputed keyless from recorded runs
+GET /judge                                                    ->  judge start page (owin/web/judge.html)
+GET /README.md, /FACTS.md                                     ->  the repo's README and claims ledger, as plain text
 GET /api/pack?set=/api/crm-sync=anthropic-messages&format=json|brief|share|csv|html  ->  answer pack (A3)
 POST /api/pack  (body: a stack manifest, docs/CONTRACT.md)    ->  answer pack for that stack
 GET /pack/print                                               ->  print-ready HTML (save as PDF)
@@ -59,10 +62,30 @@ def handle(path: str, qs: dict) -> tuple[int, str, str]:
         return 200, "application/json", json.dumps(ev, default=str)
     if path in ("/api/pack", "/pack/print"):
         return pack_response(None, qs, html_default=path == "/pack/print")
+    if path == "/api/selective":
+        return 200, "application/json", json.dumps(selective_summary())
     if path == "/api/score":
         res = evaluate.score(evaluate.headline_runs())
         return 200, "application/json", json.dumps({k: res[k] for k in ("headline", "per_successful_run", "quotes_rechecked_against_source")})
     return 404, "application/json", json.dumps({"error": "not found"})
+
+
+def selective_summary() -> dict:
+    """The README's line one plus the per-item headline, cost and latency, all from recorded runs (no key)."""
+    from .datause import evaluate as dv, selective
+    rep = selective.report("v3fresh")
+    sc = dv.score(dv.headline_runs())
+    v3 = sc["headline"]["v3fresh"]
+    return {"type": "owin.selective", "selective": selective.brief(rep), "run_files": rep["run_files"],
+            "quotes_rechecked_against_source": rep["quotes_rechecked_against_source"],
+            "items_exact_majority": v3["items_exact_majority"], "negative_items_held": v3["negative_items_held"],
+            "baseline_items_exact": v3["baseline_items_exact"], "model": sc["model"],
+            "per_call": {"calls": sc["per_successful_run"]["total_calls"], "total_cost_usd": sc["per_successful_run"]["total_cost_usd"],
+                         "mean_cost_usd": round(sc["per_successful_run"]["total_cost_usd"] / sc["per_successful_run"]["total_calls"], 5),
+                         "cost_per_exact_run_usd": sc["per_successful_run"]["cost_per_successful_run_usd"],
+                         "mean_latency_s_exact_runs": sc["per_successful_run"]["mean_latency_s"],
+                         "p95_latency_s_exact_runs": sc["per_successful_run"]["p95_latency_s"]},
+            "recompute": "owin eval selective --corpus datause --split v3fresh"}
 
 
 PACK_TYPES = {"json": "application/json", "brief": "application/json", "share": "application/json",

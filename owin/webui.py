@@ -18,11 +18,17 @@ ROOT = Path(__file__).resolve().parent.parent
 WEB = Path(__file__).resolve().parent / "web"
 STATIC = {"/": ("index.html", "text/html; charset=utf-8"),
           "/app.css": ("app.css", "text/css; charset=utf-8"),
-          "/app.js": ("app.js", "text/javascript; charset=utf-8")}
+          "/app.js": ("app.js", "text/javascript; charset=utf-8"),
+          "/judge": ("judge.html", "text/html; charset=utf-8"),
+          "/judge.js": ("judge.js", "text/javascript; charset=utf-8")}
+DOCS = {"/README.md": "README.md", "/FACTS.md": "FACTS.md"}  # repo-root docs, served read-only as plain text
 ET = ZoneInfo("America/New_York")
 
 
 def static(path: str) -> tuple[int, str, str] | None:
+    if path in DOCS:
+        f = ROOT / DOCS[path]
+        return (200, "text/plain; charset=utf-8", f.read_text(encoding="utf-8")) if f.exists() else None
     if path not in STATIC:
         return None
     name, ctype = STATIC[path]
