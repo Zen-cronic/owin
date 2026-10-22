@@ -1,0 +1,23 @@
+{
+ "vendor": "sentry",
+ "kind": "heldout",
+ "source_url": "https://sentry.io/legal/dpa/",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202832-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "47427a6b69e2ef49470a456418295f3d6da98fa53fa3c5c7a879f70935d79e75",
+ "quote_sha256": "1ef5868aa8591012442f9664116ff59f8f5bbd612d3d940ed7e3587983ce517a",
+ "terms": {
+  "window_type": "window",
+  "window_days": 30,
+  "unit": "unspecified",
+  "clock_start": "notice",
+  "clock_start_text": "receipt of thirty (30) days\u2019 prior written notice",
+  "remedy": "terminate the Agreement for convenience",
+  "deemed_consent_if_silent": false,
+  "quote": "We will provide thirty (30) days\u2019 prior written notice to you via email or other means specified on the Subprocessor Page.",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "vendor": "supabase",
+ "kind": "labelled",
+ "source_url": "https://supabase.com/legal/dpa",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202651-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "3db30caabc7bb97f1ea36074d03bd528f8ccd901ec96dd80649a4663d6001e9a",
+ "quote_sha256": "c95a82f2972279ae220988fa82e8e1b5fe88d96a4af5fb8c2c65b76a9a0d7a24",
+ "terms": {
+  "window_type": "window",
+  "window_days": 5,
+  "unit": "unspecified",
+  "clock_start": "notice",
+  "clock_start_text": "notice of proposed change",
+  "remedy": "terminate the affected portion of the Agreement",
+  "deemed_consent_if_silent": false,
+  "quote": "Customer shall notify Supabase if it objects to the proposed change to the Authorized Sub-processors (including, where applicable, when exercising its right to object under clause 9(a) of the SCCs) by providing Supabase with written notice of the objection within five (5) days after Supabase has provided notice to Customer of such proposed change (an \u201cObjection\u201d).",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}

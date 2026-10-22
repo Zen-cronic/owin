@@ -1,0 +1,23 @@
+{
+ "vendor": "posthog",
+ "kind": "heldout",
+ "source_url": "https://posthog.com/dpa",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202832-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "ea9c54f5016eee04cf637bf3cb820f57b9991673c630aeaa0129e6443b1f6faa",
+ "quote_sha256": "086768c7261783cd8e748168c016314bbbcb8a3d827507dfa452a5cdecba4a62",
+ "terms": {
+  "window_type": "window",
+  "window_days": 7,
+  "unit": "unspecified",
+  "clock_start": "notice",
+  "clock_start_text": "receipt of Processor's updated Subprocessors' list",
+  "remedy": "terminate the affected Service with reasonable prior written notice",
+  "deemed_consent_if_silent": false,
+  "quote": "If the Company objects to a Subprocessor, the Company shall notify Processor thereof in writing within seven (7) days after receipt of Processor's updated Subprocessors' list.",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}

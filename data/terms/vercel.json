@@ -1,0 +1,23 @@
+{
+ "vendor": "vercel",
+ "kind": "labelled",
+ "source_url": "https://vercel.com/legal/dpa",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202651-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "133b2729f4bef3f4b63e3c6f1aa3f5c8b2f9f5869c320c8ef9d0322a1f64f4f4",
+ "quote_sha256": "fd131fe9d793ca2445d6d2e415ff8cc4727420c4559bcd84749b511775616c06",
+ "terms": {
+  "window_type": "window",
+  "window_days": 5,
+  "unit": "calendar",
+  "clock_start": "notice",
+  "clock_start_text": "notice of new subprocessors",
+  "remedy": "terminate the Agreement for convenience",
+  "deemed_consent_if_silent": false,
+  "quote": "If, within five (5) calendar days after such notice, Customer notifies Vercel in writing that Customer objects to Vercel's appointment of a new Subprocessor based on reasonable data protection concerns, the parties will discuss such concerns in good faith and whether they can be resolved.",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}

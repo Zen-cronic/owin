@@ -1,0 +1,23 @@
+{
+ "vendor": "linear",
+ "kind": "heldout",
+ "source_url": "https://linear.app/dpa",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202832-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "ad3853b673155ae1f096aa6a3a883fb31829949afcd33b946d292e833cbae389",
+ "quote_sha256": "bdbce2f8633ab018a41d190b1baa036d1a043bb005875f7e80aea385ebabb942",
+ "terms": {
+  "window_type": "window",
+  "window_days": 30,
+  "unit": "unspecified",
+  "clock_start": "notice",
+  "clock_start_text": "receipt of the notice",
+  "remedy": "discontinue the use of the affected Service",
+  "deemed_consent_if_silent": true,
+  "quote": "Customer may object to such an engagement by informing Linear within thirty (30) days of receipt of the aforementioned notice by Customer, provided such objection is in writing and based on reasonable grounds relating to data protection.",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}

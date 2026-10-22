@@ -1,0 +1,23 @@
+{
+ "vendor": "mistral",
+ "kind": "labelled",
+ "source_url": "https://legal.mistral.ai/terms/data-processing-addendum",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202651-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "0bcb933cfbb4fbabd7ea574a7e6eb5a78337e072761596fd575ec0ceffda920e",
+ "quote_sha256": "aa3e9a53a5e197093c90516f5788a437ae808a4fd4877d8874c5004154aaa40a",
+ "terms": {
+  "window_type": "window",
+  "window_days": 10,
+  "unit": "unspecified",
+  "clock_start": "notice",
+  "clock_start_text": "receipt of notice of changes to the list of Subprocessors",
+  "remedy": "Mistral AI reserves the right to terminate the Agreement or just the affected Mistral AI Products undergoing the Subprocessor change",
+  "deemed_consent_if_silent": true,
+  "quote": "The Customer may only object in writing to Mistral AI\u2019s appointment of a new Subprocessor within ten (10) days of such notice by providing a written objection to privacy@mistral.ai, provided that such objection is based on reasonable grounds relating to the Applicable Data Protection Law, otherwise such new Subprocessor will be deemed approved.",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}

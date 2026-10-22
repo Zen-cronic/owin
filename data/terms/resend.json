@@ -1,0 +1,23 @@
+{
+ "vendor": "resend",
+ "kind": "heldout",
+ "source_url": "https://resend.com/legal/dpa",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202832-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "77681adf3f67614d88aa18858a04fb89e4937e38569037de814b713480ecebbd",
+ "quote_sha256": "e416ce823c122e353c8fbf83e0079e3660cc295044078569ef9fbc9697323aa4",
+ "terms": {
+  "window_type": "window",
+  "window_days": 14,
+  "unit": "unspecified",
+  "clock_start": "notice",
+  "clock_start_text": "notice by Company",
+  "remedy": "discontinue use of the affected Service",
+  "deemed_consent_if_silent": true,
+  "quote": "If Customer does not object to the engagement of a third party in accordance with Section 4.2 within fourteen (14) days of notice by Company, that third party will be deemed an Authorized Sub-Processor for the purposes of this DPA.",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}

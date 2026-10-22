@@ -1,0 +1,23 @@
+{
+ "vendor": "cloudflare",
+ "kind": "heldout",
+ "source_url": "https://www.cloudflare.com/cloudflare-customer-dpa/",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202832-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "7270f7af59892fda833418097d35023615739957baafe430c33c41e92d9bb037",
+ "quote_sha256": "c65ee845ccc6bc49379ec5b00dc6c0a27e1076dfeb0f7f8512a7284a1e2a32f6",
+ "terms": {
+  "window_type": "window",
+  "window_days": 10,
+  "unit": "unspecified",
+  "clock_start": "notice",
+  "clock_start_text": "receipt of notice of new sub-processor",
+  "remedy": "terminate the applicable Order Form",
+  "deemed_consent_if_silent": true,
+  "quote": "If Customer objects to any new or replacement sub-Processor on reasonable grounds related to data protection, it shall notify Cloudflare of such objections in writing within ten (10) days of the notification and the parties will seek to resolve the matter in good faith.",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}

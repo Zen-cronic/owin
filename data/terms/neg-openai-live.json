@@ -1,0 +1,25 @@
+{
+ "vendor": "neg-openai-live",
+ "kind": "negative",
+ "source_url": "https://openai.com/policies/data-processing-addendum/",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202651-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "3e35e5ea859c84fe4464a4fc45b346516f506dc633f36d9f51cb09e5ec79f0ea",
+ "quote_sha256": null,
+ "terms": {
+  "window_type": "none",
+  "window_days": null,
+  "unit": "n/a",
+  "clock_start": "n/a",
+  "clock_start_text": "",
+  "remedy": "",
+  "deemed_consent_if_silent": false,
+  "quote": "",
+  "quote_verbatim": false,
+  "status": "held",
+  "hold_reasons": [
+   "no objection provision found in the fetched text"
+  ]
+ }
+}

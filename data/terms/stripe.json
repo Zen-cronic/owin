@@ -1,0 +1,23 @@
+{
+ "vendor": "stripe",
+ "kind": "labelled",
+ "source_url": "https://stripe.com/legal/dpa",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202651-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "d0ad74609e73a189e1eb6a8f357d00de1ba64ef7645c10711f16db7f37997e67",
+ "quote_sha256": "de3acf1e147f843d9a20214ef829f4ee871470dbffb8352c6410c77e4fdf6d03",
+ "terms": {
+  "window_type": "window",
+  "window_days": 30,
+  "unit": "unspecified",
+  "clock_start": "notice",
+  "clock_start_text": "User receives notice of the change",
+  "remedy": "Stripe will not be obligated to provide the Services that rely on that Sub-processor",
+  "deemed_consent_if_silent": false,
+  "quote": "User may reasonably object to a change on legitimate grounds within 30 days after User receives notice of the change.",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}

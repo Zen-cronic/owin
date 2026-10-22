@@ -1,0 +1,178 @@
+{
+ "vendor": "openai",
+ "source_url": "https://web.archive.org/web/20261021154629/https://openai.com/policies/sub-processor-list/",
+ "retrieved": "2026-10-21T15:46:29Z",
+ "source_kind": "archive",
+ "last_updated": "October 14, 2026",
+ "entities": [
+  {
+   "name": "Cloudflare, Ltd.",
+   "key": "cloudflare",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "Processing is performed at the data center that is closest to the End User.For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected; processing region.",
+   "purpose": "Content delivery network provider",
+   "section": "table1"
+  },
+  {
+   "name": "Microsoft Corporation",
+   "key": "microsoft",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "Australia; Belgium; Brazil; Canada; Denmark; France; Germany; India; Indonesia; Ireland; Italy; Japan; Malaysia; Mexico; Netherlands; New Zealand; Norway; Poland; Singapore; South Africa; South Korea; Spain; Sweden; Switzerland; United Arab Emirates; United Kingdom; United States",
+   "purpose": "Cloud infrastructure",
+   "section": "table1"
+  },
+  {
+   "name": "CoreWeave, Inc.",
+   "key": "coreweave",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "Norway; Spain; Sweden; United Kingdom; United States",
+   "purpose": "Cloud infrastructure",
+   "section": "table1"
+  },
+  {
+   "name": "Oracle Cloud Infrastructure",
+   "key": "oracle cloud infrastructure",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "Brazil; Japan; Malaysia; Netherlands; United Kingdom; United States",
+   "purpose": "Cloud infrastructure",
+   "section": "table1"
+  },
+  {
+   "name": "Google Cloud Platform",
+   "key": "google cloud platform",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "Finland; Japan; Netherlands; Norway; Singapore; United Kingdom; United States",
+   "purpose": "Cloud infrastructure",
+   "section": "table1"
+  },
+  {
+   "name": "Amazon Web Services, Inc.",
+   "key": "amazon web services",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "United States",
+   "purpose": "Cloud infrastructure",
+   "section": "table1"
+  },
+  {
+   "name": "Cerebras",
+   "key": "cerebras",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "United States; Canada",
+   "purpose": "Cloud infrastructure",
+   "section": "table1"
+  },
+  {
+   "name": "Snowflake, Inc.",
+   "key": "snowflake",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "United States",
+   "purpose": "Data warehousing",
+   "section": "table1"
+  },
+  {
+   "name": "TaskUs, LLC",
+   "key": "taskus",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "Philippines",
+   "purpose": "All Services:; Customer supportAPI & ChatGPT Business:; Moderation of contentChatGPT Enterprise, Edu & ChatGPT Business:; Moderation of GPTs",
+   "section": "table1"
+  },
+  {
+   "name": "Salesforce",
+   "key": "salesforce",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "Australia; Brazil; Canada; France; Germany; India; Indonesia; Ireland; Italy; Japan; Singapore; South Africa; South Korea; Sweden; Switzerland; The Netherlands; United Arab Emirates; United Kingdom; United States",
+   "purpose": "Customer support",
+   "section": "table1"
+  },
+  {
+   "name": "Pylon Labs",
+   "key": "pylon labs",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu",
+   "locations": "United States",
+   "purpose": "Customer support",
+   "section": "table1"
+  },
+  {
+   "name": "Accenture International Limited",
+   "key": "accenture international",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "United States; Canada; Philippines",
+   "purpose": "Customer supportAPI & ChatGPT Business:; Moderation of content",
+   "section": "table1"
+  },
+  {
+   "name": "Fivetran, Inc.",
+   "key": "fivetran",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "United States",
+   "purpose": "ETL provider",
+   "section": "table1"
+  },
+  {
+   "name": "Cinder Technologies, Inc.",
+   "key": "cinder technologies",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "United States",
+   "purpose": "API & ChatGPT Business:; Platform for content moderationChatGPT Enterprise, Edu & ChatGPT Business:; Platform for moderation of GPTs",
+   "section": "table1"
+  },
+  {
+   "name": "WorkOS, Inc.",
+   "key": "workos",
+   "services": "ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "United States",
+   "purpose": "Cross-domain identity management",
+   "section": "table1"
+  },
+  {
+   "name": "Merge API, Inc.",
+   "key": "merge api",
+   "services": "ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "Australia; Canada; France; India; Ireland; Japan; Singapore; South Korea; Sweden; United Kingdom; United States",
+   "purpose": "Infrastructure management",
+   "section": "table1"
+  },
+  {
+   "name": "OpenAI, OpCo, LLC",
+   "key": "openai opco",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "United States",
+   "purpose": "Vendor affiliate (parent: OpenAI Global, LLC)",
+   "section": "table2"
+  },
+  {
+   "name": "OAI International, Inc.",
+   "key": "oai international",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "United States",
+   "purpose": "Vendor affiliate (parent: OpenAI, OpCo, LLC)",
+   "section": "table2"
+  },
+  {
+   "name": "OpenAI Ireland Ltd.",
+   "key": "openai ireland",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "Ireland",
+   "purpose": "Vendor affiliate (parent: OAI International, Inc.)",
+   "section": "table2"
+  },
+  {
+   "name": "OpenAI UK Ltd.",
+   "key": "openai uk",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "United Kingdom",
+   "purpose": "Vendor affiliate (parent: OAI International, Inc.)",
+   "section": "table2"
+  },
+  {
+   "name": "OpenAI Japan Ltd.",
+   "key": "openai japan",
+   "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+   "locations": "Japan",
+   "purpose": "Vendor affiliate (parent: OAI International, Inc.)",
+   "section": "table2"
+  }
+ ],
+ "content_sha256": "bdf4ca55874356bf115dd445b03fdda4ea450cfd92dcb72fdb2a6016b9a422a6"
+}

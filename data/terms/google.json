@@ -1,0 +1,23 @@
+{
+ "vendor": "google",
+ "kind": "labelled",
+ "source_url": "https://cloud.google.com/terms/data-processing-addendum",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202651-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "3f5c750300b8f48926bad5141fda53f966d8399f313ea8175ff632e27dd031ef",
+ "quote_sha256": "584cc20455a61f1d07e0f64f54b932942eb86b78762a59b9f60c509c4ffac3ce",
+ "terms": {
+  "window_type": "window",
+  "window_days": 90,
+  "unit": "unspecified",
+  "clock_start": "notice",
+  "clock_start_text": "being notified of the engagement of a New Subprocessor",
+  "remedy": "terminate the Agreement for convenience",
+  "deemed_consent_if_silent": false,
+  "quote": "Customer may, within 90 days after being notified of the engagement of a New Subprocessor, object by immediately terminating the applicable Agreement for convenience:",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}

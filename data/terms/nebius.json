@@ -1,0 +1,23 @@
+{
+ "vendor": "nebius",
+ "kind": "labelled",
+ "source_url": "https://docs.nebius.com/legal/dpa-inc",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202651-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "eaa4a445a24c3e12691088ff360069ed3ea34cd61f20257b727119121f988cd5",
+ "quote_sha256": "a5d3c0a957b634a1420de43bee043df6186dab503c0feb622377eb66904a8747",
+ "terms": {
+  "window_type": "window",
+  "window_days": 15,
+  "unit": "unspecified",
+  "clock_start": "notice",
+  "clock_start_text": "receipt of Nebius' notice of addition or replacement of a Sub-processor",
+  "remedy": "terminate the affected Services and receive a pro\u2011rata refund of prepaid, unused fees",
+  "deemed_consent_if_silent": false,
+  "quote": "Customer may object on reasonable data-protection grounds to the engagement of a new Sub-processor by providing written notice within that period.",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}

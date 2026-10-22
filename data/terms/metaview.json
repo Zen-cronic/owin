@@ -1,0 +1,23 @@
+{
+ "vendor": "metaview",
+ "kind": "heldout",
+ "source_url": "https://www.metaview.ai/data-processing-agreement",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202832-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "1105e7f8b9ace9a23f0ef9e1ad985da3ee2adb1734a199dd9de1eadad16d6ddb",
+ "quote_sha256": "3d3b2a2ef32e6aac9a0e0adf9fbeba43f5b0fc7ca9088ad4c2480c04a5a7c0a3",
+ "terms": {
+  "window_type": "window",
+  "window_days": 7,
+  "unit": "unspecified",
+  "clock_start": "notice",
+  "clock_start_text": "receipt of notice",
+  "remedy": "terminate the affected portion of the Services and obtain a refund of prepaid fees for the terminated Services",
+  "deemed_consent_if_silent": true,
+  "quote": "Any objection must be notified to Processor in writing within seven (7) days of the notice.",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}

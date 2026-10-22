@@ -1,0 +1,23 @@
+{
+ "vendor": "nvidia",
+ "kind": "labelled",
+ "source_url": "https://www.nvidia.com/en-us/agreements/data-processing-addendum/nvidia-cloud-services-data-processing-addendum",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202651-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "cdff97d1c70f0db61b17dcb30b8c48ab31a2a31afd535ae571068862097d4cbd",
+ "quote_sha256": "8234a035754ea290321fb0d4287079c1f3d694b9795b15e90caa509dad07ba8a",
+ "terms": {
+  "window_type": "window",
+  "window_days": 30,
+  "unit": "unspecified",
+  "clock_start": "notice",
+  "clock_start_text": "NVIDIA\u2019s notice of new Sub-Processor",
+  "remedy": "terminate the Agreement or cease using the Services",
+  "deemed_consent_if_silent": true,
+  "quote": "To object to a Sub-Processor, Customer can terminate the Agreement by providing a written notice to NVIDIA, which termination will take effect no later than 30 days from the date of NVIDIA\u2019s notice to Customer informing Customer of the new Sub-Processor.",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}

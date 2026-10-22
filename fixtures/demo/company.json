@@ -1,0 +1,123 @@
+{
+ "_label": "DEMO COMPANY (fictional). Vendor data, clauses and the change are real; this company, its DPA wording and its customers are invented for the replay.",
+ "name": "Lumen Notes Inc.",
+ "owner": {
+  "name": "Priya Raman",
+  "role": "CTO and privacy owner",
+  "email": "privacy@lumennotes.example"
+ },
+ "timezone": "America/Toronto",
+ "public_subprocessor_page": "https://lumennotes.example/legal/subprocessors",
+ "own_dpa": {
+  "url": "https://lumennotes.example/legal/dpa",
+  "notice_days": 30,
+  "flowdown": "lists_vendor_subprocessors",
+  "promise_quote": "Lumen will notify Customer by email at least thirty (30) days before any new Sub-processor, including any new sub-processor engaged by one of our Sub-processors, begins processing Customer Personal Data, and Customer may object within that period.",
+  "promise_template": "Lumen will notify Customer by email at least {words} ({n}) days before any new Sub-processor, including any new sub-processor engaged by one of our Sub-processors, begins processing Customer Personal Data, and Customer may object within that period."
+ },
+ "vendors": [
+  {
+   "vendor": "openai",
+   "display": "OpenAI",
+   "subscribed_to_notices": false,
+   "products_used": [
+    "API"
+   ],
+   "data_categories": [
+    "meeting transcripts",
+    "prompts"
+   ],
+   "purpose": "AI summaries of meeting transcripts",
+   "location": "United States",
+   "privacy_contact": "privacy@openai.com",
+   "features": [
+    "ai_summaries"
+   ]
+  },
+  {
+   "vendor": "anthropic",
+   "display": "Anthropic",
+   "subscribed_to_notices": true,
+   "products_used": [
+    "API"
+   ],
+   "data_categories": [
+    "prompts"
+   ],
+   "purpose": "Fallback model for summaries",
+   "location": "United States",
+   "privacy_contact": "privacy@anthropic.com",
+   "features": [
+    "ai_summaries_fallback"
+   ]
+  },
+  {
+   "vendor": "supabase",
+   "display": "Supabase",
+   "subscribed_to_notices": true,
+   "products_used": [
+    "Database"
+   ],
+   "data_categories": [
+    "account data",
+    "meeting metadata"
+   ],
+   "purpose": "Application database",
+   "location": "Canada",
+   "privacy_contact": "privacy@supabase.com",
+   "features": [
+    "core"
+   ]
+  }
+ ],
+ "customers": [
+  {
+   "id": "c1",
+   "name": "Northwind Health Partners",
+   "contact": "dpo@northwind.example",
+   "region": "Ontario",
+   "features": [
+    "core",
+    "ai_summaries"
+   ]
+  },
+  {
+   "id": "c2",
+   "name": "Maple Ledger Accounting",
+   "contact": "it@mapleledger.example",
+   "region": "Quebec",
+   "features": [
+    "core",
+    "ai_summaries"
+   ]
+  },
+  {
+   "id": "c3",
+   "name": "Brightline Recruiting",
+   "contact": "ops@brightline.example",
+   "region": "British Columbia",
+   "features": [
+    "core",
+    "ai_summaries"
+   ]
+  },
+  {
+   "id": "c4",
+   "name": "Harbour Legal LLP",
+   "contact": "privacy@harbourlegal.example",
+   "region": "Ontario",
+   "features": [
+    "core"
+   ]
+  },
+  {
+   "id": "c5",
+   "name": "Fieldnote Studios",
+   "contact": "hello@fieldnote.example",
+   "region": "Ontario",
+   "features": [
+    "core"
+   ]
+  }
+ ]
+}

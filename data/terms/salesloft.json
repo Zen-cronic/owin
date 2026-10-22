@@ -1,0 +1,23 @@
+{
+ "vendor": "salesloft",
+ "kind": "heldout",
+ "source_url": "https://www.salesloft.com/legal/data-processing-addendum",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202832-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "df414e215b4507ccf51b179f2661000c251cccdfd24e34e26de93c1fcaf4bb3e",
+ "quote_sha256": "4916246cee4b08088ff24e90b159e2605751a7c8c423cb82a1174e2ad6a04e6c",
+ "terms": {
+  "window_type": "window",
+  "window_days": 30,
+  "unit": "unspecified",
+  "clock_start": "notice",
+  "clock_start_text": "written notice to Customer of such intention (via email)",
+  "remedy": "terminate the Agreement on written notice",
+  "deemed_consent_if_silent": true,
+  "quote": "Customer will have thirty (30) days from such notice to object to the newly proposed Sub-Processor.",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}

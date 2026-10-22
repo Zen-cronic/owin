@@ -36,6 +36,38 @@ def cmd_fixtures(a) -> int:
     return 0
 
 
+def cmd_replay(a) -> int:
+    from datetime import datetime, timezone
+    from . import replay
+    as_of = datetime.now(timezone.utc) if a.as_of == "now" else (datetime.fromisoformat(a.as_of) if a.as_of else None)
+    who = {"name": a.who, "role": a.role} if a.who else None
+    ev = replay.run(a.id, as_of=as_of, promise_days=a.promise_days, decision=a.decide or None, decided_by=who)
+    if a.brief:
+        ev = {k: ev.get(k) for k in ("replay", "watch_state", "workflow_state", "headline", "flags", "actions", "clock",
+                                     "your_notice", "affected_customers", "decision_record")}
+    _print(ev)
+    return 0
+
+
+def cmd_terms(a) -> int:
+    from . import terms
+    _print({"wrote": [str(p.relative_to(terms.ROOT)) for p in terms.export()]})
+    return 0
+
+
+def cmd_snapshots(a) -> int:
+    from . import snapshots
+    _print({"wrote": [str(p.relative_to(snapshots.ROOT)) for p in snapshots.build()]})
+    return 0
+
+
+def cmd_serve(a) -> int:
+    from . import server
+    print(f"Owin debug server on http://{a.host}:{a.port}/", file=sys.stderr)
+    server.serve(a.host, a.port)
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="owin")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -51,6 +83,25 @@ def main(argv: list[str] | None = None) -> int:
     fx = sub.add_parser("fixtures", help="fixture provenance")
     fx.add_argument("action", choices=["manifest"])
     fx.set_defaults(fn=cmd_fixtures)
+    r = sub.add_parser("replay", help="seeded real historical change")
+    r.add_argument("--id", default="openai-2026-10-14")
+    r.add_argument("--promise-days", type=int, default=None, help="change one input: your promised customer notice")
+    r.add_argument("--as-of", default="", help="ISO time or 'now' (default: the after-snapshot time)")
+    r.add_argument("--decide", choices=["accepted", "objected", "dismissed"], default="")
+    r.add_argument("--who", default="")
+    r.add_argument("--role", default="privacy owner")
+    r.add_argument("--brief", action="store_true")
+    r.set_defaults(fn=cmd_replay)
+    t = sub.add_parser("terms", help="vendor terms registry")
+    t.add_argument("action", choices=["export"])
+    t.set_defaults(fn=cmd_terms)
+    sn = sub.add_parser("snapshots", help="entity snapshots from raw captures")
+    sn.add_argument("action", choices=["build"])
+    sn.set_defaults(fn=cmd_snapshots)
+    sv = sub.add_parser("serve", help="JSON API + debug page")
+    sv.add_argument("--host", default="127.0.0.1")
+    sv.add_argument("--port", type=int, default=8787)
+    sv.set_defaults(fn=cmd_serve)
     a = p.parse_args(argv)
     return a.fn(a)
 

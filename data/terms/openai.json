@@ -1,0 +1,23 @@
+{
+ "vendor": "openai",
+ "kind": "labelled",
+ "source_url": "https://web.archive.org/web/20261020000721/https://openai.com/policies/data-processing-addendum/",
+ "model": "nvidia/nemotron-3-super-120b-a12b",
+ "run_file": "eval/runs/20261021T202651-nemotron-3-super-120b-a12b.json",
+ "runs_agreeing": "3/3",
+ "source_sha256": "b3af8c25770be18a06a044037544005050a6970366cd6d03e0bf77cc50dd2212",
+ "quote_sha256": "078ecbe57b47f96ba951ec60b22a34beafdb4f309918e158e1d9e784a9c76b0f",
+ "terms": {
+  "window_type": "window",
+  "window_days": 30,
+  "unit": "unspecified",
+  "clock_start": "notice",
+  "clock_start_text": "receiving notice of the change",
+  "remedy": "terminate the Agreement and receive a refund of prepaid fees",
+  "deemed_consent_if_silent": false,
+  "quote": "Customer may object to the use of such additional Sub-processor within 30 days of receiving notice of the change by following the instructions set forth in the Sub-Processor List or by contacting privacy@openai.com.",
+  "quote_verbatim": true,
+  "status": "ok",
+  "hold_reasons": []
+ }
+}
