@@ -8,7 +8,7 @@ says nothing on that field, which is why the label is null or unspecified.
 ## Rules
 
 - **retention_days**: The longest stated period, in days, for which the vendor keeps customer content (prompts, outputs, files) from THIS feature under the default arrangement (no ZDR). Abuse-monitoring and reliability logs count. Content flagged as violating policy, legal holds and model-specific exceptions do not, unless the feature IS that case. 0 when the page says the content is not retained by default. null when content stays until the customer deletes it, when no number is stated, or when the page is silent. Years x 365.
-- **used_for_training**: yes = the page says this feature's content is used to train/improve models with no opt-out stated; opt_out = used by default but the customer can opt out; opt_in = not used unless the customer opts in, shares, or gives permission; no = not used, with no way to opt in mentioned; unspecified = the page does not say.
+- **used_for_training**: yes = the page says this feature's content is used to train/improve models with no opt-out stated; opt_out = used by default but the customer can opt out; opt_in = not used unless the customer opts in, shares, or gives permission; no = not used, with no way to opt in mentioned; unspecified = the page does not say. Product or service improvement counts as use: when the page says content may be used for product improvement (or training) by default and the customer can turn that off, the label is opt_out, even if a narrower use such as 'training other models' is separately opt-in. The label follows the broadest use that is on by default (rule added 2026-10-21 after the v2 run; it changed one label, together-serverless).
 - **zdr**: available = the page says zero data retention (or a named control under which the vendor stores no prompts/outputs, e.g. Azure 'modified abuse monitoring') can apply to this feature, including on approval; excluded = ZDR exists but this feature is not covered or cannot run under it; not_available = the vendor says it offers no ZDR; unspecified = the page does not say for this feature (a link elsewhere is not an answer).
 - **region**: Free text: where content is processed or stored, as the page states it. Not scored.
 - **third_party_access**: yes/no: whether the page says parties other than the vendor see the content. Not scored.
@@ -452,14 +452,14 @@ Together AI: Together serverless inference. Source: <https://docs.together.ai/do
 | field | label | justifying sentence (verbatim) |
 |---|---|---|
 | retention_days | `null` | By default, Together stores the prompts you send and the responses models return, and may use them for product improvements. |
-| used_for_training | `"opt_in"` | Data sharing for training other models is opt-in and not enabled by default. |
+| used_for_training | `"opt_out"` | By default, Together stores the prompts you send and the responses models return, and may use them for product improvements. |
 | zdr | `"available"` | Organization admins can turn storage off in privacy settings, which enables zero data retention (ZDR): request content is then not persisted or used for any secondary purpose. |
 | region (not scored) | `"no region selection for serverless endpoints"` | (page silent) |
 | third_party_access (not scored) | `"no"` | This data is not shared with third parties, and you can delete it at any time. |
 
 Retention condition: stored by default until the customer deletes it.
 
-Note: retention_days null: stored by default with no period ('you can delete it at any time'). 'product improvements' is not model training; training follows the explicit opt-in sentence.
+Note: retention_days null: stored by default with no period ('you can delete it at any time'). used_for_training relabelled opt_in -> opt_out on 2026-10-21 (A3, after the v2 run) under the explicit product-improvement rule: prompts may be used for product improvements by default and storage can be turned off; 'Data sharing for training other models is opt-in' covers a narrower use.
 
 ## fireworks-inference (heldout, split fresh)
 
@@ -560,6 +560,10 @@ Fireworks AI: Fireworks serverless inference (open models). Source: <https://doc
 | third_party_access (not scored) | `"unspecified"` | (page silent) |
 
 Note: Fresh negative control: a quickstart page whose only data-handling words are navigation links ('Zero Data Retention', 'Privacy'). Must return null/unspecified.
+
+## Labels changed after a model run
+
+- **together-serverless**: used_for_training opt_in -> opt_out (2026-10-21, A3). Together: 'By default, Together stores the prompts you send and the responses models return, and may use them for product improvements.' Storage can be turned off (ZDR). 'Data sharing for training other models is opt-in' is a narrower use. Rule: the broadest use that is on by default decides. The v2 prompt was not changed and the model answered opt_in 3/3, so this item now fails: v2 drops from 24/30 to 23/30.
 
 ## Label-rule tensions found after scoring (labels unchanged)
 

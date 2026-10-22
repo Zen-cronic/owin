@@ -432,5 +432,73 @@
    "chars": 19526,
    "sha256": "bae5bb95062a45ad3a958e891bf5d109234d9e2ba51ead463627a4387ecec229"
   }
+ },
+ "datause_tavily": {
+  "anthropic-batch": {
+   "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+   "file": "fixtures/raw/datause-tavily/anthropic-batch.md",
+   "fetched_at": "2026-10-22T01:23:45Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "source_kind": "tavily",
+   "latency_s": 0.12,
+   "chars": 29965,
+   "sha256": "38dffa6b96edfc00d48c5a3f8fe7d2a621bfc198e76c47419c20c19bf8a7515a",
+   "tavily_error": null
+  },
+  "anthropic-mcp-connector": {
+   "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+   "file": "fixtures/raw/datause-tavily/anthropic-mcp-connector.md",
+   "fetched_at": "2026-10-22T01:23:45Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "source_kind": "tavily",
+   "latency_s": 0.13,
+   "chars": 31051,
+   "sha256": "248e3bd6e879df4149124f268709b531e2e258d24bc42075d512d73606ef8676",
+   "tavily_error": null
+  },
+  "anthropic-retention": {
+   "url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+   "file": "fixtures/raw/datause-tavily/anthropic-retention.md",
+   "fetched_at": "2026-10-22T01:23:45Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "source_kind": "tavily",
+   "latency_s": 0.14,
+   "chars": 31929,
+   "sha256": "08f073090aa9c748f60e040ab70cfb4027a7947b6e55607793714b70607d17ca",
+   "tavily_error": null
+  },
+  "anthropic-subprocessors": {
+   "url": "https://trust.anthropic.com/subprocessors",
+   "file": "fixtures/raw/datause-tavily/anthropic-subprocessors.md",
+   "fetched_at": "2026-10-22T01:23:45Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "source_kind": "tavily",
+   "latency_s": 0.12,
+   "chars": 5923,
+   "sha256": "a5406ea1130dba152ff33e2a8842e8fbb277ac157b17fa538f5bfa7450853378",
+   "tavily_error": null
+  },
+  "openai-subprocessors": {
+   "url": "https://openai.com/policies/sub-processor-list/",
+   "file": "fixtures/raw/datause-tavily/openai-subprocessors.md",
+   "fetched_at": "2026-10-22T01:23:45Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "source_kind": "tavily",
+   "latency_s": 0.11,
+   "chars": 10769,
+   "sha256": "b0abc1a79482427d8559fa5690284b327ba8ec4508315b78ddc3c46e3710d0f3",
+   "tavily_error": null
+  },
+  "openai-your-data": {
+   "url": "https://developers.openai.com/api/docs/guides/your-data",
+   "file": "fixtures/raw/datause-tavily/openai-your-data.md",
+   "fetched_at": "2026-10-22T01:23:45Z",
+   "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+   "source_kind": "tavily",
+   "latency_s": 0.15,
+   "chars": 85489,
+   "sha256": "858c4dd6135c19f68cfe9572fbd32d5a8f85c2a77b2df25f6c387edac1c48de0",
+   "tavily_error": null
+  }
  }
 }

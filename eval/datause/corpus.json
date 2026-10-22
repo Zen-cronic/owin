@@ -1,5 +1,5 @@
 {
- "_about": "AI data-use terms per (vendor, feature), labelled 2026-10-21 by reading each fetched page. Scored: retention_days, used_for_training, zdr. Secondary (reported, not in the headline): retention_condition, region, third_party_access. Every non-empty evidence sentence is verbatim in the source (tests/test_a1_datause.py). split=heldout items were never used while writing or revising the prompt or the baseline. Label rules are in owin/datause/schema.py (LABEL_RULES).",
+ "_about": "AI data-use terms per (vendor, feature), labelled 2026-10-21 by reading each fetched page. Scored: retention_days, used_for_training, zdr. Secondary (reported, not in the headline): retention_condition, region, third_party_access. Every non-empty evidence sentence is verbatim in the source (tests/test_a1_datause.py). split=heldout items were never used while writing or revising the prompt or the baseline. Label rules are in owin/datause/schema.py (LABEL_RULES). Label changes after a model run are recorded per item in label_history and in RELABELS (owin/datause/evaluate.py); the pre-change score is kept in eval/datause/v2-before-relabel-score.json.",
  "items": [
   {
    "id": "openai-responses",
@@ -879,7 +879,7 @@
    "feature": "Together serverless inference",
    "gold": {
     "retention_days": null,
-    "used_for_training": "opt_in",
+    "used_for_training": "opt_out",
     "zdr": "available"
    },
    "secondary": {
@@ -889,17 +889,30 @@
    },
    "evidence": {
     "retention": "By default, Together stores the prompts you send and the responses models return, and may use them for product improvements.",
-    "training": "Data sharing for training other models is opt-in and not enabled by default.",
+    "training": "By default, Together stores the prompts you send and the responses models return, and may use them for product improvements.",
     "zdr": "Organization admins can turn storage off in privacy settings, which enables zero data retention (ZDR): request content is then not persisted or used for any secondary purpose.",
     "region": "",
     "third_party": "This data is not shared with third parties, and you can delete it at any time."
    },
-   "label_note": "retention_days null: stored by default with no period ('you can delete it at any time'). 'product improvements' is not model training; training follows the explicit opt-in sentence.",
+   "label_note": "retention_days null: stored by default with no period ('you can delete it at any time'). used_for_training relabelled opt_in -> opt_out on 2026-10-21 (A3, after the v2 run) under the explicit product-improvement rule: prompts may be used for product improvements by default and storage can be turned off; 'Data sharing for training other models is opt-in' covers a narrower use.",
    "split": "fresh",
    "url": "https://docs.together.ai/docs/privacy-and-security",
    "file": "fixtures/raw/datause/together-privacy.txt",
    "fetched_at": "2026-10-21T21:09:14-0400",
-   "source_sha256": "8c328a3f9f9d1ae16f046f29e552c5a150202bf0aa0f79b9329f7edebe0934de"
+   "source_sha256": "8c328a3f9f9d1ae16f046f29e552c5a150202bf0aa0f79b9329f7edebe0934de",
+   "label_history": [
+    {
+     "date": "2026-10-21",
+     "field": "used_for_training",
+     "from": "opt_in",
+     "to": "opt_out",
+     "why": "second-reader spot-check; rule 'product improvement by default counts as use' made explicit in LABEL_RULES",
+     "after_runs": [
+      "eval/datause/runs/20261021T210812-all-nemotron-3-super-120b-a12b.json",
+      "eval/datause/runs/20261021T211425-all-nemotron-3-super-120b-a12b.json"
+     ]
+    }
+   ]
   },
   {
    "id": "fireworks-inference",

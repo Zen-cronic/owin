@@ -92,3 +92,20 @@ def html_to_text(raw_html: str) -> str:
     t = re.sub(r"[ \t]+", " ", t)
     t = re.sub(r"\n\s*\n+", "\n\n", t)
     return t.strip()
+
+
+def table_form(text: str) -> str:
+    """match_form without table pipes and whitespace: a table row reads the same from HTML text and from markdown."""
+    return re.sub(r"[\s|]+", "", match_form(text))
+
+
+def is_present(quote: str, source: str) -> str | None:
+    """Re-check a previously validated quote against another capture of the same page.
+
+    Returns "verbatim" or "table_insensitive" (the same characters once table pipes and whitespace
+    are dropped), else None. Only used across captures; the extraction gate stays `is_verbatim`.
+    """
+    if is_verbatim(quote, source):
+        return "verbatim"
+    q = table_form(quote or "")
+    return "table_insensitive" if len(q) >= 16 and q in table_form(source) else None

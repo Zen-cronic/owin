@@ -239,6 +239,17 @@ POST_RUN_TENSIONS = [
 ]
 
 
+# Labels changed AFTER a recorded model run (each item also carries label_history). Disclosed, with the pre-change
+# score kept in eval/datause/v2-before-relabel-score.json.
+RELABELS = [
+    ("together-serverless", "used_for_training opt_in -> opt_out (2026-10-21, A3). Together: 'By default, Together stores the "
+                            "prompts you send and the responses models return, and may use them for product improvements.' "
+                            "Storage can be turned off (ZDR). 'Data sharing for training other models is opt-in' is a narrower "
+                            "use. Rule: the broadest use that is on by default decides. The v2 prompt was not changed and the "
+                            "model answered opt_in 3/3, so this item now fails: v2 drops from 24/30 to 23/30."),
+]
+
+
 def write_audit() -> Path:
     """Human-auditable labels: each field, its label, and the exact sentence that justifies it."""
     lines = ["# Label audit: AI data-use terms per feature", "",
@@ -262,6 +273,8 @@ def write_audit() -> Path:
             lines += ["", f"Retention condition: {s['retention_condition']}."]
         if it.get("label_note"):
             lines += ["", f"Note: {it['label_note']}"]
+    lines += ["", "## Labels changed after a model run", ""]
+    lines += [f"- **{k}**: {v}" for k, v in RELABELS]
     lines += ["", "## Label-rule tensions found after scoring (labels unchanged)", ""]
     lines += [f"- **{k}**: {v}" for k, v in POST_RUN_TENSIONS]
     AUDIT.write_text("\n".join(lines) + "\n")

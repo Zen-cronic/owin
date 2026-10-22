@@ -1,6 +1,6 @@
 # Owin
 
-**NVIDIA Nemotron Super on Nebius Token Factory read 30 real (AI vendor, feature) documentation pages (OpenAI, Anthropic, Google Gemini and Vertex, AWS Bedrock, Azure OpenAI, Groq, Mistral, Together, Fireworks) and got retention days, training use and ZDR status all exact, each with a verbatim quote, on 24 of 30 features. On a fresh held-out set labelled before the prompt was final it got 5 of 6. It held 7 of 7 pages that say nothing on the subject (21/21 runs) rather than guessing, at $0.005 and 11 s per successful run. A keyword baseline gets 7 of 30. Our first, pre-registered prompt scored 16 of 24 and failed our own 80% bar; the number above is repair attempt 1.** Recompute it with `owin eval score --corpus datause --brief`.
+**NVIDIA Nemotron Super on Nebius Token Factory read 30 real (AI vendor, feature) documentation pages (OpenAI, Anthropic, Google Gemini and Vertex, AWS Bedrock, Azure OpenAI, Groq, Mistral, Together, Fireworks) and got retention days, training use and ZDR status all exact, each with a verbatim quote, on 23 of 30 features. That is below our own 80% bar. It was 24 of 30 until a reviewer spot-check made one labelling rule explicit (product improvement on by default counts as use) and that rule changed one label after the run; we report the lower number. On a fresh held-out set labelled before the prompt was final it got 4 of 6. It held 7 of 7 pages that say nothing on the subject (21/21 runs) rather than guessing, at $0.005 and 11 s per successful run. A keyword baseline gets 7 of 30. Our first, pre-registered prompt scored 16 of 24.** Recompute it with `owin eval score --corpus datause --brief`.
 
 Owin moved (decision of 2026-10-21) from sub-processor notices to **AI data-use terms per feature**: for the AI endpoints a startup actually calls, what the vendor's own page says about retention, training use, zero data retention (ZDR) and region, each with the sentence that says it. The hero output is the AI section of a buyer's security questionnaire, filled in for your stack. The name is a codename for now.
 
@@ -10,13 +10,13 @@ Owin moved (decision of 2026-10-21) from sub-processor notices to **AI data-use 
 |---|---|---|
 | 13 tuned features (prompt written on these) | **13/13** features, 34/39 runs | |
 | 11 held-out features (labelled before any prompt; v1 misses were seen before v2, so not clean) | 6/11, 18/33 runs | 1/11 |
-| 6 fresh held-out features (Together, Fireworks, Vertex x3, Anthropic code execution; labelled before v2 existed) | **5/6**, 13/18 runs | 0/6 |
-| All 30 features | **24/30** (80%) | 7/30 |
+| 6 fresh held-out features (Together, Fireworks, Vertex x3, Anthropic code execution; labelled before v2 existed) | **4/6**, 10/18 runs (5/6 before the relabel) | 0/6 |
+| All 30 features | **23/30** (77%, below the 80% bar; 24/30 before the relabel) | 7/30 |
 | Pages that say nothing on the subject (rate limits, model lists, quickstarts) | **7/7 held**, 21/21 runs | 5/7 |
 | Pre-registered v1 prompt, first 24 features | 16/24: **failed** the 80% bar | 7/24 |
 
 - **Scored fields:** `retention_days`, `used_for_training` (yes / no / opt_in / opt_out / unspecified) and `zdr` (available / excluded / not_available / unspecified), per feature. An answer counts only if it matches the hand label. Every field the model asserts must quote the page **verbatim** (after markdown stripping), or code withholds that answer and marks it unspecified.
-- **Labels and their evidence:** `eval/datause/label-audit.md` lists every label with the sentence that justifies it, plus five label-rule tensions we found after scoring. We did not change any label after a model run. One person (the build agent) labelled everything; an independent spot-check is still owed.
+- **Labels and their evidence:** `eval/datause/label-audit.md` lists every label with the sentence that justifies it, plus five label-rule tensions we found after scoring. One label was changed after the run, on a reviewer's spot-check: Together says prompts "may be used for product improvements" by default, so `used_for_training` is now `opt_out`, not `opt_in` (rule in `owin/datause/schema.py`, before-score in `eval/datause/v2-before-relabel-score.json`). The prompt was not changed, and the model's `opt_in` answer now counts as a miss. One person (the build agent) labelled everything; an independent spot-check is still owed.
 - **The questionnaire catch is measured:** Anthropic's MCP connector "is not covered by ZDR arrangements" and Message Batches keep data 29 days. Both are exact in 3 of 3 runs.
 - **Cost** is from Token Factory usage on 111 calls ($0.435 in total, $0.30 / $0.90 per M tokens); p95 latency is 29 s.
 - Raw pages are gitignored. Their provenance (URL, fetch time, sha256) is in `fixtures/manifest.json` under `datause`, and `owin eval score --corpus datause` works without them (it then says `quotes_rechecked_against_source: false`).
@@ -26,6 +26,25 @@ owin eval score --corpus datause --brief      # recompute, no key
 owin eval audit --corpus datause              # rewrite eval/datause/label-audit.md
 owin eval run --corpus datause --runs 3       # live; needs TOKEN_FACTORY_API_KEY and fixtures/raw/datause/
 ```
+
+## The answer pack: your security review, per endpoint (A3)
+
+`owin pack build --format brief` (no key, no network). `owin serve`, then `GET /api/pack`, `GET /pack/print` or `POST /api/pack` with your own stack manifest.
+
+Input: a stack manifest (each endpoint mapped to a vendor feature, e.g. `/api/crm-sync -> anthropic-mcp-connector`), your own settings, and the answers your trust page already gives (`fixtures/demo/stack.json`, fictional Lumen Notes). Output: five questionnaire answers, each with a per-endpoint cell, the vendor's verbatim sentence, its link and fetch time, an as-of time and a badge. **Code computes every badge from structured fields; quotes and your answer text are never read by a rule (tested).**
+
+| | Badge | Why |
+|---|---|---|
+| 01 Training | Still true | All four endpoints: "never used for model training without your express permission" / OpenAI "not used to train or improve ... unless you explicitly opt in" |
+| 02 Retention | Held | Anthropic's MCP connector page states no period ("retained according to Anthropic's standard data retention policy") |
+| 03 ZDR | **Not true** | You say "zero data retention", but `/api/crm-sync` uses the MCP connector: "The MCP connector is not covered by ZDR arrangements." |
+| 04 Region | Held | The vendor pages state no default region; Owin never computes one from free text |
+| 05 Who sees it | Stale | OpenAI updated its sub-processor list on October 14, 2026 (was June 2), after the answer was written (2026-09-01). Real Wayback captures; Cloudflare's entry now names Cloudflare Regional Services, OAI International was added |
+
+- **Change one input:** `owin pack build --set /api/crm-sync=anthropic-messages` and Q03 becomes Still true.
+- **Exports:** CSV (one row per question and endpoint), a print-ready HTML in the light print tokens (print to PDF; A4), and a read-only share JSON for the live link. The buyer exports never contain the catch or the fix. Examples are in `examples/answer-pack/`.
+- **Tavily runs the evidence path:** `owin pack refresh` re-fetches every page the stack relies on with Tavily `extract` (no query, whole page), records sha256 and quote presence in `data/datause/observations.json`, and keeps the stdlib fetcher only as a labelled `urllib_fallback`. `owin pack extract` then runs Nemotron on those Tavily captures; on 2026-10-21 it reproduced the recorded values for all four demo features, 3/3 runs each.
+- **Stale means changed after you answered:** a sub-processor list whose entity table differs from the copy in effect when you wrote the answer, or a quoted sentence that is gone from the latest capture when the extraction on that capture does not reproduce the value. When Tavily serves an older copy (OpenAI's list, "July 9, 2026"), Owin holds that copy and does not use it.
 
 ## Previous subject: sub-processor objection windows (P1 to P3)
 
@@ -50,7 +69,7 @@ Owin (Objection Window) watches the vendors your startup uses. When one changes 
 `owin sweep --brief` fetches each vendor's list with Tavily `extract` (no query, whole page) and normalises it to an entity table. It then diffs that table against the last accepted snapshot. Owin reads four list formats: HTML tables (OpenAI), markdown tables, trust-centre cards (Anthropic's Vanta page, 20/20 entities) and linked rows (Stripe, 38). Cookie banners, nav, pagers, link syntax and bold text never produce a diff (tested).
 
 - **It catches stale data.** On 2026-10-21, Tavily returned OpenAI's list dated "July 9, 2026", while Wayback had "October 14, 2026" the same day. Owin marks that `stale_source`, holds, and keeps the newer state. A live "no change" needs a second, advanced-depth fetch that agrees.
-- **Without a Tavily key** (true on the build machine today), the sweep uses recorded Tavily fixtures and labels them `fixture`. Vendors with no fixture show as `unfetched` rather than as fake results. Recorded sweeps are in `eval/sweeps/`.
+- **Without a Tavily key**, the sweep uses recorded Tavily fixtures and labels them `fixture`. Vendors with no fixture show as `unfetched` rather than as fake results. Recorded sweeps are in `eval/sweeps/`.
 
 ## The number
 
@@ -76,8 +95,8 @@ pytest -q
 
 ## What we'll tell you before you find it
 
-- **Data-use number:** 30 features from 9 vendors is a small corpus, labelled by one agent, not independently. 80% sits exactly on our bar, from one 3-run sweep. The first prompt failed (16/24). The 11 original held-out items are no longer clean, because their v1 misses were read before v2 was written; only the 6 fresh items and the 7 negatives are clean tests of v2.
-- **Data-use pages were fetched by plain HTTP** (browser user agent, cookie jar) on 2026-10-21, not by Tavily: no Tavily key was available to the build agent. The pages are the vendors' own docs. Some describe products the reader may not recognise (for example GPT-6 and Claude Fable models); we report what the page said on the fetch date.
+- **Data-use number:** 30 features from 9 vendors is a small corpus, labelled by one agent, not independently. 23/30 is below our 80% bar, from one 3-run sweep, after one post-run relabel. The first prompt failed (16/24). The 11 original held-out items are no longer clean, because their v1 misses were read before v2 was written; only the 6 fresh items and the 7 negatives are clean tests of v2.
+- **The A1 data-use pages were fetched by plain HTTP** (browser user agent, cookie jar) on 2026-10-21. The answer pack's six demo pages were re-fetched with Tavily the same evening; A1 itself has not been re-scored on Tavily captures. The pages are the vendors' own docs. Some describe products the reader may not recognise (for example GPT-6 and Claude Fable models); we report what the page said on the fetch date.
 - **Training "no" vs "opt_in":** OpenAI's own table says "Data used for training: No" while its prose says "unless you explicitly opt in". Our label is `opt_in`, so a model giving the table's answer is scored wrong. Both mean "not used by default".
 - 17 documents is a small corpus. One person labelled them, by reading each clause.
 - The prompt and baseline were written after reading the first 10 clauses. Only the 7 held-out DPAs test generalisation.
@@ -88,7 +107,7 @@ pytest -q
 - Deadline rules that the documents do not settle are assumptions, and each one is listed in the output. Unspecified days count as calendar days. The deadline is end of day in the earlier of your timezone and UTC. Public holidays are not modelled. The vendor is assumed not to engage before its window closes.
 - A page diff is evidence, not legal notice.
 - What Tavily returned for OpenAI's list on 2026-10-21 was dated "July 9, 2026", while Wayback the same day shows "October 14, 2026". The Tavily result was probably cached. Owin re-fetches before it declares "no change".
-- The sweep has run live on recorded Tavily output for 5 of the 29 indexed vendors. The other list URLs answered HTTP 200 but have not been extracted yet, because no Tavily API key is on the build machine. Supabase's list is a PDF and only its date is diffable. Vercel's list is a JS widget and is not watchable.
+- The sweep has run live on recorded Tavily output for 5 of the 29 indexed vendors. A Tavily key has been on the build machine since 2026-10-21; a failed live extract now reports Tavily's own reason (for example Pinecone: "Failed to fetch url") instead of "no TAVILY_API_KEY". Supabase's list is a PDF and only its date is diffable. Vercel's list is a JS widget and is not watchable.
 - Owin drafts. It gives no legal advice and never says "compliant".
 
 License: MIT.

@@ -106,11 +106,14 @@ def run(*, live: bool = True, only: list[str] | None = None, record: Path | None
     for e in load_index():
         if only and e["vendor"] not in only:
             continue
-        if e["watch_mode"] in ("dpa_only", "list_in_dpa_appendix", "list_in_dpa_annex") or (not e.get("fixture") and not tavily.api_key()):
+        no_source = not e.get("fixture") and not (live and tavily.api_key())
+        if e["watch_mode"] in ("dpa_only", "list_in_dpa_appendix", "list_in_dpa_annex") or no_source:
+            unverified = e["watch_mode"].startswith("unverified")
+            why = ("no TAVILY_API_KEY and no recorded fixture" if not tavily.api_key()
+                   else "live fetch disabled (--no-live) and no recorded fixture")
             rows.append({"vendor": e["vendor"], "display": e["display"], "list_url": e["list_url"],
-                         "state": "unfetched" if e["watch_mode"].startswith("unverified") else "not_watchable",
-                         "reason": ("no TAVILY_API_KEY and no recorded fixture" if e["watch_mode"].startswith("unverified")
-                                    else f"watch_mode={e['watch_mode']}: watch the DPA itself")})
+                         "state": "unfetched" if unverified else "not_watchable",
+                         "reason": why if unverified else f"watch_mode={e['watch_mode']}: watch the DPA itself"})
             continue
         rows.append(sweep_one(e, live=live))
     counts: dict[str, int] = {}

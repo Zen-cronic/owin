@@ -142,7 +142,19 @@ def test_headline_recomputes_from_recorded_runs():
     res = dv.score(dv.headline_runs())
     committed = _committed_score()
     assert res["headline"] == committed["headline"]
-    assert res["acceptance"] == committed["acceptance"] and res["acceptance"]["passed"]
+    assert res["acceptance"] == committed["acceptance"]
+
+
+def test_relabel_is_disclosed_with_before_and_after():
+    """together-serverless opt_in -> opt_out (product-improvement rule, after the v2 run): 24/30 -> 23/30, below the bar."""
+    before = json.loads((ROOT / "eval" / "datause" / "v2-before-relabel-score.json").read_text())
+    after = dv.score(dv.headline_runs())
+    assert before["acceptance"]["positive_items_exact"] == "24/30" and before["acceptance"]["passed"]
+    assert after["acceptance"]["positive_items_exact"] == "23/30" and not after["acceptance"]["passed"]
+    assert after["headline"]["fresh_heldout"]["items_exact_majority"] == "4/6"
+    item = next(i for i in dv.load_corpus() if i["id"] == "together-serverless")
+    assert item["gold"]["used_for_training"] == "opt_out" and item["label_history"][0]["from"] == "opt_in"
+    assert any(k == "together-serverless" for k, _ in dv.RELABELS)
 
 
 def test_score_without_raw_fixtures_uses_recorded_validation(monkeypatch):

@@ -55,12 +55,18 @@ def extract(url: str, *, depth: str = "basic", key: str | None = None) -> Fetche
     t0 = time.time()
     try:
         d = _post("/extract", {"urls": [url], "extract_depth": depth, "format": "markdown"}, key)
+    except urllib.error.HTTPError as e:  # the status only; the body could echo request details
+        return Fetched(url, None, "unfetched", now, round(time.time() - t0, 2), f"tavily HTTP {e.code}")
     except (urllib.error.URLError, TimeoutError) as e:
-        return Fetched(url, None, "unfetched", now, round(time.time() - t0, 2), type(e).__name__)
+        return Fetched(url, None, "unfetched", now, round(time.time() - t0, 2), f"tavily {type(e).__name__}")
     res = (d.get("results") or [{}])[0]
     content = res.get("raw_content")
-    return Fetched(url, content, "tavily" if content else "unfetched", now, round(time.time() - t0, 2),
-                   None if content else "no raw_content")
+    if content:
+        return Fetched(url, content, "tavily", now, round(time.time() - t0, 2))
+    failed = (d.get("failed_results") or [{}])[0]
+    why = failed.get("error") if isinstance(failed, dict) else None
+    return Fetched(url, None, "unfetched", now, round(time.time() - t0, 2),
+                   "tavily returned no content" + (f": {str(why)[:120]}" if why else ""))
 
 
 def map_site(url: str, *, key: str | None = None) -> list[str]:
@@ -71,15 +77,27 @@ def map_site(url: str, *, key: str | None = None) -> list[str]:
 
 
 def fetch(entry: dict, *, live: bool = True) -> Fetched:
-    """Live Tavily when a key exists and live=True, else the recorded fixture (labelled)."""
+    """Live Tavily when a key exists and live=True, else the recorded fixture (labelled).
+
+    The reason for an unfetched result is the real one: a failed live call reports the Tavily
+    error, not "no key" (the P3 Pinecone row said "no TAVILY_API_KEY" while the key was present).
+    """
+    live_err = None
     if live and api_key():
         f = extract(entry["list_url"])
         if f.content:
             return f
+        live_err = f.error
     fx = entry.get("fixture")
     if fx and (ROOT / fx).exists():
         p = ROOT / fx
         return Fetched(entry["list_url"], p.read_text(), "fixture",
-                       time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(p.stat().st_mtime)))
-    return Fetched(entry["list_url"], None, "unfetched", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                   error="no TAVILY_API_KEY and no recorded fixture")
+                       time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(p.stat().st_mtime)),
+                       error=f"live fetch failed ({live_err}); using recorded fixture" if live_err else None)
+    if live_err:
+        reason = f"live Tavily fetch failed: {live_err}; no recorded fixture"
+    elif live:
+        reason = "no TAVILY_API_KEY and no recorded fixture"
+    else:
+        reason = "live fetch disabled (--no-live) and no recorded fixture"
+    return Fetched(entry["list_url"], None, "unfetched", time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), error=reason)

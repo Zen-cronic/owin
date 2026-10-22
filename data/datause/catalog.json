@@ -1,0 +1,111 @@
+{
+ "_about": "Feature catalog for the answer pack (A3). A stack manifest maps each endpoint to one feature id here. corpus_id links a feature to its labelled, scored A1 item; null means the feature's terms come from a live Tavily-fed extraction that is not in the scored corpus (labelled measured=false). inherits: vendor-wide statements that apply when this feature's own page is silent on that field (A1 prompt rule: 'Vendor-wide training statements apply to every feature of that API'). ZDR and retention are never inherited.",
+ "providers": {
+  "anthropic": {
+   "display": "Anthropic",
+   "subprocessor_page": "anthropic-subprocessors"
+  },
+  "openai": {
+   "display": "OpenAI",
+   "subprocessor_page": "openai-subprocessors"
+  }
+ },
+ "pages": {
+  "anthropic-retention": {
+   "url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+   "label": "Anthropic, API and data retention",
+   "kind": "datause",
+   "provider": "anthropic"
+  },
+  "anthropic-mcp-connector": {
+   "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+   "label": "Anthropic, MCP connector",
+   "kind": "datause",
+   "provider": "anthropic"
+  },
+  "anthropic-batch": {
+   "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+   "label": "Anthropic, batch processing",
+   "kind": "datause",
+   "provider": "anthropic"
+  },
+  "openai-your-data": {
+   "url": "https://developers.openai.com/api/docs/guides/your-data",
+   "label": "OpenAI, your data",
+   "kind": "datause",
+   "provider": "openai"
+  },
+  "openai-subprocessors": {
+   "url": "https://openai.com/policies/sub-processor-list/",
+   "label": "OpenAI, sub-processor list",
+   "kind": "subprocessor_list",
+   "provider": "openai"
+  },
+  "anthropic-subprocessors": {
+   "url": "https://trust.anthropic.com/subprocessors",
+   "label": "Anthropic, sub-processors",
+   "kind": "subprocessor_list",
+   "provider": "anthropic"
+  }
+ },
+ "features": {
+  "anthropic-messages": {
+   "provider": "anthropic",
+   "label": "Anthropic Messages API",
+   "feature": "Messages API (/v1/messages)",
+   "page": "anthropic-retention",
+   "corpus_id": "anthropic-messages",
+   "inherits": {},
+   "short": "Anthropic's Messages API"
+  },
+  "anthropic-batch": {
+   "provider": "anthropic",
+   "label": "Anthropic Message Batches",
+   "feature": "Message Batches API (/v1/messages/batches)",
+   "page": "anthropic-retention",
+   "corpus_id": "anthropic-batch",
+   "inherits": {},
+   "short": "Anthropic's Message Batches"
+  },
+  "anthropic-mcp-connector": {
+   "provider": "anthropic",
+   "label": "Anthropic Messages API with mcp_servers (MCP connector)",
+   "feature": "MCP connector (/v1/messages with mcp_servers)",
+   "page": "anthropic-mcp-connector",
+   "corpus_id": "anthropic-mcp-connector",
+   "inherits": {
+    "used_for_training": "anthropic-messages",
+    "region": "anthropic-messages",
+    "third_party_access": "anthropic-messages"
+   },
+   "short": "Anthropic's MCP connector"
+  },
+  "openai-embeddings": {
+   "provider": "openai",
+   "label": "OpenAI Embeddings",
+   "feature": "Embeddings API (/v1/embeddings)",
+   "page": "openai-your-data",
+   "corpus_id": null,
+   "inherits": {},
+   "short": "OpenAI Embeddings"
+  },
+  "openai-chat-completions": {
+   "provider": "openai",
+   "label": "OpenAI Chat Completions",
+   "feature": "Chat Completions API (/v1/chat/completions)",
+   "page": "openai-your-data",
+   "corpus_id": "openai-chat-completions",
+   "inherits": {},
+   "short": "OpenAI Chat Completions"
+  },
+  "openai-responses": {
+   "provider": "openai",
+   "label": "OpenAI Responses",
+   "feature": "Responses API (/v1/responses)",
+   "page": "openai-your-data",
+   "corpus_id": "openai-responses",
+   "inherits": {},
+   "short": "OpenAI Responses"
+  }
+ }
+}

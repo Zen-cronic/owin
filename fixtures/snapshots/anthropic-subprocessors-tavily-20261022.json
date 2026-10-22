@@ -1,0 +1,170 @@
+{
+ "vendor": "anthropic",
+ "source_url": "https://trust.anthropic.com/subprocessors",
+ "retrieved": "2026-10-22T01:23:45Z",
+ "source_kind": "tavily",
+ "last_updated": null,
+ "entities": [
+  {
+   "name": "Google Cloud Platform",
+   "key": "google cloud platform",
+   "services": "All Products",
+   "locations": "Worldwide",
+   "purpose": "Cloud infrastructure",
+   "section": "cards"
+  },
+  {
+   "name": "Amazon Web Services",
+   "key": "amazon web services",
+   "services": "All Products",
+   "locations": "Worldwide",
+   "purpose": "Cloud Infrastructure",
+   "section": "cards"
+  },
+  {
+   "name": "Microsoft Azure",
+   "key": "microsoft azure",
+   "services": "All Products",
+   "locations": "Worldwide",
+   "purpose": "Cloud Infrastructure",
+   "section": "cards"
+  },
+  {
+   "name": "Cloudflare",
+   "key": "cloudflare",
+   "services": "All Products",
+   "locations": "Worldwide (Local to Customer)",
+   "purpose": "Traffic Routing (CDN)",
+   "section": "cards"
+  },
+  {
+   "name": "Stripe",
+   "key": "stripe",
+   "services": "Claude Pro/Max, Claude Developer Platform, Claude for Work",
+   "locations": "United States",
+   "purpose": "Billing",
+   "section": "cards"
+  },
+  {
+   "name": "WorkOS",
+   "key": "workos",
+   "services": "Claude for Work, Claude Developer Platform",
+   "locations": "United States",
+   "purpose": "Security, Single Sign-On",
+   "section": "cards"
+  },
+  {
+   "name": "Intercom",
+   "key": "intercom",
+   "services": "All Products except Claude for Government",
+   "locations": "United States",
+   "purpose": "User support",
+   "section": "cards"
+  },
+  {
+   "name": "Nutun",
+   "key": "nutun",
+   "services": "All Products except Claude for Government",
+   "locations": "South Africa",
+   "purpose": "User support",
+   "section": "cards"
+  },
+  {
+   "name": "Boldr",
+   "key": "boldr",
+   "services": "All Products except Claude for Government",
+   "locations": "Canada",
+   "purpose": "User support",
+   "section": "cards"
+  },
+  {
+   "name": "Twilio",
+   "key": "twilio",
+   "services": "All Products except Claude for Government",
+   "locations": "United States",
+   "purpose": "Analytics, email/SMS communications",
+   "section": "cards"
+  },
+  {
+   "name": "Iterable",
+   "key": "iterable",
+   "services": "All Products except Claude for Government",
+   "locations": "United States",
+   "purpose": "Email communications",
+   "section": "cards"
+  },
+  {
+   "name": "Functional Software, dba Sentry",
+   "key": "functional software dba sentry",
+   "services": "All products except Claude for Government",
+   "locations": "United States",
+   "purpose": "Error Handling, User Support",
+   "section": "cards"
+  },
+  {
+   "name": "Sift",
+   "key": "sift",
+   "services": "All products except Claude for Government",
+   "locations": "United States",
+   "purpose": "Fraud and abuse detection",
+   "section": "cards"
+  },
+  {
+   "name": "Arkose Labs",
+   "key": "arkose labs",
+   "services": "All products except Claude for Government",
+   "locations": "United States",
+   "purpose": "Fraud and abuse detection",
+   "section": "cards"
+  },
+  {
+   "name": "Brave Search",
+   "key": "brave search",
+   "services": "All products",
+   "locations": "United States",
+   "purpose": "Web Search",
+   "section": "cards"
+  },
+  {
+   "name": "ElevenLabs",
+   "key": "elevenlabs",
+   "services": "Claude for Work",
+   "locations": "United States",
+   "purpose": "Text to speech",
+   "section": "cards"
+  },
+  {
+   "name": "Palantir Federal Cloud Service (PFCS)",
+   "key": "palantir federal cloud service",
+   "services": "Claude for Government (C4G)",
+   "locations": "United States",
+   "purpose": "FedRAMP Cloud",
+   "section": "cards"
+  },
+  {
+   "name": "TurboPuffer",
+   "key": "turbopuffer",
+   "services": "All Products except Claude for Government",
+   "locations": "United States",
+   "purpose": "Web Search",
+   "section": "cards"
+  },
+  {
+   "name": "Persona",
+   "key": "persona",
+   "services": "Claude Free/Pro/Max",
+   "locations": "United States",
+   "purpose": "Fraud and abuse detection, identity verification",
+   "section": "cards"
+  },
+  {
+   "name": "Yoti",
+   "key": "yoti",
+   "services": "Claude Free/Pro/Max",
+   "locations": "United Kingdom",
+   "purpose": "Fraud and abuse detection, identity verification",
+   "section": "cards"
+  }
+ ],
+ "content_sha256": "a5406ea1130dba152ff33e2a8842e8fbb277ac157b17fa538f5bfa7450853378"
+}

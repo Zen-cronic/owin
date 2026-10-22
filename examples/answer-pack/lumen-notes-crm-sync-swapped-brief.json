@@ -1,0 +1,79 @@
+{
+ "pack_id": "d41bd45fce53f65e",
+ "as_of_local": "2026-10-21 21:23 EDT",
+ "headline": {
+  "kicker": "1 stale",
+  "text": "No answer is contradicted by your 4 endpoints; 1 stale, 1 held."
+ },
+ "counts": {
+  "not_true": 0,
+  "stale": 1,
+  "held_unspecified": 1,
+  "still_true": 3
+ },
+ "badges": {
+  "Q01": "still_true",
+  "Q02": "still_true",
+  "Q03": "still_true",
+  "Q04": "held_unspecified",
+  "Q05": "stale"
+ },
+ "catch": null,
+ "answers": [
+  {
+   "id": "Q01",
+   "badge": "still_true",
+   "answer": "Holds on all 4 endpoints.",
+   "cells": {
+    "/api/crm-sync": "Not used unless you opt in",
+    "/api/summarize": "Not used unless you opt in",
+    "/api/digest": "Not used unless you opt in",
+    "/api/embed": "Not used unless you opt in"
+   }
+  },
+  {
+   "id": "Q02",
+   "badge": "still_true",
+   "answer": "Holds on all 4 endpoints.",
+   "cells": {
+    "/api/crm-sync": "Not retained",
+    "/api/summarize": "Not retained",
+    "/api/digest": "29 days",
+    "/api/embed": "Not retained under ZDR (30 days without)"
+   }
+  },
+  {
+   "id": "Q03",
+   "badge": "still_true",
+   "answer": "Holds on all 4 endpoints.",
+   "cells": {
+    "/api/crm-sync": "ZDR (your setting)",
+    "/api/summarize": "ZDR (your setting)",
+    "/api/digest": "Not covered by ZDR (disclosed exception)",
+    "/api/embed": "ZDR (your setting)"
+   }
+  },
+  {
+   "id": "Q04",
+   "badge": "held_unspecified",
+   "answer": "The vendor pages do not say for any of your endpoints, so Owin does not answer this question. Confirm your settings.",
+   "cells": {
+    "/api/crm-sync": "Page does not say",
+    "/api/summarize": "Page does not say",
+    "/api/digest": "Page does not say",
+    "/api/embed": "Page does not say"
+   }
+  },
+  {
+   "id": "Q05",
+   "badge": "stale",
+   "answer": "OpenAI updated its sub-processor list on October 14, 2026 (was June 2, 2026), after this answer was written (2026-09-01). Review the change.",
+   "cells": {
+    "/api/crm-sync": "Anthropic",
+    "/api/summarize": "Anthropic",
+    "/api/digest": "Anthropic",
+    "/api/embed": "OpenAI and its sub-processors"
+   }
+  }
+ ]
+}

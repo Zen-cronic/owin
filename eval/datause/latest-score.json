@@ -10,13 +10,13 @@
  "quotes_rechecked_against_source": true,
  "acceptance": {
   "rule": "positive items exact (majority of runs) >= 80% AND negative controls held >= 75%",
-  "positive_items_exact": "24/30",
+  "positive_items_exact": "23/30",
   "negative_items_held": "7/7",
-  "passed": true
+  "passed": false
  },
  "headline": {
-  "positive_items_exact_majority": "24/30",
-  "positive_runs_exact": "65/90",
+  "positive_items_exact_majority": "23/30",
+  "positive_runs_exact": "62/90",
   "tuned": {
    "items_exact_majority": "13/13",
    "runs_exact": "34/39"
@@ -26,16 +26,16 @@
    "runs_exact": "18/33"
   },
   "fresh_heldout": {
-   "items_exact_majority": "5/6",
-   "runs_exact": "13/18"
+   "items_exact_majority": "4/6",
+   "runs_exact": "10/18"
   },
   "negative_items_held": "7/7",
   "negative_runs_held": "21/21",
-  "raw_model_positive_runs_exact": "70/90",
+  "raw_model_positive_runs_exact": "67/90",
   "consistent_items": "25/37",
   "field_accuracy_positive_runs": {
    "retention_days": "81/90",
-   "used_for_training": "82/90",
+   "used_for_training": "79/90",
    "zdr": "77/90"
   },
   "baseline_positive_items_exact": "7/30",
@@ -49,12 +49,12 @@
   }
  },
  "per_successful_run": {
-  "successful_runs": 86,
+  "successful_runs": 83,
   "total_calls": 111,
   "errors": 1,
-  "mean_latency_s": 11.3,
+  "mean_latency_s": 11.37,
   "p95_latency_s": 28.83,
-  "cost_per_successful_run_usd": 0.00506,
+  "cost_per_successful_run_usd": 0.00524,
   "total_cost_usd": 0.43481,
   "tokens_in": 630876,
   "tokens_out": 272830

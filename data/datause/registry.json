@@ -1,0 +1,369 @@
+{
+ "_about": "Exported by `owin pack registry` from recorded runs only. The answer pack reads structured fields from here; quotes are display evidence and never decide an answer.",
+ "a1_run_files": [
+  "eval/datause/runs/20261021T211425-all-nemotron-3-super-120b-a12b.json"
+ ],
+ "live_run_files": [
+  "eval/datause/registry-runs/20261021T212728-tavily-nemotron-3-super-120b-a12b.json"
+ ],
+ "features": {
+  "anthropic-messages": {
+   "feature_id": "anthropic-messages",
+   "provider": "anthropic",
+   "label": "Anthropic Messages API",
+   "page": "anthropic-retention",
+   "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+   "corpus_id": "anthropic-messages",
+   "inherits": {},
+   "origin": "a1_recorded",
+   "measured": true,
+   "run_file": "eval/datause/runs/20261021T211425-all-nemotron-3-super-120b-a12b.json",
+   "runs_agreeing": "2/3",
+   "model": "nvidia/nemotron-3-super-120b-a12b",
+   "prompt_version": "v2",
+   "captured_at": "2026-10-21T20:49:39-0400",
+   "capture_kind": "urllib",
+   "source_sha256": "225d4668c86558ff0285296bd32e3be28bcd2689f18da5f18b1c324d57f73fae",
+   "terms": {
+    "retention_days": 0,
+    "used_for_training": "opt_in",
+    "zdr": "available",
+    "region": "unspecified",
+    "third_party_access": "unspecified",
+    "retention_quote": "Conversation content (your prompts and Claude's outputs) is not retained by default; the exception is Covered Models, which require 30-day retention.",
+    "training_quote": "Retained data is never used for model training without your express permission.",
+    "zdr_quote": "Messages API/v1/messagesYesYes",
+    "region_quote": "",
+    "third_party_quote": "",
+    "retention_condition": "not retained by default",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "live_check": {
+    "run_file": "eval/datause/registry-runs/20261021T212728-tavily-nemotron-3-super-120b-a12b.json",
+    "model": "nvidia/nemotron-3-super-120b-a12b",
+    "prompt_version": "v2",
+    "page_fetched_at": "2026-10-22T01:23:45Z",
+    "page_source_kind": "tavily",
+    "runs_agreeing": "3/3",
+    "values": {
+     "retention_days": 0,
+     "used_for_training": "opt_in",
+     "zdr": "available",
+     "region": "unspecified",
+     "third_party_access": "unspecified"
+    },
+    "quotes": {
+     "retention_days": "Conversation content (your prompts and Claude's outputs) is not retained by default; the exception is Covered Models, which require 30-day retention.",
+     "used_for_training": "Retained data is never used for model training without your express permission.",
+     "zdr": "| Messages API | /v1/messages | Yes | Yes | Standard API calls for generating Claude responses. |",
+     "region": "",
+     "third_party_access": ""
+    },
+    "agrees": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true
+    }
+   }
+  },
+  "anthropic-batch": {
+   "feature_id": "anthropic-batch",
+   "provider": "anthropic",
+   "label": "Anthropic Message Batches",
+   "page": "anthropic-retention",
+   "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+   "corpus_id": "anthropic-batch",
+   "inherits": {},
+   "origin": "a1_recorded",
+   "measured": true,
+   "run_file": "eval/datause/runs/20261021T211425-all-nemotron-3-super-120b-a12b.json",
+   "runs_agreeing": "3/3",
+   "model": "nvidia/nemotron-3-super-120b-a12b",
+   "prompt_version": "v2",
+   "captured_at": "2026-10-21T20:49:39-0400",
+   "capture_kind": "urllib",
+   "source_sha256": "225d4668c86558ff0285296bd32e3be28bcd2689f18da5f18b1c324d57f73fae",
+   "terms": {
+    "retention_days": 29,
+    "used_for_training": "opt_in",
+    "zdr": "excluded",
+    "region": "unspecified",
+    "third_party_access": "unspecified",
+    "retention_quote": "Batch processing/v1/messages/batchesNoNo29-day retention; async storage required. See Batch processing data retention.",
+    "training_quote": "Retained data is never used for model training without your express permission.",
+    "zdr_quote": "Batch processing/v1/messages/batchesNoNo29-day retention; async storage required. See Batch processing data retention.",
+    "region_quote": "",
+    "third_party_quote": "",
+    "retention_condition": "29-day retention",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "live_check": {
+    "run_file": "eval/datause/registry-runs/20261021T212728-tavily-nemotron-3-super-120b-a12b.json",
+    "model": "nvidia/nemotron-3-super-120b-a12b",
+    "prompt_version": "v2",
+    "page_fetched_at": "2026-10-22T01:23:45Z",
+    "page_source_kind": "tavily",
+    "runs_agreeing": "3/3",
+    "values": {
+     "retention_days": 29,
+     "used_for_training": "opt_in",
+     "zdr": "excluded",
+     "region": "unspecified",
+     "third_party_access": "unspecified"
+    },
+    "quotes": {
+     "retention_days": "| Batch processing | /v1/messages/batches | No | No | 29-day retention; async storage required. See Batch processing.",
+     "used_for_training": "  Retained data is never used for model training without your express permission.",
+     "zdr": "| Batch processing | /v1/messages/batches | No | No | 29-day retention; async storage required. See Batch processing.",
+     "region": "",
+     "third_party_access": ""
+    },
+    "agrees": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true
+    }
+   }
+  },
+  "anthropic-mcp-connector": {
+   "feature_id": "anthropic-mcp-connector",
+   "provider": "anthropic",
+   "label": "Anthropic Messages API with mcp_servers (MCP connector)",
+   "page": "anthropic-mcp-connector",
+   "source_url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+   "corpus_id": "anthropic-mcp-connector",
+   "inherits": {
+    "used_for_training": "anthropic-messages",
+    "region": "anthropic-messages",
+    "third_party_access": "anthropic-messages"
+   },
+   "origin": "a1_recorded",
+   "measured": true,
+   "run_file": "eval/datause/runs/20261021T211425-all-nemotron-3-super-120b-a12b.json",
+   "runs_agreeing": "2/3",
+   "model": "nvidia/nemotron-3-super-120b-a12b",
+   "prompt_version": "v2",
+   "captured_at": "2026-10-21T20:49:41-0400",
+   "capture_kind": "urllib",
+   "source_sha256": "16b1866a3d301d85655bd1141e71ef636fc282cfe77bd2be7e81ef90804b3f65",
+   "terms": {
+    "retention_days": null,
+    "used_for_training": "unspecified",
+    "zdr": "excluded",
+    "region": "unspecified",
+    "third_party_access": "unspecified",
+    "retention_quote": "",
+    "training_quote": "",
+    "zdr_quote": "The MCP connector is not covered by ZDR arrangements.",
+    "region_quote": "",
+    "third_party_quote": "",
+    "retention_condition": "unspecified",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": false,
+     "zdr": true,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "live_check": {
+    "run_file": "eval/datause/registry-runs/20261021T212728-tavily-nemotron-3-super-120b-a12b.json",
+    "model": "nvidia/nemotron-3-super-120b-a12b",
+    "prompt_version": "v2",
+    "page_fetched_at": "2026-10-22T01:23:45Z",
+    "page_source_kind": "tavily",
+    "runs_agreeing": "3/3",
+    "values": {
+     "retention_days": null,
+     "used_for_training": "unspecified",
+     "zdr": "excluded",
+     "region": "unspecified",
+     "third_party_access": "unspecified"
+    },
+    "quotes": {
+     "retention_days": "",
+     "used_for_training": "",
+     "zdr": "The MCP connector is not covered by ZDR arrangements.",
+     "region": "",
+     "third_party_access": ""
+    },
+    "agrees": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true
+    }
+   }
+  },
+  "openai-embeddings": {
+   "feature_id": "openai-embeddings",
+   "provider": "openai",
+   "label": "OpenAI Embeddings",
+   "page": "openai-your-data",
+   "source_url": "https://developers.openai.com/api/docs/guides/your-data",
+   "corpus_id": null,
+   "inherits": {},
+   "origin": "tavily_extraction",
+   "measured": false,
+   "run_file": "eval/datause/registry-runs/20261021T212728-tavily-nemotron-3-super-120b-a12b.json",
+   "runs_agreeing": "3/3",
+   "model": "nvidia/nemotron-3-super-120b-a12b",
+   "prompt_version": "v2",
+   "captured_at": "2026-10-22T01:23:45Z",
+   "capture_kind": "tavily",
+   "source_sha256": "858c4dd6135c19f68cfe9572fbd32d5a8f85c2a77b2df25f6c387edac1c48de0",
+   "terms": {
+    "retention_days": 30,
+    "used_for_training": "opt_in",
+    "zdr": "available",
+    "region": "unspecified",
+    "third_party_access": "yes",
+    "retention_quote": "By default, abuse monitoring logs are generated for all API feature usage and retained for up to 30 days, unless longer retention is required by law, or is reasonably necessary to protect our services or any third party from harm.",
+    "training_quote": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
+    "zdr_quote": "| /v1/embeddings | No | 30 days | None | Yes | No |",
+    "region_quote": "",
+    "third_party_quote": "OpenAI uses sub-processors to provide its services. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected processing region.",
+    "retention_condition": "abuse logs 30 days",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true,
+     "region": true,
+     "third_party_access": true
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "live_check": {
+    "run_file": "eval/datause/registry-runs/20261021T212728-tavily-nemotron-3-super-120b-a12b.json",
+    "model": "nvidia/nemotron-3-super-120b-a12b",
+    "prompt_version": "v2",
+    "page_fetched_at": "2026-10-22T01:23:45Z",
+    "page_source_kind": "tavily",
+    "runs_agreeing": "3/3",
+    "values": {
+     "retention_days": 30,
+     "used_for_training": "opt_in",
+     "zdr": "available",
+     "region": "unspecified",
+     "third_party_access": "yes"
+    },
+    "quotes": {
+     "retention_days": "By default, abuse monitoring logs are generated for all API feature usage and retained for up to 30 days, unless longer retention is required by law, or is reasonably necessary to protect our services or any third party from harm.",
+     "used_for_training": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
+     "zdr": "| /v1/embeddings | No | 30 days | None | Yes | No |",
+     "region": "",
+     "third_party_access": "OpenAI uses sub-processors to provide its services. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected processing region."
+    },
+    "agrees": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true
+    }
+   }
+  },
+  "openai-chat-completions": {
+   "feature_id": "openai-chat-completions",
+   "provider": "openai",
+   "label": "OpenAI Chat Completions",
+   "page": "openai-your-data",
+   "source_url": "https://developers.openai.com/api/docs/guides/your-data",
+   "corpus_id": "openai-chat-completions",
+   "inherits": {},
+   "origin": "a1_recorded",
+   "measured": true,
+   "run_file": "eval/datause/runs/20261021T211425-all-nemotron-3-super-120b-a12b.json",
+   "runs_agreeing": "3/3",
+   "model": "nvidia/nemotron-3-super-120b-a12b",
+   "prompt_version": "v2",
+   "captured_at": "2026-10-21T20:49:39-0400",
+   "capture_kind": "urllib",
+   "source_sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7",
+   "terms": {
+    "retention_days": 30,
+    "used_for_training": "opt_in",
+    "zdr": "available",
+    "region": "unspecified",
+    "third_party_access": "unspecified",
+    "retention_quote": "/v1/chat/completions\nNo\n30 days\nNone, see below for exceptions\nYes, see below for limitations\nYes, see below for limitations",
+    "training_quote": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
+    "zdr_quote": "Additionally, Zero Data Retention changes some endpoint behavior: the store parameter for /v1/responses and v1/chat/completions will always be treated as false, even if the request attempts to set the value to true.",
+    "region_quote": "",
+    "third_party_quote": "",
+    "retention_condition": "abuse monitoring logs 30 days",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true,
+     "region": true,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   }
+  },
+  "openai-responses": {
+   "feature_id": "openai-responses",
+   "provider": "openai",
+   "label": "OpenAI Responses",
+   "page": "openai-your-data",
+   "source_url": "https://developers.openai.com/api/docs/guides/your-data",
+   "corpus_id": "openai-responses",
+   "inherits": {},
+   "origin": "a1_recorded",
+   "measured": true,
+   "run_file": "eval/datause/runs/20261021T211425-all-nemotron-3-super-120b-a12b.json",
+   "runs_agreeing": "2/3",
+   "model": "nvidia/nemotron-3-super-120b-a12b",
+   "prompt_version": "v2",
+   "captured_at": "2026-10-21T20:49:39-0400",
+   "capture_kind": "urllib",
+   "source_sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7",
+   "terms": {
+    "retention_days": 30,
+    "used_for_training": "opt_in",
+    "zdr": "available",
+    "region": "United States, Europe (EEA + Switzerland), United Arab Emirates",
+    "third_party_access": "yes",
+    "retention_quote": "Abuse monitoring logs may contain certain customer content, such as prompts and responses, as well as metadata derived from that customer content, such as classifier outputs. By default, abuse monitoring logs are generated for all API feature usage and retained for up to 30 days, unless longer retention is required by law, or is reasonably necessary to protect our services or any third party from harm.",
+    "training_quote": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
+    "zdr_quote": "/v1/responses\nNo\n30 days\nNone, see below for exceptions\nYes, see below for limitations\nYes, see below for limitations",
+    "region_quote": "/v1/responses\nResponses\nAll listed regions\nUnited States, Europe (EEA + Switzerland), United Arab Emirates",
+    "third_party_quote": "MCP servers (used with the remote MCP server tool) are third-party services, and data sent to an MCP server is subject to their data retention policies.",
+    "retention_condition": "30 days",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true,
+     "region": true,
+     "third_party_access": true
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   }
+  }
+ }
+}

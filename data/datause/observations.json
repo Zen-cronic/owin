@@ -1,0 +1,203 @@
+{
+ "pages": {
+  "anthropic-retention": {
+   "observations": [
+    {
+     "observed_at": "2026-10-22T00:49:39Z",
+     "source_kind": "urllib",
+     "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+     "url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+     "sha256": "225d4668c86558ff0285296bd32e3be28bcd2689f18da5f18b1c324d57f73fae",
+     "chars": 29537,
+     "quotes_present": {
+      "73f9c9906d7ad952": "verbatim",
+      "0ecaaed33d3cb49a": "verbatim",
+      "941c1e5e47b4d9d9": "verbatim",
+      "ecdac620c0ae552c": "table_insensitive",
+      "05067289fef46e89": "verbatim",
+      "2c81866dfc902b02": null
+     }
+    },
+    {
+     "observed_at": "2026-10-22T01:23:45Z",
+     "source_kind": "tavily",
+     "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+     "url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+     "sha256": "08f073090aa9c748f60e040ab70cfb4027a7947b6e55607793714b70607d17ca",
+     "chars": 31929,
+     "quotes_present": {
+      "73f9c9906d7ad952": "verbatim",
+      "0ecaaed33d3cb49a": "verbatim",
+      "941c1e5e47b4d9d9": "table_insensitive",
+      "ecdac620c0ae552c": "verbatim",
+      "05067289fef46e89": null,
+      "2c81866dfc902b02": "verbatim"
+     }
+    }
+   ],
+   "url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+   "kind": "datause",
+   "label": "Anthropic, API and data retention",
+   "provider": "anthropic"
+  },
+  "anthropic-mcp-connector": {
+   "observations": [
+    {
+     "observed_at": "2026-10-22T00:49:41Z",
+     "source_kind": "urllib",
+     "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+     "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+     "sha256": "16b1866a3d301d85655bd1141e71ef636fc282cfe77bd2be7e81ef90804b3f65",
+     "chars": 25806,
+     "quotes_present": {
+      "a97e2a0824f56fc4": "verbatim"
+     }
+    },
+    {
+     "observed_at": "2026-10-22T01:23:45Z",
+     "source_kind": "tavily",
+     "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+     "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+     "sha256": "248e3bd6e879df4149124f268709b531e2e258d24bc42075d512d73606ef8676",
+     "chars": 31051,
+     "quotes_present": {
+      "a97e2a0824f56fc4": "verbatim"
+     }
+    }
+   ],
+   "url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+   "kind": "datause",
+   "label": "Anthropic, MCP connector",
+   "provider": "anthropic"
+  },
+  "anthropic-batch": {
+   "observations": [
+    {
+     "observed_at": "2026-10-22T00:49:40Z",
+     "source_kind": "urllib",
+     "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+     "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+     "sha256": "e3d2d31a1179f948c56d9ef779d73e2a34857dc8226c08c43976629ed3a86f38",
+     "chars": 27996,
+     "quotes_present": {}
+    },
+    {
+     "observed_at": "2026-10-22T01:23:45Z",
+     "source_kind": "tavily",
+     "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+     "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+     "sha256": "38dffa6b96edfc00d48c5a3f8fe7d2a621bfc198e76c47419c20c19bf8a7515a",
+     "chars": 29965,
+     "quotes_present": {}
+    }
+   ],
+   "url": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+   "kind": "datause",
+   "label": "Anthropic, batch processing",
+   "provider": "anthropic"
+  },
+  "openai-your-data": {
+   "observations": [
+    {
+     "observed_at": "2026-10-22T00:49:39Z",
+     "source_kind": "urllib",
+     "method": "urllib GET (browser UA, cookie jar) + owin.textnorm.html_to_text",
+     "url": "https://developers.openai.com/api/docs/guides/your-data",
+     "sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7",
+     "chars": 67831,
+     "quotes_present": {
+      "f2bbd25c33067a99": "verbatim",
+      "e9f2a425406c641c": "verbatim",
+      "fa8c46f6ce50d0a9": "table_insensitive",
+      "e9794a7c31893030": "verbatim",
+      "c18e360ddb124f6c": "verbatim",
+      "706595c4150f4cec": "verbatim",
+      "e6ad723372251e91": "verbatim",
+      "53dae04a9337dfc1": "verbatim",
+      "86be41f752bc8d6e": "verbatim",
+      "fc73da46915db9c7": "verbatim"
+     }
+    },
+    {
+     "observed_at": "2026-10-22T01:23:45Z",
+     "source_kind": "tavily",
+     "method": "tavily extract (no query, extract_depth=basic, format=markdown)",
+     "url": "https://developers.openai.com/api/docs/guides/your-data",
+     "sha256": "858c4dd6135c19f68cfe9572fbd32d5a8f85c2a77b2df25f6c387edac1c48de0",
+     "chars": 85489,
+     "quotes_present": {
+      "f2bbd25c33067a99": "verbatim",
+      "e9f2a425406c641c": "verbatim",
+      "fa8c46f6ce50d0a9": "verbatim",
+      "e9794a7c31893030": "verbatim",
+      "c18e360ddb124f6c": "table_insensitive",
+      "706595c4150f4cec": "verbatim",
+      "e6ad723372251e91": "verbatim",
+      "53dae04a9337dfc1": "table_insensitive",
+      "86be41f752bc8d6e": "table_insensitive",
+      "fc73da46915db9c7": "verbatim"
+     }
+    }
+   ],
+   "url": "https://developers.openai.com/api/docs/guides/your-data",
+   "kind": "datause",
+   "label": "OpenAI, your data",
+   "provider": "openai"
+  },
+  "openai-subprocessors": {
+   "observations": [
+    {
+     "observed_at": "2026-07-08T12:09:59Z",
+     "source_kind": "archive",
+     "url": "https://web.archive.org/web/20260708120959/https://openai.com/policies/sub-processor-list/",
+     "sha256": "1daf9f16c406fffd31ae11a6ec9f376c9626a37c60b1472820ec0bc037f3ab7d",
+     "snapshot": "fixtures/snapshots/openai-list-20260708.json",
+     "last_updated": "June 2, 2026",
+     "entities": 24
+    },
+    {
+     "observed_at": "2026-10-21T15:46:29Z",
+     "source_kind": "archive",
+     "url": "https://web.archive.org/web/20261021154629/https://openai.com/policies/sub-processor-list/",
+     "sha256": "bdf4ca55874356bf115dd445b03fdda4ea450cfd92dcb72fdb2a6016b9a422a6",
+     "snapshot": "fixtures/snapshots/openai-list-20261021.json",
+     "last_updated": "October 14, 2026",
+     "entities": 21
+    },
+    {
+     "observed_at": "2026-10-22T01:23:45Z",
+     "source_kind": "tavily",
+     "url": "https://openai.com/policies/sub-processor-list/",
+     "sha256": "b0abc1a79482427d8559fa5690284b327ba8ec4508315b78ddc3c46e3710d0f3",
+     "snapshot": "fixtures/snapshots/openai-subprocessors-tavily-20261022.json",
+     "last_updated": "July 9, 2026",
+     "entities": 24,
+     "held": "stale_source: Tavily served 'Last updated July 9, 2026', older than an accepted capture; held, not used as the latest"
+    }
+   ],
+   "url": "https://openai.com/policies/sub-processor-list/",
+   "kind": "subprocessor_list",
+   "label": "OpenAI, sub-processor list",
+   "provider": "openai"
+  },
+  "anthropic-subprocessors": {
+   "observations": [
+    {
+     "observed_at": "2026-10-22T01:23:45Z",
+     "source_kind": "tavily",
+     "url": "https://trust.anthropic.com/subprocessors",
+     "sha256": "a5406ea1130dba152ff33e2a8842e8fbb277ac157b17fa538f5bfa7450853378",
+     "snapshot": "fixtures/snapshots/anthropic-subprocessors-tavily-20261022.json",
+     "last_updated": null,
+     "entities": 20
+    }
+   ],
+   "url": "https://trust.anthropic.com/subprocessors",
+   "kind": "subprocessor_list",
+   "label": "Anthropic, sub-processors",
+   "provider": "anthropic"
+  }
+ },
+ "_about": "Recorded by `owin pack refresh`. Hashes and quote-presence only; page text stays in gitignored fixtures/raw/. quotes_present maps a quote id (sha256 of its match form, 16 hex) to 'verbatim', 'table_insensitive' or null (gone).",
+ "recorded_at": "2026-10-22T01:29:16Z"
+}

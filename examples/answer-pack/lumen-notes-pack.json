@@ -1,0 +1,772 @@
+{
+ "type": "owin.answer_pack",
+ "version": 1,
+ "pack_id": "8b69cf5f51f82a2a",
+ "company": "Lumen Notes Inc.",
+ "label": "DEMO COMPANY (fictional). Lumen Notes, its endpoints, settings and trust-page answers are invented for the replay. Every vendor sentence, URL and fetch time is real and comes from data/datause/registry.json and data/datause/observations.json.",
+ "stated_at": "2026-09-01",
+ "stated_source": "Lumen Notes trust page, AI and data section (fictional), last edited 2026-09-01",
+ "as_of": "2026-10-22T01:23:45Z",
+ "as_of_local": "2026-10-21 21:23 EDT",
+ "stack": {
+  "endpoints": [
+   {
+    "path": "/api/crm-sync",
+    "feature": "anthropic-mcp-connector",
+    "provider": "anthropic",
+    "provider_display": "Anthropic",
+    "label": "Anthropic Messages API with mcp_servers (MCP connector)",
+    "short": "Anthropic's MCP connector",
+    "purpose": "Writes call summaries into the customer's CRM through an MCP server"
+   },
+   {
+    "path": "/api/summarize",
+    "feature": "anthropic-messages",
+    "provider": "anthropic",
+    "provider_display": "Anthropic",
+    "label": "Anthropic Messages API",
+    "short": "Anthropic's Messages API",
+    "purpose": "Summarises meeting transcripts"
+   },
+   {
+    "path": "/api/digest",
+    "feature": "anthropic-batch",
+    "provider": "anthropic",
+    "provider_display": "Anthropic",
+    "label": "Anthropic Message Batches",
+    "short": "Anthropic's Message Batches",
+    "purpose": "Nightly digest of the day's meetings"
+   },
+   {
+    "path": "/api/embed",
+    "feature": "openai-embeddings",
+    "provider": "openai",
+    "provider_display": "OpenAI",
+    "label": "OpenAI Embeddings",
+    "short": "OpenAI Embeddings",
+    "purpose": "Embeds transcripts for search"
+   }
+  ],
+  "providers": [
+   "anthropic",
+   "openai"
+  ]
+ },
+ "counts": {
+  "not_true": 1,
+  "stale": 1,
+  "held_unspecified": 2,
+  "still_true": 1
+ },
+ "headline": {
+  "kicker": "1 not true · 1 stale",
+  "text": "Your trust page says “zero data retention”, but /api/crm-sync calls Anthropic's MCP connector, which is outside ZDR."
+ },
+ "catch": {
+  "question": "Q03",
+  "number": "03",
+  "endpoint": "/api/crm-sync",
+  "feature": "anthropic-mcp-connector",
+  "sentence": "Your trust page says “zero data retention”, but /api/crm-sync calls Anthropic's MCP connector, which is outside ZDR.",
+  "quote": "The MCP connector is not covered by ZDR arrangements.",
+  "source_url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+  "source_label": "Anthropic, MCP connector",
+  "fetched_at": "2026-10-22T01:23:45Z",
+  "fetched_at_local": "2026-10-21 21:23 EDT",
+  "primary": "Fix answer 3",
+  "secondary": "Draft trust-page change",
+  "not_true_answers": 1,
+  "fix": {
+   "claim": {
+    "zdr": true,
+    "exceptions": [
+     "/api/crm-sync",
+     "/api/digest"
+    ]
+   },
+   "text": "Yes, except: /api/crm-sync (Anthropic Messages API with mcp_servers (MCP connector), not covered by zdr); /api/digest (Anthropic Message Batches, not covered by zdr (disclosed exception))."
+  }
+ },
+ "answers": [
+  {
+   "id": "Q01",
+   "number": "01",
+   "question": "Is our data used to train AI models?",
+   "field": "used_for_training",
+   "stated": {
+    "text": "No. Customer data is never used to train AI models.",
+    "claim": {
+     "training": "not_used"
+    }
+   },
+   "badge": "still_true",
+   "badge_label": "Still true",
+   "answer": "Holds on all 4 endpoints.",
+   "as_of": "2026-10-22T01:23:45Z",
+   "as_of_local": "2026-10-21 21:23 EDT",
+   "cells": [
+    {
+     "endpoint": "/api/crm-sync",
+     "feature": "anthropic-mcp-connector",
+     "feature_label": "Anthropic Messages API with mcp_servers (MCP connector)",
+     "feature_short": "Anthropic's MCP connector",
+     "provider": "anthropic",
+     "vendor_value": "opt_in",
+     "value_label": "Not used unless you opt in",
+     "verdict": "holds",
+     "reason": null,
+     "quote": "Retained data is never used for model training without your express permission.",
+     "quote_display": "Retained data is never used for model training without your express permission.",
+     "quote_presence": "verbatim",
+     "reanchored": null,
+     "source_label": "Anthropic, API and data retention",
+     "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": "anthropic-messages",
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/summarize",
+     "feature": "anthropic-messages",
+     "feature_label": "Anthropic Messages API",
+     "feature_short": "Anthropic's Messages API",
+     "provider": "anthropic",
+     "vendor_value": "opt_in",
+     "value_label": "Not used unless you opt in",
+     "verdict": "holds",
+     "reason": null,
+     "quote": "Retained data is never used for model training without your express permission.",
+     "quote_display": "Retained data is never used for model training without your express permission.",
+     "quote_presence": "verbatim",
+     "reanchored": null,
+     "source_label": "Anthropic, API and data retention",
+     "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/digest",
+     "feature": "anthropic-batch",
+     "feature_label": "Anthropic Message Batches",
+     "feature_short": "Anthropic's Message Batches",
+     "provider": "anthropic",
+     "vendor_value": "opt_in",
+     "value_label": "Not used unless you opt in",
+     "verdict": "holds",
+     "reason": null,
+     "quote": "Retained data is never used for model training without your express permission.",
+     "quote_display": "Retained data is never used for model training without your express permission.",
+     "quote_presence": "verbatim",
+     "reanchored": null,
+     "source_label": "Anthropic, API and data retention",
+     "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/embed",
+     "feature": "openai-embeddings",
+     "feature_label": "OpenAI Embeddings",
+     "feature_short": "OpenAI Embeddings",
+     "provider": "openai",
+     "vendor_value": "opt_in",
+     "value_label": "Not used unless you opt in",
+     "verdict": "holds",
+     "reason": null,
+     "quote": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
+     "quote_display": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
+     "quote_presence": "verbatim",
+     "reanchored": null,
+     "source_label": "OpenAI, your data",
+     "source_url": "https://developers.openai.com/api/docs/guides/your-data",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": false,
+     "origin": "tavily_extraction"
+    }
+   ],
+   "stale_events": [],
+   "endpoints_holding": 4,
+   "endpoints": 4
+  },
+  {
+   "id": "Q02",
+   "number": "02",
+   "question": "How long do AI providers retain our data?",
+   "field": "retention_days",
+   "stated": {
+    "text": "Our AI providers keep prompts and outputs for at most 30 days.",
+    "claim": {
+     "max_retention_days": 30
+    }
+   },
+   "badge": "held_unspecified",
+   "badge_label": "Held · unspecified",
+   "answer": "Holds for 3 of 4 endpoints. The vendor's page does not say for /api/crm-sync, so Owin does not answer for it. Confirm your settings.",
+   "as_of": "2026-10-22T01:23:45Z",
+   "as_of_local": "2026-10-21 21:23 EDT",
+   "cells": [
+    {
+     "endpoint": "/api/crm-sync",
+     "feature": "anthropic-mcp-connector",
+     "feature_label": "Anthropic Messages API with mcp_servers (MCP connector)",
+     "feature_short": "Anthropic's MCP connector",
+     "provider": "anthropic",
+     "vendor_value": null,
+     "value_label": "No period stated",
+     "verdict": "held",
+     "reason": "the vendor's page states no retention period for this feature",
+     "quote": "",
+     "quote_display": "",
+     "quote_presence": null,
+     "reanchored": null,
+     "source_label": "Anthropic, MCP connector",
+     "source_url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/summarize",
+     "feature": "anthropic-messages",
+     "feature_label": "Anthropic Messages API",
+     "feature_short": "Anthropic's Messages API",
+     "provider": "anthropic",
+     "vendor_value": 0,
+     "value_label": "Not retained",
+     "verdict": "holds",
+     "reason": null,
+     "quote": "Conversation content (your prompts and Claude's outputs) is not retained by default; the exception is Covered Models, which require 30-day retention.",
+     "quote_display": "Conversation content (your prompts and Claude's outputs) is not retained by default; the exception is Covered Models, which require 30-day retention.",
+     "quote_presence": "verbatim",
+     "reanchored": null,
+     "source_label": "Anthropic, API and data retention",
+     "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/digest",
+     "feature": "anthropic-batch",
+     "feature_label": "Anthropic Message Batches",
+     "feature_short": "Anthropic's Message Batches",
+     "provider": "anthropic",
+     "vendor_value": 29,
+     "value_label": "29 days",
+     "verdict": "holds",
+     "reason": null,
+     "quote": "| Batch processing | /v1/messages/batches | No | No | 29-day retention; async storage required. See Batch processing.",
+     "quote_display": "Batch processing · /v1/messages/batches · No · No · 29-day retention; async storage required. See Batch processing.",
+     "quote_presence": "verbatim",
+     "reanchored": "the urllib sentence renders differently in the tavily capture; the extraction on that capture gives the same value, so its sentence is shown",
+     "source_label": "Anthropic, API and data retention",
+     "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/embed",
+     "feature": "openai-embeddings",
+     "feature_label": "OpenAI Embeddings",
+     "feature_short": "OpenAI Embeddings",
+     "provider": "openai",
+     "vendor_value": 30,
+     "value_label": "Not retained under ZDR (30 days without)",
+     "verdict": "holds",
+     "reason": null,
+     "quote": "By default, abuse monitoring logs are generated for all API feature usage and retained for up to 30 days, unless longer retention is required by law, or is reasonably necessary to protect our services or any third party from harm.",
+     "quote_display": "By default, abuse monitoring logs are generated for all API feature usage and retained for up to 30 days, unless longer retention is required by law, or is reasonably necessary to protect our services or any third party from harm.",
+     "quote_presence": "verbatim",
+     "reanchored": null,
+     "source_label": "OpenAI, your data",
+     "source_url": "https://developers.openai.com/api/docs/guides/your-data",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": false,
+     "origin": "tavily_extraction"
+    }
+   ],
+   "stale_events": [],
+   "endpoints_holding": 3,
+   "endpoints": 4
+  },
+  {
+   "id": "Q03",
+   "number": "03",
+   "question": "Do you have zero data retention with your AI providers?",
+   "field": "zdr",
+   "stated": {
+    "text": "Yes. We use zero data retention with our AI providers. Exception: nightly digests (/api/digest) use Anthropic Message Batches, kept up to 29 days.",
+    "claim": {
+     "zdr": true,
+     "exceptions": [
+      "/api/digest"
+     ]
+    }
+   },
+   "badge": "not_true",
+   "badge_label": "Not true",
+   "answer": "You answer “Yes. We use zero data retention with our AI providers. Exception: nightly digests (/api/digest) use Anthropic Message Batches, kept up to 29 days.” That holds for 3 of 4 endpoints, not for /api/crm-sync.",
+   "as_of": "2026-10-22T01:23:45Z",
+   "as_of_local": "2026-10-21 21:23 EDT",
+   "cells": [
+    {
+     "endpoint": "/api/crm-sync",
+     "feature": "anthropic-mcp-connector",
+     "feature_label": "Anthropic Messages API with mcp_servers (MCP connector)",
+     "feature_short": "Anthropic's MCP connector",
+     "provider": "anthropic",
+     "vendor_value": "excluded",
+     "value_label": "Not covered by ZDR",
+     "verdict": "contradicts",
+     "reason": null,
+     "quote": "The MCP connector is not covered by ZDR arrangements.",
+     "quote_display": "The MCP connector is not covered by ZDR arrangements.",
+     "quote_presence": "verbatim",
+     "reanchored": null,
+     "source_label": "Anthropic, MCP connector",
+     "source_url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/summarize",
+     "feature": "anthropic-messages",
+     "feature_label": "Anthropic Messages API",
+     "feature_short": "Anthropic's Messages API",
+     "provider": "anthropic",
+     "vendor_value": "available",
+     "value_label": "ZDR (your setting)",
+     "verdict": "holds",
+     "reason": null,
+     "quote": "| Messages API | /v1/messages | Yes | Yes | Standard API calls for generating Claude responses. |",
+     "quote_display": "Messages API · /v1/messages · Yes · Yes · Standard API calls for generating Claude responses.",
+     "quote_presence": "verbatim",
+     "reanchored": "the urllib sentence renders differently in the tavily capture; the extraction on that capture gives the same value, so its sentence is shown",
+     "source_label": "Anthropic, API and data retention",
+     "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/digest",
+     "feature": "anthropic-batch",
+     "feature_label": "Anthropic Message Batches",
+     "feature_short": "Anthropic's Message Batches",
+     "provider": "anthropic",
+     "vendor_value": "excluded",
+     "value_label": "Not covered by ZDR (disclosed exception)",
+     "verdict": "disclosed",
+     "reason": null,
+     "quote": "| Batch processing | /v1/messages/batches | No | No | 29-day retention; async storage required. See Batch processing.",
+     "quote_display": "Batch processing · /v1/messages/batches · No · No · 29-day retention; async storage required. See Batch processing.",
+     "quote_presence": "verbatim",
+     "reanchored": "the urllib sentence renders differently in the tavily capture; the extraction on that capture gives the same value, so its sentence is shown",
+     "source_label": "Anthropic, API and data retention",
+     "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/embed",
+     "feature": "openai-embeddings",
+     "feature_label": "OpenAI Embeddings",
+     "feature_short": "OpenAI Embeddings",
+     "provider": "openai",
+     "vendor_value": "available",
+     "value_label": "ZDR (your setting)",
+     "verdict": "holds",
+     "reason": null,
+     "quote": "| /v1/embeddings | No | 30 days | None | Yes | No |",
+     "quote_display": "/v1/embeddings · No · 30 days · None · Yes · No",
+     "quote_presence": "verbatim",
+     "reanchored": null,
+     "source_label": "OpenAI, your data",
+     "source_url": "https://developers.openai.com/api/docs/guides/your-data",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": false,
+     "origin": "tavily_extraction"
+    }
+   ],
+   "stale_events": [],
+   "endpoints_holding": 3,
+   "endpoints": 4
+  },
+  {
+   "id": "Q04",
+   "number": "04",
+   "question": "Where is our data processed?",
+   "field": "region",
+   "stated": {
+    "text": "In the United States.",
+    "claim": {
+     "regions": [
+      "United States"
+     ]
+    }
+   },
+   "badge": "held_unspecified",
+   "badge_label": "Held · unspecified",
+   "answer": "The vendor pages do not say for any of your endpoints, so Owin does not answer this question. Confirm your settings.",
+   "as_of": "2026-10-22T01:23:45Z",
+   "as_of_local": "2026-10-21 21:23 EDT",
+   "cells": [
+    {
+     "endpoint": "/api/crm-sync",
+     "feature": "anthropic-mcp-connector",
+     "feature_label": "Anthropic Messages API with mcp_servers (MCP connector)",
+     "feature_short": "Anthropic's MCP connector",
+     "provider": "anthropic",
+     "vendor_value": "unspecified",
+     "value_label": "Page does not say",
+     "verdict": "held",
+     "reason": "the vendor's page does not state a default region; confirm your settings",
+     "quote": "",
+     "quote_display": "",
+     "quote_presence": null,
+     "reanchored": null,
+     "source_label": "Anthropic, MCP connector",
+     "source_url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/summarize",
+     "feature": "anthropic-messages",
+     "feature_label": "Anthropic Messages API",
+     "feature_short": "Anthropic's Messages API",
+     "provider": "anthropic",
+     "vendor_value": "unspecified",
+     "value_label": "Page does not say",
+     "verdict": "held",
+     "reason": "the vendor's page does not state a default region; confirm your settings",
+     "quote": "",
+     "quote_display": "",
+     "quote_presence": null,
+     "reanchored": null,
+     "source_label": "Anthropic, API and data retention",
+     "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/digest",
+     "feature": "anthropic-batch",
+     "feature_label": "Anthropic Message Batches",
+     "feature_short": "Anthropic's Message Batches",
+     "provider": "anthropic",
+     "vendor_value": "unspecified",
+     "value_label": "Page does not say",
+     "verdict": "held",
+     "reason": "the vendor's page does not state a default region; confirm your settings",
+     "quote": "",
+     "quote_display": "",
+     "quote_presence": null,
+     "reanchored": null,
+     "source_label": "Anthropic, API and data retention",
+     "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/embed",
+     "feature": "openai-embeddings",
+     "feature_label": "OpenAI Embeddings",
+     "feature_short": "OpenAI Embeddings",
+     "provider": "openai",
+     "vendor_value": "unspecified",
+     "value_label": "Page does not say",
+     "verdict": "held",
+     "reason": "the vendor's page does not state a default region; confirm your settings",
+     "quote": "",
+     "quote_display": "",
+     "quote_presence": null,
+     "reanchored": null,
+     "source_label": "OpenAI, your data",
+     "source_url": "https://developers.openai.com/api/docs/guides/your-data",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": false,
+     "origin": "tavily_extraction"
+    }
+   ],
+   "stale_events": [],
+   "endpoints_holding": 0,
+   "endpoints": 4
+  },
+  {
+   "id": "Q05",
+   "number": "05",
+   "question": "Which AI providers see our data?",
+   "field": "third_party_access",
+   "stated": {
+    "text": "Anthropic and OpenAI, under their published sub-processor lists.",
+    "claim": {
+     "providers": [
+      "anthropic",
+      "openai"
+     ],
+     "includes_subprocessors": true
+    }
+   },
+   "badge": "stale",
+   "badge_label": "Stale",
+   "answer": "OpenAI updated its sub-processor list on October 14, 2026 (was June 2, 2026), after this answer was written (2026-09-01). Review the change.",
+   "as_of": "2026-10-22T01:23:45Z",
+   "as_of_local": "2026-10-21 21:23 EDT",
+   "cells": [
+    {
+     "endpoint": "/api/crm-sync",
+     "feature": "anthropic-mcp-connector",
+     "feature_label": "Anthropic Messages API with mcp_servers (MCP connector)",
+     "feature_short": "Anthropic's MCP connector",
+     "provider": "anthropic",
+     "vendor_value": "unspecified",
+     "value_label": "Anthropic",
+     "verdict": "holds",
+     "reason": null,
+     "quote": "",
+     "quote_display": "",
+     "quote_presence": null,
+     "reanchored": null,
+     "source_label": "Anthropic, MCP connector",
+     "source_url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/summarize",
+     "feature": "anthropic-messages",
+     "feature_label": "Anthropic Messages API",
+     "feature_short": "Anthropic's Messages API",
+     "provider": "anthropic",
+     "vendor_value": "unspecified",
+     "value_label": "Anthropic",
+     "verdict": "holds",
+     "reason": null,
+     "quote": "",
+     "quote_display": "",
+     "quote_presence": null,
+     "reanchored": null,
+     "source_label": "Anthropic, API and data retention",
+     "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/digest",
+     "feature": "anthropic-batch",
+     "feature_label": "Anthropic Message Batches",
+     "feature_short": "Anthropic's Message Batches",
+     "provider": "anthropic",
+     "vendor_value": "unspecified",
+     "value_label": "Anthropic",
+     "verdict": "holds",
+     "reason": null,
+     "quote": "",
+     "quote_display": "",
+     "quote_presence": null,
+     "reanchored": null,
+     "source_label": "Anthropic, API and data retention",
+     "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": true,
+     "origin": "a1_recorded"
+    },
+    {
+     "endpoint": "/api/embed",
+     "feature": "openai-embeddings",
+     "feature_label": "OpenAI Embeddings",
+     "feature_short": "OpenAI Embeddings",
+     "provider": "openai",
+     "vendor_value": "yes",
+     "value_label": "OpenAI and its sub-processors",
+     "verdict": "holds",
+     "reason": null,
+     "quote": "OpenAI uses sub-processors to provide its services. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected processing region.",
+     "quote_display": "OpenAI uses sub-processors to provide its services. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected processing region.",
+     "quote_presence": "verbatim",
+     "reanchored": null,
+     "source_label": "OpenAI, your data",
+     "source_url": "https://developers.openai.com/api/docs/guides/your-data",
+     "fetched_at": "2026-10-22T01:23:45Z",
+     "fetched_at_local": "2026-10-21 21:23 EDT",
+     "fetched_via": "tavily",
+     "inherited_from": null,
+     "measured": false,
+     "origin": "tavily_extraction",
+     "stale": true,
+     "list_source": {
+      "label": "OpenAI, sub-processor list",
+      "url": "https://openai.com/policies/sub-processor-list/",
+      "last_updated": "October 14, 2026",
+      "was": "June 2, 2026",
+      "captured": "https://web.archive.org/web/20261021154629/https://openai.com/policies/sub-processor-list/"
+     }
+    }
+   ],
+   "stale_events": [
+    {
+     "kind": "list_changed",
+     "page": "openai-subprocessors",
+     "before": {
+      "observed_at": "2026-07-08T12:09:59Z",
+      "last_updated": "June 2, 2026",
+      "url": "https://web.archive.org/web/20260708120959/https://openai.com/policies/sub-processor-list/",
+      "source_kind": "archive",
+      "sha256": "1daf9f16c406fffd31ae11a6ec9f376c9626a37c60b1472820ec0bc037f3ab7d"
+     },
+     "after": {
+      "observed_at": "2026-10-21T15:46:29Z",
+      "last_updated": "October 14, 2026",
+      "url": "https://web.archive.org/web/20261021154629/https://openai.com/policies/sub-processor-list/",
+      "source_kind": "archive",
+      "sha256": "bdf4ca55874356bf115dd445b03fdda4ea450cfd92dcb72fdb2a6016b9a422a6"
+     },
+     "added": [
+      "OAI International, Inc."
+     ],
+     "removed": [
+      "Confluent",
+      "Intercom, Inc.",
+      "Okta, Inc.",
+      "OpenAI, LLC"
+     ],
+     "changed": [
+      "Cloudflare, Ltd.",
+      "Fivetran, Inc.",
+      "Google Cloud Platform",
+      "Microsoft Corporation",
+      "OpenAI Ireland Ltd.",
+      "OpenAI Japan Ltd.",
+      "OpenAI UK Ltd."
+     ],
+     "example": {
+      "entity": "Cloudflare, Ltd.",
+      "kind": "changed",
+      "fields": [
+       "locations",
+       "purpose"
+      ],
+      "after_cells": {
+       "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+       "locations": "Processing is performed at the data center that is closest to the End User.For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected; processing region.",
+       "purpose": "Content delivery network provider"
+      }
+     },
+     "held_observations": [
+      {
+       "observed_at": "2026-10-22T01:23:45Z",
+       "source_kind": "tavily",
+       "last_updated": "July 9, 2026",
+       "held": "stale_source: Tavily served 'Last updated July 9, 2026', older than an accepted capture; held, not used as the latest"
+      }
+     ],
+     "provider": "openai",
+     "provider_display": "OpenAI",
+     "endpoint": "/api/embed"
+    }
+   ],
+   "endpoints_holding": 4,
+   "endpoints": 4
+  }
+ ],
+ "order": [
+  "Q03",
+  "Q05",
+  "Q02",
+  "Q04",
+  "Q01"
+ ],
+ "watch": {
+  "pages": [
+   "https://developers.openai.com/api/docs/guides/your-data",
+   "https://openai.com/policies/sub-processor-list/",
+   "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
+   "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
+   "https://trust.anthropic.com/subprocessors"
+  ],
+  "pages_watched": 5,
+  "last_checked": "2026-10-22T01:23:45Z",
+  "last_checked_local": "2026-10-21 21:23 EDT"
+ },
+ "settings": {
+  "_label": "The startup's own account settings, as the startup states them (an assumption of this replay; Owin cannot see vendor consoles).",
+  "zdr_enabled": {
+   "anthropic": true,
+   "openai": true
+  },
+  "region": {}
+ },
+ "provenance": {
+  "registry": "data/datause/registry.json",
+  "observations": "data/datause/observations.json",
+  "rules": "owin/datause/pack.py (code only; quotes and stated text are never read by a rule)"
+ }
+}

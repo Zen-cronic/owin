@@ -45,7 +45,11 @@ LABEL_RULES = {
     "used_for_training": ("yes = the page says this feature's content is used to train/improve models with no opt-out "
                           "stated; opt_out = used by default but the customer can opt out; opt_in = not used unless the "
                           "customer opts in, shares, or gives permission; no = not used, with no way to opt in "
-                          "mentioned; unspecified = the page does not say."),
+                          "mentioned; unspecified = the page does not say. Product or service improvement counts as use: "
+                          "when the page says content may be used for product improvement (or training) by default and "
+                          "the customer can turn that off, the label is opt_out, even if a narrower use such as 'training "
+                          "other models' is separately opt-in. The label follows the broadest use that is on by default "
+                          "(rule added 2026-10-21 after the v2 run; it changed one label, together-serverless)."),
     "zdr": ("available = the page says zero data retention (or a named control under which the vendor stores no "
             "prompts/outputs, e.g. Azure 'modified abuse monitoring') can apply to this feature, including on approval; "
             "excluded = ZDR exists but this feature is not covered or cannot run under it; not_available = the vendor "

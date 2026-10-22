@@ -1,0 +1,79 @@
+{
+ "_label": "DEMO COMPANY (fictional). Lumen Notes, its endpoints, settings and trust-page answers are invented for the replay. Every vendor sentence, URL and fetch time is real and comes from data/datause/registry.json and data/datause/observations.json.",
+ "company": "Lumen Notes Inc.",
+ "endpoints": [
+  {
+   "path": "/api/crm-sync",
+   "feature": "anthropic-mcp-connector",
+   "purpose": "Writes call summaries into the customer's CRM through an MCP server"
+  },
+  {
+   "path": "/api/summarize",
+   "feature": "anthropic-messages",
+   "purpose": "Summarises meeting transcripts"
+  },
+  {
+   "path": "/api/digest",
+   "feature": "anthropic-batch",
+   "purpose": "Nightly digest of the day's meetings"
+  },
+  {
+   "path": "/api/embed",
+   "feature": "openai-embeddings",
+   "purpose": "Embeds transcripts for search"
+  }
+ ],
+ "settings": {
+  "_label": "The startup's own account settings, as the startup states them (an assumption of this replay; Owin cannot see vendor consoles).",
+  "zdr_enabled": {
+   "anthropic": true,
+   "openai": true
+  },
+  "region": {}
+ },
+ "stated": {
+  "stated_at": "2026-09-01",
+  "source": "Lumen Notes trust page, AI and data section (fictional), last edited 2026-09-01",
+  "answers": {
+   "Q01": {
+    "text": "No. Customer data is never used to train AI models.",
+    "claim": {
+     "training": "not_used"
+    }
+   },
+   "Q02": {
+    "text": "Our AI providers keep prompts and outputs for at most 30 days.",
+    "claim": {
+     "max_retention_days": 30
+    }
+   },
+   "Q03": {
+    "text": "Yes. We use zero data retention with our AI providers. Exception: nightly digests (/api/digest) use Anthropic Message Batches, kept up to 29 days.",
+    "claim": {
+     "zdr": true,
+     "exceptions": [
+      "/api/digest"
+     ]
+    }
+   },
+   "Q04": {
+    "text": "In the United States.",
+    "claim": {
+     "regions": [
+      "United States"
+     ]
+    }
+   },
+   "Q05": {
+    "text": "Anthropic and OpenAI, under their published sub-processor lists.",
+    "claim": {
+     "providers": [
+      "anthropic",
+      "openai"
+     ],
+     "includes_subprocessors": true
+    }
+   }
+  }
+ }
+}

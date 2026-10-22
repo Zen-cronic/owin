@@ -101,6 +101,54 @@ def cmd_sweep(a) -> int:
     return 0
 
 
+def _pack_manifest(a) -> dict:
+    from .datause import pack
+    m = json.loads(Path(a.stack).read_text()) if a.stack else pack.load_demo()
+    for s in a.set or []:
+        path, _, feature = s.partition("=")
+        m = pack.set_feature(m, path, feature)
+    return m
+
+
+def cmd_pack(a) -> int:
+    from .datause import export, observations, pack, registry
+    if a.action == "refresh":
+        cat = registry.load_catalog()
+        pages = a.pages.split(",") if a.pages else sorted(cat["pages"])
+        _print(observations.refresh(pages, fetch=a.fetch))
+        return 0
+    if a.action == "registry":
+        _print({"wrote": str(registry.export().relative_to(registry.ROOT))})
+        return 0
+    if a.action == "extract":
+        spent = tf.ledger_total()
+        if spent >= a.budget:
+            print(f"budget cap reached: ledger total ${spent:.4f} >= ${a.budget}", file=sys.stderr)
+            return 2
+        feats = a.features.split(",") if a.features else sorted({e["feature"] for e in pack.load_demo()["endpoints"]})
+        p = registry.extract_live(feats, runs=a.runs)
+        _print({"wrote": str(p.relative_to(registry.ROOT)), "ledger_total_usd": round(tf.ledger_total(), 4)})
+        return 0
+    try:
+        p = pack.build(_pack_manifest(a))
+    except pack.PackError as e:
+        print(f"pack: {e}", file=sys.stderr)
+        return 2
+    fmt = a.format
+    if fmt in ("csv", "html"):
+        text = export.to_csv(p) if fmt == "csv" else export.to_html(p)
+    else:
+        obj = {"json": p, "brief": pack.brief(p), "share": export.to_share(p)}[fmt]
+        text = json.dumps(obj, indent=1, ensure_ascii=False, default=str) + "\n"
+    if a.out:
+        Path(a.out).parent.mkdir(parents=True, exist_ok=True)
+        Path(a.out).write_text(text)
+        _print({"wrote": a.out, "format": fmt, "pack_id": p["pack_id"], "badges": {x["id"]: x["badge"] for x in p["answers"]}})
+    else:
+        sys.stdout.write(text)
+    return 0
+
+
 def cmd_serve(a) -> int:
     from . import server
     print(f"Owin debug server on http://{a.host}:{a.port}/", file=sys.stderr)
@@ -148,6 +196,20 @@ def main(argv: list[str] | None = None) -> int:
     sw.add_argument("--seed-archive", default="", help="accept a fixtures/snapshots/*.json as the baseline first")
     sw.add_argument("--brief", action="store_true")
     sw.set_defaults(fn=cmd_sweep)
+    pk = sub.add_parser("pack", help="security-review answer pack (AI and data section), per endpoint")
+    pk.add_argument("action", choices=["build", "refresh", "registry", "extract"],
+                    help="build = compute the pack (no network); refresh = re-fetch pages via Tavily and record observations; "
+                         "registry = export data/datause/registry.json from recorded runs; extract = Nemotron on Tavily captures")
+    pk.add_argument("--stack", default="", help="stack manifest JSON (default: fixtures/demo/stack.json)")
+    pk.add_argument("--set", action="append", metavar="PATH=FEATURE", help="change one input, e.g. /api/crm-sync=anthropic-messages")
+    pk.add_argument("--format", choices=["json", "brief", "csv", "html", "share"], default="json")
+    pk.add_argument("--out", default="")
+    pk.add_argument("--pages", default="", help="refresh: comma-separated page ids (default: every catalog page)")
+    pk.add_argument("--fetch", action=argparse.BooleanOptionalAction, default=True, help="refresh: --no-fetch records from captures on disk")
+    pk.add_argument("--features", default="", help="extract: feature ids (default: the demo stack)")
+    pk.add_argument("--runs", type=int, default=3)
+    pk.add_argument("--budget", type=float, default=3.0)
+    pk.set_defaults(fn=cmd_pack)
     sv = sub.add_parser("serve", help="JSON API + debug page")
     sv.add_argument("--host", default="127.0.0.1")
     sv.add_argument("--port", type=int, default=8787)

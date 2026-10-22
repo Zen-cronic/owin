@@ -2,6 +2,9 @@
 
 GET /api/replay?promise_days=10&as_of=now&decision=accepted  ->  replay event JSON (docs/CONTRACT.md)
 GET /api/score                                                ->  measurement headline (recomputed)
+GET /api/pack?set=/api/crm-sync=anthropic-messages&format=json|brief|share|csv|html  ->  answer pack (A3)
+POST /api/pack  (body: a stack manifest, docs/CONTRACT.md)    ->  answer pack for that stack
+GET /pack/print                                               ->  print-ready HTML (save as PDF)
 GET /                                                         ->  debug page
 Stateless per request, on a ThreadingHTTPServer, so concurrent judges do not block each other.
 """
@@ -46,13 +49,61 @@ def handle(path: str, qs: dict) -> tuple[int, str, str]:
         except (ValueError, KeyError) as e:
             return 400, "application/json", json.dumps({"error": str(e)})
         return 200, "application/json", json.dumps(ev, default=str)
+    if path in ("/api/pack", "/pack/print"):
+        return pack_response(None, qs, html_default=path == "/pack/print")
     if path == "/api/score":
         res = evaluate.score(evaluate.headline_runs())
         return 200, "application/json", json.dumps({k: res[k] for k in ("headline", "per_successful_run", "quotes_rechecked_against_source")})
     return 404, "application/json", json.dumps({"error": "not found"})
 
 
+PACK_TYPES = {"json": "application/json", "brief": "application/json", "share": "application/json",
+              "csv": "text/csv; charset=utf-8", "html": "text/html; charset=utf-8"}
+MAX_BODY = 64_000
+
+
+def pack_response(manifest: dict | None, qs: dict, *, html_default: bool = False) -> tuple[int, str, str]:
+    from .datause import export, pack
+    fmt = (qs.get("format") or ["html" if html_default else "json"])[0]
+    if fmt not in PACK_TYPES:
+        return 400, "application/json", json.dumps({"error": f"format must be one of {sorted(PACK_TYPES)}"})
+    try:
+        m = manifest or pack.load_demo()
+        for s in qs.get("set", []):
+            p, _, feat = s.partition("=")
+            m = pack.set_feature(m, p, feat)
+        p = pack.build(m)
+    except (pack.PackError, KeyError, TypeError, ValueError) as e:
+        return 400, "application/json", json.dumps({"error": str(e)})
+    body = {"json": lambda: json.dumps(p, default=str), "brief": lambda: json.dumps(pack.brief(p)),
+            "share": lambda: json.dumps(export.to_share(p)), "csv": lambda: export.to_csv(p),
+            "html": lambda: export.to_html(p)}[fmt]()
+    return 200, PACK_TYPES[fmt], body
+
+
 class Handler(BaseHTTPRequestHandler):
+    def do_POST(self):
+        u = urlparse(self.path)
+        if u.path != "/api/pack":
+            code, ctype, body = 404, "application/json", json.dumps({"error": "not found"})
+        else:
+            n = int(self.headers.get("Content-Length") or 0)
+            if n > MAX_BODY:
+                code, ctype, body = 413, "application/json", json.dumps({"error": "manifest too large"})
+            else:
+                try:
+                    m = json.loads(self.rfile.read(n) or b"null")
+                    code, ctype, body = pack_response(m if isinstance(m, dict) else None, parse_qs(u.query)) if isinstance(m, dict) \
+                        else (400, "application/json", json.dumps({"error": "body must be a JSON stack manifest"}))
+                except json.JSONDecodeError:
+                    code, ctype, body = 400, "application/json", json.dumps({"error": "invalid JSON"})
+        data = body.encode()
+        self.send_response(code)
+        self.send_header("Content-Type", ctype)
+        self.send_header("Content-Length", str(len(data)))
+        self.end_headers()
+        self.wfile.write(data)
+
     def do_GET(self):
         u = urlparse(self.path)
         code, ctype, body = handle(u.path, parse_qs(u.query))

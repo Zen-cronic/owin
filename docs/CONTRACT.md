@@ -110,3 +110,69 @@ These are the terms one vendor page states for one AI feature. There is one fiel
 - **Labelling rules:** these are in `owin.datause.schema.LABEL_RULES`, and the prompt states the same rules.
 - **`owin eval score --corpus datause [--brief] [--file a.json]`:** returns `{corpus, run_files, model, prompt_versions, quotes_rechecked_against_source, acceptance{rule, positive_items_exact, negative_items_held, passed}, headline{positive_items_exact_majority, positive_runs_exact, tuned, heldout, fresh_heldout, negative_items_held, negative_runs_held, raw_model_positive_runs_exact, consistent_items, field_accuracy_positive_runs, baseline_*}, per_successful_run{...}, items{<id>: {kind, split, vendor, feature, gold, runs, exact_runs, n_runs, majority_exact, raw_model_exact_runs, consistent, withheld_fields, mismatched_fields, third_party_runs_exact, errors}}, baseline}`.
 - **Corpus:** each item in `eval/datause/corpus.json` is `{id, kind: tuned|heldout|negative, split: tuned|heldout|fresh, source, vendor, feature, url, file, fetched_at, source_sha256, gold{retention_days, used_for_training, zdr}, secondary{retention_condition, region, third_party_access}, evidence{retention, training, zdr, region, third_party}, label_note}`.
+- **Label changes after a run:** recorded per item in `label_history` and in `RELABELS` (`owin/datause/evaluate.py`). The first one (2026-10-21, A3): `together-serverless` `used_for_training` went from `opt_in` to `opt_out` under the product-improvement rule in `LABEL_RULES`. The pre-change score is in `eval/datause/v2-before-relabel-score.json`.
+
+## Answer pack (`owin.datause.pack`, A3)
+
+### Inputs
+
+**Stack manifest** (`fixtures/demo/stack.json`, `POST /api/pack` body):
+
+```
+{company, _label,
+ endpoints: [{path, feature, purpose?}],            # feature = an id in data/datause/catalog.json
+ settings: {zdr_enabled: {<provider>: bool}, region: {<provider>: str}},   # the startup's own settings
+ stated: {stated_at: "YYYY-MM-DD", source,
+          answers: {Q01..Q05: {text, claim}}}}
+```
+
+| question | `claim` (structured; the only part a rule reads) |
+|---|---|
+| Q01 Is our data used to train AI models? | `{training: "not_used" \| "used"}` |
+| Q02 How long do AI providers retain our data? | `{max_retention_days: int}` |
+| Q03 Do you have zero data retention with your AI providers? | `{zdr: bool, exceptions: [endpoint path]}` |
+| Q04 Where is our data processed? | `{regions: [str]}` |
+| Q05 Which AI providers see our data? | `{providers: [provider id], includes_subprocessors: bool}` |
+
+`text` is copied to the output and never read by a rule.
+
+**Evidence** (both committed, both produced by code from recorded runs and captures):
+- `data/datause/catalog.json`: providers, pages `{url, label, kind: datause|subprocessor_list, provider}` and features `{provider, label, short, feature, page, corpus_id, inherits{field: feature}}`. `inherits` applies vendor-wide statements (training, region, third parties) when a feature page is silent. ZDR and retention are never inherited.
+- `data/datause/registry.json` (`owin pack registry`): per feature `{origin: a1_recorded|tavily_extraction, measured, run_file, runs_agreeing, model, captured_at, capture_kind, source_sha256, terms{DataUseTerms fields + quotes + verbatim}, live_check{run_file, runs_agreeing, values, quotes, agrees{field: bool}, page_source_kind, page_fetched_at}}`.
+- `data/datause/observations.json` (`owin pack refresh`): per page `{url, kind, label, provider, observations: [{observed_at (UTC), source_kind: tavily|urllib|urllib_fallback|archive, method, sha256, chars, quotes_present?{quote_id: "verbatim"|"table_insensitive"|null}, snapshot?, last_updated?, held?}]}`. A `quote_id` is the first 16 hex characters of sha256(match form). A missing key means the quote was not checked; `null` means it was checked and is gone.
+
+### Output (`type: "owin.answer_pack"`, `owin pack build`, `GET /api/pack`)
+
+`{type, version, pack_id, company, label, stated_at, stated_source, as_of, as_of_local, stack{endpoints[{path, feature, provider, provider_display, label, short, purpose}], providers}, counts{not_true, stale, held_unspecified, still_true}, headline{kicker, text}, catch, answers[], order[], watch{pages, pages_watched, last_checked, last_checked_local}, settings, provenance}`
+
+- **answer:** `{id, number "01".."05", question, field, stated{text, claim}, badge, badge_label, answer (a deterministic sentence), as_of, as_of_local, cells[], stale_events[], endpoints_holding, endpoints}`.
+- **cell (one per endpoint):** `{endpoint, feature, feature_label, feature_short, provider, vendor_value, value_label, verdict: holds|disclosed|contradicts|held, reason, quote (verbatim), quote_display (table cells joined by " · "), quote_presence, reanchored, source_label, source_url, fetched_at, fetched_at_local, fetched_via, inherited_from, measured, origin, stale?, list_source?}`.
+- **stale_event:** `{kind: list_changed, page, provider, provider_display, endpoint, before{observed_at, last_updated, url, source_kind, sha256}, after{...}, added[], removed[], changed[], example, held_observations[]}` or `{kind: quote_gone, page_seen, text, endpoint, provider_display}`.
+- **catch** (the first not-true answer, in questionnaire order) or null: `{question, number, endpoint, feature, sentence, quote, source_url, source_label, fetched_at, fetched_at_local, primary: "Fix answer N", secondary: "Draft trust-page change", not_true_answers, fix{claim, text}}`.
+- `order` lists the answer ids by severity (not true, stale, held, still true), then by number, for the UI.
+
+### Rules (code only)
+
+1. A vendor field counts only when it is asserted and its quote passed the A1 verbatim gate (`verbatim[field]`). Otherwise the field is null or `unspecified`, after `inherits` is tried.
+2. Per-question cell rules:
+   - Q01: `no`/`opt_in` means not used, and `yes`/`opt_out` means used. `unspecified` is held.
+   - Q02: with `zdr=available` and `settings.zdr_enabled[provider]`, the cell holds (not retained). Otherwise `retention_days <= max_retention_days`. `null` is held.
+   - Q03: an endpoint listed in `exceptions` is `disclosed`. `excluded`/`not_available` contradicts. `available` holds when the setting is true, contradicts when it is false, and is held when it is missing. `unspecified` is held.
+   - Q04: vendor region text is free text and is never read. Only `settings.region[provider]` can hold or contradict; otherwise the cell is held.
+   - Q05: a provider not in `providers` contradicts. `third_party_access=yes` without `includes_subprocessors` contradicts.
+3. **Stale** has two sources. (a) For Q05, the provider's sub-processor list: the entity diff between the last trusted observation on or before `stated_at` and the latest trusted observation is not empty. Observations marked `held` (stale_source: Tavily served an older "Last updated") are never used. (b) For any question, the cell's quote is checked absent (`null`) in the latest capture, and the extraction on that capture (`live_check`) does not reproduce the value with a verbatim quote. If it does reproduce the value, the cell re-anchors to that quote and is not stale.
+4. Badge: any `contradicts` gives `not_true`; else any stale event gives `stale`; else any `held` gives `held_unspecified`; else `still_true`.
+5. `set_feature(manifest, path, feature)` (`--set PATH=FEATURE`, `?set=PATH=FEATURE`) is the change-one-input path.
+
+### Exports
+
+- `--format csv` / `?format=csv`: one row per (question, endpoint). Columns: `question_number, question, stated_answer, status, endpoint, feature, provider, vendor_value, endpoint_verdict, quote, source_url, fetched_at, as_of, stale`.
+- `--format share` / `?format=share`: `{type: "owin.answer_pack.share", version, readonly: true, share_id, pack_id, company, label, as_of, as_of_local, answers[{number, question, answer, status, status_label, as_of, as_of_local, changes[{text}], endpoints[{endpoint, provider, vendor_says, quote, quote_display, source_url, source_label, fetched_at, fetched_at_local}]}]}`. It has no catch, fix, actions or claim.
+- `--format html` / `GET /pack/print`: a buyer document in the light print tokens (A4 `@page`) that prints to PDF. It has the same content as share.
+- `--format brief`: `{pack_id, as_of_local, headline, counts, badges{Q01..Q05}, catch (short), answers[{id, badge, answer, cells{endpoint: value_label}}]}`.
+- Errors: an unknown feature, an unknown endpoint in `--set`, an empty stack or a bad `stated_at` raise `PackError`. The CLI exits 2; the API returns 400. A POST body over 64 KB returns 413.
+
+### Live path
+
+- `owin pack refresh [--pages a,b] [--no-fetch]`: Tavily `extract` (no query, basic, markdown) for each catalog page. On a Tavily failure it uses the stdlib fetcher, labelled `urllib_fallback` with `tavily_error`. Provenance goes to `fixtures/manifest.json` → `datause_tavily`, raw text to the gitignored `fixtures/raw/datause-tavily/`, and observations to `data/datause/observations.json`. Sub-processor lists also get a derived entity snapshot `fixtures/snapshots/<page>-tavily-<yyyymmdd>.json`.
+- `owin pack extract [--features a,b] [--runs 3]`: Nemotron on the Tavily captures, recorded in `eval/datause/registry-runs/` and refused at the `--budget` ledger cap. Then `owin pack registry` re-exports.
