@@ -28,7 +28,9 @@ No key, no network, no login: the app and every number run from committed files.
 
 CLI equivalents: `owin pack build --format brief`, `--set /api/crm-sync=anthropic-messages`, `--set /api/crm-sync=thin-anthropic-rate-limits`. `pytest -q` runs the tests.
 
-**Container and hosting.** `docker build -t owin . && docker run -p 8080:8080 owin` serves the same app on port 8080 in demo mode (no keys; `GET /healthz` reports the mode). [DEPLOY.md](DEPLOY.md) has the exact steps for a public Nebius Serverless AI endpoint (`cpu-d3`, `2vcpu-8gb`), the post-deploy check `scripts/smoke.sh <url>`, and the daily refresh job (`owin job daily`) on Nebius Serverless AI jobs.
+**Container and hosting.** `docker build -t owin . && docker run -p 8080:8080 owin` serves the same app on port 8080. Deploys to a Nebius Serverless AI Endpoint ([DEPLOY.md](DEPLOY.md): `cpu-d3`, `2vcpu-8gb`, the post-deploy check `scripts/smoke.sh <url>`, and the daily refresh job `owin job daily` on Nebius Serverless AI jobs); the container runs keyless unless keys are set, and `GET /healthz` reports the mode.
+
+<!-- LIVE_URL --> Public URL: not published yet. A maintainer replaces this line with the endpoint URL once `scripts/smoke.sh <url>` passes.
 
 ## The number, in full
 
