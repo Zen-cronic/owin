@@ -11,6 +11,7 @@ only reads this file, so building a pack is deterministic and needs no network o
 from __future__ import annotations
 
 import json
+import threading
 import time
 from pathlib import Path
 
@@ -50,9 +51,42 @@ def page_quotes(page: str) -> dict[str, str]:
     return out
 
 
+# Observations appended by POST /api/recheck while no OWIN_STATE_DIR is set: kept for this process only, merged
+# on top of the committed file by `load`, never written into the repo.
+_LIVE: dict[str, list[dict]] = {}
+_LIVE_LOCK = threading.RLock()  # append_live calls load() under the lock
+
+
 def load() -> dict:
     p = config.read_path(OBS_REL)
-    return json.loads(p.read_text()) if p.exists() else {"pages": {}}
+    obs = json.loads(p.read_text()) if p.exists() else {"pages": {}}
+    with _LIVE_LOCK:
+        for page, lst in _LIVE.items():
+            for o in lst:
+                _add(obs, page, dict(o))
+    return obs
+
+
+def live_persisted() -> bool:
+    return config.state_dir() is not None
+
+
+def append_live(page: str, o: dict) -> None:
+    """Record one observation made at request time: into the state dir when there is one, else in memory."""
+    if live_persisted():
+        with _LIVE_LOCK:
+            obs = load()
+            _add(obs, page, o)
+            obs["recorded_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+            config.write_atomic(OBS_REL, json.dumps(obs, indent=1) + "\n")
+        return
+    with _LIVE_LOCK:
+        _LIVE.setdefault(page, []).append(o)
+
+
+def clear_live() -> None:
+    with _LIVE_LOCK:
+        _LIVE.clear()
 
 
 def _add(obs: dict, page: str, o: dict) -> None:

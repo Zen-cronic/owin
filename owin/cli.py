@@ -190,6 +190,14 @@ def cmd_pack(a) -> int:
     return 0
 
 
+def cmd_recheck(a) -> int:
+    """Re-fetch one endpoint's vendor page through Tavily now and rerun the rules (the same call as POST /api/recheck)."""
+    from . import recheck
+    code, body = recheck.run(a.endpoint)
+    _print({"http_status": code, **body})
+    return 0 if body.get("ok") else 2
+
+
 def cmd_serve(a) -> int:
     from . import server
     import os
@@ -263,6 +271,9 @@ def main(argv: list[str] | None = None) -> int:
     pk.add_argument("--runs", type=int, default=3)
     pk.add_argument("--budget", type=float, default=3.0)
     pk.set_defaults(fn=cmd_pack)
+    rc = sub.add_parser("recheck", help="re-fetch one endpoint's vendor page through Tavily now and rerun the rules (POST /api/recheck)")
+    rc.add_argument("endpoint", help="an endpoint path from the stack, e.g. /api/crm-sync")
+    rc.set_defaults(fn=cmd_recheck)
     sv = sub.add_parser("serve", help="JSON API + debug page")
     sv.add_argument("--host", default=None, help="default: $OWIN_HOST or 127.0.0.1")
     sv.add_argument("--port", type=int, default=None, help="default: $PORT or 8787")
