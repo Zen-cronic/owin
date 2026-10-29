@@ -24,23 +24,24 @@
     <h1 id="story-h" class="reveal" style="--i:1">I built Owin because a buyer’s security questionnaire asks whether your AI providers keep customer data, and the true answer differs per endpoint.</h1>
     <p class="what reveal" style="--i:2">Anthropic’s Messages API can run under zero data retention, its MCP connector is not covered, and Message Batches keep data for 29 days. For each endpoint you run, Owin fills the AI section from the vendor’s own page: retention, training, ZDR, region, who sees it. An answer goes Stale when that page changes after you wrote it, and when Owin’s three readings disagree, it asks you.</p>
 
-    <p class="big reveal" id="big" style="--i:3">Recomputing from recorded runs…</p>
+    <p class="catchline reveal" style="--i:3">
+      <span class="badge bad"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 15 14H1z"/><path d="M8 6v3.6M8 11.6v.1"/></svg>Not true</span>
+      <span class="cl">The catch, on real vendor text: Lumen Notes’ trust page says “zero data retention”, but <span class="mono nw">/api/crm-sync</span> calls Anthropic’s MCP connector, and Anthropic’s page says “The MCP connector is not covered by ZDR arrangements.”<span class="act"><a class="btn primary" href="/">Open answer 3</a></span></span>
+    </p>
+
+    <p class="big reveal" id="big" style="--i:4">Recomputing from recorded runs…</p>
     <div class="stats" id="stats" aria-live="polite">
       <div class="stat skel"><p class="v"><span class="bar w60"></span></p><p class="c"><span class="bar w80"></span></p></div>
       <div class="stat skel"><p class="v"><span class="bar w60"></span></p><p class="c"><span class="bar w80"></span></p></div>
       <div class="stat skel"><p class="v"><span class="bar w40"></span></p><p class="c"><span class="bar w90"></span></p></div>
     </div>
-    <p class="sub" id="sub"></p>
-    <div class="recompute reveal">
-      <a href="/api/selective">Recompute it now: /api/selective ↗</a>
-      <code class="cmd" tabindex="0" aria-label="Command to recompute locally">owin eval selective <span class="nw">--corpus datause</span> <span class="nw">--split v3fresh</span></code>
-    </div>
-    <p class="fn" id="fn"></p>
-
-    <p class="catchline reveal">
-      <span class="badge bad"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 15 14H1z"/><path d="M8 6v3.6M8 11.6v.1"/></svg>Not true</span>
-      <span class="cl">The catch, on real vendor text: Lumen Notes’ trust page says “zero data retention”, but <span class="mono nw">/api/crm-sync</span> calls Anthropic’s MCP connector, and Anthropic’s page says “The MCP connector is not covered by ZDR arrangements.”<span class="act"><a class="btn primary" href="/">Open answer 3</a></span></span>
-    </p>
+    <ul class="ev method reveal" style="--i:5">
+      <li><b>Method</b><span class="mx">
+        <span class="sub" id="sub"></span>
+        <span class="recompute"><a href="/api/selective">Recompute it now: /api/selective ↗</a><code class="cmd" tabindex="0" aria-label="Command to recompute locally">owin eval selective <span class="nw">--corpus datause</span> <span class="nw">--split v3fresh</span></code></span>
+        <span class="fn" id="fn"></span>
+      </span></li>
+    </ul>
   </section>
 
   <section aria-labelledby="paths-h" class="reveal">
@@ -81,10 +82,10 @@
     <h2 id="ev-h">Evidence</h2>
     <ul class="ev">
       <li><a href="/FACTS.md">Claims ledger (FACTS.md)</a><span>Every number on this page and in the README, with the command or file it comes from. A test fails if any drifts.</span></li>
-      <li><a href="/README.md">README: what we’ll tell you before you find it</a><span>Earlier prompts that failed, the one-labeller limit, the label error we found ourselves, what is fictional.</span></li>
+      <li><a href="/README.md">README: what we’ll tell you before you find it</a><span>Earlier prompts that failed, the labelling limit (an AI coding agent labelled every item, a second agent pass spot-checked, no independent human audit yet), the label error we found ourselves, what is fictional.</span></li>
       <li><a href="/pack/print">The buyer’s copy</a><span>The answer pack as a buyer would receive it (print to PDF). No internal reasons, no fix drafts.</span></li>
       <li><a href="/api/pack?format=csv">CSV</a><span>One row per question and endpoint, with the vendor sentence and its link.</span></li>
-      <li id="sponsor"><b>What runs it</b><span>Tavily <span class="mono">extract</span> fetches each vendor page. NVIDIA Nemotron 3 Super, an open-weight model on Nebius Token Factory, reads it three times. Code, not the model, decides every answer.</span></li>
+      <li id="sponsor"><b>What runs it</b><span>Tavily <span class="mono">extract</span> fetched each vendor page, and re-fetches on a sweep or from “Re-check this page” when the server has a key. NVIDIA Nemotron 3 Super, an open-weight model on Nebius Token Factory, read each page three times; this page replays those recorded runs. Code, not the model, decides every answer.</span></li>
     </ul>
   </section>
   <p class="foot">Lumen Notes, its endpoints, settings and trust-page answers are fictional; every vendor sentence, link and fetch time is real. ZDR settings are as the company states them; Owin cannot see vendor consoles. Owin is not legal advice.</p>

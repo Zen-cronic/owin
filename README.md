@@ -1,6 +1,6 @@
 # Owin
 
-**On 7 AI vendors it had never seen (pre-registered split `v3fresh`, 11 features), Owin filled 27 of 33 security-review answers on its own and got 26 right, each with the vendor's own sentence; the other 6 it asked a person to confirm, and on those a majority vote would have been right only 2 times.** The one confident miss is a label error we found ourselves and kept as pre-registered ([below](#what-well-tell-you-before-you-find-it)). Recompute it with no key: `owin eval selective --corpus datause --split v3fresh`. Every number in this file is in [FACTS.md](FACTS.md), and a test recomputes each one.
+**On 7 AI vendors (6 of them new to Owin; pre-registered split `v3fresh`: 11 features on 8 pages), Owin filled 27 of 33 security-review answers on its own and got 26 right, 18 with the vendor's sentence and 8 correctly "not stated"; the other 6 it asked a person to confirm, and on those a majority vote would have been right only 2 times. A plain majority vote over all 33 gets 28; it is wrong on 4 of the 6 Owin hands to a person.** The one confident miss is a label error we found ourselves and kept as pre-registered ([below](#what-well-tell-you-before-you-find-it)). Recompute it with no key: `owin eval selective --corpus datause --split v3fresh`. The headline numbers in this file are in [FACTS.md](FACTS.md), and a test recomputes each one.
 
 ## What, who, why (30 seconds)
 
@@ -18,7 +18,7 @@ export VIRTUAL_ENV="$HOME/.pyenv/versions/.owin"; export PATH="$VIRTUAL_ENV/bin:
 poetry install && owin serve      # then open http://127.0.0.1:8787/judge
 ```
 
-No key, no network, no login: the app and every number run from committed files. `/judge` is the start page: the number (recomputed on load), three guided paths, and the evidence.
+No key, no network, no login: the app and every number run from committed files. With a Tavily key set on the server, "Re-check this page" under an endpoint fetches that vendor page live; without one, the button says so. `/judge` is the start page: the number (recomputed on load), three guided paths, and the evidence.
 
 | Path on `/judge` | What it shows | Label |
 |---|---|---|
@@ -28,7 +28,9 @@ No key, no network, no login: the app and every number run from committed files.
 
 CLI equivalents: `owin pack build --format brief`, `--set /api/crm-sync=anthropic-messages`, `--set /api/crm-sync=thin-anthropic-rate-limits`. `pytest -q` runs the tests.
 
-**Container and hosting.** `docker build -t owin . && docker run -p 8080:8080 owin` serves the same app on port 8080 in demo mode (no keys; `GET /healthz` reports the mode). [DEPLOY.md](DEPLOY.md) has the exact steps for a public Nebius Serverless AI endpoint (`cpu-d3`, `2vcpu-8gb`), the post-deploy check `scripts/smoke.sh <url>`, and the daily refresh job (`owin job daily`) on Nebius Serverless AI jobs.
+**Container and hosting.** `docker build -t owin . && docker run -p 8080:8080 owin` serves the same app on port 8080. Deploys to a Nebius Serverless AI Endpoint ([DEPLOY.md](DEPLOY.md): `cpu-d3`, `2vcpu-8gb`, the post-deploy check `scripts/smoke.sh <url>`, and the daily refresh job `owin job daily` on Nebius Serverless AI jobs); the container runs keyless unless keys are set, and `GET /healthz` reports the mode.
+
+<!-- LIVE_URL --> Public URL: not published yet. A maintainer replaces this line with the endpoint URL once `scripts/smoke.sh <url>` passes.
 
 ## The number, in full
 
@@ -37,8 +39,8 @@ CLI equivalents: `owin pack build --format brief`, `--set /api/crm-sync=anthropi
 | split `v3fresh` (clean, pre-registered) | result |
 |---|---|
 | Answered automatically | **27/33** cells |
-| Right among those | **26/27** |
-| Sent to a person to confirm | **6** (a majority vote would have been right on 2/6) |
+| Right among those | **26/27** (18 with the vendor's sentence, 8 correctly "not stated") |
+| Sent to a person to confirm | **6** (a majority vote would have been right on 2/6; over all 33 cells a plain majority vote gets 28/33) |
 | Negative controls (pages with no data-use terms) | 6/6 cells answered "not stated", correctly |
 | Whole-item score, all three fields exact by majority (the pre-registered metric) | **7/11, which fails our own 80% bar**; keyword baseline 4/11 |
 | Negatives held, whole-item | 2/2; keyword baseline 0/2 |
@@ -53,8 +55,8 @@ owin facts check                                               # every claim in 
 
 ## Why these sponsors
 
-- **NVIDIA Nemotron 3 Super (`nvidia/nemotron-3-super-120b-a12b`, open-weight) on Nebius Token Factory** reads each vendor page and proposes structured fields plus the sentence for each. Measured on `v3fresh`: **$0.0029 per reading** (39 calls, $0.115 total, list price $0.30 / $0.90 per M tokens), mean 8.8 s, p95 15.9 s. One endpoint costs about **$0.009** to answer (three readings). We use three cheap readings and agreement instead of one larger model: in our first spike, Nemotron Ultra did not beat Super on extraction, and agreement across readings is what separates the 26/27 from the 6 that need a person.
-- **Tavily `extract`** fetches the vendor pages at runtime (whole page, no query), and the pack's readings run on its captures. When Tavily serves an older copy than one we already trust (OpenAI's list came back dated July 9, 2026 after Wayback showed October 14, 2026), Owin **holds** that copy and never uses it: the stale-source rule. `owin pack refresh` re-fetches; `owin sweep` covers a 29-vendor index.
+- **NVIDIA Nemotron 3 Super (`nvidia/nemotron-3-super-120b-a12b`, open-weight) on Nebius Token Factory** reads each vendor page and proposes structured fields plus the sentence for each. Measured on `v3fresh`: **$0.0029 per reading** (39 calls, $0.115 total, list price $0.30 / $0.90 per M tokens), mean 8.8 s, p95 15.9 s over the runs that were exactly right. One endpoint costs about **$0.009** to answer (three readings). We use three cheap readings and agreement instead of one larger model: in our first spike, Nemotron Ultra did not beat Super on extraction, and agreement across readings is what separates the 26/27 from the 6 that need a person.
+- **Tavily `extract`** fetches each vendor page whole (no query) whenever Owin fetches: `owin pack refresh` and `owin sweep` on the CLI, the daily `owin job daily`, and the app's "Re-check this page" button when a Tavily key is set on the server. The pages a judge opens replay recorded captures; no page view calls Tavily. The pack's readings run on those captures. When Tavily serves an older copy than one we already trust (OpenAI's list came back dated July 9, 2026 after Wayback showed October 14, 2026), Owin **holds** that copy and never uses it: the stale-source rule. `owin sweep` covers 29 vendors per sweep.
 
 ## Architecture
 
@@ -81,13 +83,13 @@ rules (code)   ──► answer pack ──► app / PDF / CSV / share link
 ## What we'll tell you before you find it
 
 - **Our earlier prompts failed.** Pre-registered prompt v1 scored 16/24 (failed). v2 scored 23/30 on the older items after an honest relabel (Together's "may use them for product improvements" is opt-out, not opt-in), below the bar. Pre-registered v3 scored **7/11** on fresh vendors, also below our 80% bar. Selective answering is the result we stand behind: 26/27 when Owin answers on its own, 6 sent to a person.
-- **One labeller, one self-disclosed error.** The build agent labelled every item; no independent spot-check has been done yet. After the v3 run we found that OpenRouter's page says "your prompts are not retained unless you specifically opt in to prompt logging", so the retention label should be 0, not "not stated". Nemotron answered 0 on 3/3 readings. We kept the label, as the pre-registration requires, so this counts as the one confident miss; with the corrected label it would be 27/27.
+- **One labeller, one self-disclosed error.** An AI coding agent labelled every item by reading each fetched page; a second agent pass spot-checked; there has been no independent human audit yet. After the v3 run we found that OpenRouter's page says "your prompts are not retained unless you specifically opt in to prompt logging", so the retention label should be 0, not "not stated". Nemotron answered 0 on 3/3 readings. We kept the label, as the pre-registration requires, so this counts as the one confident miss; with the corrected label it would be 27/27.
 - **Small splits.** 11 positive features and 2 negatives in the clean split, one 3-reading sweep. One item moves the whole-item score by 9 points.
 - **The demo company is fictional.** Lumen Notes, its endpoints, its trust-page answers and its **ZDR settings are assumed** (Owin cannot see vendor consoles). The vendor sentences, links, fetch times and the OpenAI list change (Wayback captures; OpenAI changed Cloudflare's entry and added OAI International) are real.
 - **Region never decides.** Vendor region text is free text, so no rule reads it; answer 4 is held unless you state your own setting.
 - **Some vendor pages are not watchable.** Vercel's sub-processor list is a JavaScript widget; OpenAI's DPA hides its clauses in accordions; Supabase's list is a PDF with only a date to diff. Tavily sometimes serves an older copy; Owin holds it.
-- **Answer-pack runs and the scored corpus differ.** The pack's readings run on Tavily captures; the scored corpus pages were fetched by plain HTTP. OpenAI Embeddings in the demo is not in the scored corpus.
-- **The watch is not scheduled yet.** Pages are re-fetched by command (`owin pack refresh`); a daily job on Nebius Serverless Jobs is next.
+- **Answer-pack runs and the scored corpus differ.** The pack's readings and the `v3fresh` corpus pages were both fetched with Tavily `extract` (basic depth, markdown); most of the older corpus pages were fetched by plain HTTP (urllib), some with Tavily. OpenAI Embeddings in the demo is not in the scored corpus.
+- **The watch is not scheduled yet.** Pages are re-fetched by command (`owin pack refresh`) or from the app's "Re-check this page" button when a key is set; the daily job on Nebius Serverless AI jobs is written up in [DEPLOY.md](DEPLOY.md) and has not run yet.
 - **Not legal advice.** Owin quotes vendors and compares answers; it does not tell you what you are permitted to do.
 
 ## Earlier work in this repo

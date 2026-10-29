@@ -29,7 +29,11 @@ const BADGE = {
   still_true: { cls: 'ok', icon: 'check' },
 };
 
-const state = { pack: null, catalog: null, watch: null, sets: readSets(), drawn: false, seq: 0 };
+const state = { pack: null, catalog: null, watch: null, sets: readSets(), drawn: false, seq: 0, base: null, changes: [], recheck: {} };
+const LABEL = { not_true: 'Not true', stale: 'Stale', confirm: 'Confirm', held_unspecified: 'Held · unspecified', still_true: 'Still true' };
+// Prose words for a badge, for the one-line narration of what a change moved. Severity orders the narration.
+const WORD = { not_true: 'not true', stale: 'stale', confirm: 'to confirm', held_unspecified: 'held', still_true: 'still true' };
+const SEV = { not_true: 0, stale: 1, confirm: 2, held_unspecified: 3, still_true: 4 };
 
 // DOM helpers
 function el(tag, attrs, ...kids) {
@@ -107,19 +111,28 @@ async function load({ recompute = false } = {}) {
   app.setAttribute('aria-busy', 'true');
   if (recompute) { app.classList.add('recomputing'); say('Recomputing from your change…'); }
   try {
-    const [pack, catalog, watch, health] = await Promise.all([
+    const changed = Object.keys(state.sets).length > 0;
+    const [pack, catalog, watch, health, base] = await Promise.all([
       getJSON('/api/pack' + setQuery()),
       state.catalog ? state.catalog : getJSON('/api/catalog'),
       state.watch ? state.watch : getJSON('/api/watch').catch(() => null),
       state.health ? state.health : getJSON('/healthz').catch(() => null),
+      // The demo stack's pack is the baseline a change is narrated against (same keyless endpoint, no sets).
+      changed && !state.base ? getJSON('/api/pack').catch(() => null) : null,
     ]);
     state.health = health;
     if (seq !== state.seq) return;
     state.pack = pack; state.catalog = catalog; state.watch = watch;
+    state.base = changed ? (state.base || base) : pack;
+    state.changes = changed ? badgeChanges(state.base, pack) : [];
     history.replaceState(null, '', location.pathname + setQuery() + location.hash);
     render();
     say('');
-    if (recompute) { $('announce').textContent = recomputedLine(pack); toast(recomputedLine(pack)); }
+    if (recompute) {
+      $('announce').textContent = recomputedLine(pack); toast(recomputedLine(pack));
+      const first = state.changes[0] && $('q-' + state.changes[0].a.id);
+      if (first && !MOBILE.matches) first.scrollIntoView({ block: 'nearest', behavior: REDUCED.matches ? 'auto' : 'smooth' });
+    }
   } catch (e) {
     if (seq !== state.seq) return;
     if (state.pack) {
@@ -141,7 +154,35 @@ function recomputedLine(p) {
   if (c.confirm) parts.push(`${c.confirm} to confirm`);
   if (c.held_unspecified) parts.push(`${c.held_unspecified} held`);
   parts.push(`${c.still_true} still true`);
-  return `Recomputed at ${nowET()}: ${parts.join(', ')}.`;
+  const moved = state.changes.map((ch) => `answer ${+ch.a.number} ${WORD[ch.a.badge] || ch.a.badge} (was ${WORD[ch.was.badge] || ch.was.badge})`);
+  return `Recomputed at ${nowET()}: ${moved.length ? moved.join(', ') + '; ' : ''}${parts.join(', ')}.`;
+}
+
+// What your change moved: each answer whose code-computed badge differs from the demo stack's, with the changed
+// endpoints whose cell verdict moved. Badges and verdicts only; no prose is read.
+function badgeChanges(base, p) {
+  if (!base) return [];
+  const before = Object.fromEntries(base.answers.map((a) => [a.id, a]));
+  const key = (c) => (c.stale ? 'stale:' : '') + c.verdict;
+  const out = [];
+  for (const a of p.answers) {
+    const was = before[a.id];
+    if (!was || was.badge === a.badge) continue;
+    const old = Object.fromEntries(was.cells.map((c) => [c.endpoint, key(c)]));
+    const paths = a.cells.filter((c) => c.endpoint in state.sets && old[c.endpoint] !== key(c)).map((c) => c.endpoint);
+    out.push({ a, was, paths });
+  }
+  return out.sort((x, y) => (SEV[x.was.badge] ?? 9) - (SEV[y.was.badge] ?? 9));
+}
+function joinPaths(paths) {
+  const out = [];
+  paths.forEach((x, i) => { if (i) out.push(i === paths.length - 1 ? ' and ' : ', '); out.push(el('span', { class: 'mono nw' }, x)); });
+  return out;
+}
+function changeSentence(ch) {
+  return [`Answer ${+ch.a.number} is now ${WORD[ch.a.badge] || ch.a.badge_label.toLowerCase()}`,
+    ...(ch.paths.length ? [' for ', ...joinPaths(ch.paths)] : []),
+    `; it was ${WORD[ch.was.badge] || ch.was.badge_label.toLowerCase()}.`];
 }
 
 // API down: no answers are shown, so nothing is guessed.
@@ -205,7 +246,9 @@ function render() {
   renderPages(p);
 
   // Answers
-  $('answers').replaceChildren(...p.order.map((id) => answerRow(p, byId[id], staleEv)));
+  const pinned = state.changes.map((ch) => ch.a.id);
+  const order = [...pinned, ...p.order.filter((id) => !pinned.includes(id))];
+  $('answers').replaceChildren(...order.map((id) => answerRow(p, byId[id], staleEv)));
   $('export-btn').disabled = false;
 
   // Footnote under the answers column
@@ -222,7 +265,7 @@ function render() {
 // Summary: the counts for every answer, in the hero's right column (stacked under the headline on mobile).
 function renderSummary(p) {
   const c = p.counts;
-  const rows = [['not_true', 'Not true'], ['stale', 'Stale'], ['confirm', 'To confirm'], ['held_unspecified', 'Held'], ['still_true', 'Still true']]
+  const rows = [['not_true', 'Not true'], ['stale', 'Stale'], ['confirm', 'To confirm'], ['held_unspecified', 'Held · unspecified'], ['still_true', 'Still true']]
     .filter(([k]) => c[k] || k === 'still_true' || k === 'not_true');
   $('summary').replaceChildren(
     el('h2', {}, `${p.answers.length} answers · ${p.stack.endpoints.length} endpoints · ${p.stack.providers.length} providers`),
@@ -245,6 +288,8 @@ function renderCatch(p, byId, staleEv) {
   k.replaceChildren(...parts);
 
   const h = $('catch-h'), todo = $('todo');
+  const oldDelta = $('delta'); if (oldDelta) oldDelta.remove();
+  if (state.changes.length) h.after(el('p', { class: 'lede delta', id: 'delta' }, state.changes.flatMap((ch, i) => [i ? ' ' : '', ...changeSentence(ch)])));
   if (p.catch) {
     h.replaceChildren(...withPaths(p.catch.sentence, 'ep'));
     todo.replaceChildren(
@@ -266,7 +311,7 @@ const CHIP = {
   contradicts: { cls: 'bad', icon: 'warn', word: 'Not true' },
   stale: { cls: 'stale', icon: 'stale', word: 'Stale' },
   confirm: { cls: 'confirm', icon: 'ask', word: 'Confirm' },
-  held: { cls: 'held', icon: 'held', word: 'Held' },
+  held: { cls: 'held', icon: 'held', word: 'Held · unspecified' },
 };
 
 // Answers that no endpoint's vendor page states (e.g. region) are said once under the stack, not on every row.
@@ -294,7 +339,8 @@ function endpointRow(p, s, staleEv) {
   let finding = null;
   const bad = Object.values(cells).find((x) => x.v === 'contradicts');
   const stale = Object.values(cells).find((x) => x.v === 'stale');
-  const conf = Object.values(cells).filter((x) => x.v === 'confirm' || (x.c.stale && x.c.verdict === 'confirm'));
+  // Confirm shows on a chip only for an answer whose badge is Confirm, the ones the summary counts.
+  const conf = Object.values(cells).filter((x) => x.a.badge === 'confirm' && (x.v === 'confirm' || (x.c.stale && x.c.verdict === 'confirm')));
   if (bad) finding = el('p', { class: 'finding' }, `${bad.c.value_label}.`);
   else if (stale && staleEv) finding = el('p', { class: 'finding' }, `${staleEv.provider_display} changed its sub-processor list on `, el('span', { class: 'nw' }, fmtLong(staleEv.after.last_updated, false)), '.');
   else if (conf.length) finding = el('p', { class: 'finding' }, 'Readings of the vendor page disagree.');
@@ -302,11 +348,11 @@ function endpointRow(p, s, staleEv) {
   // Only the answers this endpoint affects, as chips. Stale and confirm on one cell give two chips.
   const chips = [];
   for (const n of Object.keys(cells).sort()) {
-    const { c } = cells[n];
+    const { c, a } = cells[n];
     const states = [];
     if (c.verdict === 'contradicts') states.push('contradicts');
     if (c.stale) states.push('stale');
-    if (c.verdict === 'confirm') states.push('confirm');
+    if (c.verdict === 'confirm' && a.badge === 'confirm') states.push('confirm');
     if (c.verdict === 'held' && !he.has(n)) states.push('held');
     for (const v of states) {
       const k = CHIP[v];
@@ -322,10 +368,60 @@ function endpointRow(p, s, staleEv) {
     el('div', { class: 'path' }, ep.path),
     featureSelect(ep),
     finding,
-    feeds);
+    feeds,
+    recheckView(ep.path));
   row.addEventListener('mouseenter', () => relate(ep.path, null));
   row.addEventListener('mouseleave', () => relate(null, null));
   return row;
+}
+
+// Re-check this page: POST /api/recheck {"endpoint": path}. A server with a fetch key re-reads the vendor page live
+// and answers {ok, mode: "live", checked_at, changed, state, observation}; a keyless server answers
+// {ok: false, mode: "demo"} and the daily job re-checks instead. Yellow only when the state becomes not_true or stale.
+function recheckView(path) {
+  const k = slug(path), r = state.recheck[path] || {};
+  const status = el('p', { class: 'rc' + (r.bad ? ' bad' : ''), id: `recheck-s-${k}`, role: 'status' },
+    r.pending ? 'Checking…' : (r.text || ''), r.observation ? el('span', { class: 'obs' }, r.observation) : null);
+  return el('div', { class: 'recheck' },
+    el('button', { class: 'btn ghost small', id: `recheck-${k}`, type: 'button', disabled: !!r.pending, 'aria-describedby': `recheck-s-${k}`, onclick: () => recheck(path) }, 'Re-check this page'),
+    status);
+}
+function fmtWhen(iso) {
+  const d = new Date(iso || '');
+  return isNaN(d) ? nowET() : new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hour12: false, timeZoneName: 'short' }).format(d);
+}
+async function recheck(path) {
+  const hadFocus = document.activeElement && document.activeElement.id === `recheck-${slug(path)}`;
+  state.recheck[path] = { pending: true };
+  paintRecheck(path);
+  let r = null, j = null;
+  try {
+    r = await fetch('/api/recheck', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ endpoint: path }) });
+    try { j = await r.json(); } catch (_) { j = null; }
+  } catch (_) { r = null; }
+  let res;
+  if (j && j.ok === true && j.mode === 'live') {
+    const when = fmtWhen(j.checked_at), word = LABEL[j.state] || String(j.state || '').replace(/_/g, ' ');
+    res = j.changed ? { text: `Checked ${when} · changed → ${word}`, bad: j.state === 'not_true' || j.state === 'stale', observation: j.observation }
+      : { text: `Checked ${when} · unchanged`, observation: j.observation };
+  } else if (j && j.ok === false && j.mode === 'demo') {
+    res = { text: 'This server has no fetch key; the daily job re-checks instead.' };
+  } else {
+    res = { text: `Couldn’t re-check right now${r ? ` (HTTP ${r.status})` : ''}. Try again.` };
+  }
+  state.recheck[path] = res;
+  paintRecheck(path, hadFocus);
+  if (res.observation !== undefined && j.changed) load({ recompute: true });
+}
+// Update in place: the status is a live region, and a keyboard user keeps their place on the button.
+function paintRecheck(path, refocus) {
+  const k = slug(path), r = state.recheck[path] || {};
+  const btn = $(`recheck-${k}`), st = $(`recheck-s-${k}`);
+  if (!btn || !st) return;
+  btn.disabled = !!r.pending;
+  st.className = 'rc' + (r.bad ? ' bad' : '');
+  st.replaceChildren(...[r.pending ? 'Checking…' : (r.text || ''), r.observation ? el('span', { class: 'obs' }, r.observation) : null].filter(Boolean));
+  if (refocus && !r.pending && document.activeElement === document.body) btn.focus({ preventScroll: true });
 }
 
 function featureSelect(ep) {
@@ -363,7 +459,7 @@ function renderPages(p) {
   if (items.length) kids.push(el('ul', {}, items));
   kids.push(el('p', { class: 'reset' }, 'Each check re-reads these pages; an answer goes Stale when a sentence it relies on changes.'));
   if (Object.keys(state.sets).length) {
-    kids.push(el('p', { class: 'reset' }, 'You changed ', ...Object.keys(state.sets).map((x) => el('span', { class: 'mono nw' }, x)), '. ',
+    kids.push(el('p', { class: 'reset' }, 'You changed ', ...joinPaths(Object.keys(state.sets)), '. ',
       el('button', { onclick: () => { state.sets = {}; load({ recompute: true }); } }, 'Reset to the demo stack')));
   }
   box.replaceChildren(...kids);
@@ -453,6 +549,8 @@ function answerRow(p, a, staleEv) {
   const b = BADGE[a.badge] || BADGE.held_unspecified;
   const isCatch = p.catch && p.catch.question === a.id;
   const body = el('div', { class: 'body' });
+  const ch = state.changes.find((x) => x.a.id === a.id);
+  if (ch) body.append(el('p', { class: 'delta' }, 'Was ', el('b', {}, ch.was.badge_label), ...(ch.paths.length ? [' before you changed ', ...joinPaths(ch.paths)] : [' before your change']), '.'));
   const sentence = a.badge === 'stale' ? a.answer.replace(/\s*Review the change\.\s*$/, '') : a.answer;
   body.append(el('p', {}, withPaths(sentence)));
 
@@ -491,10 +589,11 @@ function answerRow(p, a, staleEv) {
   }
   // A confirm cell inside an answer whose badge is driven by something else still shows its readings.
   if (a.badge !== 'confirm' && a.cells.some((c) => c.verdict === 'confirm')) {
-    body.append(el('details', { class: 'more' }, el('summary', {}, `${a.cells.filter((c) => c.verdict === 'confirm').length} endpoint readings to confirm`), confirmBlock(a)));
+    const n = a.cells.filter((c) => c.verdict === 'confirm').length;
+    body.append(el('details', { class: 'more' }, el('summary', {}, `${n} endpoint reading${n === 1 ? '' : 's'} to confirm`), confirmBlock(a)));
   }
 
-  const art = el('article', { class: 'ans' + (isCatch ? ' sel' : '') + (a.badge === 'stale' ? ' stale' : ''), id: 'q-' + a.id, 'data-badge': a.badge, tabindex: '-1', 'aria-labelledby': `h-${a.id}` },
+  const art = el('article', { class: 'ans' + (isCatch ? ' sel' : '') + (a.badge === 'stale' ? ' stale' : '') + (ch ? ' changed' : ''), id: 'q-' + a.id, 'data-badge': a.badge, tabindex: '-1', 'aria-labelledby': `h-${a.id}` },
     el('span', { class: 'n' }, a.number),
     el('h3', { id: `h-${a.id}` }, a.question),
     el('span', { class: 'badge ' + b.cls }, icon(b.icon), a.badge_label),

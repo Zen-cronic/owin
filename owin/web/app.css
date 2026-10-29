@@ -68,6 +68,8 @@ h1 .ep{font-size:.95em;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
 .status.err{color:var(--ink);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .status.err svg{color:var(--muted)}
 .lede{margin-top:8px;font-size:14.5px;color:var(--muted);max-width:68ch}
+.lede.delta{color:var(--ink)}
+.lede.delta .mono{font-size:.95em}
 
 .btn{font:600 15px/1 var(--sans);border-radius:4px;padding:13px 18px;cursor:pointer;border:1px solid transparent;white-space:nowrap;color:var(--ink);background:none;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
 .btn.primary{background:var(--act);color:var(--on-act)}
@@ -110,6 +112,12 @@ h1 .ep{font-size:.95em;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
 .chip.stale svg,.chip.confirm svg{color:var(--act)}
 .chip.held{color:var(--muted)}
 .ep-row.sel{border-color:var(--act);background:var(--surface)}
+/* Re-check this page: one ghost button and its status line; yellow only when the state became Not true or Stale */
+.recheck{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.recheck .rc{font-size:12.5px;color:var(--cite);margin:0}
+.recheck .rc:empty{display:none}
+.recheck .rc.bad{color:var(--act)}
+.recheck .rc .obs{display:block;color:var(--muted)}
 .ans.stale{border:1px solid var(--edge);border-radius:4px}
 .ans.stale + .ans{border-top-color:transparent}
 .ep-row.changed .path::after{content:"changed";font:500 11px var(--sans);color:var(--muted);margin-left:8px;letter-spacing:.01em}
@@ -147,6 +155,9 @@ h1 .ep{font-size:.95em;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
 .ans .body{grid-column:2/4;min-width:0}
 .ans .body p{font-size:15px;margin-top:8px}
 .ans .body p.dim{color:var(--muted)}
+.ans .body p.delta{font-size:12.5px;color:var(--muted);margin-top:4px}
+.ans .body p.delta b{color:var(--ink);font-weight:600}
+.ans.changed h3::after{content:"changed";font:500 11px var(--sans);color:var(--muted);margin-left:8px;letter-spacing:.01em;vertical-align:middle}
 .ans.sel{border:1px solid var(--act);border-radius:4px;background:var(--surface)}
 .ans.sel + .ans{border-top-color:transparent}
 blockquote{margin-top:10px;padding-left:12px;border-left:2px solid var(--edge);font-size:14px;line-height:1.5;overflow-wrap:anywhere}
@@ -296,6 +307,13 @@ details.more summary:hover{color:var(--ink)}
 .jg .fn{margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-size:12px;line-height:1.5;color:var(--muted)}
 .jg .fn span{display:block;max-width:100ch}
 .jg .fn:empty,.jg .sub:empty{display:none}
+/* Method row: the split, the recompute command and the footnote, folded into one evidence-style row under the numerals */
+.ev.method{margin-top:20px}
+.ev.method li{grid-template-columns:minmax(0,260px) minmax(0,1fr);align-items:start}
+.ev.method li:last-child{border-bottom:0}
+.ev.method .mx{display:grid;gap:10px;min-width:0}
+.ev.method .sub,.ev.method .recompute{margin-top:0}
+.ev.method .fn{margin:0;padding:0;border:0;font-size:12.5px;color:var(--muted)}
 .recompute{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-top:14px;font-size:12.5px;color:var(--cite);min-width:0}
 .recompute a{color:var(--cite)}
 code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13px/1.4 var(--mono);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:6px 10px;scrollbar-width:thin}
@@ -326,7 +344,7 @@ code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13
   .story .what{font-size:14.5px}
   .catchline{margin-top:28px;font-size:15px;flex-direction:column;gap:10px}
   code.cmd{white-space:pre-wrap;overflow-wrap:anywhere;overflow:visible}
-  .ev li{grid-template-columns:minmax(0,1fr)}
+  .ev li,.ev.method li{grid-template-columns:minmax(0,1fr)}
   .jg section{margin-top:28px}
 }
 
@@ -335,7 +353,7 @@ code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13
 .story .kick{font-size:13px;font-weight:600;color:var(--muted)}
 .story h1{margin-top:10px}
 .story .what{margin-top:16px;font-size:15.5px;line-height:1.55;color:var(--cite);max-width:66ch}
-.catchline{display:flex;gap:14px;align-items:flex-start;margin-top:40px;padding-top:22px;border-top:1px solid var(--line);font-size:16px;line-height:1.5}
+.catchline{display:flex;gap:14px;align-items:flex-start;margin-top:28px;padding-top:22px;border-top:1px solid var(--line);font-size:16px;line-height:1.5}
 .catchline .cl{max-width:70ch}
 .catchline .act{display:block;margin-top:16px}
 .catchline .badge{margin-top:3px}
