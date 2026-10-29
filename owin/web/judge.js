@@ -13,11 +13,22 @@ reveal();
 
 // Board: one tile per digit, drawn from the value the API returned. A tile is four halves (the resting top and
 // bottom, and the two flaps that turn over when its character changes); glyphs live in data-c, so the only text
-// in a numeral is its screen-reader copy.
-const FLIP = 55, STAGGER = 60, BUDGET = 700, AFTER_OPENING = 900; // ms
+// in a numeral is its screen-reader copy. The theme decides the motion through tokens on :root: --num-motion "flap"
+// turns the tiles over (timed by --dur-flip, --num-stagger, --num-budget, all ms); "none" leaves the final digits in
+// place and only marks the board .num-in when it comes on screen, so the theme's CSS can play its own entrance.
+const AFTER_OPENING = 900; // ms
+const token = (name, fallback) => {
+  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  return v === '' ? fallback : (typeof fallback === 'number' ? (Number.isFinite(Number(v)) ? Number(v) : fallback) : v);
+};
+let FLIP = 55, STAGGER = 60, BUDGET = 700, FLAPS = MOTION;
+function readMotion() {
+  FLIP = token('--dur-flip', 55); STAGGER = token('--num-stagger', 60); BUDGET = token('--num-budget', 700);
+  FLAPS = MOTION && token('--num-motion', 'flap') === 'flap';
+}
 const loaded = performance.now();
 function tile(c) {
-  const t = document.createElement('span'); t.className = 'tile';
+  const t = document.createElement('span'); t.className = 'tile num-tile';
   for (const k of ['t', 'b', 'ft', 'fb']) { const h = document.createElement('span'); h.className = 'h ' + k; h.dataset.c = c; t.append(h); }
   return t;
 }
@@ -62,14 +73,15 @@ const seen = (el) => new Promise((done) => {
     const d = document.createElement('div'); d.className = 'stat';
     const v = document.createElement('p'); v.className = 'v';
     const sr = document.createElement('span'); sr.className = 'sr'; sr.textContent = value;
-    const row = document.createElement('span'); row.className = 'tiles'; row.setAttribute('aria-hidden', 'true');
+    const row = document.createElement('span'); row.className = 'tiles num-row'; row.setAttribute('aria-hidden', 'true');
     for (const ch of value) {
-      if (/\d/.test(ch)) { const t = tile(MOTION ? '' : ch); row.append(t); queue.push({ t, c: ch }); }
-      else { const s = document.createElement('span'); s.className = 'sep'; s.dataset.c = ch; row.append(s); }
+      if (/\d/.test(ch)) { const t = tile(FLAPS ? '' : ch); row.append(t); queue.push({ t, c: ch }); }
+      else { const s = document.createElement('span'); s.className = 'sep num-sep'; s.dataset.c = ch; row.append(s); }
     }
     const c = document.createElement('p'); c.className = 'c'; c.textContent = caption;
     v.append(sr, row); d.append(v, c); return d;
   };
+  readMotion();
   try {
     const r = await fetch('/api/selective', { headers: { Accept: 'application/json' } });
     if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -93,8 +105,11 @@ const seen = (el) => new Promise((done) => {
     if (MOTION) {
       // The board flips once the opening line has settled and the board is on screen, never before the numbers exist.
       const wait = Math.max(0, AFTER_OPENING - (performance.now() - loaded));
-      Promise.all([seen($('stats')), new Promise((done) => setTimeout(done, wait))]).then(() => play(queue));
-    }
+      Promise.all([seen($('stats')), new Promise((done) => setTimeout(done, wait))]).then(() => {
+        $('stats').closest('.stat-board').classList.add('num-in');
+        if (FLAPS) play(queue);
+      });
+    } else $('stats').closest('.stat-board').classList.add('num-in');
   } catch (e) {
     $('big').textContent = 'Couldn’t recompute the numbers right now.';
     $('stats').replaceChildren();

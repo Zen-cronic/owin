@@ -59,3 +59,23 @@ def test_judge_copy_rules():
 def test_repo_docs_are_an_allowlist():
     assert server.handle("/README.md", {})[0] == 200
     assert server.handle("/pyproject.toml", {})[0] == 404
+
+
+def test_both_pages_carry_five_switchable_themes():
+    for path in ("/", "/judge"):
+        body = server.handle(path, {})[2]
+        head = body[:body.index("</head>")]
+        assert head.index("data-theme") < head.index('href="/app.css"'), path  # theme set before the first stylesheet
+        for i in range(1, 6):
+            assert f'href="/theme-c{i}.css"' in head and f'name="theme" value="c{i}"' in body, (path, i)
+        assert 'src="/theme.js"' in body
+    for i in range(1, 6):
+        code, ctype, css = server.handle(f"/theme-c{i}.css", {})
+        assert code == 200 and "css" in ctype
+        if i > 1:
+            assert f':root[data-theme="c{i}"]' in css
+    assert server.handle("/theme.js", {})[0] == 200
+    for name in ("theme.js", *(f"theme-c{i}.css" for i in range(1, 6))):
+        text = (webui.WEB / name).read_text()
+        for needle in ("tvly-", "sk-", "nvapi-", "TAVILY_API_KEY", "Bearer "):
+            assert needle not in text, (name, needle)

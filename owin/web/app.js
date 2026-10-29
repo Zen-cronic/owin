@@ -270,7 +270,7 @@ function renderSummary(p) {
   $('summary').replaceChildren(
     el('h2', {}, `${p.answers.length} answers · ${p.stack.endpoints.length} endpoints · ${p.stack.providers.length} providers`),
     el('dl', {}, rows.map(([k, label]) => el('div', { class: 'sm ' + (BADGE[k] || {}).cls + (c[k] ? '' : ' zero') },
-      el('dt', {}, icon((BADGE[k] || {}).icon), label), el('dd', {}, String(c[k] || 0))))),
+      el('dt', {}, icon((BADGE[k] || {}).icon), label), el('dd', {}, [...String(c[k] || 0)].map((d) => el('span', { class: 'num-tile' }, d)))))),
     el('p', {}, `${p.watch.pages_watched} vendor pages watched, checked ${fmtLocal(p.watch.last_checked_local)}`));
 }
 
@@ -557,6 +557,7 @@ function answerRow(p, a, staleEv) {
   const mixed = new Set(a.cells.map((c) => c.verdict)).size > 1;
   if (a.badge === 'not_true') {
     body.append(...quoteBlock(a.cells.filter((c) => c.verdict === 'contradicts')));
+    body.querySelectorAll('blockquote').forEach((q) => q.classList.add('catch-text'));
     body.append(perEndpoint(a));
     if (isCatch) body.append(fixPanel(p, a));
   } else if (a.badge === 'stale') {
@@ -596,7 +597,7 @@ function answerRow(p, a, staleEv) {
   const art = el('article', { class: 'ans' + (isCatch ? ' sel' : '') + (a.badge === 'stale' ? ' stale' : '') + (ch ? ' changed' : ''), id: 'q-' + a.id, 'data-badge': a.badge, tabindex: '-1', 'aria-labelledby': `h-${a.id}` },
     el('span', { class: 'n' }, a.number),
     el('h3', { id: `h-${a.id}` }, a.question),
-    el('span', { class: 'badge ' + b.cls }, icon(b.icon), a.badge_label),
+    el('span', { class: 'badge ' + b.cls + (a.badge === 'not_true' ? ' catch-mark' : '') }, icon(b.icon), a.badge_label),
     body);
   art.addEventListener('mouseenter', () => relate(null, a));
   art.addEventListener('mouseleave', () => relate(null, null));

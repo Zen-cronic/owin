@@ -1,0 +1,14 @@
+/* Theme 5, Auditor's photocopy: toner-grey scanned page, one fluorescent highlighter stroke, nothing else coloured.
+   Stub: palette and families only. Everything in this file stays under :root[data-theme="c5"]. The highlighter is a
+   fill behind toner text, never a line or text colour on the page, so the signal lines and inks fall back to toner. */
+:root[data-theme="c5"]{
+  color-scheme:light;
+  --bg:#E6E6E3; --surface:#F4F4F2; --raise:#DADAD6; --board:#DADAD6; --tile:#F4F4F2;
+  --ink:#161616; --muted:#5A5A58; --cite:#383837; --line:#BDBDB9; --edge:#8A8A86;
+  --act:#F5F03A; --act-hover:#EDE71F; --on-act:#161616; --act-line:#161616; --act-ink:#161616;
+  --mark:#F5F03A; --on-mark:#161616; --focus:#161616;
+  --display:'Work Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --sans:'Work Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Courier Prime','Courier New',ui-monospace,monospace;
+  --num:'Work Sans',system-ui,sans-serif; --num-weight:700;
+}

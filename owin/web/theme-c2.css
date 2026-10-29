@@ -1,0 +1,13 @@
+/* Theme 2, Broadsheet: cool newsprint, toner-black condensed headline, one signal-red rule.
+   Stub: palette and families only. Everything in this file stays under :root[data-theme="c2"]. */
+:root[data-theme="c2"]{
+  color-scheme:light;
+  --bg:#ECE9E1; --surface:#F7F6F2; --raise:#E2DED4; --board:#E2DED4; --tile:#F7F6F2;
+  --ink:#121212; --muted:#5B5955; --cite:#3A3936; --line:#C3BFB4; --edge:#8C887F;
+  --act:#C8102E; --act-hover:#A50D26; --on-act:#F7F6F2; --act-line:#C8102E; --act-ink:#C8102E;
+  --mark:#C8102E; --on-mark:#F7F6F2; --focus:#C8102E;
+  --display:'Oswald','Arial Narrow',system-ui,sans-serif;
+  --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --num:'Anton','Oswald',system-ui,sans-serif; --num-weight:400;
+}

@@ -1,0 +1,13 @@
+/* Theme 4, Civic form: form paper, white answer fields, grey rules, an oxblood stamp as the only colour.
+   Stub: palette and families only. Everything in this file stays under :root[data-theme="c4"]. */
+:root[data-theme="c4"]{
+  color-scheme:light;
+  --bg:#EEEBE3; --surface:#FFFFFF; --raise:#E3DFD5; --board:#E3DFD5; --tile:#FFFFFF;
+  --ink:#1B1B1B; --muted:#5F5C57; --cite:#3B3936; --line:#B9B5AC; --edge:#8A867E;
+  --act:#6E1423; --act-hover:#5A0F1C; --on-act:#EEEBE3; --act-line:#6E1423; --act-ink:#6E1423;
+  --mark:#6E1423; --on-mark:#EEEBE3; --focus:#6E1423;
+  --display:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --sans:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Courier Prime','Courier New',ui-monospace,monospace;
+  --num:'Courier Prime','Courier New',ui-monospace,monospace; --num-weight:700;
+}

@@ -1,0 +1,14 @@
+/* Theme 3, Ledger terminal: near-black, one monospaced family on a hairline ledger, pale phosphor on the catch row only.
+   Stub: palette and families only. Everything in this file stays under :root[data-theme="c3"]. */
+:root[data-theme="c3"]{
+  color-scheme:dark;
+  --bg:#0B0D0C; --surface:#131716; --raise:#1B201E; --board:#131716; --tile:#0B0D0C;
+  --ink:#E4EBE3; --muted:#8C968E; --cite:#B7C0B8; --line:#2E3531; --edge:#56605A;
+  --act:#A9F0B3; --act-hover:#BDF5C5; --on-act:#0B0D0C; --act-line:#A9F0B3; --act-ink:#A9F0B3;
+  --mark:#A9F0B3; --on-mark:#0B0D0C; --focus:#A9F0B3;
+  --display:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --sans:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --num:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace; --num-weight:800; --display-weight:500; --display-track:-.02em;
+  --r:0px; --r-sm:0px; --r-tile:0px;
+}
