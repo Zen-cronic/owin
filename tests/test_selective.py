@@ -112,3 +112,19 @@ def test_thin_evidence_is_held_never_invented():
 def test_region_never_auto_or_confirm():
     for e in registry.load().values():
         assert "region" not in (e.get("field_agreement") or {})
+
+
+def test_correct_cells_split_into_sentence_backed_and_not_stated():
+    """26 right = 18 asserted values, each with the page's verbatim sentence, + 8 correct 'not stated' answers on
+    pages that say nothing on that field. Plus the all-cells majority a majority-vote system would have shipped."""
+    rep = selective.report("v3fresh")
+    h = rep["headline"]
+    assert (h["correct_with_sentence"], h["correct_not_stated"]) == (18, 8)
+    assert h["correct_with_sentence"] + h["correct_not_stated"] == int(h["auto_correct"].split("/")[0])
+    assert h["all_cells_majority_right"] == "28/33" and h["pages"] == 8 and h["vendors_new"] == 6
+    b = selective.brief(rep)
+    assert (b["with_sentence"], b["not_stated"], b["all_cells_majority_right"], b["pages"], b["vendors_new"]) == (18, 8, "28/33", 8, 6)
+    assert selective.vendor_family("Google Cloud (Vertex AI / Gemini Enterprise Agent Platform)") == selective.vendor_family("Google Cloud")
+    from owin import server
+    s = server.selective_summary()
+    assert s["majority_all_cells"] == "28/33" and (s["correct_with_sentence"], s["correct_not_stated"]) == (18, 8)

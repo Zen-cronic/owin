@@ -10,8 +10,14 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | `sel.correct` | Correct among the auto-filled answers | **26/27** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.confirm` | Answers sent to a person to confirm | **6** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.majority` | Confirm cells where the majority reading would have been right | **2/6** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.sentence` | Correct auto-filled answers that assert a value with the vendor's verbatim sentence | **18** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.notstated` | Correct auto-filled answers that are 'not stated' (the page says nothing on that field) | **8** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.majority_all` | All 33 cells: where a majority vote would have been right (what a majority-vote system ships) | **28/33** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.vendors` | AI vendors in v3fresh positives | **7** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.vendors_new` | Vendor families in v3fresh that appear nowhere in the older corpus (Google Cloud is not new) | **6** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.items` | Features (vendor pages) in v3fresh positives | **11** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.pages` | Distinct vendor pages behind those 11 features | **8** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.swing` | Whole-item points one v3fresh item moves (100 / items) | **9** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.miss` | The one confident miss (self-disclosed label error, kept per pre-registration) | **openrouter-inference-zdr retention_days** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.neg` | Negative-control cells auto-answered correctly (page says nothing; Owin answers 'not stated') | **6/6** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.ref.v3old` | Reference, NOT clean: v3 on the older items, auto / correct | **80/90, 77/80** | `owin eval selective --corpus datause --split v3fresh` |
@@ -23,6 +29,9 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | `v3.passed` | v3 passed its pre-registered 80% bar | **false** | `owin eval score --corpus datause --brief` |
 | `v2.old` | Prompt v2 on the older 30 features (after one disclosed relabel) | **23/30** | `eval/datause/v2-score.json` |
 | `v1.prereg` | Pre-registered prompt v1, first 24 features (failed) | **16/24** | `eval/datause/preregistered-v1-score.json` |
+| `v3.calls` | Token Factory calls in the v3fresh run (11 features + 2 negatives, 3 readings each) | **39** | `owin eval score --corpus datause --brief` |
+| `v3.cost.total` | Token Factory spend for the v3fresh run (USD) | **0.115** | `owin eval score --corpus datause --brief` |
+| `price.super` | Token Factory list price for Nemotron Super, USD per M input / output tokens | **0.30 / 0.90** | `owin/tokenfactory.py` |
 | `cost.call` | Mean Token Factory cost per reading, v3fresh (USD) | **0.0029** | `owin eval score --corpus datause --brief` |
 | `cost.feature` | Cost to answer one endpoint (3 readings, USD) | **0.0088** | `owin eval score --corpus datause --brief` |
 | `lat.mean` | Mean latency per reading, exactly-right runs (s) | **8.81** | `owin eval score --corpus datause --brief` |
@@ -40,6 +49,9 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | `demo.v3` | The pack's readings use the headline's prompt version (every registry entry and live check) | **v3** | `owin pack registry` |
 | `demo.region` | Region never decides: answer 4 is held | **held_unspecified** | `owin pack build --format brief` |
 | `dpa.items` | Earlier subject (objection windows): DPAs exact, tuned + held-out | **10/10 + 7/7** | `owin eval score --brief` |
+| `dpa.runs` | Earlier subject: readings exact on all five fields, tuned + held-out | **51/51** | `owin eval score --brief` |
+| `dpa.neg` | Earlier subject: thin-evidence controls held | **6/6** | `owin eval score --brief` |
+| `sweep.vendors` | Vendors in the sub-processor sweep index | **29** | `data/index/vendors.json` |
 
 ## Qualitative claims and where they are enforced
 

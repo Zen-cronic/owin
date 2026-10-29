@@ -41,6 +41,12 @@ def test_readme_numbers_match_the_ledger():
     assert "80/90" in README and "77/80" in README and "77/90" in README and "72/77" in README
     assert _f("model") in README and _f("demo.quote").split(" is ")[1].rstrip(".") in README
     assert _f("v3.passed") is False and "fails our own 80% bar" in README
+    # The numbers the README carries outside the headline table: all in the ledger, all recomputed.
+    assert f"{_f('v3.calls')} calls" in README and f"${_f('v3.cost.total')} total" in README
+    assert f"${_f('price.super').replace(' / ', ' / $')} per M tokens" in README
+    assert f"{_f('dpa.runs')} runs" in README and f"{_f('dpa.neg')} thin-evidence controls" in README
+    assert f"{_f('sweep.vendors')}-vendor" in README or f"{_f('sweep.vendors')} vendors" in README
+    assert f"{_f('sel.swing')} points" in README
 
 
 def test_judge_page_reads_its_numbers_from_the_api():

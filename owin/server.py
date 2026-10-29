@@ -117,8 +117,12 @@ def selective_summary() -> dict:
     rep = selective.report("v3fresh")
     sc = dv.score(dv.headline_runs())
     v3 = sc["headline"]["v3fresh"]
+    h = rep["headline"]
     return {"type": "owin.selective", "selective": selective.brief(rep), "run_files": rep["run_files"],
             "quotes_rechecked_against_source": rep["quotes_rechecked_against_source"],
+            "majority_all_cells": h["all_cells_majority_right"],
+            "correct_with_sentence": h["correct_with_sentence"], "correct_not_stated": h["correct_not_stated"],
+            "pages": h["pages"], "vendors_new": h["vendors_new"],
             "items_exact_majority": v3["items_exact_majority"], "negative_items_held": v3["negative_items_held"],
             "baseline_items_exact": v3["baseline_items_exact"], "model": sc["model"],
             "per_call": {"calls": sc["per_successful_run"]["total_calls"], "total_cost_usd": sc["per_successful_run"]["total_cost_usd"],
