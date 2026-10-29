@@ -41,8 +41,9 @@
 /* App front page: kicker, headline, the correction counts */
 :root[data-theme="c2"] .kicker{font-size:14px;color:var(--ink)}
 :root[data-theme="c2"] .kicker b{font-weight:700}
-:root[data-theme="c2"] h1{font-size:58px;line-height:.98;margin-top:14px;max-width:21em}
-:root[data-theme="c2"] h1 .ep{font-size:.74em;font-weight:700;letter-spacing:-.05em}
+:root[data-theme="c2"] h1{font-size:44px;line-height:1.04;margin-top:14px;max-width:24em}
+/* The path in the headline: mono sized so its capitals stand as tall as the condensed capitals (Plex Mono cap .698em, Oswald .81em) */
+:root[data-theme="c2"] h1 .ep{font-size:1.16em;line-height:.9;font-weight:600;letter-spacing:-.06em}
 :root[data-theme="c2"] .todo{margin-top:30px}
 :root[data-theme="c2"] .summary h2{font:500 13px/1.4 var(--sans);color:var(--muted)}
 :root[data-theme="c2"] .summary dl{border-top:2px solid var(--ink)}
@@ -82,15 +83,15 @@
 :root[data-theme="c2"] .judge-page .badge.catch-mark .lbl{padding:0 11px}
 :root[data-theme="c2"] .judge-page .catch-text{font-weight:600;color:var(--ink)}
 
-:root[data-theme="c2"] .judge-page .stat-board{margin-top:48px;padding:20px 0 8px;background:none;box-shadow:none;clip-path:none;border-top:var(--hair) solid var(--ink)}
+:root[data-theme="c2"] .judge-page .stat-board{margin-top:36px;padding:20px 0 8px;background:none;box-shadow:none;clip-path:none;border-top:var(--hair) solid var(--ink)}
 :root[data-theme="c2"] .judge-page .jg .big{margin-bottom:14px;font:500 14px/1.4 var(--sans);color:var(--muted)}
-:root[data-theme="c2"] .judge-page .stat{--d:clamp(72px,9.6vw,140px)}
+:root[data-theme="c2"] .judge-page .stat{--d:clamp(72px,7.8vw,112px)}
 :root[data-theme="c2"] .judge-page .stat .v{line-height:1}
 :root[data-theme="c2"] .judge-page .num-row{gap:0}
 :root[data-theme="c2"] .judge-page .num-tile,:root[data-theme="c2"] .judge-page .num-sep{width:.5em;height:1.1em;background:none;border-radius:0;perspective:none}
 :root[data-theme="c2"] .judge-page .num-sep{width:.32em}
 :root[data-theme="c2"] .judge-page .num-tile .h{background:none}
-:root[data-theme="c2"] .judge-page .stat .c{margin-top:14px;font-size:15px;color:var(--cite)}
+:root[data-theme="c2"] .judge-page .stat .c{margin-top:10px;font:600 15px/1.4 var(--sans);color:var(--ink)}
 :root[data-theme="c2"] .judge-page .stat.skel .num-tile{background:var(--raise);margin-right:.04em}
 :root[data-theme="c2"] .judge-page .stat.skel .c .bar{background:var(--raise)}
 
@@ -110,7 +111,7 @@
   :root[data-theme="c2"] .judge-page .top{padding:12px 16px 10px}
   :root[data-theme="c2"] .word{font-size:24px}
   :root[data-theme="c2"] .catch{padding-top:24px;padding-bottom:22px}
-  :root[data-theme="c2"] h1{font-size:34px;line-height:1;letter-spacing:0}
+  :root[data-theme="c2"] h1{font-size:34px;line-height:1.04;letter-spacing:0}
   :root[data-theme="c2"] .judge-page .jg .story{padding-top:28px}
   :root[data-theme="c2"] .judge-page .story h1{font-size:clamp(28px,7.4vw,56px);line-height:1;letter-spacing:0}
   :root[data-theme="c2"] .judge-page .lede{margin-top:28px;padding-top:24px}
