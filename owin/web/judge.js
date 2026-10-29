@@ -43,7 +43,7 @@ reveal();
   } catch (e) {
     $('big').textContent = 'Couldn’t recompute the numbers right now.';
     $('stats').replaceChildren();
-    $('sub').textContent = 'Run the command below, or reload. No number is shown that was not recomputed.';
+    $('sub').textContent = 'Run the command in the Method row, or reload. No number is shown that was not recomputed.';
   } finally {
     $('judge').setAttribute('aria-busy', 'false');
   }

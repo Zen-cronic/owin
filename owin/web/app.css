@@ -296,6 +296,13 @@ details.more summary:hover{color:var(--ink)}
 .jg .fn{margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-size:12px;line-height:1.5;color:var(--muted)}
 .jg .fn span{display:block;max-width:100ch}
 .jg .fn:empty,.jg .sub:empty{display:none}
+/* Method row: the split, the recompute command and the footnote, folded into one evidence-style row under the numerals */
+.ev.method{margin-top:20px}
+.ev.method li{grid-template-columns:minmax(0,260px) minmax(0,1fr);align-items:start}
+.ev.method li:last-child{border-bottom:0}
+.ev.method .mx{display:grid;gap:10px;min-width:0}
+.ev.method .sub,.ev.method .recompute{margin-top:0}
+.ev.method .fn{margin:0;padding:0;border:0;font-size:12.5px;color:var(--muted)}
 .recompute{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-top:14px;font-size:12.5px;color:var(--cite);min-width:0}
 .recompute a{color:var(--cite)}
 code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13px/1.4 var(--mono);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:6px 10px;scrollbar-width:thin}
@@ -326,7 +333,7 @@ code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13
   .story .what{font-size:14.5px}
   .catchline{margin-top:28px;font-size:15px;flex-direction:column;gap:10px}
   code.cmd{white-space:pre-wrap;overflow-wrap:anywhere;overflow:visible}
-  .ev li{grid-template-columns:minmax(0,1fr)}
+  .ev li,.ev.method li{grid-template-columns:minmax(0,1fr)}
   .jg section{margin-top:28px}
 }
 
@@ -335,7 +342,7 @@ code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13
 .story .kick{font-size:13px;font-weight:600;color:var(--muted)}
 .story h1{margin-top:10px}
 .story .what{margin-top:16px;font-size:15.5px;line-height:1.55;color:var(--cite);max-width:66ch}
-.catchline{display:flex;gap:14px;align-items:flex-start;margin-top:40px;padding-top:22px;border-top:1px solid var(--line);font-size:16px;line-height:1.5}
+.catchline{display:flex;gap:14px;align-items:flex-start;margin-top:28px;padding-top:22px;border-top:1px solid var(--line);font-size:16px;line-height:1.5}
 .catchline .cl{max-width:70ch}
 .catchline .act{display:block;margin-top:16px}
 .catchline .badge{margin-top:3px}
