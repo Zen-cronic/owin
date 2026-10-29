@@ -64,7 +64,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--bg)}
-body{background-color:var(--bg);background-image:var(--texture);background-size:var(--texture-size);background-blend-mode:var(--texture-blend);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background-color:var(--bg);background-image:var(--texture);background-size:var(--texture-size);background-blend-mode:var(--texture-blend);color:var(--ink);font:15px/1.5 var(--sans);letter-spacing:-.004em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 .mono,.ep{font-family:var(--mono)}
 .nw{white-space:nowrap}
 a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--edge);text-underline-offset:3px}
@@ -80,18 +80,21 @@ svg.i{width:14px;height:14px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .ctx{color:var(--ink)}
 .fict{color:var(--muted);margin-left:6px}
 .fict::before{content:"·";margin-right:6px;color:var(--edge)}
-.top .replay{margin-left:auto}
+.top .replay{margin-left:0}
 .top .judge{color:var(--ink)}
 
 /* Theme switch: five native radios, keyboard arrows move between them; hidden without JS (no data-theme) and in print */
 .theme-switch{display:inline-flex;align-items:center;gap:2px;font:500 12px/1 var(--sans);color:var(--muted)}
+.top .theme-switch{order:1;margin-left:auto;padding-right:14px;border-right:var(--hair) solid var(--line)}
+.top .replay{order:2}
+.top .judge{order:3}
 .theme-switch .tl{margin-right:6px}
 .theme-switch label{position:relative;display:block;cursor:pointer}
 .theme-switch input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer}
-.theme-switch label > span:not(.sr){display:grid;place-items:center;width:24px;height:26px;border-radius:var(--r-sm);font:500 12px/1 var(--mono);color:var(--muted);transition:background-color var(--dur-fast) ease-out,color var(--dur-fast) ease-out}
+.theme-switch label > span:not(.sr){display:grid;place-items:center;width:22px;height:24px;box-shadow:inset 0 0 0 var(--hair) transparent;border-radius:var(--r-sm);font:500 12px/1 var(--mono);color:var(--muted);transition:background-color var(--dur-fast) ease-out,color var(--dur-fast) ease-out}
 .theme-switch label:hover > span:not(.sr){color:var(--ink);background:var(--raise)}
-.theme-switch input:checked + span{background:var(--ink);color:var(--bg)}
-.theme-switch label:hover input:checked + span{background:var(--ink);color:var(--bg)}
+.theme-switch input:checked + span{color:var(--ink);background:none;box-shadow:inset 0 0 0 var(--hair) var(--edge)}
+.theme-switch label:hover input:checked + span{background:none}
 .theme-switch input:focus-visible + span{outline:2px solid var(--focus);outline-offset:2px}
 :root:not([data-theme]) .theme-switch{display:none}
 
@@ -126,8 +129,8 @@ h1 .bar{height:.75em}
 .kicker .sep{color:var(--edge)}
 .kicker b{color:var(--ink);font-weight:600}
 .kicker .st{color:var(--ink)}
-h1{font:var(--display-weight) 42px/1.06 var(--display);letter-spacing:var(--display-track);margin-top:12px;max-width:24em;text-wrap:balance}
-h1 .ep{font-size:.86em;font-weight:600;letter-spacing:-.03em;white-space:nowrap}
+h1{font:var(--display-weight) 42px/1.06 var(--display);letter-spacing:calc(var(--display-track) * .7);margin-top:12px;max-width:24em;text-wrap:balance}
+h1 .ep{font-size:.86em;font-weight:700;letter-spacing:-.03em;white-space:nowrap}
 .todo{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}
 .todo:empty{display:none}
 .todo .link{font:600 15px/1 var(--sans);padding:13px 4px;align-self:center;background:none;border:0;color:var(--ink);cursor:pointer;text-decoration:underline;text-decoration-color:var(--edge);text-underline-offset:4px}
@@ -325,7 +328,8 @@ details.more summary:hover{color:var(--ink)}
   .top .ctx{grid-column:2/4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .top .replay{font-size:12px;margin-left:0;grid-column:1/3;grid-row:2}
   .top .judge{grid-column:3;grid-row:2;justify-self:end;font-size:12px}
-  .top .theme-switch{grid-column:1/-1;grid-row:3;justify-self:end;margin-top:2px}
+  .top .theme-switch{grid-column:1/-1;grid-row:3;justify-self:end;margin:0 -4px 0 0;padding:0;border:0}
+  .top .theme-switch label > span:not(.sr){height:22px}
   .judge-page .top .replay.judge{grid-column:3;grid-row:1}
   .judge-page .top .ctx{grid-column:2/3}
   .judge-page .top .theme-switch{grid-row:2}
@@ -333,7 +337,7 @@ details.more summary:hover{color:var(--ink)}
   .catch > .summary{display:none}
   .wrap{padding:16px 16px 48px}
   .catch{padding-bottom:18px}
-  h1{font-size:26px;line-height:1.14;margin-top:8px}
+  h1{font-size:25px;line-height:1.14;margin-top:8px;letter-spacing:calc(var(--display-track) * .4)}
   .todo{gap:16px;margin-top:16px;flex-wrap:nowrap}.todo .btn{padding:14px 18px}
   .todo .link{padding:14px 2px}
   .panes{grid-template-columns:minmax(0,1fr);gap:0;margin-top:10px}
