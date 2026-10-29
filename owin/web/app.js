@@ -29,7 +29,8 @@ const BADGE = {
   still_true: { cls: 'ok', icon: 'check' },
 };
 
-const state = { pack: null, catalog: null, watch: null, sets: readSets(), drawn: false, seq: 0, base: null, changes: [] };
+const state = { pack: null, catalog: null, watch: null, sets: readSets(), drawn: false, seq: 0, base: null, changes: [], recheck: {} };
+const LABEL = { not_true: 'Not true', stale: 'Stale', confirm: 'Confirm', held_unspecified: 'Held · unspecified', still_true: 'Still true' };
 // Prose words for a badge, for the one-line narration of what a change moved. Severity orders the narration.
 const WORD = { not_true: 'not true', stale: 'stale', confirm: 'to confirm', held_unspecified: 'held', still_true: 'still true' };
 const SEV = { not_true: 0, stale: 1, confirm: 2, held_unspecified: 3, still_true: 4 };
@@ -367,10 +368,60 @@ function endpointRow(p, s, staleEv) {
     el('div', { class: 'path' }, ep.path),
     featureSelect(ep),
     finding,
-    feeds);
+    feeds,
+    recheckView(ep.path));
   row.addEventListener('mouseenter', () => relate(ep.path, null));
   row.addEventListener('mouseleave', () => relate(null, null));
   return row;
+}
+
+// Re-check this page: POST /api/recheck {"endpoint": path}. A server with a fetch key re-reads the vendor page live
+// and answers {ok, mode: "live", checked_at, changed, state, observation}; a keyless server answers
+// {ok: false, mode: "demo"} and the daily job re-checks instead. Yellow only when the state becomes not_true or stale.
+function recheckView(path) {
+  const k = slug(path), r = state.recheck[path] || {};
+  const status = el('p', { class: 'rc' + (r.bad ? ' bad' : ''), id: `recheck-s-${k}`, role: 'status' },
+    r.pending ? 'Checking…' : (r.text || ''), r.observation ? el('span', { class: 'obs' }, r.observation) : null);
+  return el('div', { class: 'recheck' },
+    el('button', { class: 'btn ghost small', id: `recheck-${k}`, type: 'button', disabled: !!r.pending, 'aria-describedby': `recheck-s-${k}`, onclick: () => recheck(path) }, 'Re-check this page'),
+    status);
+}
+function fmtWhen(iso) {
+  const d = new Date(iso || '');
+  return isNaN(d) ? nowET() : new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hour12: false, timeZoneName: 'short' }).format(d);
+}
+async function recheck(path) {
+  const hadFocus = document.activeElement && document.activeElement.id === `recheck-${slug(path)}`;
+  state.recheck[path] = { pending: true };
+  paintRecheck(path);
+  let r = null, j = null;
+  try {
+    r = await fetch('/api/recheck', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ endpoint: path }) });
+    try { j = await r.json(); } catch (_) { j = null; }
+  } catch (_) { r = null; }
+  let res;
+  if (j && j.ok === true && j.mode === 'live') {
+    const when = fmtWhen(j.checked_at), word = LABEL[j.state] || String(j.state || '').replace(/_/g, ' ');
+    res = j.changed ? { text: `Checked ${when} · changed → ${word}`, bad: j.state === 'not_true' || j.state === 'stale', observation: j.observation }
+      : { text: `Checked ${when} · unchanged`, observation: j.observation };
+  } else if (j && j.ok === false && j.mode === 'demo') {
+    res = { text: 'This server has no fetch key; the daily job re-checks instead.' };
+  } else {
+    res = { text: `Couldn’t re-check right now${r ? ` (HTTP ${r.status})` : ''}. Try again.` };
+  }
+  state.recheck[path] = res;
+  paintRecheck(path, hadFocus);
+  if (res.observation !== undefined && j.changed) load({ recompute: true });
+}
+// Update in place: the status is a live region, and a keyboard user keeps their place on the button.
+function paintRecheck(path, refocus) {
+  const k = slug(path), r = state.recheck[path] || {};
+  const btn = $(`recheck-${k}`), st = $(`recheck-s-${k}`);
+  if (!btn || !st) return;
+  btn.disabled = !!r.pending;
+  st.className = 'rc' + (r.bad ? ' bad' : '');
+  st.replaceChildren(...[r.pending ? 'Checking…' : (r.text || ''), r.observation ? el('span', { class: 'obs' }, r.observation) : null].filter(Boolean));
+  if (refocus && !r.pending && document.activeElement === document.body) btn.focus({ preventScroll: true });
 }
 
 function featureSelect(ep) {
