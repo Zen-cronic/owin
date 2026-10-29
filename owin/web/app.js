@@ -408,7 +408,7 @@ function renderPages(p) {
   if (items.length) kids.push(el('ul', {}, items));
   kids.push(el('p', { class: 'reset' }, 'Each check re-reads these pages; an answer goes Stale when a sentence it relies on changes.'));
   if (Object.keys(state.sets).length) {
-    kids.push(el('p', { class: 'reset' }, 'You changed ', ...Object.keys(state.sets).map((x) => el('span', { class: 'mono nw' }, x)), '. ',
+    kids.push(el('p', { class: 'reset' }, 'You changed ', ...joinPaths(Object.keys(state.sets)), '. ',
       el('button', { onclick: () => { state.sets = {}; load({ recompute: true }); } }, 'Reset to the demo stack')));
   }
   box.replaceChildren(...kids);
