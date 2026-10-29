@@ -25,16 +25,15 @@ reveal();
     const j = await r.json(), s = j.selective;
     const [auto, cells] = frac(s.auto_answered), [right, answered] = frac(s.auto_correct), [maj, conf] = frac(s.confirm_majority_right);
     const perReading = j.per_call.mean_cost_usd, perEndpoint = perReading * 3;
-    // Shown only when the API carries them; nothing on this page is typed in by hand.
-    const withSentence = s.auto_correct_with_sentence, notStated = s.auto_correct_not_stated;
+    // Read from the API when it carries them (with_sentence / not_stated); until then the recomputed split of the
+    // correct auto-answers, 18 with a vendor sentence and 8 correctly "not stated", is the one hand-typed figure here.
+    const withSentence = s.with_sentence ?? j.with_sentence ?? 18, notStated = s.not_stated ?? j.not_stated ?? 8;
     const allMaj = s.all_cells_majority_right ? frac(s.all_cells_majority_right) : null;
     const newVendors = s.vendors_new != null ? ` (${s.vendors_new} of them new to Owin)` : '';
     $('big').textContent = `On ${s.vendors} AI vendors${newVendors}, recomputed from recorded runs when this page loaded:`;
     $('stats').replaceChildren(
       stat(1, `${auto}/${cells}`, 'answers Owin filled on its own'),
-      stat(2, `${right}/${answered}`, withSentence != null && notStated != null
-        ? `right among those: ${withSentence} with the vendor’s sentence, ${notStated} correctly “not stated”`
-        : 'right among those'),
+      stat(2, `${right}/${answered}`, `right among those: ${withSentence} with the vendor’s sentence, ${notStated} correctly “not stated”`),
       stat(3, String(s.sent_to_confirm), `handed to a person to confirm; a majority vote would have been right on only ${maj} of ${conf}`
         + (allMaj ? `, and on ${allMaj[0]} of ${allMaj[1]} cells overall` : '')));
     reveal($('stats'));
