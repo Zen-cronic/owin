@@ -80,9 +80,10 @@ def test_stale_example_is_the_real_openai_list_change(demo):
     # Tavily served an older copy ("July 9, 2026") on 2026-10-22; it is held and never used as the latest.
     held = ev["held_observations"]
     assert held and held[0]["source_kind"] == "tavily" and held[0]["last_updated"] == "July 9, 2026"
-    # Selective answering: the readings disagree on third-party access for two endpoints, so those cells ask a person.
+    # Selective answering: the v3 readings agree on third-party access for every demo endpoint (3 of 3), so no cell
+    # asks a person here; the one split left in the catalog is OpenAI Responses (tests/test_selective.py).
     assert {c["endpoint"]: c["verdict"] for c in q5["cells"]} == {
-        "/api/crm-sync": "confirm", "/api/summarize": "holds", "/api/digest": "holds", "/api/embed": "confirm"}
+        "/api/crm-sync": "holds", "/api/summarize": "holds", "/api/digest": "holds", "/api/embed": "holds"}
 
 
 def test_change_one_input_flips_q03_to_still_true():
@@ -177,8 +178,10 @@ def test_not_true_outranks_stale_and_stale_outranks_held():
     assert badges(pack.build(m))["Q05"] == "not_true"
     m2 = pack.load_demo()
     m2["stated"]["stated_at"] = "2026-10-21"  # written after the Oct 14 change was captured: nothing to flag
-    # Nothing is stale, but two endpoints' readings disagree on third-party access: confirm, never still_true.
-    assert badges(pack.build(m2))["Q05"] == "confirm"
+    assert badges(pack.build(m2))["Q05"] == "still_true"
+    # Nothing is stale, but one endpoint's readings disagree on third-party access: confirm, never still_true.
+    m3 = pack.set_feature(m2, "/api/embed", "openai-responses")
+    assert badges(pack.build(m3))["Q05"] == "confirm"
 
 
 def test_region_is_never_computed_from_vendor_free_text():
@@ -320,3 +323,16 @@ def test_demo_pages_were_fetched_via_tavily():
     obs = obsmod.load()["pages"]
     for page in ("anthropic-retention", "anthropic-mcp-connector", "openai-your-data", "openai-subprocessors"):
         assert any(o["source_kind"] == "tavily" for o in obs[page]["observations"]), page
+
+
+def test_pack_readings_follow_the_headline_prompt_version():
+    """registry.py once hard-coded "v2" for recorded entries while the headline was v3. Now every entry and every live
+    check carries the prompt version of its own run file, and all of them match the frozen headline's."""
+    from owin.datause import evaluate as dv
+    want = dv.headline_prompt_version()
+    reg = registry.load()
+    for fid, e in reg.items():
+        assert e.get("prompt_version") == want, (fid, e.get("prompt_version"))
+        if e.get("live_check"):
+            assert e["live_check"]["prompt_version"] == want, fid
+    assert want == "v3"

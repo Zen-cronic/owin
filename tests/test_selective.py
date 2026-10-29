@@ -86,12 +86,19 @@ def test_disagreement_becomes_confirm_with_values_and_quotes():
 
 
 def test_confirm_badge_on_a_swapped_stack():
-    m = pack.set_feature(pack.set_feature(pack.load_demo(), "/api/crm-sync", "anthropic-messages"),
-                         "/api/embed", "openai-responses")
+    """The one split left in the catalog on v3: OpenAI's page read for Responses gives third-party access 'yes' on
+    2 of 3 readings and 'unspecified' on 1. Point /api/embed at Responses and answer 5's cell asks a person."""
+    m = pack.set_feature(pack.load_demo(), "/api/embed", "openai-responses")
     p = pack.build(m)
-    q3 = next(a for a in p["answers"] if a["id"] == "Q03")
-    assert q3["badge"] == "confirm" and q3["badge_label"] == "Confirm" and q3["endpoints_confirm"] == 1
-    assert "confirm" in q3["answer"]
+    q5 = next(a for a in p["answers"] if a["id"] == "Q05")
+    c = next(c for c in q5["cells"] if c["endpoint"] == "/api/embed")
+    assert c["verdict"] == "confirm" and c["confirm"]["runs_agreeing"] == "2/3" and c["vendor_value"] is None
+    assert [o["value"] for o in c["confirm"]["options"]] == ["yes", "unspecified"]
+    assert q5["badge"] == "stale"  # OpenAI's list change outranks the confirm on the demo's stated_at
+    m["stated"]["stated_at"] = "2026-10-21"  # written after the list change: the split is what is left
+    q5 = next(a for a in pack.build(m)["answers"] if a["id"] == "Q05")
+    assert q5["badge"] == "confirm" and q5["badge_label"] == "Confirm" and q5["endpoints_confirm"] == 1
+    assert "confirm" in q5["answer"]
 
 
 def test_thin_evidence_is_held_never_invented():

@@ -11,11 +11,7 @@
    "text": "Retained data is never used for model training without your express permission.",
    "page": "anthropic-retention"
   },
-  "22ee597c89062884": {
-   "kind": "sentence",
-   "page": "anthropic-mcp-connector"
-  },
-  "2c81866dfc902b02": {
+  "14ebf7eabdd0c677": {
    "kind": "table_row",
    "header": [
     "Feature",
@@ -25,60 +21,19 @@
     "Details"
    ],
    "cells": [
-    "Batch processing",
-    "/v1/messages/batches",
-    "No",
-    "No",
-    "29-day retention; async storage required. See Batch processing."
+    "Messages API",
+    "/v1/messages",
+    "Yes",
+    "Yes",
+    "Standard API calls for generating Claude responses."
    ],
    "quote_cell": null,
    "page": "anthropic-retention"
   },
-  "53dae04a9337dfc1": {
-   "kind": "table_row",
-   "header": [
-    "Endpoint",
-    "Data used for training",
-    "Abuse monitoring retention",
-    "Application state retention",
-    "Zero Data Retention eligible",
-    "Private Retention with PSP and Safety Retention eligible"
-   ],
-   "cells": [
-    "/v1/responses",
-    "No",
-    "30 days",
-    "None, see below for exceptions",
-    "Yes, see below for limitations",
-    "Yes, see below for limitations"
-   ],
-   "quote_cell": null,
-   "page": "openai-your-data"
-  },
-  "65642f365f71bfa0": {
-   "kind": "table_row",
-   "header": [
-    "Endpoint",
-    "Data used for training",
-    "Abuse monitoring retention",
-    "Application state retention",
-    "Zero Data Retention eligible",
-    "Private Retention with PSP and Safety Retention eligible"
-   ],
-   "cells": [
-    "/v1/responses",
-    "No",
-    "30 days",
-    "None, see below for exceptions",
-    "Yes, see below for limitations",
-    "Yes, see below for limitations"
-   ],
-   "quote_cell": null,
-   "page": "openai-your-data"
-  },
-  "706595c4150f4cec": {
-   "kind": "sentence",
-   "page": "openai-your-data"
+  "6b270d4434d1adbc": {
+   "kind": "list_entry",
+   "text": "Claude Messages and Token Counting APIs: ZDR applies to these endpoints for eligible features listed in the feature eligibility table. Features that ride on /v1/messages but are marked \"No\" in the table (such as code execution) are not covered.",
+   "page": "anthropic-retention"
   },
   "73f9c9906d7ad952": {
    "kind": "list_entry",
@@ -108,7 +63,7 @@
    "quote_cell": null,
    "page": "openai-your-data"
   },
-  "941c1e5e47b4d9d9": {
+  "97c8311da8d99825": {
    "kind": "table_row",
    "header": [
     "Feature",
@@ -118,77 +73,64 @@
     "Details"
    ],
    "cells": [
-    "Messages API",
-    "/v1/messages",
-    "Yes",
-    "Yes",
-    "Standard API calls for generating Claude responses."
+    "Batch processing",
+    "/v1/messages/batches",
+    "No",
+    "No",
+    "29-day retention; async storage required. See Batch processing."
    ],
    "quote_cell": null,
    "page": "anthropic-retention"
+  },
+  "99476fd452fdcb7d": {
+   "kind": "sentence",
+   "page": "anthropic-mcp-connector"
   },
   "a97e2a0824f56fc4": {
    "kind": "sentence",
    "page": "anthropic-mcp-connector"
   },
-  "c18e360ddb124f6c": {
+  "cce43487c03ec4cf": {
    "kind": "table_row",
    "header": [
-    "Endpoint",
-    "Data used for training",
-    "Abuse monitoring retention",
-    "Application state retention",
-    "Zero Data Retention eligible",
-    "Private Retention with PSP and Safety Retention eligible"
+    "Endpoint or feature",
+    "Service",
+    "Storage regions",
+    "Processing regions",
+    "Supported models and snapshots",
+    "Regional processing snapshot exceptions",
+    "Notes"
    ],
    "cells": [
-    "/v1/chat/completions",
-    "No",
-    "30 days",
-    "None, see below for exceptions",
-    "Yes, see below for limitations",
-    "Yes, see below for limitations"
+    "/v1/embeddings",
+    "Embeddings",
+    "All listed regions",
+    "United States, Europe (EEA + Switzerland), United Arab Emirates",
+    "text-embedding-3-small, text-embedding-3-large, text-embedding-ada-002",
+    "United Arab Emirates: text-embedding-3-large",
+    "—"
    ],
    "quote_cell": null,
    "page": "openai-your-data"
   },
-  "cf1e1b761935e140": {
+  "ce06ad636aa35ed2": {
+   "kind": "sentence",
+   "page": "openai-your-data"
+  },
+  "d73b6906c01aaef8": {
    "kind": "list_entry",
-   "text": "Data transmitted to third-party services over network connections is subject to their data retention policies.",
-   "page": "openai-your-data"
-  },
-  "e6ad723372251e91": {
-   "kind": "sentence",
-   "page": "openai-your-data"
-  },
-  "e9794a7c31893030": {
-   "kind": "sentence",
+   "text": "When Zero Data Retention is enabled for an organization, the store parameter will always be treated as false, even if the request attempts to set the value to true.",
    "page": "openai-your-data"
   },
   "e9f2a425406c641c": {
    "kind": "sentence",
    "page": "openai-your-data"
   },
-  "ecdac620c0ae552c": {
-   "kind": "table_row",
-   "header": [
-    "Feature",
-    "Endpoint",
-    "ZDR eligible",
-    "HIPAA eligible",
-    "Details"
-   ],
-   "cells": [
-    "Messages API",
-    "/v1/messages",
-    "Yes",
-    "Yes",
-    "Standard API calls for generating Claude responses."
-   ],
-   "quote_cell": null,
-   "page": "anthropic-retention"
-  },
   "f2bbd25c33067a99": {
+   "kind": "sentence",
+   "page": "openai-your-data"
+  },
+  "f6ab5d4a32697da3": {
    "kind": "sentence",
    "page": "openai-your-data"
   },

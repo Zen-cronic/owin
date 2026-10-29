@@ -12,10 +12,10 @@
      "quotes_present": {
       "73f9c9906d7ad952": "verbatim",
       "0ecaaed33d3cb49a": "verbatim",
-      "941c1e5e47b4d9d9": "verbatim",
-      "ecdac620c0ae552c": "table_insensitive",
+      "14ebf7eabdd0c677": "verbatim",
+      "6b270d4434d1adbc": "verbatim",
       "05067289fef46e89": "verbatim",
-      "2c81866dfc902b02": null
+      "97c8311da8d99825": "table_insensitive"
      }
     },
     {
@@ -28,10 +28,10 @@
      "quotes_present": {
       "73f9c9906d7ad952": "verbatim",
       "0ecaaed33d3cb49a": "verbatim",
-      "941c1e5e47b4d9d9": "table_insensitive",
-      "ecdac620c0ae552c": "verbatim",
+      "14ebf7eabdd0c677": "table_insensitive",
+      "6b270d4434d1adbc": "verbatim",
       "05067289fef46e89": null,
-      "2c81866dfc902b02": "verbatim"
+      "97c8311da8d99825": "verbatim"
      }
     }
    ],
@@ -50,6 +50,7 @@
      "sha256": "16b1866a3d301d85655bd1141e71ef636fc282cfe77bd2be7e81ef90804b3f65",
      "chars": 25806,
      "quotes_present": {
+      "99476fd452fdcb7d": "verbatim",
       "a97e2a0824f56fc4": "verbatim"
      }
     },
@@ -61,6 +62,7 @@
      "sha256": "248e3bd6e879df4149124f268709b531e2e258d24bc42075d512d73606ef8676",
      "chars": 31051,
      "quotes_present": {
+      "99476fd452fdcb7d": "verbatim",
       "a97e2a0824f56fc4": "verbatim"
      }
     }
@@ -106,14 +108,13 @@
      "sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7",
      "chars": 67831,
      "quotes_present": {
-      "f2bbd25c33067a99": "verbatim",
-      "e9f2a425406c641c": "verbatim",
       "fa8c46f6ce50d0a9": "table_insensitive",
-      "e9794a7c31893030": "verbatim",
-      "c18e360ddb124f6c": "verbatim",
-      "706595c4150f4cec": "verbatim",
-      "e6ad723372251e91": "verbatim",
-      "53dae04a9337dfc1": "verbatim",
+      "e9f2a425406c641c": "verbatim",
+      "cce43487c03ec4cf": "table_insensitive",
+      "f2bbd25c33067a99": "verbatim",
+      "d73b6906c01aaef8": "verbatim",
+      "f6ab5d4a32697da3": "verbatim",
+      "ce06ad636aa35ed2": "verbatim",
       "86be41f752bc8d6e": "verbatim",
       "fc73da46915db9c7": "verbatim"
      }
@@ -126,14 +127,13 @@
      "sha256": "858c4dd6135c19f68cfe9572fbd32d5a8f85c2a77b2df25f6c387edac1c48de0",
      "chars": 85489,
      "quotes_present": {
-      "f2bbd25c33067a99": "verbatim",
-      "e9f2a425406c641c": "verbatim",
       "fa8c46f6ce50d0a9": "verbatim",
-      "e9794a7c31893030": "verbatim",
-      "c18e360ddb124f6c": "table_insensitive",
-      "706595c4150f4cec": "verbatim",
-      "e6ad723372251e91": "verbatim",
-      "53dae04a9337dfc1": "table_insensitive",
+      "e9f2a425406c641c": "verbatim",
+      "cce43487c03ec4cf": "verbatim",
+      "f2bbd25c33067a99": "verbatim",
+      "d73b6906c01aaef8": "verbatim",
+      "f6ab5d4a32697da3": null,
+      "ce06ad636aa35ed2": "verbatim",
       "86be41f752bc8d6e": "table_insensitive",
       "fc73da46915db9c7": "verbatim"
      }
@@ -196,8 +196,15 @@
    "kind": "subprocessor_list",
    "label": "Anthropic, sub-processors",
    "provider": "anthropic"
+  },
+  "anthropic-rate-limits": {
+   "observations": [],
+   "url": "https://platform.claude.com/docs/en/api/rate-limits",
+   "kind": "datause",
+   "label": "Anthropic, rate limits (no data-use terms)",
+   "provider": "anthropic"
   }
  },
  "_about": "Recorded by `owin pack refresh`. Hashes and quote-presence only; page text stays in gitignored fixtures/raw/. quotes_present maps a quote id (sha256 of its match form, 16 hex) to 'verbatim', 'table_insensitive' or null (gone).",
- "recorded_at": "2026-10-22T01:29:16Z"
+ "recorded_at": "2026-10-29T03:21:42Z"
 }

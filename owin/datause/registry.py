@@ -150,8 +150,9 @@ def export(live_runs: list[Path] | None = None) -> Path:
             chosen, agree = consensus([c for _, c in calls])
             run_file = next((rf for rf, c in calls if chosen and c["run"] == chosen["run"]), calls[0][0])
             it = corpus[f["corpus_id"]]
+            rd = json.loads((ROOT / run_file).read_text())
             entry |= {"origin": "a1_recorded", "measured": True, "run_file": run_file, "runs_agreeing": agree,
-                      "model": json.loads((ROOT / run_file).read_text())["model"], "prompt_version": "v2",
+                      "model": rd["model"], "prompt_version": rd.get("prompt_version", "v1"),
                       "captured_at": it["fetched_at"], "capture_kind": "urllib", "source_sha256": it["source_sha256"],
                       "terms": _entry_terms(chosen["terms"]) if chosen else None}
         elif lv is not None:

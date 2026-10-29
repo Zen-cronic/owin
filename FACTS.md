@@ -36,7 +36,8 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | `demo.oai` | OpenAI ADDED OAI International | **added** | `owin pack build --format brief` |
 | `demo.swap` | Change one input: /api/crm-sync -> Anthropic Messages makes answer 3 still true | **still_true** | `owin pack build --format brief --set /api/crm-sync=anthropic-messages` |
 | `demo.thin` | Thin evidence: every vendor field for /api/crm-sync is held, none invented | **held,held,held,held** | `owin pack build --format brief --set /api/crm-sync=thin-anthropic-rate-limits` |
-| `demo.confirm` | Confirm example: answer 3 when /api/embed calls OpenAI Responses | **confirm** | `owin pack build --format brief --set /api/crm-sync=anthropic-messages --set /api/embed=openai-responses` |
+| `demo.confirm` | Confirm example: answer 5's /api/embed cell when it calls OpenAI Responses (the v3 readings of OpenAI's page split 2 to 1 on third-party access; answer 5 itself stays Stale because OpenAI's list changed) | **confirm, 2/3** | `owin pack build --format brief --set /api/embed=openai-responses` |
+| `demo.v3` | The pack's readings use the headline's prompt version (every registry entry and live check) | **v3** | `owin pack registry` |
 | `demo.region` | Region never decides: answer 4 is held | **held_unspecified** | `owin pack build --format brief` |
 | `dpa.items` | Earlier subject (objection windows): DPAs exact, tuned + held-out | **10/10 + 7/7** | `owin eval score --brief` |
 

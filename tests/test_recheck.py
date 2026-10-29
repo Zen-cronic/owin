@@ -94,7 +94,7 @@ def test_live_unchanged_page_keeps_every_answer_and_logs_one_line(monkeypatch):
     assert code == 200 and body["ok"] is True and body["mode"] == "live"
     assert body["changed"] is False and body["state"] == "not_true"  # answer 3 is still not true for /api/crm-sync
     assert body["credits_used"] == 1 and calls == ["basic"] and body["checked_at"] == "2026-10-29T03:00:00Z"
-    assert body["observation"].startswith("Page text differs from the Oct 2") and body["observation"].endswith("quoted sentence is still on it.")
+    assert body["observation"].startswith("Page text differs from the Oct 2") and body["observation"].endswith("still on it.")
     assert body["stored"] == "process" and body["page"] == "anthropic-mcp-connector"
     assert {a["id"]: a["badge"] for a in pack.build()["answers"]} == before
     # The evidence history now ends with this capture, and the served watch sees it too.

@@ -1,7 +1,7 @@
 {
  "type": "owin.answer_pack",
  "version": 1,
- "pack_id": "3631aa43a7c32513",
+ "pack_id": "474a21ab1924a861",
  "company": "Lumen Notes Inc.",
  "label": "DEMO COMPANY (fictional). Lumen Notes, its endpoints, settings and trust-page answers are invented for the replay. Every vendor sentence, URL and fetch time is real and comes from data/datause/registry.json and data/datause/observations.json.",
  "stated_at": "2026-09-01",
@@ -85,7 +85,7 @@
      "/api/digest"
     ]
    },
-   "text": "Yes, except: /api/crm-sync (Anthropic Messages API with mcp_servers (MCP connector), not covered by zdr); /api/digest (Anthropic Message Batches, not covered by zdr (disclosed exception))."
+   "text": "Yes, except: /api/crm-sync (Anthropic Messages API with mcp_servers (MCP connector), not covered by ZDR); /api/digest (Anthropic Message Batches, not covered by ZDR)."
   }
  },
  "answers": [
@@ -118,6 +118,10 @@
      "reason": null,
      "quote": "Retained data is never used for model training without your express permission.",
      "quote_display": "Retained data is never used for model training without your express permission.",
+     "evidence": {
+      "kind": "list_entry",
+      "text": "Retained data is never used for model training without your express permission."
+     },
      "quote_presence": "verbatim",
      "reanchored": null,
      "source_label": "Anthropic, API and data retention",
@@ -143,6 +147,10 @@
      "reason": null,
      "quote": "Retained data is never used for model training without your express permission.",
      "quote_display": "Retained data is never used for model training without your express permission.",
+     "evidence": {
+      "kind": "list_entry",
+      "text": "Retained data is never used for model training without your express permission."
+     },
      "quote_presence": "verbatim",
      "reanchored": null,
      "source_label": "Anthropic, API and data retention",
@@ -168,6 +176,10 @@
      "reason": null,
      "quote": "Retained data is never used for model training without your express permission.",
      "quote_display": "Retained data is never used for model training without your express permission.",
+     "evidence": {
+      "kind": "list_entry",
+      "text": "Retained data is never used for model training without your express permission."
+     },
      "quote_presence": "verbatim",
      "reanchored": null,
      "source_label": "Anthropic, API and data retention",
@@ -193,6 +205,10 @@
      "reason": null,
      "quote": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
      "quote_display": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
+     "evidence": {
+      "kind": "sentence",
+      "text": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us)."
+     },
      "quote_presence": "verbatim",
      "reanchored": null,
      "source_label": "OpenAI, your data",
@@ -239,9 +255,13 @@
      "value_label": "No period stated",
      "verdict": "held",
      "reason": "the vendor's page states no retention period for this feature",
-     "quote": "",
-     "quote_display": "",
-     "quote_presence": null,
+     "quote": "Data exchanged with MCP servers, including tool definitions and execution results, is retained according to Anthropic's standard data retention policy.",
+     "quote_display": "Data exchanged with MCP servers, including tool definitions and execution results, is retained according to Anthropic's standard data retention policy.",
+     "evidence": {
+      "kind": "sentence",
+      "text": "Data exchanged with MCP servers, including tool definitions and execution results, is retained according to Anthropic's standard data retention policy."
+     },
+     "quote_presence": "verbatim",
      "reanchored": null,
      "source_label": "Anthropic, MCP connector",
      "source_url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
@@ -266,6 +286,10 @@
      "reason": null,
      "quote": "Conversation content (your prompts and Claude's outputs) is not retained by default; the exception is Covered Models, which require 30-day retention.",
      "quote_display": "Conversation content (your prompts and Claude's outputs) is not retained by default; the exception is Covered Models, which require 30-day retention.",
+     "evidence": {
+      "kind": "list_entry",
+      "text": "Only what is technically necessary for the feature to work is retained. Conversation content (your prompts and Claude's outputs) is not retained by default; the exception is Covered Models, which require 30-day retention."
+     },
      "quote_presence": "verbatim",
      "reanchored": null,
      "source_label": "Anthropic, API and data retention",
@@ -289,8 +313,40 @@
      "value_label": "29 days",
      "verdict": "holds",
      "reason": null,
-     "quote": "| Batch processing | /v1/messages/batches | No | No | 29-day retention; async storage required. See Batch processing.",
-     "quote_display": "Batch processing · /v1/messages/batches · No · No · 29-day retention; async storage required. See Batch processing.",
+     "quote": "| Batch processing | /v1/messages/batches | No | No | 29-day retention; async storage required. See Batch processing",
+     "quote_display": "Batch processing · /v1/messages/batches · No · No · 29-day retention; async storage required. See Batch processing",
+     "evidence": {
+      "kind": "table_row",
+      "row_label": "Batch processing",
+      "rows": [
+       {
+        "key": "Feature",
+        "value": "Batch processing",
+        "match": false
+       },
+       {
+        "key": "Endpoint",
+        "value": "/v1/messages/batches",
+        "match": false
+       },
+       {
+        "key": "ZDR eligible",
+        "value": "No",
+        "match": false
+       },
+       {
+        "key": "HIPAA eligible",
+        "value": "No",
+        "match": false
+       },
+       {
+        "key": "Details",
+        "value": "29-day retention; async storage required. See Batch processing.",
+        "match": true
+       }
+      ],
+      "match_key": "Details"
+     },
      "quote_presence": "verbatim",
      "reanchored": "the urllib sentence renders differently in the tavily capture; the extraction on that capture gives the same value, so its sentence is shown",
      "source_label": "Anthropic, API and data retention",
@@ -314,8 +370,45 @@
      "value_label": "Not retained under ZDR (30 days without)",
      "verdict": "holds",
      "reason": null,
-     "quote": "By default, abuse monitoring logs are generated for all API feature usage and retained for up to 30 days, unless longer retention is required by law, or is reasonably necessary to protect our services or any third party from harm.",
-     "quote_display": "By default, abuse monitoring logs are generated for all API feature usage and retained for up to 30 days, unless longer retention is required by law, or is reasonably necessary to protect our services or any third party from harm.",
+     "quote": "| /v1/embeddings | No | 30 days | None | Yes | No |",
+     "quote_display": "/v1/embeddings · No · 30 days · None · Yes · No",
+     "evidence": {
+      "kind": "table_row",
+      "row_label": "/v1/embeddings",
+      "rows": [
+       {
+        "key": "Endpoint",
+        "value": "/v1/embeddings",
+        "match": false
+       },
+       {
+        "key": "Data used for training",
+        "value": "No",
+        "match": false
+       },
+       {
+        "key": "Abuse monitoring retention",
+        "value": "30 days",
+        "match": true
+       },
+       {
+        "key": "Application state retention",
+        "value": "None",
+        "match": false
+       },
+       {
+        "key": "Zero Data Retention eligible",
+        "value": "Yes",
+        "match": false
+       },
+       {
+        "key": "Private Retention with PSP and Safety Retention eligible",
+        "value": "No",
+        "match": false
+       }
+      ],
+      "match_key": "Abuse monitoring retention"
+     },
      "quote_presence": "verbatim",
      "reanchored": null,
      "source_label": "OpenAI, your data",
@@ -367,6 +460,10 @@
      "reason": null,
      "quote": "The MCP connector is not covered by ZDR arrangements.",
      "quote_display": "The MCP connector is not covered by ZDR arrangements.",
+     "evidence": {
+      "kind": "sentence",
+      "text": "The MCP connector is not covered by ZDR arrangements."
+     },
      "quote_presence": "verbatim",
      "reanchored": null,
      "source_label": "Anthropic, MCP connector",
@@ -390,8 +487,12 @@
      "value_label": "ZDR (your setting)",
      "verdict": "holds",
      "reason": null,
-     "quote": "| Messages API | /v1/messages | Yes | Yes | Standard API calls for generating Claude responses. |",
-     "quote_display": "Messages API · /v1/messages · Yes · Yes · Standard API calls for generating Claude responses.",
+     "quote": "Claude Messages and Token Counting APIs: ZDR applies to these endpoints for eligible features listed in the feature eligibility table.",
+     "quote_display": "Claude Messages and Token Counting APIs: ZDR applies to these endpoints for eligible features listed in the feature eligibility table.",
+     "evidence": {
+      "kind": "list_entry",
+      "text": "Claude Messages and Token Counting APIs: ZDR applies to these endpoints for eligible features listed in the feature eligibility table. Features that ride on /v1/messages but are marked \"No\" in the table (such as code execution) are not covered."
+     },
      "quote_presence": "verbatim",
      "reanchored": "the urllib sentence renders differently in the tavily capture; the extraction on that capture gives the same value, so its sentence is shown",
      "source_label": "Anthropic, API and data retention",
@@ -415,8 +516,40 @@
      "value_label": "Not covered by ZDR (disclosed exception)",
      "verdict": "disclosed",
      "reason": null,
-     "quote": "| Batch processing | /v1/messages/batches | No | No | 29-day retention; async storage required. See Batch processing.",
-     "quote_display": "Batch processing · /v1/messages/batches · No · No · 29-day retention; async storage required. See Batch processing.",
+     "quote": "| Batch processing | /v1/messages/batches | No | No | 29-day retention; async storage required. See Batch processing",
+     "quote_display": "Batch processing · /v1/messages/batches · No · No · 29-day retention; async storage required. See Batch processing",
+     "evidence": {
+      "kind": "table_row",
+      "row_label": "Batch processing",
+      "rows": [
+       {
+        "key": "Feature",
+        "value": "Batch processing",
+        "match": false
+       },
+       {
+        "key": "Endpoint",
+        "value": "/v1/messages/batches",
+        "match": false
+       },
+       {
+        "key": "ZDR eligible",
+        "value": "No",
+        "match": true
+       },
+       {
+        "key": "HIPAA eligible",
+        "value": "No",
+        "match": false
+       },
+       {
+        "key": "Details",
+        "value": "29-day retention; async storage required. See Batch processing.",
+        "match": false
+       }
+      ],
+      "match_key": "ZDR eligible"
+     },
      "quote_presence": "verbatim",
      "reanchored": "the urllib sentence renders differently in the tavily capture; the extraction on that capture gives the same value, so its sentence is shown",
      "source_label": "Anthropic, API and data retention",
@@ -442,6 +575,43 @@
      "reason": null,
      "quote": "| /v1/embeddings | No | 30 days | None | Yes | No |",
      "quote_display": "/v1/embeddings · No · 30 days · None · Yes · No",
+     "evidence": {
+      "kind": "table_row",
+      "row_label": "/v1/embeddings",
+      "rows": [
+       {
+        "key": "Endpoint",
+        "value": "/v1/embeddings",
+        "match": false
+       },
+       {
+        "key": "Data used for training",
+        "value": "No",
+        "match": false
+       },
+       {
+        "key": "Abuse monitoring retention",
+        "value": "30 days",
+        "match": false
+       },
+       {
+        "key": "Application state retention",
+        "value": "None",
+        "match": false
+       },
+       {
+        "key": "Zero Data Retention eligible",
+        "value": "Yes",
+        "match": true
+       },
+       {
+        "key": "Private Retention with PSP and Safety Retention eligible",
+        "value": "No",
+        "match": false
+       }
+      ],
+      "match_key": "Zero Data Retention eligible"
+     },
      "quote_presence": "verbatim",
      "reanchored": null,
      "source_label": "OpenAI, your data",
@@ -492,6 +662,7 @@
      "reason": "the vendor's page does not state a default region; confirm your settings",
      "quote": "",
      "quote_display": "",
+     "evidence": null,
      "quote_presence": null,
      "reanchored": null,
      "source_label": "Anthropic, MCP connector",
@@ -517,6 +688,7 @@
      "reason": "the vendor's page does not state a default region; confirm your settings",
      "quote": "",
      "quote_display": "",
+     "evidence": null,
      "quote_presence": null,
      "reanchored": null,
      "source_label": "Anthropic, API and data retention",
@@ -542,6 +714,7 @@
      "reason": "the vendor's page does not state a default region; confirm your settings",
      "quote": "",
      "quote_display": "",
+     "evidence": null,
      "quote_presence": null,
      "reanchored": null,
      "source_label": "Anthropic, API and data retention",
@@ -561,13 +734,55 @@
      "feature_label": "OpenAI Embeddings",
      "feature_short": "OpenAI Embeddings",
      "provider": "openai",
-     "vendor_value": "unspecified",
-     "value_label": "Page does not say",
+     "vendor_value": "All listed regions",
+     "value_label": "Region stated on the page (see quote)",
      "verdict": "held",
      "reason": "the vendor's page does not state a default region; confirm your settings",
-     "quote": "",
-     "quote_display": "",
-     "quote_presence": null,
+     "quote": "| /v1/embeddings | Embeddings | All listed regions | United States, Europe (EEA + Switzerland), United Arab Emirates | text-embedding-3-small, text-embedding-3-large, text-embedding-ada-002 | United Arab Emirates: text-embedding-3-large | — ",
+     "quote_display": "/v1/embeddings · Embeddings · All listed regions · United States, Europe (EEA + Switzerland), United Arab Emirates · text-embedding-3-small, text-embedding-3-large, text-embedding-ada-002 · United Arab Emirates: text-embedding-3-large · —",
+     "evidence": {
+      "kind": "table_row",
+      "row_label": "/v1/embeddings",
+      "rows": [
+       {
+        "key": "Endpoint or feature",
+        "value": "/v1/embeddings",
+        "match": false
+       },
+       {
+        "key": "Service",
+        "value": "Embeddings",
+        "match": false
+       },
+       {
+        "key": "Storage regions",
+        "value": "All listed regions",
+        "match": true
+       },
+       {
+        "key": "Processing regions",
+        "value": "United States, Europe (EEA + Switzerland), United Arab Emirates",
+        "match": false
+       },
+       {
+        "key": "Supported models and snapshots",
+        "value": "text-embedding-3-small, text-embedding-3-large, text-embedding-ada-002",
+        "match": false
+       },
+       {
+        "key": "Regional processing snapshot exceptions",
+        "value": "United Arab Emirates: text-embedding-3-large",
+        "match": false
+       },
+       {
+        "key": "Notes",
+        "value": "—",
+        "match": false
+       }
+      ],
+      "match_key": "Storage regions"
+     },
+     "quote_presence": "verbatim",
      "reanchored": null,
      "source_label": "OpenAI, your data",
      "source_url": "https://developers.openai.com/api/docs/guides/your-data",
@@ -613,12 +828,13 @@
      "feature_label": "Anthropic Messages API with mcp_servers (MCP connector)",
      "feature_short": "Anthropic's MCP connector",
      "provider": "anthropic",
-     "vendor_value": null,
-     "value_label": "Readings disagree: Page does not say or Others see it",
-     "verdict": "confirm",
-     "reason": "the 3 readings of the vendor's page disagree (2/3 agree), so Owin does not answer; confirm which is right",
+     "vendor_value": "unspecified",
+     "value_label": "Anthropic",
+     "verdict": "holds",
+     "reason": null,
      "quote": "",
      "quote_display": "",
+     "evidence": null,
      "quote_presence": null,
      "reanchored": null,
      "source_label": "Anthropic, MCP connector",
@@ -629,26 +845,7 @@
      "inherited_from": null,
      "measured": true,
      "origin": "a1_recorded",
-     "confirm": {
-      "runs_agreeing": "2/3",
-      "basis": "3 runs on the latest capture (tavily)",
-      "options": [
-       {
-        "value": "unspecified",
-        "label": "Page does not say",
-        "runs": 2,
-        "quote": "",
-        "quote_display": ""
-       },
-       {
-        "value": "yes",
-        "label": "Others see it",
-        "runs": 1,
-        "quote": "Once an MCP server is connected, Claude calls its tools when the user's request maps to a tool's described capability, either explicitly (\"search Jira for open bugs\") or implicitly (\"what's blocking the release?\" with a Jira server attached).",
-        "quote_display": "Once an MCP server is connected, Claude calls its tools when the user's request maps to a tool's described capability, either explicitly (\"search Jira for open bugs\") or implicitly (\"what's blocking the release?\" with a Jira server attached)."
-       }
-      ]
-     },
+     "confirm": null,
      "thin_evidence": false
     },
     {
@@ -663,6 +860,7 @@
      "reason": null,
      "quote": "",
      "quote_display": "",
+     "evidence": null,
      "quote_presence": null,
      "reanchored": null,
      "source_label": "Anthropic, API and data retention",
@@ -688,6 +886,7 @@
      "reason": null,
      "quote": "",
      "quote_display": "",
+     "evidence": null,
      "quote_presence": null,
      "reanchored": null,
      "source_label": "Anthropic, API and data retention",
@@ -707,12 +906,13 @@
      "feature_label": "OpenAI Embeddings",
      "feature_short": "OpenAI Embeddings",
      "provider": "openai",
-     "vendor_value": null,
-     "value_label": "Readings disagree: Others see it or Page does not say",
-     "verdict": "confirm",
-     "reason": "the 3 readings of the vendor's page disagree (2/3 agree), so Owin does not answer; confirm which is right",
+     "vendor_value": "unspecified",
+     "value_label": "OpenAI",
+     "verdict": "holds",
+     "reason": null,
      "quote": "",
      "quote_display": "",
+     "evidence": null,
      "quote_presence": null,
      "reanchored": null,
      "source_label": "OpenAI, your data",
@@ -723,26 +923,7 @@
      "inherited_from": null,
      "measured": false,
      "origin": "tavily_extraction",
-     "confirm": {
-      "runs_agreeing": "2/3",
-      "basis": "3 runs on the latest capture (tavily)",
-      "options": [
-       {
-        "value": "yes",
-        "label": "Others see it",
-        "runs": 2,
-        "quote": "OpenAI uses sub-processors to provide its services. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected processing region.",
-        "quote_display": "OpenAI uses sub-processors to provide its services. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected processing region."
-       },
-       {
-        "value": "unspecified",
-        "label": "Page does not say",
-        "runs": 1,
-        "quote": "",
-        "quote_display": ""
-       }
-      ]
-     },
+     "confirm": null,
      "thin_evidence": false,
      "stale": true,
      "list_source": {
@@ -751,7 +932,59 @@
       "last_updated": "October 14, 2026",
       "was": "June 2, 2026",
       "captured": "https://web.archive.org/web/20261021154629/https://openai.com/policies/sub-processor-list/"
-     }
+     },
+     "list_evidence": [
+      {
+       "kind": "list_entry_table",
+       "entity": "Cloudflare, Ltd.",
+       "change": "changed",
+       "rows": [
+        {
+         "key": "Services",
+         "value": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+         "match": false,
+         "was": null
+        },
+        {
+         "key": "Purpose",
+         "value": "Content delivery network provider",
+         "match": true,
+         "was": "Content delivery network providerWeb Hosting"
+        },
+        {
+         "key": "Locations",
+         "value": "Processing is performed at the data center that is closest to the End User.For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected; processing region.",
+         "match": true,
+         "was": "Processing is performed at the data center that is closest to the End User"
+        }
+       ]
+      },
+      {
+       "kind": "list_entry_table",
+       "entity": "OAI International, Inc.",
+       "change": "added",
+       "rows": [
+        {
+         "key": "Services",
+         "value": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+         "match": false,
+         "was": null
+        },
+        {
+         "key": "Purpose",
+         "value": "Vendor affiliate (parent: OpenAI, OpCo, LLC)",
+         "match": false,
+         "was": null
+        },
+        {
+         "key": "Locations",
+         "value": "United States",
+         "match": false,
+         "was": null
+        }
+       ]
+      }
+     ]
     }
    ],
    "stale_events": [
@@ -803,6 +1036,58 @@
        "purpose": "Content delivery network provider"
       }
      },
+     "cited": [
+      {
+       "kind": "list_entry_table",
+       "entity": "Cloudflare, Ltd.",
+       "change": "changed",
+       "rows": [
+        {
+         "key": "Services",
+         "value": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+         "match": false,
+         "was": null
+        },
+        {
+         "key": "Purpose",
+         "value": "Content delivery network provider",
+         "match": true,
+         "was": "Content delivery network providerWeb Hosting"
+        },
+        {
+         "key": "Locations",
+         "value": "Processing is performed at the data center that is closest to the End User.For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected; processing region.",
+         "match": true,
+         "was": "Processing is performed at the data center that is closest to the End User"
+        }
+       ]
+      },
+      {
+       "kind": "list_entry_table",
+       "entity": "OAI International, Inc.",
+       "change": "added",
+       "rows": [
+        {
+         "key": "Services",
+         "value": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+         "match": false,
+         "was": null
+        },
+        {
+         "key": "Purpose",
+         "value": "Vendor affiliate (parent: OpenAI, OpCo, LLC)",
+         "match": false,
+         "was": null
+        },
+        {
+         "key": "Locations",
+         "value": "United States",
+         "match": false,
+         "was": null
+        }
+       ]
+      }
+     ],
      "held_observations": [
       {
        "observed_at": "2026-10-22T01:23:45Z",
@@ -816,8 +1101,8 @@
      "endpoint": "/api/embed"
     }
    ],
-   "endpoints_holding": 2,
-   "endpoints_confirm": 2,
+   "endpoints_holding": 4,
+   "endpoints_confirm": 0,
    "endpoints": 4
   }
  ],

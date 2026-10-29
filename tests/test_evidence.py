@@ -2,7 +2,7 @@
 import json
 
 from owin import webui
-from owin.datause import evidence, pack
+from owin.datause import evidence, pack, registry
 
 DEMO_PATHS = [[], [("/api/crm-sync", "anthropic-messages")],
               [("/api/crm-sync", "anthropic-messages"), ("/api/embed", "openai-responses")],
@@ -28,19 +28,22 @@ def test_every_cited_quote_is_typed():
 
 
 def test_table_evidence_is_key_value_with_the_answering_cell_marked():
-    p = _build(DEMO_PATHS[2])
-    c = next(c for c in next(a for a in p["answers"] if a["id"] == "Q03")["cells"] if c["verdict"] == "confirm")
-    ev = next(o["evidence"] for o in c["confirm"]["options"] if o["value"] == "available")
+    p = _build(DEMO_PATHS[0])
+    c = next(c for c in next(a for a in p["answers"] if a["id"] == "Q03")["cells"] if c["endpoint"] == "/api/embed")
+    ev = c["evidence"]  # OpenAI's endpoint table row for /v1/embeddings, cited for ZDR
     assert ev["kind"] == "table_row" and ev["match_key"] == "Zero Data Retention eligible"
     hit = [r for r in ev["rows"] if r["match"]]
     assert len(hit) == 1 and hit[0]["value"].startswith("Yes")
     assert all(r["key"] for r in ev["rows"])  # header names from the page, not flattened text
-    gated = next(o for o in c["confirm"]["options"] if o["value"] == "unspecified")
-    assert gated["quote_failed_gate"] and gated["evidence"] == ev
+    # The same row cited for retention marks the retention cell instead.
+    c2 = next(c for c in next(a for a in p["answers"] if a["id"] == "Q02")["cells"] if c["endpoint"] == "/api/embed")
+    assert c2["evidence"]["match_key"] == "Abuse monitoring retention"
 
 
 def test_flattened_table_text_resolves_to_its_row():
-    ev = evidence.for_quote("Messages API/v1/messagesYesYes", "zdr")
+    q = registry.load()["anthropic-messages"]["terms"]["zdr_quote"]  # Anthropic's ZDR table row, flattened by the capture
+    assert q.startswith("Messages API/v1/messagesYesYes")
+    ev = evidence.for_quote(q, "zdr")
     assert ev["kind"] == "table_row" and ev["match_key"] == "ZDR eligible"
 
 

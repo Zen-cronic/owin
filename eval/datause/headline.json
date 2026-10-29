@@ -1,5 +1,5 @@
 {
- "_about": "Recorded runs the README data-use headline is computed from. Recompute with no key: owin eval score --corpus datause --brief. Headline = prompt v3 on split v3fresh only (pre-registered: labels committed in ffd6ff5 before v3 was written; v3 frozen in 6434478 before any v3 call). reference_runs_not_clean = v3 on the 37 older items, whose v2 misses informed v3, so they are NOT a clean test. previous_headline_runs = v2 (23/30 on the older items after one disclosed relabel; eval/datause/v2-score.json). registry_runs = the A1 runs the A3 answer-pack registry reads (still v2). v1 (pre-registered, failed 16/24): preregistered_run.",
+ "_about": "Recorded runs the README data-use headline is computed from. Recompute with no key: owin eval score --corpus datause --brief. Headline = prompt v3 on split v3fresh only (pre-registered: labels committed in ffd6ff5 before v3 was written; v3 frozen in 6434478 before any v3 call). reference_runs_not_clean = v3 on the 37 older items, whose v2 misses informed v3, so they are NOT a clean test. previous_headline_runs = v2 (23/30 on the older items after one disclosed relabel; eval/datause/v2-score.json). registry_runs = the A1 runs the A3 answer-pack registry reads: prompt v3, the headline's version (the v3 run on the older items; the pack's features are all older items). The pack's live readings (eval/datause/registry-runs/) are v3 too. v1 (pre-registered, failed 16/24): preregistered_run.",
  "run_files": [
   "eval/datause/runs/20261021T221257-v3fresh-nemotron-3-super-120b-a12b.json"
  ],
@@ -15,7 +15,7 @@
   "eval/datause/runs/20261021T211425-all-nemotron-3-super-120b-a12b.json"
  ],
  "registry_runs": [
-  "eval/datause/runs/20261021T211425-all-nemotron-3-super-120b-a12b.json"
+  "eval/datause/runs/20261021T221641-all-nemotron-3-super-120b-a12b.json"
  ],
  "preregistration": {
   "file": "eval/datause/preregistration-v3.json",
