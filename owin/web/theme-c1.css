@@ -1,41 +1,290 @@
-/* Theme 1, Departures. Its tokens are the defaults in app.css (:root), so this file carries only the decoration,
-   scoped to "no data-theme" and data-theme="c1". Material: matte split-flap tiles (a 1px split at the middle, a
-   lighter top edge, two hinge pins), a square flap tag for Not true, one hairline that draws in. No image, no glow. */
-:root[data-theme="c1"]{color-scheme:dark}
+/* Theme 1, Catalogue. Its tokens are the defaults in app.css (:root), so this file carries only the arrangement and
+   the decoration, scoped to "no data-theme" and data-theme="c1". Material: a flat quarter-sawn oak field; each
+   endpoint a drawer label in a brass frame; each answer a ruled index card with its rod hole; the state is a rubber
+   stamp whose form (filled box, double rule, dashed, thin pencil, bare tick) carries it as much as its ink. Red is
+   kept for Not true and its fix. No wood grain, no glow, no shadow beyond a card's 1px edge. */
+:root[data-theme="c1"]{color-scheme:light}
 
-/* Numeral tiles on /judge: the split, the pins, the lit top edges of the halves */
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .num-tile,
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .num-sep{box-shadow:0 1px 0 rgba(0,0,0,.5)}
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .num-tile:empty,
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .num-sep{background:linear-gradient(var(--tile) calc(50% - .5px),#070808 0 calc(50% + .5px),var(--tile) 0);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 1px 0 rgba(0,0,0,.5)}
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .num-tile::before,
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .num-tile::after{content:"";position:absolute;z-index:3;top:calc(50% - .035em);width:2px;height:.07em;background:#2C2D2D;border-radius:1px}
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .num-tile::before{left:0}
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .num-tile::after{right:0}
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .num-tile .t,
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .num-tile .ft{box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .num-tile .b,
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .num-tile .fb{box-shadow:inset 0 1px 0 #070808}
+:is(:root:not([data-theme]),:root[data-theme="c1"]){
+  --card-pad:22px;
+  --hole:9px;
+  --stamp-tilt:-1.5deg;
+  --on-field-line:rgba(255,255,255,.22);
+  --link-quiet:rgba(255,255,255,.55);
+  --link-signal:#F2B8B0;
+  --hit:#E6F1F6;
+  background:var(--field);
 
-/* Summary counts on /: the same tile at a small size, one per digit, split at the middle. Not true takes the signal as a plain tile (a split there reads as a strike). */
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .summary .num-tile{min-width:0;width:20px;height:26px;display:grid;place-items:center;border-radius:var(--r-tile);font:var(--num-weight) 16px/1 var(--num);color:var(--ink);background:linear-gradient(var(--raise) calc(50% - .5px),var(--bg) 0 calc(50% + .5px),var(--raise) 0)}
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .summary .sm.bad .num-tile{color:var(--on-act);background:var(--act)}
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .summary .sm.zero .num-tile{color:var(--muted)}
+  ::selection{background:#F2D9A0;color:#1E1A16}
+  body{background:var(--field);color:var(--on-field);font-size:15.5px;line-height:1.55;letter-spacing:0;scrollbar-color:var(--brass) var(--field)}
+  a{text-underline-offset:4px;text-decoration-thickness:1px}
 
-/* The Not true flap tag: square, matte, lit along its top edge; at board size on /judge it is split at the middle */
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .badge.catch-mark{position:relative;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .badge.catch-mark::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(14,15,15,.24);pointer-events:none}
+  /* Field context: anything set straight on the oak reads the field tokens */
+  .top,.catch,.ph,.tabs,.legends,.foot,.jg > section > h2,.story,.jg .also{
+    --ink:var(--on-field);--muted:var(--on-field-muted);--cite:var(--on-field-muted);--edge:var(--on-field-muted);--line:var(--on-field-line);--focus:#FFFFFF;
+    color:var(--ink);
+  }
+  /* Card context: everything filed on a card reads the card tokens again */
+  .ans,.ep-row,.pages,.menu,.summary,.judge-page .catchline,.judge-page .ev,.judge-page .paths{color:var(--ink)}
 
-/* Motion: the rule draws left to right; the tag turns over once; the summary tiles turn over as the counts land.
-   The /judge board flaps from judge.js (--num-motion:flap). Reduced motion: everything static (app.css). */
-@media (prefers-reduced-motion:no-preference){
-  :is(:root:not([data-theme]),:root[data-theme="c1"]) .rule-draw{animation:c1-draw var(--dur-draw) var(--ease) var(--delay-draw) both}
-  :is(:root:not([data-theme]),:root[data-theme="c1"]).motion .judge-page .badge.catch-mark .lbl{animation:c1-turn var(--dur-turn) cubic-bezier(.3,.7,.3,1) var(--delay-turn) both}
-  :is(:root:not([data-theme]),:root[data-theme="c1"]) .summary .num-tile{animation:c1-turn var(--dur-turn) cubic-bezier(.3,.7,.3,1) calc(var(--k,0) * var(--num-stagger) * 1ms) both}
-  :is(:root:not([data-theme]),:root[data-theme="c1"]) .summary .sm:nth-child(2) .num-tile{--k:1}
-  :is(:root:not([data-theme]),:root[data-theme="c1"]) .summary .sm:nth-child(3) .num-tile{--k:2}
-  :is(:root:not([data-theme]),:root[data-theme="c1"]) .summary .sm:nth-child(4) .num-tile{--k:3}
-  :is(:root:not([data-theme]),:root[data-theme="c1"]) .summary .sm:nth-child(5) .num-tile{--k:4}
+  /* Header: the wordmark as a label card in a brass frame */
+  .top{border-bottom:var(--hair) solid var(--on-field-line);padding-block:14px;font-size:13.5px}
+  .word{display:inline-block;font:800 19px/1 var(--display);font-stretch:125%;letter-spacing:.01em;color:#1E1A16;background:var(--bg);padding:6px 10px 5px;box-shadow:0 0 0 2px var(--brass);text-decoration:none}
+  .top .judge,.top .replay.judge{font-weight:600}
+  .theme-switch label > span:not(.sr){font-family:var(--display);font-stretch:75%;font-weight:700}
+  .theme-switch input:checked + span{color:#1E1A16;background:var(--brass);box-shadow:none}
+  .theme-switch label:hover input:checked + span{background:var(--brass)}
+  .theme-switch label:hover > span:not(.sr){background:rgba(255,255,255,.12)}
+  .theme-select{background:var(--bg);color:#1E1A16;border:2px solid var(--brass);font-family:var(--sans)}
+  .catch .bar{background:rgba(255,255,255,.16)}
+
+  /* The finding: a main entry set straight on the oak */
+  .kicker{font:700 13px/1.3 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.08em;color:var(--on-field)}
+  .kicker b{font-weight:800;color:#FFFFFF}
+  .kicker svg{color:#F2B8B0}
+  .kicker.calm svg{color:var(--on-field-muted)}
+  h1{font-family:var(--display);font-weight:700;font-stretch:112%;letter-spacing:-.012em;font-size:44px;line-height:1.08;margin-top:14px}
+  h1 .ep{font-family:var(--mono);font-weight:700;font-size:.84em;letter-spacing:-.02em;box-shadow:inset 0 -.12em 0 rgba(242,184,176,.55)}
+  .lede.delta{color:var(--on-field);margin-top:12px;font-size:15.5px}
+  .todo{margin-top:28px}
+  .todo .link{color:var(--on-field);text-decoration-color:var(--brass)}
+  .todo .link:hover{text-decoration-color:var(--on-field)}
+  .status{color:var(--on-field-muted)}
+  .catch > .rule-draw{height:2px;background:var(--brass);opacity:.65}
+
+  /* Buttons: square, set in the label face */
+  .btn{font-family:var(--display);font-weight:700;letter-spacing:.01em}
+  .btn.primary{background:var(--act);color:var(--on-act)}
+  .catch .btn.primary{box-shadow:0 0 0 2px var(--on-field)}
+  .btn.ghost{border-color:var(--edge);color:var(--ink)}
+  .btn.ghost:hover{background:var(--raise)}
+  .ph .btn.ghost{border-color:var(--on-field);color:var(--on-field)}
+  .ph .btn.ghost:hover{background:rgba(255,255,255,.12)}
+  .ph .btn:disabled{border-color:var(--on-field-line);color:var(--on-field-muted)}
+  .btn:disabled{color:var(--muted)}
+
+  /* The tally: a filed card in the top right, one line per state */
+  .summary{--ink:#1E1A16;--muted:#5E5A55;--cite:#3A3631;--line:#C9DCE4;position:relative;background:var(--bg);color:var(--ink);padding:16px var(--card-pad) 18px;box-shadow:0 0 0 2px var(--brass)}
+  .summary h2{font:700 12px/1.3 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding-bottom:10px;margin-bottom:0;border-bottom:2px solid var(--rule-cyan)}
+  .summary dl{border-top:0}
+  .summary .sm{padding:8px 0;border-bottom:var(--hair) solid var(--line)}
+  .summary dt{font-size:14.5px}
+  .summary .sm.bad:not(.zero) dt{font-weight:700}
+  .summary .sm.bad dt svg{color:var(--act)}
+  .summary .num-tile{min-width:0;font:800 22px/1 var(--display);font-stretch:75%;color:var(--ink)}
+  .summary .sm.bad:not(.zero) dd{background:var(--act);padding:3px 7px 2px;transform:rotate(var(--stamp-tilt))}
+  .summary .sm.bad:not(.zero) .num-tile{color:#FFFFFF}
+  .summary .sm.zero .num-tile{color:var(--muted)}
+  .summary p{color:var(--muted);font-size:13px}
+
+  /* Pane heads and mobile tabs on the oak */
+  .ph h2{font:700 13px/1.3 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.08em;color:var(--on-field)}
+  .tabs{border-bottom-color:var(--on-field-line)}
+  .tabs button{color:var(--on-field-muted);font-family:var(--display);font-weight:700}
+  .tabs button[aria-selected=true]{color:var(--on-field);border-bottom-color:var(--brass);border-bottom-width:3px}
+  .tabs .ct{color:var(--on-field-muted);font-family:var(--mono)}
+
+  /* Endpoints: drawer labels, a white card in a brass frame */
+  #endpoints{gap:14px}
+  .ep-row{background:var(--bg);border:0;box-shadow:0 0 0 2px var(--brass);padding:14px 16px 16px}
+  .ep-row:hover{background:var(--surface);box-shadow:0 0 0 2px var(--brass),0 0 0 5px rgba(217,174,98,.3)}
+  .ep-row.sel{background:var(--surface);box-shadow:0 0 0 2px var(--act),0 0 0 5px rgba(242,184,176,.5)}
+  .ep-row .path{font:700 15px/1.3 var(--mono);color:var(--ink)}
+  .ep-row .via{color:var(--muted);text-decoration:underline dotted var(--edge);text-underline-offset:4px}
+  .ep-row .finding{color:var(--ink)}
+  .ep-row.changed .path::after{font:700 11px/1 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.08em;color:var(--stamp-stale);border:1px solid currentColor;padding:2px 4px 1px;vertical-align:2px}
+  .recheck .rc{color:var(--muted)}
+
+  /* Stamps: badges and chips share one grammar; the state is in the frame as much as the ink */
+  .badge,.chip{font:700 12.5px/1 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.07em;background:none;padding:5px 7px 4px;border:2px solid currentColor;border-radius:0;color:var(--ink);gap:5px}
+  .chip{font-size:11.5px;padding:3px 5px 2px;border-width:1.5px}
+  .chip .mono{font-family:var(--display);font-weight:800;letter-spacing:.04em}
+  .badge.bad,.chip.bad{background:var(--act);border-color:var(--act);color:#FFFFFF}
+  .badge.stale,.chip.stale{color:var(--stamp-stale);border-style:double;border-width:4px;padding:3px 6px 2px}
+  .chip.stale{border-width:3px;padding:2px 4px 1px}
+  .badge.confirm,.chip.confirm{color:var(--stamp-confirm);border-style:dashed}
+  .badge.held,.chip.held{color:var(--stamp-held);border-width:1px;padding:6px 8px 5px}
+  .chip.held{padding:4px 6px 3px}
+  .badge.ok{border-color:transparent;padding-inline:0;color:var(--ink)}
+  .ans .badge{transform:rotate(var(--stamp-tilt));transform-origin:100% 50%}
+
+  /* Answers: ruled index cards with a rod hole, the head line red only on the card that is not true */
+  #answers{display:grid;gap:18px}
+  .ans{position:relative;background:var(--bg);border:0;padding:20px var(--card-pad) 34px;box-shadow:0 1px 0 rgba(0,0,0,.25)}
+  #answers .ans:last-child{border-bottom:0}
+  .ans::after{content:"";position:absolute;left:50%;bottom:11px;width:var(--hole);height:var(--hole);margin-left:calc(var(--hole) / -2);border-radius:50%;background:var(--field);box-shadow:inset 0 1px 1px rgba(0,0,0,.35)}
+  .ans .body{margin:16px calc(var(--card-pad) * -1) 0 calc((var(--card-pad) + 44px) * -1);padding:14px var(--card-pad) 0 calc(var(--card-pad) + 44px);border-top:2px solid var(--rule-cyan)}
+  .ans.sel,.ans.stale{border:0;border-radius:0;background:var(--surface)}
+  .ans.sel .body{border-top-color:var(--act)}
+  .ans.sel{box-shadow:0 0 0 2px var(--act)}
+  .ans.sel + .ans,.ans.stale + .ans{border-top-color:transparent}
+  .ans.sel + .ans.stale{margin-top:0}
+  .ans .n{font:800 15px/1.9 var(--display);font-stretch:75%;letter-spacing:.04em;color:var(--muted)}
+  .ans h3{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.005em;line-height:1.3}
+  .ans .body p{font-size:15.5px;max-width:68ch}
+  .ans.changed h3::after{font:700 11px/1 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.08em;color:var(--stamp-stale);border:1px solid currentColor;padding:2px 4px 1px}
+  blockquote{border-left:0;padding-left:0;margin-top:12px;font-size:15px;color:var(--cite);max-width:70ch}
+  .ans .body p.src{color:var(--muted)}
+  .src a{color:var(--stamp-confirm);text-decoration-color:var(--rule-cyan)}
+  .src a:hover{color:var(--ink);text-decoration-color:var(--ink)}
+  .per{border-top:var(--hair) solid var(--line);padding-top:14px;margin-top:16px}
+  .per dt{font-family:var(--mono);color:var(--muted)}
+  .per .x dt,.per .x dd{color:var(--act)}
+  table.kv{border-color:var(--line)}
+  .kv th,.kv td{border-top-color:var(--line)}
+  .kv tr.hit th,.kv tr.hit td{background:var(--hit);font-weight:600}
+  .kv tr.hit th{box-shadow:none}
+  figure.ev figcaption{color:var(--muted)}
+  details.more summary{color:var(--stamp-confirm);font-weight:600}
+  .confirm-box{border:1px dashed var(--stamp-confirm);background:var(--surface)}
+  .confirm-box li{border-top-color:var(--line)}
+
+  /* Fix panel: the strike and the insertion, as on a corrected card */
+  .panel{border-top:2px solid var(--rule-cyan)}
+  .panel h4,.panel label{font:700 12px/1.3 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  .panel .was{text-decoration-color:var(--act);text-decoration-thickness:2px}
+  .panel textarea{background:var(--surface);border:1px solid var(--edge);font-family:var(--sans);font-size:15px}
+
+  /* Vendor pages: a shelf-list card under the drawers */
+  .pages{background:var(--bg);color:var(--ink);padding:16px 18px 6px;margin-top:24px}
+  .pages h3{color:var(--ink);font:700 12px/1.3 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.08em;padding-bottom:10px;border-bottom:2px solid var(--rule-cyan)}
+  .pages h3 span{color:var(--muted);text-transform:none;letter-spacing:0;font-family:var(--sans);font-stretch:100%;font-weight:400;font-size:12.5px}
+  .pages li{color:var(--cite);border-top-color:var(--line)}
+  .pages li:first-child{border-top:0}
+  .pages li:last-child{border-bottom:0}
+  .pages li a{color:var(--ink);font-weight:600}
+  .pages .reset{color:var(--muted);border-top:var(--hair) solid var(--line);padding:6px 0 10px;margin-top:0}
+  .legends{margin-top:16px}
+  .legend{color:var(--on-field-muted)}
+  .legend .lh{color:var(--on-field);font-family:var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.06em}
+  .legend i{color:var(--on-field)}
+
+  /* Connectors run over the oak: pale red for Not true, chalk for Stale */
+  #link path{stroke:var(--link-signal);stroke-width:2}
+  #link circle{fill:var(--link-signal);stroke:var(--field)}
+  #link .quiet{stroke:var(--link-quiet);stroke-dasharray:4 3}
+  #link circle.quiet{fill:var(--link-quiet)}
+
+  /* Menu and toast */
+  .menu{background:var(--bg);border:0;box-shadow:0 0 0 2px var(--brass),0 10px 24px -8px rgba(0,0,0,.45)}
+  .menu button:hover,.menu button:focus-visible{background:var(--raise)}
+  .menu b{font-family:var(--display)}
+  .toast{background:#1E1A16;color:#FFFFFF;border:0;box-shadow:0 0 0 2px var(--brass)}
+  .foot{color:var(--on-field-muted);font-size:13px;max-width:96ch}
+
+  /* Start page: the opening line on the oak, the catch on a filed card, the numbers on drawer fronts */
+  .judge-page .story .kick{display:inline-block;width:fit-content;font:700 12px/1 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.1em;color:#1E1A16;background:var(--bg);padding:7px 12px 6px;box-shadow:0 0 0 2px var(--brass)}
+  .judge-page .story h1{font-stretch:108%;font-size:clamp(30px,3.3vw,48px);line-height:1.1;grid-column:1/span 11;margin-top:22px}
+  .judge-page .lede{margin-top:44px;padding-top:0;align-items:start}
+  .judge-page .lede > .rule-draw{display:none}
+  .judge-page .story .what{color:var(--on-field-muted);font-size:17px;line-height:1.6;grid-column:1/span 5}
+  .judge-page .catchline{--ink:#1E1A16;--muted:#5E5A55;--cite:#3A3631;--line:#C9DCE4;--edge:#6A645C;--focus:#2D3E66;grid-column:7/-1;position:relative;background:var(--bg);color:var(--ink);padding:24px var(--card-pad) 38px;grid-template-columns:minmax(0,1fr);gap:16px;font-size:17px}
+  .judge-page .catchline::before{content:"";position:absolute;left:0;right:0;top:74px;height:2px;background:var(--act)}
+  .judge-page .catchline::after{content:"";position:absolute;left:50%;bottom:12px;width:var(--hole);height:var(--hole);margin-left:calc(var(--hole) / -2);border-radius:50%;background:var(--field);box-shadow:inset 0 1px 1px rgba(0,0,0,.35)}
+  .judge-page .badge.catch-mark{justify-self:start;height:auto;padding:0;margin:0 0 6px;font:800 15px/1 var(--display);font-stretch:75%;letter-spacing:.08em;transform:rotate(-3deg);transform-origin:0 50%}
+  .judge-page .badge.catch-mark .lbl{padding:9px 14px 8px;gap:8px}
+  .catch-phrase{box-shadow:inset 0 -.38em 0 #F6D7D3}
+  .catch-text{color:var(--ink)}
+  .judge-page .catchline .act{margin-top:18px}
+
+  /* Drawer fronts: the board band in darker oak, each number on a label card held by a brass frame, a pull below */
+  .judge-page .stat-board{--ink:#FFFFFF;--muted:var(--on-field-muted);--cite:var(--on-field-muted);--line:rgba(0,0,0,.35);margin-top:80px;padding:34px 0 40px}
+  .judge-page .jg .big{color:var(--on-field-muted);font:700 13px/1.4 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.08em;margin-bottom:28px}
+  .judge-page .stats{gap:var(--col)}
+  .judge-page .stat,.judge-page .stat + .stat{padding:0;border:0;display:flex;flex-direction:column;align-items:flex-start}
+  .judge-page .stat{--d:clamp(64px,7.4vw,112px)}
+  .judge-page .stat .v{position:relative;background:var(--bg);color:#1E1A16;padding:.1em .22em .04em;box-shadow:0 0 0 4px var(--brass),inset 0 0 0 1px rgba(0,0,0,.08);line-height:1}
+  .judge-page .stat .v::after{content:"";position:absolute;left:50%;top:calc(100% + 26px);width:72px;height:16px;margin-left:-36px;border:4px solid var(--brass);border-top:0;border-radius:0 0 36px 36px}
+  .judge-page .num-row{gap:0}
+  .judge-page .num-tile,.judge-page .num-sep{width:.5em;height:1.04em;background:none;border-radius:0;perspective:none}
+  .judge-page .num-sep{width:.34em}
+  .judge-page .num-tile .h{background:none}
+  .judge-page .num-tile .h::after,.judge-page .num-sep::after{color:#1E1A16;font-weight:800;font-stretch:75%}
+  .judge-page .num-sep::after{color:var(--act)}
+  .judge-page .stat .c{margin-top:66px;color:var(--on-field);font:600 16px/1.45 var(--sans);max-width:24ch}
+  .judge-page .stat.skel .v{min-width:3.4em;min-height:1.1em}
+  .judge-page .stat.skel .c .bar{background:rgba(255,255,255,.16)}
+
+  /* Method, paths and evidence: shelf-list cards, rows ruled in cyan */
+  .judge-page .ev{--ink:#1E1A16;--muted:#5E5A55;--cite:#3A3631;--line:#C9DCE4;--edge:#6A645C;--focus:#2D3E66;background:var(--bg);color:var(--ink);padding:4px var(--card-pad)}
+  .judge-page .ev li{border-top-color:var(--line)}
+  .judge-page .ev li:first-child{border-top:0}
+  .judge-page .ev li:last-child{border-bottom:0}
+  .judge-page .ev li b,.judge-page .ev > li > a{font-family:var(--display);font-weight:700}
+  .judge-page .ev.method{margin-top:28px}
+  .judge-page .ev.method li > b{font:700 12px/1.6 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  .recompute a{color:var(--stamp-confirm)}
+  code.cmd{background:var(--surface);border:1px solid var(--line);font-family:var(--mono);color:var(--ink)}
+  .judge-page .jg h2{font-family:var(--display);font-stretch:112%;font-weight:700;font-size:30px;letter-spacing:-.01em;color:var(--on-field)}
+
+  .judge-page .paths{--ink:#1E1A16;--muted:#5E5A55;--cite:#3A3631;--line:#C9DCE4;--focus:#2D3E66;display:block;background:var(--bg);padding:0 var(--card-pad)}
+  .judge-page .paths li + li{border-top:var(--hair) solid var(--line)}
+  .judge-page .path-card{display:grid;grid-template-columns:72px minmax(0,4fr) minmax(0,7fr) 150px;column-gap:var(--col);align-items:baseline;padding:22px 0;border:0;background:none;height:auto}
+  .judge-page .path-card:hover{background:none}
+  .judge-page .path-card:hover .t{text-decoration:underline;text-decoration-color:var(--act);text-decoration-thickness:2px;text-underline-offset:5px}
+  .judge-page .path-card .step{grid-row:1/3;font:800 44px/1 var(--display);font-stretch:75%;color:var(--act)}
+  .judge-page .path-card .t{grid-column:2;font-size:22px}
+  .judge-page .path-card .tag{grid-column:2;grid-row:2;font:700 11.5px/1.35 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+  .judge-page .path-card .d{grid-column:3;grid-row:1/3;margin:0;color:var(--cite);max-width:62ch}
+  .judge-page .path-card .go{grid-column:4;grid-row:1/3;padding:0;align-self:center;justify-self:end;font-family:var(--display);color:var(--act);white-space:nowrap}
+  .judge-page .path-card:hover .go svg{transform:translateX(3px)}
+  .judge-page .jg .also{color:var(--on-field-muted)}
+  .judge-page .jg .also a,.judge-page .foot a{color:var(--on-field)}
+  .judge-page .jg .also code{font-family:var(--mono);color:var(--on-field)}
+
+  @media (max-width:900px){
+    .top{padding-block:10px}
+    .word{font-size:16px;padding:5px 8px 4px}
+    .theme-select{padding:3px 6px}
+    h1{font-size:27px;line-height:1.12}
+    .ans{padding:16px 14px 32px}
+    .ans .body{margin:12px -14px 0;padding:12px 14px 0}
+    .top .ctx{white-space:normal;overflow:visible;line-height:1.3}
+    .judge-page .story .what{grid-column:1/-1;grid-row:2}
+    .judge-page .catchline{grid-row:1}
+    .ans .badge{transform:none}
+    .ans h3{font-size:18px}
+    #endpoints{gap:12px}
+    .pages{padding:12px 14px 4px}
+    .judge-page .story h1{font-size:clamp(24px,6.6vw,34px);line-height:1.15;grid-column:1/-1;margin-top:18px}
+    .judge-page .lede{margin-top:28px}
+    .judge-page .story .what{font-size:16px}
+    .judge-page .catchline{grid-column:1/-1;padding:18px 16px 34px;margin:0 0 28px;font-size:16px}
+    .judge-page .catchline::before{top:64px}
+    .judge-page .stat-board{margin-top:56px;padding:26px 0 30px}
+    .judge-page .stats{gap:34px}
+    .judge-page .stat,.judge-page .stat + .stat{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center;padding:0;border:0}
+    .judge-page .stat{--d:clamp(46px,13vw,64px)}
+    .judge-page .stat .v::after{top:calc(100% + 14px);width:46px;height:10px;margin-left:-23px;border-width:3px}
+    .judge-page .stat .c{margin-top:0;font-size:15px}
+    .judge-page .ev{padding:2px 16px}
+    .judge-page .paths{padding:0 16px}
+    .judge-page .path-card{grid-template-columns:44px minmax(0,1fr);row-gap:6px;padding:18px 0}
+    .judge-page .path-card .step{grid-row:1/2;font-size:34px}
+    .judge-page .path-card .t{grid-column:2;grid-row:1}
+    .judge-page .path-card .tag{grid-column:2;grid-row:2}
+    .judge-page .path-card .d{grid-column:1/-1;grid-row:3;margin-top:6px}
+    .judge-page .path-card .go{grid-column:1/-1;grid-row:4;padding-top:8px;justify-self:start}
+    .judge-page .jg h2{font-size:24px}
+  }
 }
+
+/* Motion: each stamp inks onto its card once; the drawer labels rise into their frames when the board comes on
+   screen. Content is visible by default; reduced motion keeps everything still (app.css). */
+@media (prefers-reduced-motion:no-preference){
+  :is(:root:not([data-theme]),:root[data-theme="c1"]){
+    #answers .badge,.catch-mark .lbl,.summary .sm.bad:not(.zero) dd{animation:c1-stamp .34s cubic-bezier(.2,.9,.25,1) both}
+    #answers .ans:nth-child(2) .badge{animation-delay:.06s}
+    #answers .ans:nth-child(3) .badge{animation-delay:.12s}
+    #answers .ans:nth-child(4) .badge{animation-delay:.18s}
+    #answers .ans:nth-child(5) .badge{animation-delay:.24s}
+    .judge-page .catch-mark .lbl{animation-delay:.6s}
+    &.motion .judge-page .stat-board.num-in .stat .v > .num-row{animation:c1-rise .55s cubic-bezier(.16,1,.3,1) both}
+    &.motion .judge-page .stat-board.num-in .stat:nth-child(2) .v > .num-row{animation-delay:.08s}
+    &.motion .judge-page .stat-board.num-in .stat:nth-child(3) .v > .num-row{animation-delay:.16s}
+    .catch > .rule-draw{animation:c1-draw var(--dur-draw) var(--ease) var(--delay-draw) both}
+  }
+}
+@keyframes c1-stamp{0%{opacity:0;transform:scale(1.35) rotate(-6deg)}60%{opacity:1}}
+@keyframes c1-rise{from{transform:translateY(.5em);clip-path:inset(0 0 50% 0)}to{transform:none;clip-path:inset(0)}}
 @keyframes c1-draw{from{transform:scaleX(0)}}
-@keyframes c1-turn{from{transform:perspective(240px) rotateX(-90deg)}}

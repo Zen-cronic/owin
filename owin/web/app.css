@@ -1,41 +1,50 @@
 /* Owin: the answer screen (/) and the start page (/judge).
    This file is the layout and the token layer. Every colour, family, radius, hairline, texture and duration below is
-   a custom property; components read only tokens. The defaults on :root are theme 1 ("Departures"), so a page with
+   a custom property; components read only tokens. The defaults on :root are theme 1 ("Catalogue"), so a page with
    no data-theme attribute renders theme 1. theme-c1.css … theme-c5.css restyle the tokens and the decoration hooks
    (.num-tile, .num-sep, .num-row, .stat-board, .catch-mark, .catch-text, .catch-phrase, .rule-draw) under html[data-theme="cN"].
    The signal colour (--act) marks only the one thing to act on. */
 :root{
-  /* Colour */
-  --bg:#0E0F0F;          /* page */
-  --surface:#161717;     /* selected row fill */
-  --raise:#232424;       /* chips, hover, menus */
-  --board:#232424;       /* the full-bleed numeral housing on /judge */
-  --tile:#121313;        /* numeral tiles */
-  --ink:#F3F1EA;         /* text */
-  --muted:#A9A79F;       /* labels, captions */
-  --cite:#C9CBC5;        /* quoted and secondary text */
-  --line:#343535;        /* hairlines */
-  --edge:#6B6D69;        /* control borders, quiet connectors, link underlines */
-  --act:#FFD21F;         /* the one thing to act on */
-  --act-hover:#FFDC4F;
-  --on-act:#0E0F0F;
+  /* Colour: the card (what components read) */
+  --bg:#FCFBF7;          /* index-card stock: answers, menus, fields */
+  --surface:#FFFFFF;     /* selected card */
+  --raise:#EEF4F6;       /* chips, hover, menus: a wash of the ruling ink */
+  --board:#57361D;       /* the drawer fronts on /judge */
+  --tile:transparent;    /* numeral tiles */
+  --ink:#1E1A16;         /* text */
+  --muted:#5E5A55;       /* labels, captions */
+  --cite:#3A3631;        /* quoted and secondary text */
+  --line:#C9DCE4;        /* the card's ruled lines */
+  --edge:#6A645C;        /* control borders, quiet connectors, link underlines */
+  --act:#B3202A;         /* the one thing to act on: Not true, and its fix */
+  --act-hover:#951A23;
+  --on-act:#FFFFFF;
   --act-line:var(--act); /* signal borders and connectors (the selected answer and endpoint, the link line) */
   --act-ink:var(--act);  /* signal icons and text set directly on --bg */
   --mark:var(--act);     /* the theme's one decorative signal: flap tag, red rule, stamp, highlighter */
   --on-mark:var(--on-act);
-  --focus:var(--act);
+  --focus:#2D3E66;
+  /* Colour: the catalogue (theme 1 only reads these) */
+  --field:#6B4426;       /* quarter-sawn oak, the page ground */
+  --on-field:#FFFFFF;
+  --on-field-muted:#E9D9C4;
+  --brass:#D9AE62;       /* label frames and pulls */
+  --rule-cyan:#7FB6CF;   /* the ruled header line of a card */
+  --stamp-stale:#5B3D94; /* violet date-stamp ink */
+  --stamp-confirm:#2D3E66;
+  --stamp-held:#5E5A55;
   /* Type */
-  --display:'Inter Tight','Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --display:'Archivo','Arial',system-ui,sans-serif;
+  --sans:'Atkinson Hyperlegible Next','Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Atkinson Hyperlegible Mono',ui-monospace,'SF Mono',Menlo,monospace;
   --num:var(--display);
-  --display-weight:600;
-  --display-track:-.018em;
-  --num-weight:700;
+  --display-weight:700;
+  --display-track:-.01em;
+  --num-weight:800;
   /* Shape */
-  --r:2px;               /* buttons, rows, panels */
-  --r-sm:2px;            /* badges, chips */
-  --r-tile:3px;          /* numeral tiles */
+  --r:0;                 /* buttons, rows, panels */
+  --r-sm:0;              /* badges, chips */
+  --r-tile:0;            /* numeral tiles */
   --hair:1px;            /* every hairline */
   --rule-w:1px;          /* the drawn rule (.rule-draw) */
   --rule:var(--line);
@@ -56,11 +65,11 @@
   --delay-draw:.15s;
   --dur-turn:.26s;
   --delay-turn:.87s;
-  --num-motion:flap;
+  --num-motion:none;
   --dur-flip:55;
   --num-stagger:60;
   --num-budget:700;
-  color-scheme:dark;
+  color-scheme:light;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--bg)}
@@ -196,6 +205,7 @@ h1 .ep{font-size:.9em;font-weight:700;letter-spacing:-.03em;white-space:nowrap}
 .ans.stale + .ans{border-top-color:transparent}
 .ep-row.changed .path::after{content:"changed";font:500 11px var(--sans);color:var(--muted);margin-left:8px;letter-spacing:.01em}
 .dimmed{opacity:.55}
+.ans.dimmed:has(.panel:not([hidden])){opacity:1} /* an answer being fixed or reviewed never fades */
 
 /* Vendor pages under the stack */
 .legends{margin-top:6px;display:grid;gap:4px}
