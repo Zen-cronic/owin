@@ -1,6 +1,8 @@
 """Runtime configuration, from environment variables only (the container contract in DEPLOY.md).
 
-  TOKEN_FACTORY_API_KEY  Nebius Token Factory key. Needed only for new extractions (`owin pack extract`, `owin eval run`).
+  TOKEN_FACTORY_API_KEY  Nebius Token Factory key. New extractions (`owin pack extract`, `owin eval run`, `owin job daily`)
+                         and, on a served endpoint, Nemotron re-reading inside `POST /api/recheck` when a quoted
+                         sentence is gone (OWIN_RECHECK_READ_BUDGET_USD per UTC day, default $0.25).
   TAVILY_API_KEY         Tavily key. Needed for re-fetching pages (`owin pack refresh`, `owin sweep --live`, `owin job daily`)
                          and, on a served endpoint, for `POST /api/recheck` (capped; owin/recheck.py).
   OWIN_STATE_DIR         Optional writable directory (a mounted bucket in production). When set, refreshed
@@ -11,7 +13,8 @@
 
 Serving a page never calls a paid API: every page and every GET is computed from recorded runs and committed
 captures, so the app works with no keys at all (demo mode) and several people can use it at once. The one
-exception is `POST /api/recheck`, which makes one Tavily call per request when a key is set.
+exception is `POST /api/recheck`, which makes one Tavily call per request when a key is set, and three Nemotron
+readings when a quoted sentence is gone and a Token Factory key is set.
 """
 from __future__ import annotations
 

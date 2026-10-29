@@ -1,0 +1,47 @@
+# Re-proves the README's numbers on every push and pull request, from a fresh clone with no keys and no vendor page
+# text: the test suite, the claims ledger (`owin facts check` fails on any drifted number) and the line-one number
+# recomputed from the recorded Nemotron runs. A red run means a number in the README no longer recomputes.
+name: proof
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: proof-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  recompute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      OWIN_ENV_FILE: /nonexistent   # no keys: every number must come from committed files
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history: the tests check that every commit id the README cites exists
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install (Poetry, locked)
+        run: |
+          pip install "poetry==2.5.1"
+          poetry install --no-interaction --no-ansi
+      - name: Tests (keyless, no network)
+        run: poetry run pytest -q
+      - name: Claims ledger (fails on any drifted number)
+        run: poetry run owin facts check
+      - name: Line-one number, recomputed from recorded runs
+        run: |
+          poetry run owin eval selective --corpus datause --split v3fresh --brief > selective.json
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          s = json.load(open("selective.json"))
+          print("### Recomputed from recorded Nemotron runs (no key)")
+          print(f"- split `{s['split']}`: auto-answered **{s['auto_answered']}**, right **{s['auto_correct']}**, "
+                f"sent to a person **{s['sent_to_confirm']}** (majority vote would be right on {s['confirm_majority_right']})")
+          print(f"- all cells, plain majority vote: {s['all_cells_majority_right']}")
+          print("- verbatim gate: recorded results (vendor page text is not in the repository)")
+          PY

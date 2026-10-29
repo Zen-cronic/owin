@@ -160,9 +160,9 @@ def test_relabel_is_disclosed_with_before_and_after():
 def test_score_without_raw_fixtures_uses_recorded_validation(monkeypatch):
     monkeypatch.setattr(dv, "_source", lambda item: None)
     res = dv.score(dv.headline_runs())
-    assert res["quotes_rechecked_against_source"] is False and res["baseline"] is None
-    for k in ("positive_items_exact_majority", "negative_items_held", "fresh_heldout"):
-        assert res["headline"][k] == _committed_score()["headline"][k]
+    assert res["quotes_rechecked_against_source"] is False
+    # With no page on disk the baseline comes from its recorded output, so the whole headline still recomputes.
+    assert res["baseline"] is not None and res["headline"] == _committed_score()["headline"]
 
 
 def test_preregistered_v1_run_failed_and_is_still_reported():
@@ -209,10 +209,21 @@ def test_v3fresh_labels_match_the_preregistration():
         assert not items[iid].get("label_history"), iid
 
 
+def _without_recheck_flag(d: dict) -> dict:
+    """latest-score.json was written with the pages on disk; on a clone the verbatim gate is not re-run (the pages
+    are gitignored) and the recorded gate results are used, so only this flag may differ."""
+    out = {k: v for k, v in d.items() if k != "quotes_rechecked_against_source"}
+    if isinstance(out.get("reference_old_corpus_not_clean"), dict):
+        out["reference_old_corpus_not_clean"] = _without_recheck_flag(out["reference_old_corpus_not_clean"])
+    return out
+
+
 def test_v3_headline_is_the_preregistered_split_only():
     """README headline = v3 on v3fresh (labels committed before v3 existed); the old corpus is reference, labelled not clean."""
     committed = _committed_score()
-    assert dv.latest() == committed
+    now = dv.latest()
+    assert _without_recheck_flag(now) == _without_recheck_flag(committed)
+    assert now["quotes_rechecked_against_source"] is RAW_PRESENT  # said, never assumed
     runs = [json.loads(p.read_text()) for p in dv.headline_runs()]
     pre = json.loads((ROOT / "eval" / "datause" / "preregistration-v3.json").read_text())
     assert all(d["prompt_version"] == "v3" and d["runs_per_item"] == 3 for d in runs)
@@ -223,3 +234,65 @@ def test_v3_headline_is_the_preregistered_split_only():
     ref = committed["reference_old_corpus_not_clean"]
     assert "NOT a clean test" in ref["_about"] and ref["acceptance"]["positive_items_exact"] == "24/30"
     assert any(k.startswith("openrouter-inference-zdr") for k, _ in dv.POST_RUN_TENSIONS)
+
+
+# The keyword baseline recomputes on a clone: its output is recorded per page sha256 (values only, no page text)
+
+def test_recorded_baseline_covers_every_item_and_matches_the_labelled_bytes():
+    rec = json.loads((ROOT / "eval" / "datause" / "baseline-outputs.json").read_text())["items"]
+    corpus = dv.load_corpus()
+    assert set(rec) == {i["id"] for i in corpus}
+    for i in corpus:
+        assert rec[i["id"]]["source_sha256"] == i["source_sha256"], i["id"]
+        assert set(rec[i["id"]]) == {"source_sha256", *SCORED_FIELDS}  # structured values only
+
+
+@pytest.mark.skipif(not RAW_PRESENT, reason="raw vendor pages are gitignored")
+def test_recorded_baseline_equals_the_recomputed_baseline():
+    rec = json.loads((ROOT / "eval" / "datause" / "baseline-outputs.json").read_text())["items"]
+    for i in dv.load_corpus():
+        assert {f: rec[i["id"]][f] for f in SCORED_FIELDS} == baseline.extract(dv._source(i), i["feature"]).scored(), i["id"]
+
+
+def test_recorded_baseline_is_used_only_for_the_same_bytes(monkeypatch):
+    item = {**dv.load_corpus()[0], "file": "fixtures/raw/does-not-exist.txt"}
+    rec = {item["id"]: {"source_sha256": item["source_sha256"], "retention_days": 7, "used_for_training": "no", "zdr": "available"}}
+    assert dv.baseline_output(item, recorded=rec) == {"retention_days": 7, "used_for_training": "no", "zdr": "available"}
+    rec[item["id"]]["source_sha256"] = "0" * 64  # recorded from other bytes: not used
+    assert dv.baseline_output(item, recorded=rec) is None
+
+
+def test_every_recorded_reading_was_made_on_the_labelled_bytes():
+    """Content addressing, checkable on a clone: each headline and reference reading records the sha256 of the page
+    text Nemotron read, and it equals the sha256 of the capture the labels were written from."""
+    corpus = {i["id"]: i for i in dv.load_corpus()}
+    n = 0
+    for p in dv.headline_runs() + dv.reference_runs():
+        for c in json.loads(p.read_text())["calls"]:
+            assert c["source_sha256"] == corpus[c["id"]]["source_sha256"], (p.name, c["id"])
+            n += 1
+    assert n == 150  # 39 v3fresh readings + 111 on the older items
+
+
+def _git(*args) -> str | None:
+    import subprocess
+    try:
+        return subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True, timeout=20).stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        return None
+
+
+@pytest.mark.skipif(_git("rev-parse", "--is-shallow-repository") != "false", reason="needs a full git history")
+def test_every_cited_preregistration_commit_exists_and_labels_precede_the_prompt():
+    """The README and eval/datause/headline.json cite the commits that froze the labels and then the prompt; each id
+    must resolve in this repository's history, and the labels commit must be an ancestor of the prompt commit."""
+    pre = json.loads((ROOT / "eval" / "datause" / "headline.json").read_text())["preregistration"]
+    labels, prompt = pre["labels_commit"], pre["prompt_v3_commit"]
+    readme = (ROOT / "README.md").read_text()
+    assert f"`{labels}`" in readme and f"`{prompt}`" in readme
+    for c in (labels, prompt):
+        assert _git("cat-file", "-t", c) == "commit", c
+    import subprocess
+    assert subprocess.run(["git", "-C", str(ROOT), "merge-base", "--is-ancestor", labels, prompt]).returncode == 0
+    touched = _git("show", "--name-only", "--format=", labels).split()
+    assert "eval/datause/preregistration-v3.json" in touched

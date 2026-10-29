@@ -1,0 +1,945 @@
+{
+ "run_at": "2026-10-29T11:28:16-0400",
+ "model": "nvidia/Nemotron-3_5-Lightning",
+ "runs_per_item": 3,
+ "split": "v3fresh",
+ "prompt_version": "v3",
+ "wall_s": 457.7,
+ "corpus_sha256": "0bbb4f7b6b723cfc133cb4fc6a76febd018d8a525d5e08913398056f6cd7e3f7",
+ "calls": [
+  {
+   "id": "cohere-saas-api",
+   "run": 0,
+   "vendor": "cohere-saas-api",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "f80cdc6d3e914fe3df7f242c12b3c0a93783ec8095c2a33e5d2c63793604728a",
+   "input_mode": "whole",
+   "input_chars": 13216,
+   "latency_s": 175.6,
+   "prompt_tokens": 3867,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002152,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze the Request:**\n   - I need to act as a privacy analyst filling in the AI section of a security questionnaire.\n   - I must answer ONLY from the provided text.\n   - The feature is: \"SaaS Platform API (Chat, Embed, Rerank prompts and generations)\" (vendor: Cohere).\n   - Output must be STRICT JSON only, no prose, no code fences.\n   - Specific keys required wit",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "cohere-saas-api",
+   "run": 1,
+   "vendor": "cohere-saas-api",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "f80cdc6d3e914fe3df7f242c12b3c0a93783ec8095c2a33e5d2c63793604728a",
+   "input_mode": "whole",
+   "input_chars": 13216,
+   "latency_s": 114.63,
+   "prompt_tokens": 3867,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002152,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze the Request:**\n   - I need to act as a privacy analyst filling in the AI section of a security questionnaire.\n   - I must answer ONLY from the provided text.\n   - The feature is: \"SaaS Platform API (Chat, Embed, Rerank prompts and generations)\" (vendor: Cohere).\n   - Output must be STRICT JSON only, no prose, no code fences.\n   - Specific keys required wit",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "cohere-saas-api",
+   "run": 2,
+   "vendor": "cohere-saas-api",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "f80cdc6d3e914fe3df7f242c12b3c0a93783ec8095c2a33e5d2c63793604728a",
+   "input_mode": "whole",
+   "input_chars": 13216,
+   "latency_s": 112.99,
+   "prompt_tokens": 3867,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002152,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Source: ONE vendor documentation page text provided\n   - Feature: \"SaaS Platform API (Chat, Embed, Rerank prompts and generations)\" (vendor: Cohere)\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Keys required: retention_days, retention_cond",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "perplexity-api",
+   "run": 0,
+   "vendor": "perplexity-api",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "b36c9cd7c56f8c144a9fe36094175145555473330f9ab58b73a920cd8bc3c239",
+   "input_mode": "whole",
+   "input_chars": 3408,
+   "latency_s": 68.68,
+   "prompt_tokens": 1775,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002027,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Source: ONE vendor documentation page text provided\n   - Feature: API Platform (Agent API and Sonar requests) (vendor: Perplexity)\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Keys required: retention_days, retention_condition, retention_q",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "perplexity-api",
+   "run": 1,
+   "vendor": "perplexity-api",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "b36c9cd7c56f8c144a9fe36094175145555473330f9ab58b73a920cd8bc3c239",
+   "input_mode": "whole",
+   "input_chars": 3408,
+   "latency_s": 70.63,
+   "prompt_tokens": 1775,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002027,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Source: ONE vendor documentation page text provided\n   - Feature: API Platform (Agent API and Sonar requests) (vendor: Perplexity)\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Specific keys required with types/constraints\n   - Rules for ea",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "perplexity-api",
+   "run": 2,
+   "vendor": "perplexity-api",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "b36c9cd7c56f8c144a9fe36094175145555473330f9ab58b73a920cd8bc3c239",
+   "input_mode": "whole",
+   "input_chars": 3408,
+   "latency_s": 70.18,
+   "prompt_tokens": 1775,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002027,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Source: ONE vendor documentation page text provided\n   - Feature: API Platform (Agent API and Sonar requests) (vendor: Perplexity)\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Keys required: retention_days, retention_condition, retention_q",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "xai-chat",
+   "run": 0,
+   "vendor": "xai-chat",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "input_mode": "whole",
+   "input_chars": 11049,
+   "latency_s": 158.09,
+   "prompt_tokens": 3597,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002136,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Source: ONE vendor documentation page text provided\n   - Feature: \"Chat Completions and stateless Responses API (api.x.ai)\" (vendor: xAI (docs branded SpaceXAI))\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Specific keys required with deta",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "xai-chat",
+   "run": 1,
+   "vendor": "xai-chat",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "input_mode": "whole",
+   "input_chars": 11049,
+   "latency_s": 175.52,
+   "prompt_tokens": 3597,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002136,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling AI section of security questionnaire\n   - Source: ONE vendor documentation page text provided\n   - Feature: \"Chat Completions and stateless Responses API (api.x.ai)\" (vendor: xAI (docs branded SpaceXAI))\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Specific keys required with detaile",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "xai-chat",
+   "run": 2,
+   "vendor": "xai-chat",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "input_mode": "whole",
+   "input_chars": 11049,
+   "latency_s": 207.9,
+   "prompt_tokens": 3597,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002136,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Source: ONE vendor documentation page text (provided)\n   - Feature: \"Chat Completions and stateless Responses API (api.x.ai)\" (vendor: xAI (docs branded SpaceXAI))\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Specific keys required with de",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "xai-batch",
+   "run": 0,
+   "vendor": "xai-batch",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "input_mode": "whole",
+   "input_chars": 11049,
+   "latency_s": 109.82,
+   "prompt_tokens": 3585,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002135,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Task: Answer ONLY from provided text, for feature: Batch API (vendor: xAI, docs branded SpaceXAI)\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Keys required: retention_days, retention_condition, retention_quote, used_for_training, training",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "xai-batch",
+   "run": 1,
+   "vendor": "xai-batch",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "input_mode": "whole",
+   "input_chars": 11049,
+   "latency_s": 108.05,
+   "prompt_tokens": 3585,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002135,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Task: Answer ONLY from provided text, for specific feature: Batch API (vendor: xAI, docs branded SpaceXAI)\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Keys required: retention_days, retention_condition, retention_quote, used_for_training,",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "xai-batch",
+   "run": 2,
+   "vendor": "xai-batch",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "input_mode": "whole",
+   "input_chars": 11049,
+   "latency_s": 90.44,
+   "prompt_tokens": 3585,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002135,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Task: Answer ONLY from provided text, for feature: Batch API (vendor: xAI, docs branded SpaceXAI)\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Keys required: retention_days, retention_condition, retention_quote, used_for_training, training",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "openrouter-inference-zdr",
+   "run": 0,
+   "vendor": "openrouter-inference-zdr",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "input_mode": "whole",
+   "input_chars": 10253,
+   "latency_s": 83.84,
+   "prompt_tokens": 3259,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002116,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Task: Answer ONLY from provided text, for specific feature: \"Inference request routing with ZDR enforcement (provider.zdr, privacy settings) (vendor: OpenRouter)\"\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Required keys: retention_days, ",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "openrouter-inference-zdr",
+   "run": 1,
+   "vendor": "openrouter-inference-zdr",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "input_mode": "whole",
+   "input_chars": 10253,
+   "latency_s": 83.74,
+   "prompt_tokens": 3259,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002116,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Task: Answer ONLY from provided text, for specific feature: \"Inference request routing with ZDR enforcement (provider.zdr, privacy settings)\" (vendor: OpenRouter)\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Required keys: retention_days, ",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "openrouter-inference-zdr",
+   "run": 2,
+   "vendor": "openrouter-inference-zdr",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "input_mode": "whole",
+   "input_chars": 10253,
+   "latency_s": 81.65,
+   "prompt_tokens": 3259,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002116,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Task: Answer ONLY from provided text, for specific feature: \"Inference request routing with ZDR enforcement (provider.zdr, privacy settings) (vendor: OpenRouter)\"\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Required keys: retention_days, ",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "openrouter-web-search",
+   "run": 0,
+   "vendor": "openrouter-web-search",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "input_mode": "whole",
+   "input_chars": 10253,
+   "latency_s": 69.53,
+   "prompt_tokens": 3248,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002115,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Task: Answer ONLY from the provided text\n   - Feature: \"Web Search plugin and server tools (vendor: OpenRouter)\"\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Specific keys required with exact types/values\n   - Rules are detailed and must b",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "openrouter-web-search",
+   "run": 1,
+   "vendor": "openrouter-web-search",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "input_mode": "whole",
+   "input_chars": 10253,
+   "latency_s": 57.43,
+   "prompt_tokens": 3248,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002115,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Task: Answer ONLY from provided text, for feature: \"Web Search plugin and server tools (vendor: OpenRouter)\"\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Keys required: retention_days, retention_condition, retention_quote, used_for_trainin",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "openrouter-web-search",
+   "run": 2,
+   "vendor": "openrouter-web-search",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "input_mode": "whole",
+   "input_chars": 10253,
+   "latency_s": 49.51,
+   "prompt_tokens": 3248,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002115,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Task: Answer ONLY from the provided text, for a specific feature: \"Web Search plugin and server tools (vendor: OpenRouter)\"\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Required keys: retention_days, retention_condition, retention_quote, u",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "cerebras-prompt-caching",
+   "run": 0,
+   "vendor": "cerebras-prompt-caching",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "59e8943deede02c76aacdb1aa57625a7006573e983887e0bd6d41d750da938dc",
+   "input_mode": "whole",
+   "input_chars": 29391,
+   "latency_s": 55.11,
+   "prompt_tokens": 9002,
+   "completion_tokens": 8000,
+   "cost_usd": 0.00246,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Task: Answer ONLY from provided text, for feature: \"Prompt caching (automatic, Cerebras Inference)\" (vendor: Cerebras)\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Required keys: retention_days, retention_condition, retention_quote, used_f",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "cerebras-prompt-caching",
+   "run": 1,
+   "vendor": "cerebras-prompt-caching",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "59e8943deede02c76aacdb1aa57625a7006573e983887e0bd6d41d750da938dc",
+   "input_mode": "whole",
+   "input_chars": 29391,
+   "latency_s": 54.84,
+   "prompt_tokens": 9002,
+   "completion_tokens": 8000,
+   "cost_usd": 0.00246,
+   "finish_reason": "length",
+   "terms": {
+    "retention_days": 0,
+    "retention_condition": "ephemeral, TTL 5min-1h",
+    "retention_quote": "Cached data is ephemeral. We guarantee a Time-To-Live (TTL) of 5 minutes, though caches may persist up to 1 hour depending on system load.",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "available",
+    "zdr_quote": "Yes, it is fully ZDR-compliant.",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": false,
+     "zdr": true,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "cerebras-prompt-caching",
+   "run": 2,
+   "vendor": "cerebras-prompt-caching",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "59e8943deede02c76aacdb1aa57625a7006573e983887e0bd6d41d750da938dc",
+   "input_mode": "whole",
+   "input_chars": 29391,
+   "latency_s": 53.28,
+   "prompt_tokens": 9002,
+   "completion_tokens": 8000,
+   "cost_usd": 0.00246,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - I need to act as a privacy analyst filling in the AI section of a security questionnaire.\n   - I must answer ONLY from the provided text.\n   - Feature: \"Prompt caching (automatic, Cerebras Inference)\" (vendor: Cerebras)\n   - Return STRICT JSON only, no prose, no code fences.\n   - Specific keys required with exact types/values.\n   - Rul",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "cerebras-predicted-outputs",
+   "run": 0,
+   "vendor": "cerebras-predicted-outputs",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "90c1dd3ca7fc0f40623d79ffe06d4787ec7edebfefeab66b4808700826f9e0b4",
+   "input_mode": "whole",
+   "input_chars": 9807,
+   "latency_s": 42.57,
+   "prompt_tokens": 3471,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002128,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Task: Answer ONLY from provided text, for feature: \"Predicted Outputs (prediction parameter)\" (vendor: Cerebras)\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Required keys: retention_days, retention_condition, retention_quote, used_for_tra",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "cerebras-predicted-outputs",
+   "run": 1,
+   "vendor": "cerebras-predicted-outputs",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "90c1dd3ca7fc0f40623d79ffe06d4787ec7edebfefeab66b4808700826f9e0b4",
+   "input_mode": "whole",
+   "input_chars": 9807,
+   "latency_s": 40.75,
+   "prompt_tokens": 3471,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002128,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Task: Answer ONLY from provided text, for feature: \"Predicted Outputs (prediction parameter)\" (vendor: Cerebras)\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Specific keys required: retention_days, retention_condition, retention_quote, use",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "cerebras-predicted-outputs",
+   "run": 2,
+   "vendor": "cerebras-predicted-outputs",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "90c1dd3ca7fc0f40623d79ffe06d4787ec7edebfefeab66b4808700826f9e0b4",
+   "input_mode": "whole",
+   "input_chars": 9807,
+   "latency_s": 38.88,
+   "prompt_tokens": 3471,
+   "completion_tokens": 7869,
+   "cost_usd": 0.002097,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 0,
+    "retention_condition": "not stored",
+    "retention_quote": "No, we do not store any prediction data.",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 7758
+   }
+  },
+  {
+   "id": "vertex-implicit-caching",
+   "run": 0,
+   "vendor": "vertex-implicit-caching",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "00029dda746103b77f93361b07c5e9df365465d498097e39bfe08dcd68a8c578",
+   "input_mode": "whole",
+   "input_chars": 8797,
+   "latency_s": 41.1,
+   "prompt_tokens": 3052,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002103,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Feature: Gemini implicit context caching\n   - Vendor: Google Cloud (Vertex AI / Gemini Enterprise Agent Platform)\n   - Source: ONE vendor documentation page (provided text)\n   - Output: STRICT JSON only, no prose, no code fences\n   - Specific keys required: rete",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "vertex-implicit-caching",
+   "run": 1,
+   "vendor": "vertex-implicit-caching",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "00029dda746103b77f93361b07c5e9df365465d498097e39bfe08dcd68a8c578",
+   "input_mode": "whole",
+   "input_chars": 8797,
+   "latency_s": 41.86,
+   "prompt_tokens": 3052,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002103,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Feature: Gemini implicit context caching (vendor: Google Cloud (Vertex AI / Gemini Enterprise Agent Platform))\n   - Source: ONE vendor documentation page text provided\n   - Output: STRICT JSON only, no prose, no code fences\n   - Specific keys required: retention",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "vertex-implicit-caching",
+   "run": 2,
+   "vendor": "vertex-implicit-caching",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "00029dda746103b77f93361b07c5e9df365465d498097e39bfe08dcd68a8c578",
+   "input_mode": "whole",
+   "input_chars": 8797,
+   "latency_s": 41.79,
+   "prompt_tokens": 3052,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002103,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Feature: Gemini implicit context caching\n   - Vendor: Google Cloud (Vertex AI / Gemini Enterprise Agent Platform)\n   - Source: ONE vendor documentation page (provided text)\n   - Output: STRICT JSON only, no prose, no code fences\n   - Specific keys required: rete",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "deepinfra-inference",
+   "run": 0,
+   "vendor": "deepinfra-inference",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "input_mode": "whole",
+   "input_chars": 2658,
+   "latency_s": 39.25,
+   "prompt_tokens": 1692,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002022,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze the Request:**\n   - I need to act as a privacy analyst filling in an AI section of a security questionnaire.\n   - I must answer ONLY from the provided text.\n   - The feature is: \"Inference API (open models, real-time requests)\" from vendor: DeepInfra.\n   - Output must be strict JSON with specific keys.\n   - No prose, no code fences.\n   - Exact keys and exp",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "deepinfra-inference",
+   "run": 1,
+   "vendor": "deepinfra-inference",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "input_mode": "whole",
+   "input_chars": 2658,
+   "latency_s": 40.45,
+   "prompt_tokens": 1692,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002022,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze the Request:**\n   - I need to fill out a specific JSON schema based *only* on the provided text.\n   - The feature is: \"Inference API (open models, real-time requests)\" from vendor \"DeepInfra\".\n   - Output must be strict JSON only, no prose, no code fences.\n   - Keys and their meanings are defined in detail.\n\n2.  **Analyze the Text:**\n   - The text is from ",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "deepinfra-inference",
+   "run": 2,
+   "vendor": "deepinfra-inference",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "input_mode": "whole",
+   "input_chars": 2658,
+   "latency_s": 40.64,
+   "prompt_tokens": 1692,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002022,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze the Request:**\n   - I need to act as a privacy analyst filling in an AI section of a security questionnaire.\n   - I must answer ONLY from the provided text.\n   - The feature is: \"Inference API (open models, real-time requests)\" from vendor: DeepInfra.\n   - Output must be strict JSON only, no prose, no code fences.\n   - Specific keys required with exact typ",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "deepinfra-bulk",
+   "run": 0,
+   "vendor": "deepinfra-bulk",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "input_mode": "whole",
+   "input_chars": 2658,
+   "latency_s": 42.13,
+   "prompt_tokens": 1685,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002021,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Task: Answer ONLY from provided text, for feature: \"Bulk inference APIs (vendor: DeepInfra)\"\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Specific keys required with exact types/values\n   - Rules are detailed and must be followed precisely",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "deepinfra-bulk",
+   "run": 1,
+   "vendor": "deepinfra-bulk",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "input_mode": "whole",
+   "input_chars": 2658,
+   "latency_s": 41.81,
+   "prompt_tokens": 1685,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002021,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze the Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Feature: Bulk inference APIs (vendor: DeepInfra)\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Specific keys required with exact types/values\n   - Rules are very detailed about retention, training, ZDR, region, third-party access, quotes, et",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "deepinfra-bulk",
+   "run": 2,
+   "vendor": "deepinfra-bulk",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "input_mode": "whole",
+   "input_chars": 2658,
+   "latency_s": 40.8,
+   "prompt_tokens": 1685,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002021,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: privacy analyst filling in AI section of security questionnaire\n   - Feature: Bulk inference APIs (vendor: DeepInfra)\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Specific keys required with exact types/values\n   - Rules are very detailed about how to extract/derive each field\n   - Must answer ONLY from the",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "neg-deepseek-platform-tos",
+   "run": 0,
+   "vendor": "neg-deepseek-platform-tos",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "280452143ac9a79ef0557840c4cfe5756e3d6e758875e74244ee77dab37e91c0",
+   "input_mode": "whole",
+   "input_chars": 22940,
+   "latency_s": 22.51,
+   "prompt_tokens": 5695,
+   "completion_tokens": 4279,
+   "cost_usd": 0.001369,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "unspecified",
+    "retention_quote": "",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "no_terms",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 4179
+   }
+  },
+  {
+   "id": "neg-deepseek-platform-tos",
+   "run": 1,
+   "vendor": "neg-deepseek-platform-tos",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "280452143ac9a79ef0557840c4cfe5756e3d6e758875e74244ee77dab37e91c0",
+   "input_mode": "whole",
+   "input_chars": 22940,
+   "latency_s": 37.01,
+   "prompt_tokens": 5695,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002262,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "Here's a thinking process:\n\n1.  **Analyze User Request:**\n   - Role: Privacy analyst filling in AI section of security questionnaire\n   - Task: Answer ONLY from provided text, for feature: \"Open Platform API (chat completions)\" (vendor: DeepSeek)\n   - Output format: STRICT JSON only, no prose, no code fences\n   - Specific keys required with types/constraints\n   - Rules for each field are detailed\n",
+   "extra": {
+    "reasoning_tokens": 8000
+   }
+  },
+  {
+   "id": "neg-deepseek-platform-tos",
+   "run": 2,
+   "vendor": "neg-deepseek-platform-tos",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "280452143ac9a79ef0557840c4cfe5756e3d6e758875e74244ee77dab37e91c0",
+   "input_mode": "whole",
+   "input_chars": 22940,
+   "latency_s": 31.14,
+   "prompt_tokens": 5695,
+   "completion_tokens": 6539,
+   "cost_usd": 0.001911,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "unspecified",
+    "retention_quote": "",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "no_terms",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 6439
+   }
+  },
+  {
+   "id": "neg-perplexity-search-best-practices",
+   "run": 0,
+   "vendor": "neg-perplexity-search-best-practices",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "42cb49fb9ed2be859b90c21845d6d533a3afb984a92ab19486c67d957884db8f",
+   "input_mode": "keyword-windows",
+   "input_chars": 39792,
+   "latency_s": 13.78,
+   "prompt_tokens": 11044,
+   "completion_tokens": 3725,
+   "cost_usd": 0.001557,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "unspecified",
+    "retention_quote": "",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "no_terms",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 3637
+   }
+  },
+  {
+   "id": "neg-perplexity-search-best-practices",
+   "run": 1,
+   "vendor": "neg-perplexity-search-best-practices",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "42cb49fb9ed2be859b90c21845d6d533a3afb984a92ab19486c67d957884db8f",
+   "input_mode": "keyword-windows",
+   "input_chars": 39792,
+   "latency_s": 14.22,
+   "prompt_tokens": 11044,
+   "completion_tokens": 3299,
+   "cost_usd": 0.001454,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "unspecified",
+    "retention_quote": "",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "no_terms",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 3211
+   }
+  },
+  {
+   "id": "neg-perplexity-search-best-practices",
+   "run": 2,
+   "vendor": "neg-perplexity-search-best-practices",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "source_sha256": "42cb49fb9ed2be859b90c21845d6d533a3afb984a92ab19486c67d957884db8f",
+   "input_mode": "keyword-windows",
+   "input_chars": 39792,
+   "latency_s": 17.88,
+   "prompt_tokens": 11044,
+   "completion_tokens": 4452,
+   "cost_usd": 0.001731,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "unspecified",
+    "retention_quote": "",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "no_terms",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 4352
+   }
+  }
+ ]
+}

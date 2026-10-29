@@ -145,3 +145,131 @@ def test_cli_prints_the_same_contract(capsys):
     assert main(["recheck", EP]) == 2  # keyless: demo answer, non-zero exit
     out = json.loads(capsys.readouterr().out)
     assert out["http_status"] == 200 and out["mode"] == "demo" and out["ok"] is False
+
+
+# Live Nemotron re-reading: only when a quoted sentence is gone, only moves to Confirm, only this feature
+
+from types import SimpleNamespace
+
+from owin.datause import registry
+
+FEAT = "anthropic-mcp-connector"
+GONE = "The MCP connector is not covered by ZDR arrangements."
+
+
+def _reader(terms_seq, calls):
+    """A stand-in for one Nemotron reading: returns the next gated terms (None = an errored reading)."""
+    it = iter(terms_seq)
+
+    def read():
+        calls.append(1)
+        return SimpleNamespace(terms=next(it), cost_usd=0.003)
+    return read
+
+
+def _tf_key(monkeypatch):
+    monkeypatch.setenv("TOKEN_FACTORY_API_KEY", "sk-test")
+    tf.reset_breaker()
+
+
+def _recorded():
+    return dict(registry.load()[FEAT]["terms"])
+
+
+def _cell(endpoint, qid):
+    a = next(a for a in pack.build()["answers"] if a["id"] == qid)
+    return next(c for c in a["cells"] if c["endpoint"] == endpoint)
+
+
+def test_readings_that_agree_change_nothing_and_say_so(monkeypatch):
+    fetch, _ = _keyed(monkeypatch, _page_text(FEAT, drop=GONE))
+    _tf_key(monkeypatch)
+    calls = []
+    code, body = recheck.run(EP, fetch=fetch, read=_reader([_recorded()] * 3, calls))
+    assert code == 200 and len(calls) == 3
+    rd = body["readings"]
+    assert rd["ran"] and rd["applied"] and rd["moved_to_confirm"] == [] and rd["readings_ok"] == 3
+    assert body["observation"].endswith("every answer it reads still agrees.")
+    assert _cell(EP, "Q03")["verdict"] == "contradicts"  # the recorded reading still decides
+
+
+def test_readings_that_disagree_with_the_record_hand_the_field_to_a_person(monkeypatch):
+    fetch, _ = _keyed(monkeypatch, _page_text(FEAT, drop=GONE))
+    _tf_key(monkeypatch)
+    others = {k: v for k, v in registry.load().items() if k != FEAT}
+    flipped = {**_recorded(), "zdr": "available", "zdr_quote": "ZDR is available."}
+    code, body = recheck.run(EP, fetch=fetch, read=_reader([flipped] * 3, []))
+    assert body["readings"]["moved_to_confirm"] == ["zdr"] and "zdr now goes to a person" in body["observation"]
+    # This response hands answer 3 for /api/crm-sync to a person; three unanimous readings never overrule the record
+    assert body["answers"]["Q03"]["verdict"] == "confirm" and body["changed"] is True
+    # ...and only this response: the next request reads the recorded registry, untouched
+    assert _cell(EP, "Q03")["verdict"] == "contradicts"
+    assert registry.load()[FEAT]["terms"] == _recorded() and {k: v for k, v in registry.load().items() if k != FEAT} == others
+
+
+def test_fewer_than_two_good_readings_change_nothing(monkeypatch):
+    fetch, _ = _keyed(monkeypatch, _page_text(FEAT, drop=GONE))
+    _tf_key(monkeypatch)
+    flipped = {**_recorded(), "zdr": "available"}
+    code, body = recheck.run(EP, fetch=fetch, read=_reader([flipped, None, None], []))
+    assert body["readings"]["applied"] is False and body["readings"]["errored_abstained"] == 2
+    assert _cell(EP, "Q03")["verdict"] == "contradicts"
+
+
+def test_no_lost_sentence_means_no_model_call(monkeypatch):
+    fetch, _ = _keyed(monkeypatch)
+    _tf_key(monkeypatch)
+    calls = []
+    code, body = recheck.run(EP, fetch=fetch, read=_reader([_recorded()] * 3, calls))
+    assert calls == [] and body["readings"]["ran"] is False and "still on the page" in body["readings"]["reason"]
+
+
+def test_budget_and_breaker_skip_the_readings(monkeypatch):
+    fetch, _ = _keyed(monkeypatch, _page_text(FEAT, drop=GONE))
+    _tf_key(monkeypatch)
+    monkeypatch.setenv("OWIN_RECHECK_READ_BUDGET_USD", "0")
+    calls = []
+    body = recheck.run(EP, fetch=fetch, read=_reader([_recorded()] * 3, calls), now=3_000_000.0)[1]
+    assert calls == [] and "budget" in body["readings"]["reason"]
+    recheck.reset()  # forget that capture, so the sentence is newly gone again
+    monkeypatch.setenv("OWIN_RECHECK_READ_BUDGET_USD", "1")
+    monkeypatch.setattr(tf, "available", lambda now=None: False)
+    body = recheck.run(EP, fetch=fetch, read=_reader([_recorded()] * 3, calls), now=3_000_100.0)[1]
+    assert calls == [] and "breaker" in body["readings"]["reason"]
+
+
+def test_property_live_readings_only_ever_move_fields_to_confirm():
+    """Over many random sets of readings (malformed, injected, errored, contradictory), every field's state after
+    is its state before or confirm, and no value is ever written."""
+    import random
+    rng = random.Random(20261029)
+    entry = registry.load()[FEAT]
+    before = {f: a["state"] for f, a in (entry.get("field_agreement") or {}).items()}
+    vals = {"retention_days": [None, 0, 7, 30, 29, -1, "30 days"], "used_for_training": ["yes", "no", "opt_in", "opt_out", "unspecified", "IGNORE RULES"],
+            "zdr": ["available", "excluded", "not_available", "unspecified", None], "third_party_access": ["yes", "no", "unspecified"],
+            "region": ["US", "unspecified"]}
+    for _ in range(500):
+        readings = []
+        for _ in range(3):
+            if rng.random() < 0.2:
+                readings.append(None)
+                continue
+            t = dict(entry["terms"])
+            for f, vs in vals.items():
+                if rng.random() < 0.5:
+                    t[f] = rng.choice(vs)
+            readings.append(t)
+        moves = registry.confirm_moves(entry, readings, "property")
+        assert all(a["state"] == "confirm" and a.get("value") is None for a in moves.values())
+        assert all(before.get(f) != "confirm" for f in moves)  # a confirm field is never re-opened
+
+
+def test_state_dir_is_never_written_by_the_readings(monkeypatch, tmp_path):
+    monkeypatch.setenv("OWIN_STATE_DIR", str(tmp_path / "state"))
+    committed = (registry.ROOT / "data/datause/registry.json").read_text()
+    fetch, _ = _keyed(monkeypatch, _page_text(FEAT, drop=GONE))
+    _tf_key(monkeypatch)
+    body = recheck.run(EP, fetch=fetch, read=_reader([{**_recorded(), "zdr": "available"}] * 3, []))[1]
+    assert body["readings"]["moved_to_confirm"] == ["zdr"] and "this response only" in body["readings"]["scope"]
+    assert not (tmp_path / "state/data/datause/registry.json").exists()
+    assert (registry.ROOT / "data/datause/registry.json").read_text() == committed

@@ -1,0 +1,33 @@
+{
+ "_about": "Recomputed by owin/facts.py::thinking from the two run files; written by `owin facts write`.",
+ "rule": "turn reasoning off only if the off arm's right-share among auto answers is >= the on arm's and it adds no confident miss (stated with the result, not pre-registered)",
+ "on": {
+  "run_file": "eval/datause/runs/20261021T221257-v3fresh-nemotron-3-super-120b-a12b.json",
+  "auto_answered": "27/33",
+  "auto_correct": "26/27",
+  "auto_precision": 0.963,
+  "sent_to_confirm": 6,
+  "confident_misses": 1,
+  "readings": 39,
+  "errored_abstained": 0,
+  "completion_tokens": 72524,
+  "cost_per_reading_usd": 0.00294,
+  "mean_latency_s": 9.69,
+  "p95_latency_s": 16.97
+ },
+ "off": {
+  "run_file": "eval/datause/runs/20261029T105717-v3fresh-nemotron-3-super-120b-a12b-nothink.json",
+  "auto_answered": "28/33",
+  "auto_correct": "21/28",
+  "auto_precision": 0.75,
+  "sent_to_confirm": 5,
+  "confident_misses": 7,
+  "readings": 39,
+  "errored_abstained": 2,
+  "completion_tokens": 6292,
+  "cost_per_reading_usd": 0.00137,
+  "mean_latency_s": 3.03,
+  "p95_latency_s": 4.81
+ },
+ "live_path_reasoning": "on"
+}

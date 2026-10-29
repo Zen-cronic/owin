@@ -19,7 +19,7 @@ Anything not in those pages is marked **UNVERIFIED**.
 | `PORT` | `8080` (image default) | not used | port `owin serve` binds; must equal `--container-port` |
 | `OWIN_HOST` | `0.0.0.0` (image default) | not used | bind address |
 | `OWIN_STATE_DIR` | optional, `/state` (read-only bucket) | **required**, `/state` (read-write bucket) | refreshed observations and list snapshots; unset = committed state only |
-| `TOKEN_FACTORY_API_KEY` | **do not set** | SecretStash secret | `owin job daily --read` (the default) re-reads the demo stack's pages with Nemotron; also `owin pack extract` / `owin eval run` |
+| `TOKEN_FACTORY_API_KEY` | optional (SecretStash secret): enables Nemotron re-reading inside `POST /api/recheck`, only when a quoted sentence is gone, capped by `OWIN_RECHECK_READ_BUDGET_USD` (default $0.25 per UTC day); unset = the recheck is Tavily-only | SecretStash secret | `owin job daily --read` (the default) re-reads the demo stack's pages with Nemotron; also `owin pack extract` / `owin eval run` |
 | `TAVILY_API_KEY` | optional (SecretStash secret) | SecretStash secret | `owin job daily` re-fetches vendor pages with Tavily; on the endpoint it enables `POST /api/recheck` (one Tavily `extract` per call, 200 calls/day per process, 60 s per endpoint; unset = the route answers `mode: demo`) |
 | `OWIN_LEDGER` | image default | `/state/ledger/usage.jsonl` | Token Factory spend ledger |
 

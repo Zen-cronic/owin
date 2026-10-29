@@ -198,8 +198,37 @@ def export(live_runs: list[Path] | None = None) -> Path:
     return config.write_atomic("data/datause/registry.json", json.dumps(out, indent=1, ensure_ascii=False) + "\n")
 
 
+def confirm_moves(entry: dict, readings: list[dict | None], basis: str) -> dict[str, dict]:
+    """Which fields fresh readings hand to a person. Only ever a move TO confirm: a field already confirm stays
+    as it is, and fresh readings never make a field auto or change a value (values come only from `terms`, which
+    this never touches). A deciding field moves when the readings disagree among themselves, when fewer than 2
+    succeeded, or when they agree on a value other than the recorded one (all four deciding fields)."""
+    recorded = entry.get("terms")
+    fresh = field_agreement(readings, recorded, basis)
+    old = entry.get("field_agreement") or {}
+    moves = {}
+    for f, a in fresh.items():
+        if old.get(f, {}).get("state") == "confirm":
+            continue
+        if a["state"] == "auto" and recorded is not None and recorded.get(f) != a["value"]:
+            a = {**a, "state": "confirm", "value": None, "disagrees_with_recorded": recorded.get(f),
+                 "options": a["options"] + [{"value": recorded.get(f), "no_terms": False, "runs": "recorded",
+                                             "quote": recorded.get(QUOTE_OF[f], "")}]}
+        if a["state"] == "confirm":
+            moves[f] = a
+    return moves
+
+
 def load() -> dict:
     return json.loads(config.read_path("data/datause/registry.json").read_text())["features"]
+
+
+def with_moves(feature_id: str, moves: dict[str, dict]) -> dict:
+    """A copy of the registry with one feature's fields handed to a person (a recheck's response only)."""
+    feats = load()
+    e = feats[feature_id]
+    e["field_agreement"] = {**(e.get("field_agreement") or {}), **moves}
+    return feats
 
 
 def source_digest(text: str) -> str:

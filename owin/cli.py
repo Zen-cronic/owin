@@ -17,7 +17,7 @@ def _print(obj) -> None:
 def cmd_eval(a) -> int:
     if a.corpus == "datause":
         return cmd_eval_datause(a)
-    if a.action in ("audit", "selective"):
+    if a.action in ("audit", "selective", "baseline", "ladder"):
         print(f"{a.action} is only defined for --corpus datause", file=sys.stderr)
         return 2
     if a.action == "run":
@@ -40,6 +40,14 @@ def cmd_eval_datause(a) -> int:
     if a.action == "audit":
         _print({"wrote": str(dv.write_audit().relative_to(dv.ROOT))})
         return 0
+    if a.action == "baseline":
+        _print({"wrote": str(dv.record_baseline().relative_to(dv.ROOT))})
+        return 0
+    if a.action == "ladder":
+        from .datause import ladder
+        rep = ladder.report()
+        _print(ladder.brief(rep) if a.brief else rep)
+        return 0
     if a.action == "selective":
         from .datause import selective
         rep = selective.report(a.split or "v3fresh", [Path(f) for f in a.file.split(",")] if a.file else None)
@@ -50,7 +58,8 @@ def cmd_eval_datause(a) -> int:
         if spent >= a.budget:
             print(f"budget cap reached: ledger total ${spent:.4f} >= ${a.budget}", file=sys.stderr)
             return 2
-        path = dv.run(runs=a.runs, model=a.model, only=a.only.split(",") if a.only else None, split=a.split or None)
+        path = dv.run(runs=a.runs, model=a.model, only=a.only.split(",") if a.only else None, split=a.split or None,
+                      thinking=a.thinking)
         res = dv.score(path)
     else:
         res = dv.score([Path(f) for f in a.file.split(",")] if a.file else dv.headline_runs())
@@ -158,9 +167,9 @@ def job_read(features: list[str], *, runs: int = 3, budget: float = 3.0) -> dict
         tf.api_key()
     except tf.MissingKey:
         return {"skipped": "TOKEN_FACTORY_API_KEY not set; the pack keeps its recorded readings"}
-    spent = tf.ledger_total()
+    spent = tf.spent_today()
     if spent >= budget:
-        return {"skipped": f"budget cap reached: ledger total ${spent:.4f} >= ${budget}"}
+        return {"skipped": f"daily budget reached: ${spent:.4f} spent today (UTC) >= ${budget}"}
     try:
         run_file = registry.extract_live(features, runs=runs, out_dir=config.write_path("eval/datause/registry-runs/run.json").parent)
         reg_path = registry.export(live_runs=[run_file])
@@ -183,7 +192,7 @@ def job_read(features: list[str], *, runs: int = 3, budget: float = 3.0) -> dict
             "calls": len(d["calls"]), "errored_abstained": sum(1 for c in d["calls"] if c["error"]),
             "cost_usd": round(sum(c["cost_usd"] for c in d["calls"]), 4), "wall_s": d["wall_s"],
             "run_file": str(run_file), "registry": str(reg_path), "evidence": str(ev_path),
-            "ledger_total_usd": round(tf.ledger_total(), 4), "features": per}
+            "ledger_total_usd": round(tf.ledger_total(), 4), "spent_today_usd": round(tf.spent_today(), 4), "features": per}
 
 
 def _pack_manifest(a) -> dict:
@@ -260,7 +269,7 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="owin")
     sub = p.add_subparsers(dest="cmd", required=True)
     e = sub.add_parser("eval", help="measurement harness")
-    e.add_argument("action", choices=["run", "score", "audit", "selective"],
+    e.add_argument("action", choices=["run", "score", "audit", "selective", "baseline", "ladder"],
                    help="selective = auto-answer only when every successful run agrees (at least 2; errored runs abstain); recomputed keyless from recorded runs")
     e.add_argument("--corpus", choices=["dpa", "datause"], default="dpa",
                    help="dpa = P1 sub-processor objection windows; datause = AI data-use terms per feature")
@@ -270,6 +279,8 @@ def main(argv: list[str] | None = None) -> int:
     e.add_argument("--only", default="")
     e.add_argument("--file", default="", help="comma-separated recorded run files (default: eval/headline.json)")
     e.add_argument("--budget", type=float, default=3.0, help="refuse to run when the usage ledger total reaches this (USD)")
+    e.add_argument("--thinking", action=argparse.BooleanOptionalAction, default=None,
+                   help="datause run: --no-thinking turns Nemotron's reasoning off (default: the model's own setting, on)")
     e.add_argument("--brief", action="store_true")
     e.set_defaults(fn=cmd_eval)
     fa = sub.add_parser("facts", help="claims ledger: recompute every README/UI number (check) or regenerate FACTS.md (write)")
@@ -310,7 +321,7 @@ def main(argv: list[str] | None = None) -> int:
     jb.add_argument("--set", action="append", metavar="PATH=FEATURE", help=argparse.SUPPRESS)
     jb.add_argument("--features", default="", help="re-read these feature ids instead of the stack's")
     jb.add_argument("--runs", type=int, default=3)
-    jb.add_argument("--budget", type=float, default=3.0, help="skip the re-reading when the usage ledger total reaches this (USD)")
+    jb.add_argument("--budget", type=float, default=3.0, help="skip the re-reading when today's (UTC) Token Factory spend in the ledger reaches this (USD)")
     jb.set_defaults(fn=cmd_job)
     pk = sub.add_parser("pack", help="security-review answer pack (AI and data section), per endpoint")
     pk.add_argument("action", choices=["build", "refresh", "registry", "extract", "evidence"],

@@ -1,0 +1,306 @@
+{
+ "_about": "Keyword baseline output per corpus item (owin/datause/baseline.py), recorded by `owin eval baseline --corpus datause` from the labelled page captures. Structured values only; keyed by the page's sha256 so a recorded value is used only for the exact bytes it was computed from. With the pages on disk the score recomputes the baseline instead, and a test checks the two agree.",
+ "rule": "keyword sentences, feature-named sentences first (see owin/datause/baseline.py)",
+ "items": {
+  "openai-responses": {
+   "source_sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7",
+   "retention_days": 30,
+   "used_for_training": "opt_in",
+   "zdr": "available"
+  },
+  "openai-chat-completions": {
+   "source_sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7",
+   "retention_days": 30,
+   "used_for_training": "opt_in",
+   "zdr": "available"
+  },
+  "openai-batches": {
+   "source_sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7",
+   "retention_days": 30,
+   "used_for_training": "opt_in",
+   "zdr": "available"
+  },
+  "openai-files": {
+   "source_sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7",
+   "retention_days": 30,
+   "used_for_training": "opt_in",
+   "zdr": "available"
+  },
+  "openai-audio-transcriptions": {
+   "source_sha256": "1efee9715ff34cb4de5a9968a93eaca01cb7f12f40accda7514f78918a7b63c7",
+   "retention_days": 30,
+   "used_for_training": "opt_in",
+   "zdr": "available"
+  },
+  "anthropic-messages": {
+   "source_sha256": "225d4668c86558ff0285296bd32e3be28bcd2689f18da5f18b1c324d57f73fae",
+   "retention_days": 0,
+   "used_for_training": "opt_in",
+   "zdr": "available"
+  },
+  "anthropic-batch": {
+   "source_sha256": "225d4668c86558ff0285296bd32e3be28bcd2689f18da5f18b1c324d57f73fae",
+   "retention_days": 0,
+   "used_for_training": "opt_in",
+   "zdr": "available"
+  },
+  "anthropic-files": {
+   "source_sha256": "225d4668c86558ff0285296bd32e3be28bcd2689f18da5f18b1c324d57f73fae",
+   "retention_days": 0,
+   "used_for_training": "opt_in",
+   "zdr": "available"
+  },
+  "anthropic-mcp-connector": {
+   "source_sha256": "16b1866a3d301d85655bd1141e71ef636fc282cfe77bd2be7e81ef90804b3f65",
+   "retention_days": null,
+   "used_for_training": "unspecified",
+   "zdr": "excluded"
+  },
+  "anthropic-batch-page": {
+   "source_sha256": "e3d2d31a1179f948c56d9ef779d73e2a34857dc8226c08c43976629ed3a86f38",
+   "retention_days": 29,
+   "used_for_training": "unspecified",
+   "zdr": "available"
+  },
+  "anthropic-api-privacy": {
+   "source_sha256": "b9c312c911ea2c1ca189d8879c5a5fdbdad27b89efea5e5ffe2519b25315f321",
+   "retention_days": 30,
+   "used_for_training": "unspecified",
+   "zdr": "available"
+  },
+  "anthropic-flagged": {
+   "source_sha256": "b9c312c911ea2c1ca189d8879c5a5fdbdad27b89efea5e5ffe2519b25315f321",
+   "retention_days": 30,
+   "used_for_training": "unspecified",
+   "zdr": "available"
+  },
+  "gemini-paid": {
+   "source_sha256": "2c0ca6b13578f429fe6a07bfb11b041a7180698e6e669f66a5c2af3f9eeeb728",
+   "retention_days": null,
+   "used_for_training": "yes",
+   "zdr": "unspecified"
+  },
+  "gemini-free": {
+   "source_sha256": "2c0ca6b13578f429fe6a07bfb11b041a7180698e6e669f66a5c2af3f9eeeb728",
+   "retention_days": null,
+   "used_for_training": "yes",
+   "zdr": "unspecified"
+  },
+  "gemini-logs": {
+   "source_sha256": "65fe4b54fde26662a5380f28e7aba3dc98572eaf5e14159f30315be98f5d4f9b",
+   "retention_days": 55,
+   "used_for_training": "yes",
+   "zdr": "unspecified"
+  },
+  "bedrock-default": {
+   "source_sha256": "31afc3379547cddea0499f5b31a73c2bd8c3b3068a4d400c7a9ee7e20507691c",
+   "retention_days": 30,
+   "used_for_training": "unspecified",
+   "zdr": "available"
+  },
+  "bedrock-claude-fable": {
+   "source_sha256": "31afc3379547cddea0499f5b31a73c2bd8c3b3068a4d400c7a9ee7e20507691c",
+   "retention_days": 0,
+   "used_for_training": "unspecified",
+   "zdr": "available"
+  },
+  "bedrock-provider-access": {
+   "source_sha256": "f6cb99010facf46fb737ca0913dfc972725b4ae36f33e3ecd74e7f0d3d8266a1",
+   "retention_days": null,
+   "used_for_training": "unspecified",
+   "zdr": "unspecified"
+  },
+  "azure-openai-inference": {
+   "source_sha256": "fb87ca2d7118dbb7840346601b4cfc3bc3c143cb7e2dcaa759dd68c9198a33e0",
+   "retention_days": 0,
+   "used_for_training": "yes",
+   "zdr": "unspecified"
+  },
+  "groq-inference": {
+   "source_sha256": "667da52a072d9510712a153111a45f5085c8b84b7be3f2117b714deeadad5012",
+   "retention_days": 0,
+   "used_for_training": "yes",
+   "zdr": "available"
+  },
+  "groq-batch": {
+   "source_sha256": "667da52a072d9510712a153111a45f5085c8b84b7be3f2117b714deeadad5012",
+   "retention_days": 0,
+   "used_for_training": "yes",
+   "zdr": "available"
+  },
+  "mistral-studio-payg": {
+   "source_sha256": "d8427ad53179a6e598c92a5c8907f5b1ad509af82c6a474f0cc85e49f020492b",
+   "retention_days": null,
+   "used_for_training": "yes",
+   "zdr": "available"
+  },
+  "mistral-chat-completions": {
+   "source_sha256": "9b67339a39286275318bf330195150c1b97487e63dee60d59cfde380f4430a80",
+   "retention_days": 0,
+   "used_for_training": "opt_out",
+   "zdr": "available"
+  },
+  "mistral-batch": {
+   "source_sha256": "9b67339a39286275318bf330195150c1b97487e63dee60d59cfde380f4430a80",
+   "retention_days": 0,
+   "used_for_training": "opt_out",
+   "zdr": "available"
+  },
+  "neg-openai-rate-limits": {
+   "source_sha256": "c095940996890cfc5e91c81ca8f9cba373e98af843aa82f16e8225cd593d0cb5",
+   "retention_days": null,
+   "used_for_training": "unspecified",
+   "zdr": "unspecified"
+  },
+  "neg-anthropic-rate-limits": {
+   "source_sha256": "3da9815448eca543cfe08fae88e59a1d1682a8d556940bb70c32cae2c4ff938d",
+   "retention_days": null,
+   "used_for_training": "unspecified",
+   "zdr": "unspecified"
+  },
+  "neg-gemini-models": {
+   "source_sha256": "fe379502f050aa4a1b8ba48bec409a77f6fc236143af2e77fe56c41b78395fb8",
+   "retention_days": null,
+   "used_for_training": "unspecified",
+   "zdr": "unspecified"
+  },
+  "neg-groq-rate-limits": {
+   "source_sha256": "f472b3901f8d425176c48133f687e44d742341f850a26429fb7f55faa96570a3",
+   "retention_days": null,
+   "used_for_training": "unspecified",
+   "zdr": "unspecified"
+  },
+  "neg-bedrock-what-is": {
+   "source_sha256": "d8c385fef5d28ece626d8b54af79444903592d06e8e457770c34a5a7edec885b",
+   "retention_days": null,
+   "used_for_training": "unspecified",
+   "zdr": "unspecified"
+  },
+  "together-serverless": {
+   "source_sha256": "8c328a3f9f9d1ae16f046f29e552c5a150202bf0aa0f79b9329f7edebe0934de",
+   "retention_days": null,
+   "used_for_training": "yes",
+   "zdr": "available"
+  },
+  "fireworks-inference": {
+   "source_sha256": "a5d166598d523bed731cc14c74de97a12500fff77a70d0e8c2ae92f4280679c9",
+   "retention_days": 30,
+   "used_for_training": "unspecified",
+   "zdr": "available"
+  },
+  "vertex-grounding-maps": {
+   "source_sha256": "bae5bb95062a45ad3a958e891bf5d109234d9e2ba51ead463627a4387ecec229",
+   "retention_days": null,
+   "used_for_training": "yes",
+   "zdr": "available"
+  },
+  "vertex-grounding-search": {
+   "source_sha256": "bae5bb95062a45ad3a958e891bf5d109234d9e2ba51ead463627a4387ecec229",
+   "retention_days": null,
+   "used_for_training": "yes",
+   "zdr": "available"
+  },
+  "vertex-deep-research": {
+   "source_sha256": "bae5bb95062a45ad3a958e891bf5d109234d9e2ba51ead463627a4387ecec229",
+   "retention_days": null,
+   "used_for_training": "no",
+   "zdr": "available"
+  },
+  "anthropic-code-execution": {
+   "source_sha256": "3a5b99ba3fc38d73fb75dce9e58217f92409331f2b8ae435c9acacf49a3013d7",
+   "retention_days": 30,
+   "used_for_training": "unspecified",
+   "zdr": "available"
+  },
+  "neg-together-quickstart": {
+   "source_sha256": "69d2a33e8b1dfad4283d9567ed14ca14073465627281a1b04cee7dac605c0b81",
+   "retention_days": null,
+   "used_for_training": "yes",
+   "zdr": "available"
+  },
+  "neg-fireworks-quickstart": {
+   "source_sha256": "42b204c0cd246e08ee2ca0367e4346218157d10351c45274230040c895936be4",
+   "retention_days": null,
+   "used_for_training": "unspecified",
+   "zdr": "available"
+  },
+  "cohere-saas-api": {
+   "source_sha256": "f80cdc6d3e914fe3df7f242c12b3c0a93783ec8095c2a33e5d2c63793604728a",
+   "retention_days": 30,
+   "used_for_training": "opt_out",
+   "zdr": "available"
+  },
+  "perplexity-api": {
+   "source_sha256": "b36c9cd7c56f8c144a9fe36094175145555473330f9ab58b73a920cd8bc3c239",
+   "retention_days": null,
+   "used_for_training": "no",
+   "zdr": "available"
+  },
+  "xai-chat": {
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "retention_days": 30,
+   "used_for_training": "opt_in",
+   "zdr": "available"
+  },
+  "xai-batch": {
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "retention_days": 30,
+   "used_for_training": "opt_in",
+   "zdr": "available"
+  },
+  "openrouter-inference-zdr": {
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "retention_days": 0,
+   "used_for_training": "no",
+   "zdr": "available"
+  },
+  "openrouter-web-search": {
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "retention_days": 0,
+   "used_for_training": "no",
+   "zdr": "available"
+  },
+  "cerebras-prompt-caching": {
+   "source_sha256": "59e8943deede02c76aacdb1aa57625a7006573e983887e0bd6d41d750da938dc",
+   "retention_days": null,
+   "used_for_training": "unspecified",
+   "zdr": "available"
+  },
+  "cerebras-predicted-outputs": {
+   "source_sha256": "90c1dd3ca7fc0f40623d79ffe06d4787ec7edebfefeab66b4808700826f9e0b4",
+   "retention_days": null,
+   "used_for_training": "yes",
+   "zdr": "unspecified"
+  },
+  "vertex-implicit-caching": {
+   "source_sha256": "00029dda746103b77f93361b07c5e9df365465d498097e39bfe08dcd68a8c578",
+   "retention_days": null,
+   "used_for_training": "unspecified",
+   "zdr": "available"
+  },
+  "deepinfra-inference": {
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "retention_days": 0,
+   "used_for_training": "no",
+   "zdr": "unspecified"
+  },
+  "deepinfra-bulk": {
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "retention_days": 0,
+   "used_for_training": "no",
+   "zdr": "unspecified"
+  },
+  "neg-deepseek-platform-tos": {
+   "source_sha256": "280452143ac9a79ef0557840c4cfe5756e3d6e758875e74244ee77dab37e91c0",
+   "retention_days": null,
+   "used_for_training": "yes",
+   "zdr": "unspecified"
+  },
+  "neg-perplexity-search-best-practices": {
+   "source_sha256": "42cb49fb9ed2be859b90c21845d6d533a3afb984a92ab19486c67d957884db8f",
+   "retention_days": null,
+   "used_for_training": "no",
+   "zdr": "unspecified"
+  }
+ }
+}

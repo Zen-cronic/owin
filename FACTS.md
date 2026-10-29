@@ -54,6 +54,23 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | `model.ultra` | Nemotron Ultra on the same 10 labelled DPAs, 3 readings each: DPAs exact by majority / readings exact | **10/10 / 30/30** | `owin eval score --brief --file eval/runs/20261028T233749-Nemotron-3-Ultra-550b-a55b.json` |
 | `model.super` | Nemotron Super on those 10 DPAs: DPAs exact by majority / readings exact | **10/10 / 30/30** | `owin eval score --brief` |
 | `model.cost` | Cost per reading on those 10 DPAs, Super vs Ultra (USD; Ultra / Super) | **0.002 vs 0.0077 (3.9x)** | `eval/super-vs-ultra.json` |
+| `think.off` | Nemotron reasoning OFF, same split, prompt and rule: auto-answered / right | **28/33, 21/28** | `eval/datause/runs/20261029T105717-v3fresh-nemotron-3-super-120b-a12b-nothink.json` |
+| `think.cost` | Cost per reading, reasoning off vs on (USD) | **0.0014 vs 0.0029** | `eval/datause/runs/20261029T105717-v3fresh-nemotron-3-super-120b-a12b-nothink.json` |
+| `think.lat` | Mean latency per reading, all readings, reasoning off vs on (s) | **3.0 vs 9.7** | `eval/datause/runs/20261029T105717-v3fresh-nemotron-3-super-120b-a12b-nothink.json` |
+| `think.tokens` | Output tokens over the 39 readings, reasoning off vs on | **6292 vs 72524** | `eval/datause/runs/20261029T105717-v3fresh-nemotron-3-super-120b-a12b-nothink.json` |
+| `think.live` | Reasoning setting every reading uses (the off arm adds 6 confident misses) | **on** | `eval/thinking-off-vs-on.json` |
+| `ladder.ultra` | Nemotron Ultra x3 alone, same split, prompt and rule: auto-answered, right, sent to a person | **30/33, 29/30, 3** | `owin eval ladder --corpus datause --brief` |
+| `ladder.cost` | Cost per reading, Ultra vs Super (USD) | **0.0136 vs 0.0029** | `owin eval ladder --corpus datause --brief` |
+| `ladder.esc` | Pre-registered escalation (Super x3; Ultra x3 only where Super's readings split): auto-answered, right, sent to a person | **31/33, 30/31, 2** | `owin eval ladder --corpus datause --brief` |
+| `ladder.esc.k` | Of the 6 cells Super sends to a person: answered by Ultra / right | **4 / 4** | `owin eval ladder --corpus datause --brief` |
+| `ladder.esc.cost` | Ultra readings per escalated feature (3 readings, USD) | **0.0352** | `owin eval ladder --corpus datause --brief` |
+| `ladder.esc.adopted` | The escalation met its pre-registered bar (fewer than 6 to a person, no new confident miss) | **true** | `owin eval ladder --corpus datause --brief` |
+| `ladder.retract` | Pre-registered retraction triggered: Ultra alone gets more cells right than Super alone | **true** | `owin eval ladder --corpus datause --brief` |
+| `ladder.nano` | Nemotron Nano 30B-A3B x3 alone: auto-answered, right, sent to a person | **25/33, 24/25, 8** | `owin eval ladder --corpus datause --brief` |
+| `ladder.lightning` | Nemotron 3.5 Lightning x3 alone: auto-answered, right, sent to a person | **0/33, 0/0, 33** | `owin eval ladder --corpus datause --brief` |
+| `ladder.lightning.err` | Lightning readings that ran out the 8,000-token budget reasoning (errored, abstained), of 39 | **32** | `owin eval ladder --corpus datause --brief` |
+| `ladder.nano.lat` | Mean latency per reading, Nano vs Super (s) | **44.8 vs 9.7** | `owin eval ladder --corpus datause --brief` |
+| `ladder.cascade` | Pre-registered Nano-first cascade (reported, decides nothing): auto-answered, right, cost per feature vs Super's (USD) | **30/33, 29/30, 0.0091 vs 0.0086** | `owin eval ladder --corpus datause --brief` |
 | `sweep.vendors` | Vendors in the sub-processor sweep index | **29** | `data/index/vendors.json` |
 | `sweep.live` | One real sweep with the Tavily key (2026-10-29): vendors swept / lists fetched live | **29 / 22** | `eval/sweeps/sweep-3-live-20261029T033329Z.json` |
 | `job.readings` | One real `owin job daily` (2026-10-29): Nemotron readings made / errored (abstained) / cost (USD) | **12 / 0 / 0.0651** | `eval/sweeps/job-daily-20261029T033329Z.json` |
@@ -69,3 +86,9 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | Tavily `extract` fetches the evidence pages; an older copy is held, never used | `data/datause/observations.json`, `tests/test_ui.py::test_watch_holds_the_stale_tavily_copy_of_the_openai_list` |
 | Lumen Notes and its settings are fictional; vendor sentences, links and fetch times are real | `fixtures/demo/stack.json` `_label` |
 | Copy rules: no compliance claims, Nemotron described as open-weight, not legal advice | `tests/test_facts.py::test_copy_rules` |
+| Every value here checks on a fresh clone with no key and no page text: the arithmetic recomputes from recorded runs; the keyword baseline is replayed from its recorded output per page sha256 (equal to the recomputed output when the pages are present); the verbatim gate uses its recorded results. CI runs the suite and this ledger on every push | `.github/workflows/proof.yml`, `tests/test_a1_datause.py::test_recorded_baseline_equals_the_recomputed_baseline` |
+| Every recorded reading names the same page bytes the labels were written from (the sha256 each reading recorded equals the labelled capture's) | `tests/test_a1_datause.py::test_every_recorded_reading_was_made_on_the_labelled_bytes` |
+| The Nemotron ladder's arms, the Ultra escalation rule, its bar and the retraction condition were committed before any arm ran; every arm's run_at is later | `eval/datause/escalation-preregistration.json`, `tests/test_ladder.py::test_every_arm_ran_after_the_preregistration_was_committed` |
+| The escalation never re-opens an answer Super gave on its own and only uses a value Super's readings gave | `tests/test_ladder.py` |
+| A live Nemotron re-reading on `POST /api/recheck` can only hand fields to a person, in that response only | `tests/test_recheck.py::test_property_live_readings_only_ever_move_fields_to_confirm` |
+| The README number badge is computed from the recomputed headline | `owin/facts.py::badge_url`, `tests/test_facts.py::test_number_badge_is_the_recomputed_headline` |

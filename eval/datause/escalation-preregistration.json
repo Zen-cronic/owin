@@ -1,0 +1,26 @@
+{
+ "_about": "Committed on its own, before any Nano, Lightning or Ultra reading of split v3fresh. The README headline stays the pre-registered Super run (eval/datause/headline.json). This file fixes in advance: the arms, the one escalation rule and its adoption bar, the one cascade that is reported, what would retract a README claim, and the two README sentences. Recompute: owin eval ladder --corpus datause --brief.",
+ "written_at": "2026-10-29T11:13-04:00",
+ "split": "v3fresh",
+ "frozen": {
+  "labels": {"file": "eval/datause/preregistration-v3.json", "labels_commit": "cbfe737", "sha256": "de6241fb900f611b7fbf4f15b7540af0ec9ef32af4dc27aff87c16cd6e15991c"},
+  "corpus": {"file": "eval/datause/corpus.json", "sha256": "0bbb4f7b6b723cfc133cb4fc6a76febd018d8a525d5e08913398056f6cd7e3f7"},
+  "prompt_and_gate": {"file": "owin/datause/extract.py", "prompt_version": "v3", "sha256": "114691277913825fcff5cde1d2fee38ff512973d42e5ded8847059f95dd5ee11"},
+  "rule": "No relabel and no gate change after these runs. A disputed label is reported beside the result, never applied to it."
+ },
+ "protocol": "prompt v3, 3 readings per page, temperature 0.2, max_tokens 8000, the model's default reasoning, the verbatim gate, the selective rule (owin/datause/selective.py); only the model changes. Prompt v3 was written against Super's readings on the older items, so every other arm reads a prompt tuned for a different model.",
+ "arms": {
+  "super": {"model": "nvidia/nemotron-3-super-120b-a12b", "run": "the existing headline run (not re-run)"},
+  "ultra": {"model": "nvidia/Nemotron-3-Ultra-550b-a55b", "run": "one run, all 13 v3fresh items x 3 readings", "decides": "the escalation and the retraction condition"},
+  "nano": {"model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B", "run": "one run, all 13 items x 3 readings", "decides": "nothing: described only, and the cascade below"},
+  "lightning": {"model": "nvidia/Nemotron-3_5-Lightning", "run": "one run, all 13 items x 3 readings", "decides": "nothing: described only"}
+ },
+ "escalation_rule": "A cell (feature x scored field) that Super's three readings send to a person is answered automatically only when Ultra's successful readings of the same page (at least 2; errored readings abstain) agree unanimously AND that value is one of the values Super's successful readings gave. Otherwise the cell stays with the person. A cell Super answers on its own is never re-opened, whatever Ultra says.",
+ "adoption_bar": "The escalation is adopted as Owin's rule only if, on v3fresh, it sends strictly fewer cells to a person than Super alone (6) AND adds no confident miss (Super alone has 1, the self-disclosed OpenRouter label). Reported as k of 6 cells, never as a rate. Cost is reported, not gated. Adoption today means the README sentence and FACTS rows; the demo pack's own Confirm cell is out of scope (its field is unlabelled).",
+ "cascade_reported": "Nano first: a feature whose three Nano readings are unanimous on all three scored fields (after the gate) takes Nano's values; any other feature is read by Super and decided by the selective rule. Reported (cells, right, sent to a person, cost per feature); decides nothing today.",
+ "retraction_condition": "README 'Why these sponsors' says Owin uses three cheap Super readings and agreement instead of one larger model. If Ultra alone (3 readings, same rule) gets more cells right automatically than Super alone (26) with no more confident misses (1), that sentence is replaced by the measured comparison, cost included.",
+ "readme_if_adopted": "With Nemotron Ultra reading only the pages where Super's three readings split (the rule written before Ultra ran), {k} of those 6 cells were answered automatically and right, at ${extra} more per such page; {6-k} still go to a person.",
+ "readme_if_not_adopted": "We tried Nemotron Ultra as a tie-breaker on the 6 cells Super hands to a person (the rule written before Ultra ran): it answered {k} right and {m} wrong, so Owin keeps handing those cells to a person.",
+ "one_run_rule": "Each arm runs once and that file is the one scored. A rerun is allowed only if a third or more of an arm's readings errored; it is then disclosed and both files are kept. No max_tokens or prompt change for any arm; no other split.",
+ "what_this_cannot_show": "33 cells and one labeller: one cell can decide the bar; the escalation touches at most the 6 cells Super sends to a person, 3 of whose labels are disputed calls (custom answer 12) and 1 of which is a verbatim-gate artifact."
+}

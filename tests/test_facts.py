@@ -1,4 +1,5 @@
 """Claims ledger: every number in README.md and on /judge is recomputed here and fails on drift."""
+import json
 import re
 
 import pytest
@@ -66,3 +67,30 @@ def test_copy_rules():
         assert not re.search(r"added cloudflare", low), name
     assert "open-weight" in README and "not legal advice" in README.lower()
     assert "changed Cloudflare's entry and added OAI International" in README
+
+
+def test_number_badge_is_the_recomputed_headline():
+    url = facts.badge_url()
+    assert url in README  # the badge a reader sees is the number this suite recomputes
+    h = facts._sel()["headline"]
+    assert h["auto_correct"].replace("/", "%2F") in url
+
+
+def test_thinking_comparison_is_recomputed_and_the_readme_says_it():
+    assert json.loads(facts.THINKING_JSON.read_text()) == facts.thinking()
+    th = facts.thinking()
+    assert th["live_path_reasoning"] == "on"  # the off arm made confident misses the on arm did not
+    assert th["off"]["confident_misses"] > th["on"]["confident_misses"]
+    off_auto, off_right = _f("think.off").split(", ")
+    assert f"{off_right.split('/')[0]} of {off_right.split('/')[1]}" in README
+
+
+def test_readme_ladder_sentence_matches_the_ledger():
+    k = _f("ladder.esc.k").split(" / ")[0]
+    assert f"{k} of those 6 cells were answered automatically and right" in README
+    ua, ur, _ = _f("ladder.ultra").split(", ")
+    assert f"answers {ua.split('/')[0]} of {ua.split('/')[1]} cells on its own and gets {ur.split('/')[0]} right" in README
+    ea, er, ep = _f("ladder.esc").split(", ")
+    assert f"{ea.split('/')[0]} of {ea.split('/')[1]} answered, {er.split('/')[0]} right" in README and f"{ep} still go to a person" in README
+    assert f"${_f('ladder.esc.cost'):.3f} more per such page" in README
+    assert _f("ladder.esc.adopted") is True and _f("ladder.retract") is True

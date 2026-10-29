@@ -5,6 +5,11 @@
         re-validates every quote against the page (after markdown stripping); otherwise it uses the
         recorded validation and says so.
 `audit` writes eval/datause/label-audit.md: every label with the sentence that justifies it.
+`baseline` writes eval/datause/baseline-outputs.json: the keyword baseline's structured output per item, keyed by
+        the page's sha256 (values only, no page text). `score` recomputes the baseline from the page when the page
+        is present and replays the recorded output for a page that is absent (a clone: fixtures/raw/ is gitignored),
+        so the baseline numbers check on a clone; tests/test_a1_datause.py asserts recorded == recomputed wherever
+        the pages are present.
 """
 from __future__ import annotations
 
@@ -28,6 +33,7 @@ CORPUS = DIR / "corpus.json"
 RUNS = DIR / "runs"
 HEADLINE = DIR / "headline.json"
 AUDIT = DIR / "label-audit.md"
+BASELINE_OUT = DIR / "baseline-outputs.json"
 ACCEPT_POSITIVE_SHARE = 0.80
 ACCEPT_NEGATIVE_SHARE = 0.75
 
@@ -42,7 +48,9 @@ def _source(item: dict) -> str | None:
 
 
 def run(runs: int = 3, model: str = tf.SUPER, only: list[str] | None = None, split: str | None = None,
-        workers: int = 6) -> Path:
+        workers: int = 6, thinking: bool | None = None) -> Path:
+    """`thinking=None` keeps the model's default (reasoning on), as every recorded headline run did; False turns
+    Nemotron's reasoning off and the run file says so (`thinking: false`, `-nothink` in its name)."""
     items = [i for i in load_corpus() if (not only or i["id"] in only) and (not split or i["split"] == split)]
     missing = sorted({i["source"] for i in items if _source(i) is None})
     if missing:
@@ -50,16 +58,19 @@ def run(runs: int = 3, model: str = tf.SUPER, only: list[str] | None = None, spl
 
     def one(job):
         item, k = job
-        e = extract(item["id"], item["vendor"], item["feature"], _source(item), model=model, purpose="eval-datause")
+        e = extract(item["id"], item["vendor"], item["feature"], _source(item), model=model, purpose="eval-datause",
+                    thinking=thinking)
         return {"id": item["id"], "run": k, **asdict(e)}
 
     t0 = time.time()
     with ThreadPoolExecutor(max_workers=workers) as ex:
         calls = list(ex.map(one, [(i, k) for i in items for k in range(runs)]))
     out = {"run_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "model": model, "runs_per_item": runs, "split": split or "all", "prompt_version": PROMPT_VERSION,
-           "wall_s": round(time.time() - t0, 1), "corpus_sha256": sha256(CORPUS.read_text()), "calls": calls}
+           "wall_s": round(time.time() - t0, 1), "corpus_sha256": sha256(CORPUS.read_text()), "calls": calls,
+           **({"thinking": thinking} if thinking is not None else {})}
     RUNS.mkdir(parents=True, exist_ok=True)
-    path = RUNS / f"{time.strftime('%Y%m%dT%H%M%S')}-{split or 'all'}-{model.split('/')[-1]}.json"
+    tag = "-nothink" if thinking is False else ""
+    path = RUNS / f"{time.strftime('%Y%m%dT%H%M%S')}-{split or 'all'}-{model.split('/')[-1]}{tag}.json"
     path.write_text(json.dumps(out, indent=1, ensure_ascii=False))
     return path
 
@@ -206,6 +217,43 @@ def score(paths: Path | Sequence[Path] | None = None) -> dict:
     }
 
 
+def _recorded_baseline() -> dict:
+    return json.loads(BASELINE_OUT.read_text())["items"] if BASELINE_OUT.exists() else {}
+
+
+def baseline_output(item: dict, *, recorded: dict | None = None) -> dict | None:
+    """The keyword baseline's scored fields for one item: recomputed from the page when it is on disk, else the
+    recorded output, used only if it was recorded from the same bytes (the page's sha256 must match). None when
+    neither exists."""
+    src = _source(item)
+    if src is not None:
+        return baseline.extract(src, item["feature"]).scored()
+    rec = (recorded if recorded is not None else _recorded_baseline()).get(item["id"])
+    if not rec or rec.get("source_sha256") != item["source_sha256"]:
+        return None
+    return {f: rec[f] for f in SCORED_FIELDS}
+
+
+def record_baseline() -> Path:
+    """Write the baseline's output for every corpus item (requires every page on disk). Values only, no text."""
+    items = {}
+    for it in load_corpus():
+        src = _source(it)
+        if src is None:
+            raise SystemExit(f"page text for {it['id']} is not on disk ({it['file']}); cannot record the baseline")
+        if sha256(src) != it["source_sha256"]:
+            raise SystemExit(f"{it['id']}: page bytes differ from the labelled capture")
+        items[it["id"]] = {"source_sha256": it["source_sha256"], **baseline.extract(src, it["feature"]).scored()}
+    BASELINE_OUT.write_text(json.dumps({
+        "_about": "Keyword baseline output per corpus item (owin/datause/baseline.py), recorded by `owin eval baseline "
+                  "--corpus datause` from the labelled page captures. Structured values only; keyed by the page's sha256 "
+                  "so a recorded value is used only for the exact bytes it was computed from. With the pages on disk the "
+                  "score recomputes the baseline instead, and a test checks the two agree.",
+        "rule": "keyword sentences, feature-named sentences first (see owin/datause/baseline.py)",
+        "items": items}, indent=1, ensure_ascii=False) + "\n")
+    return BASELINE_OUT
+
+
 def baseline_score(ids: set[str] | None = None) -> dict | None:
     """Baseline over the same items as the scored runs (all corpus items when ids is None)."""
     out, acc = {}, {f: 0 for f in SCORED_FIELDS}
@@ -215,10 +263,9 @@ def baseline_score(ids: set[str] | None = None) -> dict | None:
     for it in load_corpus():
         if ids is not None and it["id"] not in ids:
             continue
-        src = _source(it)
-        if src is None:
+        t = baseline_output(it)
+        if t is None:
             return None
-        t = baseline.extract(src, it["feature"]).scored()
         hit = _exact(t, it["gold"])
         out[it["id"]] = {**t, "exact": hit}
         if it["kind"] == "negative":
