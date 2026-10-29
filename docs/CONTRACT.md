@@ -87,7 +87,7 @@ The row `state` is one of `watching` (baseline accepted), `no_change`, `changed`
 
 - `stale_source` applies when the fetched page's "Last updated" is older than the accepted snapshot's. Owin holds and does not overwrite. This is a real case: on 2026-10-21 Tavily returned OpenAI's list dated July 9, 2026, while Wayback had October 14, 2026.
 - A live `no_change` needs a second, advanced-depth extract that agrees with the first. Fixture results say "no live re-fetch".
-- Tavily calls use `extract` with no `query`, so the page comes back whole and diffable, and `map` for discovery. Without `TAVILY_API_KEY`, results come from recorded fixtures labelled `fixture`. Vendors with no fixture are `unfetched`.
+- Tavily calls use `extract` with no `query`, so the page comes back whole and diffable. Without `TAVILY_API_KEY`, results come from recorded fixtures labelled `fixture`. Vendors with no fixture are `unfetched`.
 - The vendor index is `data/index/vendors.json` (29 vendors, each with a `watch_mode` verified on 2026-10-21). Per-vendor state lives in `var/state/` (gitignored, or `OWIN_STATE_DIR`).
 
 ## DataUseTerms (`owin.datause.schema.DataUseTerms`, Pivot A, A1)

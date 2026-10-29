@@ -1,4 +1,4 @@
-"""Tavily client: `extract` with NO query (full page, diffable) and `map` for discovery.
+"""Tavily client: `extract` with NO query (full page, diffable).
 
 TAVILY_API_KEY comes from the environment or OWIN_ENV_FILE (../.env). Without a
 key, `fetch` falls back to the recorded fixture and labels the result
@@ -67,13 +67,6 @@ def extract(url: str, *, depth: str = "basic", key: str | None = None) -> Fetche
     why = failed.get("error") if isinstance(failed, dict) else None
     return Fetched(url, None, "unfetched", now, round(time.time() - t0, 2),
                    "tavily returned no content" + (f": {str(why)[:120]}" if why else ""))
-
-
-def map_site(url: str, *, key: str | None = None) -> list[str]:
-    key = key or api_key()
-    if not key:
-        return []
-    return list(_post("/map", {"url": url}, key).get("results") or [])
 
 
 def fetch(entry: dict, *, live: bool = True) -> Fetched:
