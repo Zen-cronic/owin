@@ -34,6 +34,10 @@ CLI equivalents: `owin pack build --format brief`, `--set /api/crm-sync=anthropi
 
 ## The number, in full
 
+[![proof](https://github.com/Zen-cronic/owin/actions/workflows/proof.yml/badge.svg)](.github/workflows/proof.yml) ![auto-answered right](https://img.shields.io/badge/auto--answered%20right%20%28v3fresh%29-26%2F27%20%C2%B7%206%20to%20a%20person-2b6cb0)
+
+The number badge is computed from the recomputed headline (`owin/facts.py::badge_url`) and a test fails if this README carries any other; the `proof` workflow reruns the tests and `owin facts check` from a fresh clone, keyless, on every push.
+
 **Selective answering.** One cell is one (feature, field) pair: retention days, training use, ZDR. Nemotron reads the vendor page three times. A cell is answered automatically only when at least two readings succeeded and every successful reading agrees on it after the verbatim-quote gate; a reading that errored abstains rather than counting as a disagreement (a field without a verbatim sentence from the page becomes "not stated"). Anything else goes to a person as **Confirm**, with each reading's value and sentence. Code applies the rule to structured fields; it never reads model prose.
 
 | split `v3fresh` (clean, pre-registered) | result |
@@ -52,6 +56,8 @@ owin eval selective --corpus datause --split v3fresh --brief   # the line-one nu
 owin eval score --corpus datause --brief                       # the pre-registered whole-item score
 owin facts check                                               # every claim in this README, recomputed
 ```
+
+On a fresh clone (vendor page text is not in the repository) the arithmetic recomputes from the recorded runs, the keyword baseline is replayed from its recorded output per page sha256 (`eval/datause/baseline-outputs.json`, equal to the recomputed output wherever the pages are present), and the verbatim gate uses its recorded results; `quotes_rechecked_against_source` in the output says which.
 
 ## Why these sponsors
 

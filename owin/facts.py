@@ -208,8 +208,21 @@ def render() -> str:
               "| Region text never decides an answer | `tests/test_a3_pack.py::test_region_is_never_computed_from_vendor_free_text` |",
               "| Tavily `extract` fetches the evidence pages; an older copy is held, never used | `data/datause/observations.json`, `tests/test_ui.py::test_watch_holds_the_stale_tavily_copy_of_the_openai_list` |",
               "| Lumen Notes and its settings are fictional; vendor sentences, links and fetch times are real | `fixtures/demo/stack.json` `_label` |",
-              "| Copy rules: no compliance claims, Nemotron described as open-weight, not legal advice | `tests/test_facts.py::test_copy_rules` |", ""]
+              "| Copy rules: no compliance claims, Nemotron described as open-weight, not legal advice | `tests/test_facts.py::test_copy_rules` |",
+              "| Every value here checks on a fresh clone with no key and no page text: the arithmetic recomputes from recorded runs; the keyword baseline is replayed from its recorded output per page sha256 (equal to the recomputed output when the pages are present); the verbatim gate uses its recorded results. CI runs the suite and this ledger on every push | `.github/workflows/proof.yml`, `tests/test_a1_datause.py::test_recorded_baseline_equals_the_recomputed_baseline` |",
+              "| Every recorded reading names the same page bytes the labels were written from (the sha256 each reading recorded equals the labelled capture's) | `tests/test_a1_datause.py::test_every_recorded_reading_was_made_on_the_labelled_bytes` |",
+              "| The README number badge is computed from the recomputed headline | `owin/facts.py::badge_url`, `tests/test_facts.py::test_number_badge_is_the_recomputed_headline` |", ""]
     return "\n".join(lines)
+
+
+def badge_url() -> str:
+    """The README's number badge: a static shields.io badge whose text is computed from the recomputed headline,
+    never typed. tests/test_facts.py fails unless README.md carries exactly this URL, and CI runs that test."""
+    from urllib.parse import quote
+    h = _sel()["headline"]
+    esc = lambda t: quote(t.replace("-", "--").replace("_", "__"), safe="")
+    return (f"https://img.shields.io/badge/{esc('auto-answered right (v3fresh)')}-"
+            f"{esc(h['auto_correct'] + ' · ' + str(h['sent_to_confirm']) + ' to a person')}-2b6cb0")
 
 
 def write() -> Path:

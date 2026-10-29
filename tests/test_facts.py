@@ -1,4 +1,5 @@
 """Claims ledger: every number in README.md and on /judge is recomputed here and fails on drift."""
+import json
 import re
 
 import pytest
@@ -66,3 +67,10 @@ def test_copy_rules():
         assert not re.search(r"added cloudflare", low), name
     assert "open-weight" in README and "not legal advice" in README.lower()
     assert "changed Cloudflare's entry and added OAI International" in README
+
+
+def test_number_badge_is_the_recomputed_headline():
+    url = facts.badge_url()
+    assert url in README  # the badge a reader sees is the number this suite recomputes
+    h = facts._sel()["headline"]
+    assert h["auto_correct"].replace("/", "%2F") in url

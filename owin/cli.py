@@ -17,7 +17,7 @@ def _print(obj) -> None:
 def cmd_eval(a) -> int:
     if a.corpus == "datause":
         return cmd_eval_datause(a)
-    if a.action in ("audit", "selective"):
+    if a.action in ("audit", "selective", "baseline"):
         print(f"{a.action} is only defined for --corpus datause", file=sys.stderr)
         return 2
     if a.action == "run":
@@ -39,6 +39,9 @@ def cmd_eval_datause(a) -> int:
     from .datause import evaluate as dv
     if a.action == "audit":
         _print({"wrote": str(dv.write_audit().relative_to(dv.ROOT))})
+        return 0
+    if a.action == "baseline":
+        _print({"wrote": str(dv.record_baseline().relative_to(dv.ROOT))})
         return 0
     if a.action == "selective":
         from .datause import selective
@@ -260,7 +263,7 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="owin")
     sub = p.add_subparsers(dest="cmd", required=True)
     e = sub.add_parser("eval", help="measurement harness")
-    e.add_argument("action", choices=["run", "score", "audit", "selective"],
+    e.add_argument("action", choices=["run", "score", "audit", "selective", "baseline"],
                    help="selective = auto-answer only when every successful run agrees (at least 2; errored runs abstain); recomputed keyless from recorded runs")
     e.add_argument("--corpus", choices=["dpa", "datause"], default="dpa",
                    help="dpa = P1 sub-processor objection windows; datause = AI data-use terms per feature")
