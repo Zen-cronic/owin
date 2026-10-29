@@ -1,7 +1,7 @@
 """The product UI: static files in owin/web/, plus two read-only JSON helpers it binds to.
 
 GET /                 ->  owin/web/index.html (the answer screen; binds to /api/pack)
-GET /app.css, /app.js ->  static assets
+GET /app.css, /app.js ->  static assets (also /theme.js and /theme-c1.css … /theme-c5.css, the five looks)
 GET /api/catalog      ->  the features an endpoint can be switched to (the "change one input" control)
 GET /api/watch        ->  per vendor page: what Owin can watch on it, from data/datause/observations.json
 
@@ -20,7 +20,9 @@ STATIC = {"/": ("index.html", "text/html; charset=utf-8"),
           "/app.css": ("app.css", "text/css; charset=utf-8"),
           "/app.js": ("app.js", "text/javascript; charset=utf-8"),
           "/judge": ("judge.html", "text/html; charset=utf-8"),
-          "/judge.js": ("judge.js", "text/javascript; charset=utf-8")}
+          "/judge.js": ("judge.js", "text/javascript; charset=utf-8"),
+          "/theme.js": ("theme.js", "text/javascript; charset=utf-8"),
+          **{f"/theme-c{i}.css": (f"theme-c{i}.css", "text/css; charset=utf-8") for i in range(1, 6)}}
 DOCS = {"/README.md": "README.md", "/FACTS.md": "FACTS.md"}  # repo-root docs, served read-only as plain text
 ET = ZoneInfo("America/New_York")
 

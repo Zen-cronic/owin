@@ -1,65 +1,140 @@
-/* Owin answer screen. Tokens and motion follow docs/design/brief.md (T2 Departures, softened).
-   Yellow marks only the one thing to act on. */
+/* Owin: the answer screen (/) and the start page (/judge).
+   This file is the layout and the token layer. Every colour, family, radius, hairline, texture and duration below is
+   a custom property; components read only tokens. The defaults on :root are theme 1 ("Departures"), so a page with
+   no data-theme attribute renders theme 1. theme-c1.css … theme-c5.css restyle the tokens and the decoration hooks
+   (.num-tile, .num-sep, .num-row, .stat-board, .catch-mark, .catch-text, .catch-phrase, .rule-draw) under html[data-theme="cN"].
+   The signal colour (--act) marks only the one thing to act on. */
 :root{
-  --bg:#0E0F0F; --surface:#161717; --raise:#232424;
-  --ink:#F3F1EA; --muted:#A4A6A1; --cite:#C9CBC5; --line:#2C2E2D; --edge:#6B6D69;
-  --act:#FFD21F; --on-act:#111111;
-  --sans:'Archivo',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+  /* Colour */
+  --bg:#0E0F0F;          /* page */
+  --surface:#161717;     /* selected row fill */
+  --raise:#232424;       /* chips, hover, menus */
+  --board:#232424;       /* the full-bleed numeral housing on /judge */
+  --tile:#121313;        /* numeral tiles */
+  --ink:#F3F1EA;         /* text */
+  --muted:#A9A79F;       /* labels, captions */
+  --cite:#C9CBC5;        /* quoted and secondary text */
+  --line:#343535;        /* hairlines */
+  --edge:#6B6D69;        /* control borders, quiet connectors, link underlines */
+  --act:#FFD21F;         /* the one thing to act on */
+  --act-hover:#FFDC4F;
+  --on-act:#0E0F0F;
+  --act-line:var(--act); /* signal borders and connectors (the selected answer and endpoint, the link line) */
+  --act-ink:var(--act);  /* signal icons and text set directly on --bg */
+  --mark:var(--act);     /* the theme's one decorative signal: flap tag, red rule, stamp, highlighter */
+  --on-mark:var(--on-act);
+  --focus:var(--act);
+  /* Type */
+  --display:'Inter Tight','Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --num:var(--display);
+  --display-weight:600;
+  --display-track:-.018em;
+  --num-weight:700;
+  /* Shape */
+  --r:2px;               /* buttons, rows, panels */
+  --r-sm:2px;            /* badges, chips */
+  --r-tile:3px;          /* numeral tiles */
+  --hair:1px;            /* every hairline */
+  --rule-w:1px;          /* the drawn rule (.rule-draw) */
+  --rule:var(--line);
+  /* Texture: a page-wide background image (for example an SVG noise data URL); none in theme 1 */
+  --texture:none;
+  --texture-size:auto;
+  --texture-blend:normal;
+  /* Motion. --dur-flip, --num-stagger and --num-budget are unitless milliseconds read by judge.js;
+     --num-motion is "flap" (judge.js turns each tile over to its value) or "none" (tiles render final values and the
+     board gets .num-in when it comes on screen, for a theme's own CSS entrance). */
   --ease:cubic-bezier(.2,.8,.2,1);
+  --dur-fast:.14s;
+  --dur-open:.2s;
+  --dur-menu:.12s;
+  --dur-reveal:.5s;
+  --reveal-step:70ms;
+  --dur-draw:.4s;
+  --delay-draw:.15s;
+  --dur-turn:.26s;
+  --delay-turn:.87s;
+  --num-motion:flap;
+  --dur-flip:55;
+  --num-stagger:60;
+  --num-budget:700;
   color-scheme:dark;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:var(--bg)}
-body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background-color:var(--bg);background-image:var(--texture);background-size:var(--texture-size);background-blend-mode:var(--texture-blend);color:var(--ink);font:15px/1.5 var(--sans);letter-spacing:-.004em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 .mono,.ep{font-family:var(--mono)}
 .nw{white-space:nowrap}
 a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--edge);text-underline-offset:3px}
 a:hover{text-decoration-color:var(--ink)}
-:focus-visible{outline:2px solid var(--act);outline-offset:2px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 svg.i{width:14px;height:14px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 [hidden]{display:none!important}
 
 /* Top bar */
-.top{display:flex;align-items:baseline;gap:14px;padding:16px 32px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
-.word{font-weight:700;font-size:19px;color:var(--ink);letter-spacing:-.02em}
+.top{display:flex;align-items:center;gap:14px;padding:16px 32px;border-bottom:var(--hair) solid var(--line);font-size:13px;color:var(--muted)}
+.word{font:700 20px/1 var(--display);color:var(--ink);letter-spacing:-.02em}
 .ctx{color:var(--ink)}
 .fict{color:var(--muted);margin-left:6px}
 .fict::before{content:"·";margin-right:6px;color:var(--edge)}
-.top .replay{margin-left:auto}
+.top .replay{margin-left:0}
+.top .replay .rp-short{display:none}
 .top .judge{color:var(--ink)}
+
+/* Theme switch: five native radios, keyboard arrows move between them; hidden without JS (no data-theme) and in print */
+.theme-switch{display:inline-flex;align-items:center;gap:2px;font:500 12px/1 var(--sans);color:var(--muted)}
+.top .theme-switch{order:1;margin-left:auto;padding-right:14px;border-right:var(--hair) solid var(--line)}
+.top .replay{order:2}
+.top .judge{order:3}
+.theme-switch .tl{margin-right:6px}
+.theme-switch label{position:relative;display:block;cursor:pointer}
+.theme-switch input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer}
+.theme-switch label > span:not(.sr){display:grid;place-items:center;width:22px;height:24px;box-shadow:inset 0 0 0 var(--hair) transparent;border-radius:var(--r-sm);font:500 12px/1 var(--mono);color:var(--muted);transition:background-color var(--dur-fast) ease-out,color var(--dur-fast) ease-out}
+.theme-switch label:hover > span:not(.sr){color:var(--ink);background:var(--raise)}
+.theme-switch input:checked + span{color:var(--ink);background:none;box-shadow:inset 0 0 0 var(--hair) var(--edge)}
+.theme-switch label:hover input:checked + span{background:none}
+.theme-switch input:focus-visible + span{outline:2px solid var(--focus);outline-offset:2px}
+:root:not([data-theme]) .theme-switch{display:none}
+.theme-select{display:none;font:500 12px/1 var(--sans);color:var(--ink);background:var(--surface);border:var(--hair) solid var(--line);border-radius:var(--r-sm);padding:4px 6px;max-width:140px}
+.theme-select:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 
 .wrap{max-width:1280px;margin:0 auto;padding:28px 32px 56px}
 
 /* Loading bars: reserved space, no shimmer */
-.bar{display:block;height:.8em;border-radius:3px;background:var(--raise);margin:.35em 0}
+.bar{display:block;height:.8em;border-radius:var(--r-sm);background:var(--raise);margin:.35em 0}
 h1 .bar{height:.75em}
 .w12{width:12ch}.w30{width:30%}.w40{width:40%}.w50{width:50%}.w60{width:60%}.w70{width:70%}.w80{width:80%}.w90{width:90%}
 .skel{pointer-events:none}
 
+/* The drawn rule: one hairline that a theme may draw in, thicken or recolour. Each page positions it. */
+.rule-draw{display:block;height:var(--rule-w);background:var(--rule);transform-origin:0 50%;pointer-events:none}
+
 /* Catch strip */
-.catch{padding-bottom:28px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr) 300px;column-gap:56px}
+.catch{position:relative;padding-bottom:28px;display:grid;grid-template-columns:minmax(0,1fr) 320px;column-gap:56px}
 .catch > *{grid-column:1}
+.catch > .rule-draw{position:absolute;left:0;right:0;bottom:0}
 .catch > .summary{grid-column:2;grid-row:1 / span 6;align-self:start}
 .summary:empty{display:none}
-.summary h2{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px}
-.summary dl{border-top:1px solid var(--line)}
-.summary .sm{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.summary h2{font-size:13px;font-weight:500;color:var(--muted);margin-bottom:10px}
+.summary dl{border-top:var(--hair) solid var(--line)}
+.summary .sm{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:var(--hair) solid var(--line)}
 .summary dt{display:inline-flex;gap:8px;align-items:center;font-size:14px}
-.summary dd{font:600 24px/1 var(--sans);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
-.summary .sm.bad dt svg{color:var(--act)}
-.summary .sm.stale dt svg,.summary .sm.confirm dt svg{color:var(--act)}
+.summary dd{display:inline-flex;gap:2px;font:var(--num-weight) 22px/1 var(--num);font-variant-numeric:tabular-nums}
+.summary .sm.bad dt svg{color:var(--act-ink)}
 .summary .sm.held,.summary .sm.zero{color:var(--muted)}
 .summary p{margin-top:10px;font-size:12.5px;color:var(--cite)}
 .kicker{display:flex;gap:8px;align-items:center;font-size:14px;font-weight:500;color:var(--muted);min-height:20px}
-.kicker svg{color:var(--act)}
+.kicker svg{color:var(--act-ink)}
 .kicker.calm svg{color:var(--muted)}
 .kicker .sep{color:var(--edge)}
 .kicker b{color:var(--ink);font-weight:600}
 .kicker .st{color:var(--ink)}
-h1{font-size:34px;line-height:1.18;font-weight:600;letter-spacing:-.02em;margin-top:10px;max-width:46ch;text-wrap:balance}
-h1 .ep{font-size:.95em;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
-.todo{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+h1{font:var(--display-weight) 42px/1.06 var(--display);letter-spacing:calc(var(--display-track) * .7);margin-top:12px;max-width:24em;text-wrap:balance}
+h1 .ep{font-size:.9em;font-weight:700;letter-spacing:-.03em;white-space:nowrap}
+.todo{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap}
 .todo:empty{display:none}
 .todo .link{font:600 15px/1 var(--sans);padding:13px 4px;align-self:center;background:none;border:0;color:var(--ink);cursor:pointer;text-decoration:underline;text-decoration-color:var(--edge);text-underline-offset:4px}
 .todo .link:hover{text-decoration-color:var(--ink)}
@@ -71,9 +146,9 @@ h1 .ep{font-size:.95em;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
 .lede.delta{color:var(--ink)}
 .lede.delta .mono{font-size:.95em}
 
-.btn{font:600 15px/1 var(--sans);border-radius:4px;padding:13px 18px;cursor:pointer;border:1px solid transparent;white-space:nowrap;color:var(--ink);background:none;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn{font:600 15px/1 var(--sans);border-radius:var(--r);padding:13px 18px;cursor:pointer;border:var(--hair) solid transparent;white-space:nowrap;color:var(--ink);background:none;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
 .btn.primary{background:var(--act);color:var(--on-act)}
-.btn.primary:hover{background:#FFDC4F}
+.btn.primary:hover{background:var(--act-hover)}
 .btn.ghost{border-color:var(--edge)}
 .btn.ghost:hover{background:var(--raise)}
 .btn.small{font-size:13px;padding:7px 12px;gap:6px}
@@ -86,18 +161,18 @@ h1 .ep{font-size:.95em;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
 .ph .meta{font-size:13px;color:var(--muted)}
 .tabs{display:none}
 .stack{position:sticky;top:20px}
-[aria-busy=true] .ep-row,[aria-busy=true] .ans{transition:opacity .14s ease-out}
+[aria-busy=true] .ep-row,[aria-busy=true] .ans{transition:opacity var(--dur-fast) ease-out}
 .recomputing .ep-row,.recomputing .ans{opacity:.55}
 
 /* Endpoint rows */
-.ep-row{position:relative;padding:14px 16px;border:1px solid var(--line);border-radius:4px;transition:opacity .14s ease-out,background-color .14s ease-out}
+.ep-row{position:relative;padding:14px 16px;border:var(--hair) solid var(--line);border-radius:var(--r);transition:opacity var(--dur-fast) ease-out,background-color var(--dur-fast) ease-out}
 #endpoints{display:grid;gap:8px}
 .ep-row:hover{background:var(--raise)}
 .ep-row .path{font-family:var(--mono);font-size:14px;font-weight:500}
 .ep-row .via{display:block;margin-top:2px;font-size:13px;line-height:1.55;color:var(--muted);position:relative;width:fit-content;max-width:100%;padding:1px 0;cursor:pointer}
 .ep-row .via svg{display:inline-block;vertical-align:-2px;margin-left:4px}
 .ep-row .via:hover{color:var(--ink)}
-.ep-row .via:focus-within{outline:2px solid var(--act);outline-offset:2px;border-radius:2px}
+.ep-row .via:focus-within{outline:2px solid var(--focus);outline-offset:2px;border-radius:var(--r-sm)}
 .ep-row select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font:inherit;border:0}
 .ep-row select option,.ep-row select optgroup{background:var(--raise);color:var(--ink)}
 .ep-row .finding{font-size:13.5px;margin-top:8px}
@@ -105,20 +180,19 @@ h1 .ep{font-size:.95em;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
 .ep-row .feeds{margin-top:8px;font-size:12px;color:var(--muted);display:flex;gap:10px;align-items:baseline}
 .ep-row .feeds b{font:500 13px var(--mono);color:var(--ink);display:inline-flex;gap:.55em}
 .chips{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.chip{display:inline-flex;gap:5px;align-items:center;font-size:12px;font-weight:600;line-height:1;padding:4px 7px;border-radius:3px;background:var(--raise);color:var(--ink);white-space:nowrap}
+.chip{display:inline-flex;gap:5px;align-items:center;font-size:12px;font-weight:600;line-height:1;padding:4px 7px;border-radius:var(--r-sm);background:var(--raise);color:var(--ink);white-space:nowrap}
 .chip svg.i{width:12px;height:12px}
 .chip .mono{font-weight:500}
 .chip.bad{background:var(--act);color:var(--on-act)}
-.chip.stale svg,.chip.confirm svg{color:var(--act)}
 .chip.held{color:var(--muted)}
-.ep-row.sel{border-color:var(--act);background:var(--surface)}
-/* Re-check this page: one ghost button and its status line; yellow only when the state became Not true or Stale */
+.ep-row.sel{border-color:var(--act-line);background:var(--surface)}
+/* Re-check this page: one ghost button and its status line; the signal only when the state became Not true or Stale */
 .recheck{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
 .recheck .rc{font-size:12.5px;color:var(--cite);margin:0}
 .recheck .rc:empty{display:none}
-.recheck .rc.bad{color:var(--act)}
+.recheck .rc.bad{color:var(--act-ink)}
 .recheck .rc .obs{display:block;color:var(--muted)}
-.ans.stale{border:1px solid var(--edge);border-radius:4px}
+.ans.stale{border:var(--hair) solid var(--edge);border-radius:var(--r)}
 .ans.stale + .ans{border-top-color:transparent}
 .ep-row.changed .path::after{content:"changed";font:500 11px var(--sans);color:var(--muted);margin-left:8px;letter-spacing:.01em}
 .dimmed{opacity:.55}
@@ -137,8 +211,8 @@ h1 .ep{font-size:.95em;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
 .pages h3{font-size:13px;font-weight:600;color:var(--muted);display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 8px}
 .pages h3 span{font-weight:400}
 .pages ul{list-style:none;margin-top:8px}
-.pages li{display:grid;grid-template-columns:16px 1fr;column-gap:8px;padding:7px 0;font-size:12.5px;color:var(--cite);border-top:1px solid var(--line)}
-.pages li:last-child{border-bottom:1px solid var(--line)}
+.pages li{display:grid;grid-template-columns:16px 1fr;column-gap:8px;padding:7px 0;font-size:12.5px;color:var(--cite);border-top:var(--hair) solid var(--line)}
+.pages li:last-child{border-bottom:var(--hair) solid var(--line)}
 .pages li svg{margin-top:3px}
 .pages li a{color:var(--ink);text-decoration:none}
 .pages li a:hover{text-decoration:underline}
@@ -147,24 +221,24 @@ h1 .ep{font-size:.95em;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
 .pages .reset button{background:none;border:0;color:var(--ink);font:inherit;text-decoration:underline;text-decoration-color:var(--edge);text-underline-offset:3px;cursor:pointer;padding:6px 0}
 
 /* Answer rows */
-.ans{display:grid;grid-template-columns:32px 1fr auto;column-gap:12px;padding:20px 16px;border-top:1px solid var(--line);transition:opacity .14s ease-out}
-#answers .ans:last-child{border-bottom:1px solid var(--line)}
+.ans{display:grid;grid-template-columns:32px 1fr auto;column-gap:12px;padding:20px 16px;border-top:var(--hair) solid var(--line);transition:opacity var(--dur-fast) ease-out}
+#answers .ans:last-child{border-bottom:var(--hair) solid var(--line)}
 .ans.skel{display:block}
 .ans .n{font:400 13px/2.1 var(--mono);color:var(--muted)}
-.ans h3{font-size:19px;font-weight:600;line-height:1.3;letter-spacing:-.01em}
+.ans h3{font:600 20px/1.3 var(--display);letter-spacing:-.012em}
 .ans .body{grid-column:2/4;min-width:0}
 .ans .body p{font-size:15px;margin-top:8px}
 .ans .body p.dim{color:var(--muted)}
 .ans .body p.delta{font-size:12.5px;color:var(--muted);margin-top:4px}
 .ans .body p.delta b{color:var(--ink);font-weight:600}
 .ans.changed h3::after{content:"changed";font:500 11px var(--sans);color:var(--muted);margin-left:8px;letter-spacing:.01em;vertical-align:middle}
-.ans.sel{border:1px solid var(--act);border-radius:4px;background:var(--surface)}
+.ans.sel{border:var(--hair) solid var(--act-line);border-radius:var(--r);background:var(--surface)}
 .ans.sel + .ans{border-top-color:transparent}
 blockquote{margin-top:10px;padding-left:12px;border-left:2px solid var(--edge);font-size:14px;line-height:1.5;overflow-wrap:anywhere}
 .ans .body p.src{display:flex;flex-wrap:wrap;gap:2px 14px;margin-top:6px;font-size:12.5px;letter-spacing:.01em;color:var(--cite)}
 .src a{color:var(--cite);text-decoration:underline;text-decoration-color:var(--edge);text-underline-offset:3px}
 .src a:hover{color:var(--ink);text-decoration-color:var(--ink)}
-.per{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.per{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px;padding-top:12px;border-top:var(--hair) solid var(--line)}
 .per dt{font:400 12px var(--mono);color:var(--muted)}
 .per dd{font-size:13.5px}
 .per .x dt{color:var(--ink)}
@@ -173,10 +247,10 @@ blockquote{margin-top:10px;padding-left:12px;border-left:2px solid var(--edge);f
 .per .c dd{font-weight:600}
 .next{margin-top:12px}
 /* Confirm: each differing reading with its sentence */
-.confirm-box{margin-top:12px;padding:12px 14px;border:1px solid var(--line);border-radius:4px}
+.confirm-box{margin-top:12px;padding:12px 14px;border:var(--hair) solid var(--line);border-radius:var(--r)}
 .confirm-box .ch{font-size:13.5px;margin:0!important}
 .confirm-box ul{list-style:none;display:grid;gap:0;margin-top:10px}
-.confirm-box li{padding:10px 0;border-top:1px solid var(--line)}
+.confirm-box li{padding:10px 0;border-top:var(--hair) solid var(--line)}
 .confirm-box li:last-child{padding-bottom:4px}
 .confirm-box .rh{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .confirm-box li b{font-weight:600;font-size:14.5px}
@@ -187,9 +261,9 @@ figure.ev{margin-top:10px}
 figure.ev figcaption{font-size:12px;color:var(--cite);margin-bottom:5px}
 figure.ev figcaption b{color:var(--ink);font-weight:600}
 figure.ev blockquote{margin-top:0}
-table.kv{border-collapse:collapse;width:100%;font-size:13.5px;line-height:1.45;border:1px solid var(--line);table-layout:fixed}
-.kv th{width:36%;text-align:left;font-weight:400;color:var(--muted);padding:6px 10px;border-top:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}
-.kv td{padding:6px 10px;border-top:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}
+table.kv{border-collapse:collapse;width:100%;font-size:13.5px;line-height:1.45;border:var(--hair) solid var(--line);table-layout:fixed}
+.kv th{width:36%;text-align:left;font-weight:400;color:var(--muted);padding:6px 10px;border-top:var(--hair) solid var(--line);vertical-align:top;overflow-wrap:anywhere}
+.kv td{padding:6px 10px;border-top:var(--hair) solid var(--line);vertical-align:top;overflow-wrap:anywhere}
 .kv.nokey td{width:auto}
 .kv tr.hit th,.kv tr.hit td{background:var(--raise);color:var(--ink);font-weight:600}
 .kv tr.hit th{box-shadow:inset 2px 0 0 var(--ink)}
@@ -201,13 +275,13 @@ details.more summary{cursor:pointer;font-size:13px;color:var(--cite);width:fit-c
 details.more summary:hover{color:var(--ink)}
 
 /* Fix panel and change detail: opened in place */
-.panel{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);overflow:hidden}
-.panel.open{animation:open .2s var(--ease)}
+.panel{margin-top:16px;padding-top:14px;border-top:var(--hair) solid var(--line);overflow:hidden}
+.panel.open{animation:open var(--dur-open) var(--ease)}
 @keyframes open{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 .panel h4{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
 .panel .was{font-size:13.5px;color:var(--muted);text-decoration:line-through;text-decoration-color:var(--edge)}
 .panel label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:12px 0 6px}
-.panel textarea{width:100%;min-height:96px;background:var(--bg);color:var(--ink);border:1px solid var(--edge);border-radius:4px;padding:10px 12px;font:14.5px/1.5 var(--sans);resize:vertical}
+.panel textarea{width:100%;min-height:96px;background:var(--bg);color:var(--ink);border:var(--hair) solid var(--edge);border-radius:var(--r);padding:10px 12px;font:14.5px/1.5 var(--sans);resize:vertical}
 .panel .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
 .panel .hint{font-size:12.5px;color:var(--muted);margin-top:8px}
 .changes{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13.5px;margin-top:6px}
@@ -215,28 +289,28 @@ details.more summary:hover{color:var(--ink)}
 .changes dd{overflow-wrap:anywhere}
 
 /* Badge: one family. Same shape for every state (icon + word on a flat tag, no border, so none reads as a
-   button); only the colour changes. Yellow fill is reserved for Not true, the one thing to act on. */
-.badge{display:inline-flex;gap:6px;align-items:center;font-size:13px;font-weight:600;line-height:1;white-space:nowrap;height:fit-content;padding:4px 8px;border-radius:3px;background:var(--raise);color:var(--ink);cursor:default;user-select:none}
+   button); only the colour changes. The signal fill is reserved for Not true, the one thing to act on.
+   The Not true badge also carries .catch-mark, the hook a theme dresses as its mark. */
+.badge{display:inline-flex;gap:6px;align-items:center;font-size:13px;font-weight:600;line-height:1;white-space:nowrap;height:fit-content;padding:4px 8px;border-radius:var(--r-sm);background:var(--raise);color:var(--ink);cursor:default;user-select:none}
 .badge.held{color:var(--muted)}
 .badge.bad{background:var(--act);color:var(--on-act)}
 .badge.stale{background:var(--raise)}
 .badge.confirm{background:var(--raise)}
-.badge.confirm svg,.badge.stale svg{color:var(--act)}
 .ans .badge{justify-self:end;margin-top:1px}
 
-/* Connectors: one grammar (1.5px, square elbows, end dot); yellow = not true, grey = stale */
+/* Connectors: one grammar (1.5px, square elbows, end dot); signal = not true, grey = stale */
 #link{position:absolute;inset:0;pointer-events:none;overflow:visible;width:100%;height:100%}
-#link path{stroke:var(--act);stroke-width:1.5;fill:none}
+#link path{stroke:var(--act-line);stroke-width:1.5;fill:none}
 #link circle{stroke:var(--bg);stroke-width:2}
-#link circle{fill:var(--act)}
+#link circle{fill:var(--act-line)}
 #link .quiet{stroke:var(--edge)}
 #link circle.quiet{fill:var(--edge);stroke:none}
 
 /* Export menu */
 .menu-wrap{position:relative}
-.menu{position:absolute;right:0;top:calc(100% + 6px);z-index:5;min-width:280px;background:var(--raise);border:1px solid var(--edge);border-radius:4px;padding:4px;animation:menu .12s ease-out}
+.menu{position:absolute;right:0;top:calc(100% + 6px);z-index:5;min-width:280px;background:var(--raise);border:var(--hair) solid var(--edge);border-radius:var(--r);padding:4px;animation:menu var(--dur-menu) ease-out}
 @keyframes menu{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
-.menu button{display:block;width:100%;text-align:left;background:none;border:0;color:var(--ink);padding:9px 12px;border-radius:3px;cursor:pointer;font:inherit}
+.menu button{display:block;width:100%;text-align:left;background:none;border:0;color:var(--ink);padding:9px 12px;border-radius:var(--r-sm);cursor:pointer;font:inherit}
 .menu button:hover,.menu button:focus-visible{background:var(--surface)}
 .menu button:focus-visible{outline-offset:-2px}
 .menu b{display:block;font-size:14px;font-weight:600}
@@ -244,28 +318,39 @@ details.more summary:hover{color:var(--ink)}
 
 .foot{margin-top:20px;font-size:12.5px;color:var(--cite);max-width:90ch}
 
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--raise);color:var(--ink);border:1px solid var(--edge);border-radius:4px;padding:10px 14px;font-size:13.5px;z-index:10}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--raise);color:var(--ink);border:var(--hair) solid var(--edge);border-radius:var(--r);padding:10px 14px;font-size:13.5px;z-index:10}
+
+/* Numeral tiles, neutral: a theme decides whether they read as flaps, type, dots or print.
+   On /, .num-tile holds its digit as text (the summary counts). On /judge it holds four .h halves whose glyph is
+   ::after content from data-c, so judge.js can turn them over. */
+.num-tile{display:inline-block;position:relative;text-align:center}
+.summary .num-tile{min-width:.62em}
 
 @media (max-width:900px){
-  .top{padding:12px 16px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;column-gap:10px;row-gap:4px}
+  .top{padding:12px 16px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;column-gap:10px;row-gap:4px;align-items:baseline}
   .top .ctx{grid-column:2/4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .top .replay{font-size:12px;margin-left:0;grid-column:1/3;grid-row:2}
+  .top .replay{font-size:12px;margin-left:0;grid-column:1/3;grid-row:2;min-width:0;overflow:hidden;text-overflow:ellipsis}
   .top .judge{grid-column:3;grid-row:2;justify-self:end;font-size:12px}
+  .top .theme-switch{display:none}
+  :root[data-theme] .top .theme-select{display:block;grid-column:3;grid-row:1;justify-self:end;align-self:center}
+  .top .ctx{grid-column:2/3}
+  .top .theme-switch label > span:not(.sr){height:22px}
   .judge-page .top .replay.judge{grid-column:3;grid-row:1}
   .judge-page .top .ctx{grid-column:2/3}
+  :root[data-theme] .judge-page .top .theme-select{grid-row:2}
   .catch{grid-template-columns:minmax(0,1fr)}
   .catch > .summary{display:none}
   .wrap{padding:16px 16px 48px}
   .catch{padding-bottom:18px}
-  h1{font-size:21px;line-height:1.26;margin-top:6px}
-  .todo{gap:16px;margin-top:14px;flex-wrap:nowrap}.todo .btn{padding:14px 18px}
+  h1{font-size:25px;line-height:1.14;margin-top:8px;letter-spacing:calc(var(--display-track) * .4)}
+  .todo{gap:16px;margin-top:16px;flex-wrap:nowrap}.todo .btn{padding:14px 18px}
   .todo .link{padding:14px 2px}
   .panes{grid-template-columns:minmax(0,1fr);gap:0;margin-top:10px}
   .pane{min-width:0}
   .stack{position:static}
-  .ans h3{font-size:17px}
+  .ans h3{font-size:18px}
   #link{display:none}
-  .tabs{display:flex;border-bottom:1px solid var(--line);margin-bottom:8px}
+  .tabs{display:flex;border-bottom:var(--hair) solid var(--line);margin-bottom:8px}
   .tabs button{flex:1;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);font:600 14px var(--sans);padding:13px 0 11px;min-height:44px;cursor:pointer;margin-bottom:-1px}
   .tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--ink)}
   .tabs .ct{font:400 13px var(--mono);color:var(--muted);margin-left:6px}
@@ -285,7 +370,8 @@ details.more summary:hover{color:var(--ink)}
   .ep-row .via{padding:8px 0}
   .menu{min-width:260px}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+@media print{.theme-switch,.theme-select{display:none!important}}
 .ans.sel + .ans.stale{margin-top:8px}
 
 /* Judge start page */
@@ -296,15 +382,15 @@ details.more summary:hover{color:var(--ink)}
 .jg .intro{margin-top:8px}
 .jg h2{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:10px}
 .jg .big{margin-top:40px;font-size:14px;line-height:1.4;font-weight:600;color:var(--muted)}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:12px;border-top:1px solid var(--line)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:12px;border-top:var(--hair) solid var(--line)}
 .stat{padding:16px 20px 4px 0}
-.stat + .stat{padding-left:20px;border-left:1px solid var(--line)}
-.stat .v{font:600 76px/1 var(--sans);font-variant-numeric:tabular-nums;letter-spacing:-.035em}
+.stat + .stat{padding-left:20px;border-left:var(--hair) solid var(--line)}
+.stat .v{font:var(--num-weight) 76px/1 var(--num);font-variant-numeric:tabular-nums;letter-spacing:-.035em}
 .stat.skel .v .bar{height:.62em;margin:.19em 0}
 .stat .c{margin-top:10px;font-size:14px;line-height:1.45;color:var(--cite);max-width:32ch}
 .stats:empty{display:none}
 .jg .sub{margin-top:16px;font-size:13.5px;color:var(--cite);max-width:80ch}
-.jg .fn{margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-size:12px;line-height:1.5;color:var(--muted)}
+.jg .fn{margin-top:14px;padding-top:10px;border-top:var(--hair) solid var(--line);font-size:12px;line-height:1.5;color:var(--muted)}
 .jg .fn span{display:block;max-width:100ch}
 .jg .fn:empty,.jg .sub:empty{display:none}
 /* Method row: the split, the recompute command and the footnote, folded into one evidence-style row under the numerals */
@@ -316,21 +402,21 @@ details.more summary:hover{color:var(--ink)}
 .ev.method .fn{margin:0;padding:0;border:0;font-size:12.5px;color:var(--muted)}
 .recompute{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-top:14px;font-size:12.5px;color:var(--cite);min-width:0}
 .recompute a{color:var(--cite)}
-code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13px/1.4 var(--mono);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:3px;padding:6px 10px;scrollbar-width:thin}
+code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13px/1.4 var(--mono);color:var(--ink);background:var(--bg);border:var(--hair) solid var(--line);border-radius:0;padding:6px 10px;scrollbar-width:thin}
 .paths{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.path-card{display:flex;flex-direction:column;gap:6px;height:100%;padding:16px;border:1px solid var(--line);border-radius:4px;text-decoration:none;color:var(--ink);transition:background-color .14s ease-out,border-color .14s ease-out}
+.path-card{display:flex;flex-direction:column;gap:6px;height:100%;padding:16px;border:var(--hair) solid var(--line);border-radius:var(--r);text-decoration:none;color:var(--ink);transition:background-color var(--dur-fast) ease-out,border-color var(--dur-fast) ease-out}
 .path-card:hover{background:var(--raise);border-color:var(--edge)}
 .path-card .step{font-size:13px;color:var(--muted)}
 .path-card .t{font-size:18px;font-weight:600;letter-spacing:-.01em}
 .path-card .tag{font-size:12.5px;color:var(--cite)}
 .path-card .d{font-size:14px;line-height:1.5;color:var(--ink);margin-top:4px}
 .path-card .go{margin-top:auto;padding-top:18px;display:inline-flex;align-items:center;gap:5px;font-size:14px;font-weight:600;color:var(--ink)}
-.path-card .go svg{transition:transform .14s ease-out}
+.path-card .go svg{transition:transform var(--dur-fast) ease-out}
 .path-card:hover .go svg{transform:translateX(2px)}
 .jg .also{margin-top:12px;font-size:13.5px;color:var(--cite)}
 .ev{list-style:none;display:grid;gap:0}
-.ev li{display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:4px 20px;padding:12px 0;border-top:1px solid var(--line);font-size:14px}
-.ev li:last-child{border-bottom:1px solid var(--line)}
+.ev li{display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:4px 20px;padding:12px 0;border-top:var(--hair) solid var(--line);font-size:14px}
+.ev li:last-child{border-bottom:var(--hair) solid var(--line)}
 .ev li span{color:var(--cite);font-size:13.5px}
 .ev li b{font-weight:600}
 @media (max-width:900px){
@@ -338,7 +424,7 @@ code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13
   .jg .big{font-size:13px;margin-top:32px}
   .stats{grid-template-columns:minmax(0,1fr)}
   .stat,.stat + .stat{padding:14px 0 4px;border-left:0}
-  .stat + .stat{border-top:1px solid var(--line)}
+  .stat + .stat{border-top:var(--hair) solid var(--line)}
   .stat .v{font-size:56px}
   .story h1{font-size:23px}
   .story .what{font-size:14.5px}
@@ -349,106 +435,81 @@ code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13
 }
 
 /* Start page story strip: one sentence, three numerals, the catch */
-.jg .story{margin-top:12px;padding-bottom:40px;border-bottom:1px solid var(--line)}
+.jg .story{margin-top:12px;padding-bottom:40px}
 .story .kick{font-size:13px;font-weight:600;color:var(--muted)}
 .story h1{margin-top:10px}
 .story .what{margin-top:16px;font-size:15.5px;line-height:1.55;color:var(--cite);max-width:66ch}
-.catchline{display:flex;gap:14px;align-items:flex-start;margin-top:28px;padding-top:22px;border-top:1px solid var(--line);font-size:16px;line-height:1.5}
+.catchline{display:flex;gap:14px;align-items:flex-start;margin-top:28px;padding-top:22px;font-size:16px;line-height:1.5}
 .catchline .cl{max-width:70ch}
 .catchline .act{display:block;margin-top:16px}
 .catchline .badge{margin-top:3px}
 .catchline a{white-space:nowrap}
 
 /* Enter motion: a line rises 12px into place once, in order (--i); nothing is hidden without JS or with reduced motion */
-.motion .reveal{opacity:0;transform:translateY(12px);transition:opacity .5s var(--ease),transform .5s var(--ease);transition-delay:calc(var(--i,0)*70ms)}
+.motion .reveal{opacity:0;transform:translateY(12px);transition:opacity var(--dur-reveal) var(--ease),transform var(--dur-reveal) var(--ease);transition-delay:calc(var(--i,0)*var(--reveal-step))}
 .motion .reveal.in{opacity:1;transform:none}
 
-/* Start page board (/judge only). Every rule below is scoped to body.judge-page, so the app at / does not change.
-   A dark departures board: the opening line on ten of twelve columns, one hairline, the catch, then the three
-   recomputed numbers on split-flap tiles. Yellow stays on the thing to act on. */
-.judge-page{
-  --bg:#0E0F0F; --raise:#232424; --tile:#121313; --ink:#F3F1EA; --muted:#A9A79F; --line:#3A3B3B;
-  --act:#FFD21F; --on-act:#0E0F0F;
-  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --display:'Inter Tight','Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
-  --gut:clamp(16px,3.4vw,48px); --col:24px;
-}
-.judge-page .top{padding:18px var(--gut);border-bottom-color:var(--line)}
-.judge-page .word{font-family:var(--display);font-size:20px}
-.judge-page .btn{font-family:var(--sans);border-radius:2px}
+/* Start page board (/judge). Layout only: the opening line on ten of twelve columns, the drawn rule, the
+   explanation beside the catch, then the three recomputed numbers in a full-bleed housing. */
+.judge-page{--gut:clamp(16px,3.4vw,48px); --col:24px; --delay-draw:.52s}
+.judge-page .top{padding:18px var(--gut)}
 .judge-page .jg{max-width:1440px;padding:0 var(--gut) 96px}
-.judge-page .jg .story{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col);margin-top:0;padding:72px 0 0;border-bottom:0}
+.judge-page .jg .story{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col);margin-top:0;padding:72px 0 0}
 .judge-page .story > *{grid-column:1/-1}
 .judge-page .story .kick{font:500 14px/1.4 var(--sans);color:var(--muted)}
-.judge-page .story h1{grid-column:1/span 10;margin-top:20px;font:600 clamp(34px,4.6vw,66px)/1 var(--display);letter-spacing:-.018em}
+.judge-page .story h1{grid-column:1/span 10;max-width:none;margin-top:20px;font:var(--display-weight) clamp(34px,4.6vw,66px)/1 var(--display);letter-spacing:var(--display-track)}
 
-/* The hairline under the opening line, then the explanation beside the catch */
 .judge-page .lede{position:relative;display:grid;grid-template-columns:subgrid;margin-top:44px;padding-top:28px}
-.judge-page .lede::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:var(--line);transform-origin:0 50%}
+.judge-page .lede > .rule-draw{position:absolute;inset:0 0 auto}
 .judge-page .story .what{grid-column:1/span 5;margin:0;font:400 17px/1.6 var(--sans);color:var(--cite);max-width:none}
 .judge-page .catchline{grid-column:7/-1;display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:start;margin:0;padding:0;border:0;font:400 18px/1.5 var(--sans);color:var(--ink)}
 .judge-page .catchline .cl{max-width:none}
 .judge-page .catchline .act{margin-top:20px}
-
-/* The "Not true" flap tag: square, matte, split at the middle */
-.judge-page .badge.flap{position:relative;height:34px;margin-top:-2px;padding:0;border-radius:2px;perspective:240px;font:600 14px/1 var(--sans);box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
-.judge-page .badge.flap .lbl{display:inline-flex;align-items:center;gap:7px;height:100%;padding:0 12px}
-.judge-page .badge.flap::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(14,15,15,.28)}
+.judge-page .badge.catch-mark{position:relative;height:34px;margin-top:-2px;padding:0;perspective:240px;font:600 14px/1 var(--sans)}
+.judge-page .badge.catch-mark .lbl{display:inline-flex;align-items:center;gap:7px;height:100%;padding:0 12px}
 
 /* The board: a full-bleed housing, three numbers on tiles, captions in the body face */
-.judge-page .board{margin-top:72px;padding:28px 0 36px;background:var(--raise);box-shadow:0 0 0 100vmax var(--raise);clip-path:inset(0 -100vmax)}
+.judge-page .stat-board{margin-top:72px;padding:28px 0 36px;background:var(--board);box-shadow:0 0 0 100vmax var(--board);clip-path:inset(0 -100vmax)}
 .judge-page .jg .big{margin:0 0 24px;font:500 14px/1.4 var(--sans);color:var(--muted)}
 .judge-page .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:0;border:0}
 .judge-page .stat,.judge-page .stat + .stat{padding:0 var(--col);border:0}
 .judge-page .stat:first-child{padding-left:0}
-.judge-page .stat + .stat{border-left:1px solid var(--line)}
+.judge-page .stat + .stat{border-left:var(--hair) solid var(--line)}
 .judge-page .stat{--d:clamp(60px,6.6vw,96px)}
-.judge-page .stat .v{font:700 var(--d)/1 var(--display);letter-spacing:0}
-.judge-page .tiles{display:flex;align-items:center;gap:.06em}
-.judge-page .tile,.judge-page .sep{position:relative;flex:none;width:.72em;height:1.16em;perspective:4em;background:var(--tile);border-radius:3px;box-shadow:0 1px 0 rgba(0,0,0,.5)}
-.judge-page .sep{width:.42em}
-.judge-page .tile:empty,.judge-page .sep{background:linear-gradient(var(--tile) calc(50% - .5px),#070808 0 calc(50% + .5px),var(--tile) 0);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 1px 0 rgba(0,0,0,.5)}
-.judge-page .tile::before,.judge-page .tile::after{content:"";position:absolute;z-index:3;top:calc(50% - .035em);width:2px;height:.07em;background:#2C2D2D;border-radius:1px}
-.judge-page .tile::before{left:0}
-.judge-page .tile::after{right:0}
-.judge-page .tile .h{position:absolute;left:0;right:0;height:50%;overflow:hidden;background:var(--tile);backface-visibility:hidden}
-.judge-page .tile .t,.judge-page .tile .ft{top:0;border-radius:3px 3px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
-.judge-page .tile .b,.judge-page .tile .fb{bottom:0;border-radius:0 0 3px 3px;box-shadow:inset 0 1px 0 #070808}
-.judge-page .tile .ft{transform-origin:50% 100%;z-index:2}
-.judge-page .tile .fb{transform-origin:50% 0;z-index:2}
-.judge-page .tile .ft,.judge-page .tile .fb{visibility:hidden}
-.judge-page .tile.turning .ft,.judge-page .tile.turning .fb{visibility:visible}
-.judge-page .tile .h::after{content:attr(data-c);position:absolute;left:0;right:0;height:200%;display:flex;align-items:center;justify-content:center;color:var(--ink);font-variant-numeric:tabular-nums}
-.judge-page .tile .t::after,.judge-page .tile .ft::after{top:0}
-.judge-page .tile .b::after,.judge-page .tile .fb::after{bottom:0}
-.judge-page .sep::after{content:attr(data-c);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink)}
-.judge-page .stat .c{margin-top:18px;font:400 15px/1.5 var(--sans);color:#C9CBC5;max-width:34ch}
+.judge-page .stat .v{font:var(--num-weight) var(--d)/1 var(--num);letter-spacing:0}
+.judge-page .num-row{display:flex;align-items:center;gap:.06em}
+.judge-page .num-tile,.judge-page .num-sep{position:relative;flex:none;width:.72em;height:1.16em;perspective:4em;background:var(--tile);border-radius:var(--r-tile)}
+.judge-page .num-sep{width:.42em}
+.judge-page .num-tile .h{position:absolute;left:0;right:0;height:50%;overflow:hidden;background:var(--tile);backface-visibility:hidden}
+.judge-page .num-tile .t,.judge-page .num-tile .ft{top:0;border-radius:var(--r-tile) var(--r-tile) 0 0}
+.judge-page .num-tile .b,.judge-page .num-tile .fb{bottom:0;border-radius:0 0 var(--r-tile) var(--r-tile)}
+.judge-page .num-tile .ft{transform-origin:50% 100%;z-index:2}
+.judge-page .num-tile .fb{transform-origin:50% 0;z-index:2}
+.judge-page .num-tile .ft,.judge-page .num-tile .fb{visibility:hidden}
+.judge-page .num-tile.turning .ft,.judge-page .num-tile.turning .fb{visibility:visible}
+.judge-page .num-tile .h::after{content:attr(data-c);position:absolute;left:0;right:0;height:200%;display:flex;align-items:center;justify-content:center;color:var(--ink);font-variant-numeric:tabular-nums}
+.judge-page .num-tile .t::after,.judge-page .num-tile .ft::after{top:0}
+.judge-page .num-tile .b::after,.judge-page .num-tile .fb::after{bottom:0}
+.judge-page .num-sep::after{content:attr(data-c);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.judge-page .stat .c{margin-top:18px;font:400 15px/1.5 var(--sans);color:var(--cite);max-width:34ch}
 .judge-page .stat.skel .c .bar{background:var(--tile)}
 
 /* Method, paths, evidence on the same twelve columns */
 .judge-page .ev.method{margin-top:40px}
-.judge-page .ev li,.judge-page .ev.method li{grid-template-columns:minmax(0,3fr) minmax(0,9fr);gap:6px var(--col);padding:16px 0;border-color:var(--line);font-size:15px}
+.judge-page .ev li,.judge-page .ev.method li{grid-template-columns:minmax(0,3fr) minmax(0,9fr);gap:6px var(--col);padding:16px 0;font-size:15px}
 .judge-page .ev li span{font-size:14.5px;max-width:72ch}
 .judge-page .ev.method .sub,.judge-page .ev.method .fn span{max-width:72ch}
-.judge-page code.cmd{font-family:var(--mono);border-radius:0;border-color:var(--line)}
 .judge-page .jg section{margin-top:112px}
 .judge-page .jg .story{margin-top:0}
-.judge-page .jg h2{margin-bottom:24px;font:600 28px/1.1 var(--display);letter-spacing:-.015em;color:var(--ink)}
+.judge-page .jg h2{margin-bottom:24px;font:var(--display-weight) 28px/1.1 var(--display);letter-spacing:-.015em;color:var(--ink)}
 .judge-page .paths{gap:var(--col)}
-.judge-page .path-card{padding:24px;border-color:var(--line);border-radius:0;gap:8px}
-.judge-page .path-card:hover{background:var(--raise);border-color:var(--line)}
+.judge-page .path-card{padding:24px;gap:8px}
+.judge-page .path-card:hover{border-color:var(--line)}
 .judge-page .path-card .step{font:700 14px/1 var(--display);font-variant-numeric:tabular-nums;color:var(--muted)}
-.judge-page .path-card .t{font:600 22px/1.15 var(--display);letter-spacing:-.015em}
+.judge-page .path-card .t{font:var(--display-weight) 22px/1.15 var(--display);letter-spacing:-.015em}
 .judge-page .path-card .d{font-size:15px}
 .judge-page .jg .also{margin-top:20px;font-size:14.5px;max-width:84ch}
 .judge-page .foot{margin-top:48px}
-
-/* Motion: the rule draws, the tag turns over once; the board flips from judge.js. Nothing moves with reduced motion */
-.motion .judge-page .lede::before{animation:jg-draw .4s cubic-bezier(.2,.8,.2,1) .52s both}
-.motion .judge-page .badge.flap .lbl{animation:jg-turn .26s cubic-bezier(.3,.7,.3,1) .87s both}
-@keyframes jg-draw{from{transform:scaleX(0)}}
-@keyframes jg-turn{from{transform:rotateX(-90deg)}}
 
 @media (max-width:900px){
   .judge-page .top .ctx{white-space:normal;overflow:visible}
@@ -457,13 +518,13 @@ code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13
   .judge-page .lede{margin-top:32px;padding-top:28px}
   .judge-page .story .what{grid-column:1/-1;font-size:16px}
   .judge-page .catchline{grid-column:1/-1;grid-template-columns:minmax(0,1fr);gap:14px;margin-top:32px;font-size:17px}
-  .judge-page .badge.flap{justify-self:start}
-  .judge-page .board{margin-top:64px;padding:24px 0 8px}
+  .judge-page .badge.catch-mark{justify-self:start}
+  .judge-page .stat-board{margin-top:64px;padding:24px 0 8px}
   .judge-page .stats{grid-template-columns:minmax(0,1fr)}
   .judge-page .stat,.judge-page .stat + .stat{display:grid;grid-template-columns:calc(var(--d) * 3.5) minmax(0,1fr);gap:16px;align-items:center;padding:16px 0;border-left:0}
   .judge-page .stat .c{margin-top:0;font-size:14px}
   .judge-page .stat:first-child{padding-top:0}
-  .judge-page .stat + .stat{border-top:1px solid var(--line)}
+  .judge-page .stat + .stat{border-top:var(--hair) solid var(--line)}
   .judge-page .stat{--d:clamp(40px,11vw,56px)}
   .judge-page .ev li,.judge-page .ev.method li{grid-template-columns:minmax(0,1fr)}
   .judge-page .jg section{margin-top:72px}
@@ -471,3 +532,6 @@ code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13
 }
 
 @media (max-width:420px){body.judge-page .ctx .fict{display:none}}
+
+/* Phone: the provenance line takes its short form so it never truncates */
+@media (max-width:600px){.top .replay .rp-long{display:none}.top .replay .rp-short{display:inline}}
