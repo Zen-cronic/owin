@@ -19,8 +19,11 @@ ROOT = Path(__file__).resolve().parent.parent
 URL = os.environ.get("OWIN_TF_URL", "https://api.tokenfactory.nebius.com/v1/chat/completions")
 SUPER = "nvidia/nemotron-3-super-120b-a12b"
 ULTRA = "nvidia/Nemotron-3-Ultra-550b-a55b"
-# USD per million input/output tokens (Token Factory list prices used in the S2 spike, 2026-10-21).
-PRICE = {SUPER: (0.30, 0.90), ULTRA: (1.00, 3.00)}
+NANO = "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B"
+LIGHTNING = "nvidia/Nemotron-3_5-Lightning"
+# USD per million input/output tokens. Super and Ultra: list prices used in the S2 spike (2026-10-21); Nano and
+# Lightning: `GET /v1/models?verbose=true` pricing on 2026-10-29 (both $0.06 / $0.24; Super and Ultra unchanged).
+PRICE = {SUPER: (0.30, 0.90), ULTRA: (1.00, 3.00), NANO: (0.06, 0.24), LIGHTNING: (0.06, 0.24)}
 LEDGER = Path(os.environ.get("OWIN_LEDGER", ROOT / "ledger" / "usage.jsonl"))
 
 
