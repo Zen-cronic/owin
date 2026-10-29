@@ -20,6 +20,8 @@ jobs:
       PYTHONUTF8: "1"
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history: the tests check that every commit id the README cites exists
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"

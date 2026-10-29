@@ -272,3 +272,27 @@ def test_every_recorded_reading_was_made_on_the_labelled_bytes():
             assert c["source_sha256"] == corpus[c["id"]]["source_sha256"], (p.name, c["id"])
             n += 1
     assert n == 150  # 39 v3fresh readings + 111 on the older items
+
+
+def _git(*args) -> str | None:
+    import subprocess
+    try:
+        return subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True, timeout=20).stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        return None
+
+
+@pytest.mark.skipif(_git("rev-parse", "--is-shallow-repository") != "false", reason="needs a full git history")
+def test_every_cited_preregistration_commit_exists_and_labels_precede_the_prompt():
+    """The README and eval/datause/headline.json cite the commits that froze the labels and then the prompt; each id
+    must resolve in this repository's history, and the labels commit must be an ancestor of the prompt commit."""
+    pre = json.loads((ROOT / "eval" / "datause" / "headline.json").read_text())["preregistration"]
+    labels, prompt = pre["labels_commit"], pre["prompt_v3_commit"]
+    readme = (ROOT / "README.md").read_text()
+    assert f"`{labels}`" in readme and f"`{prompt}`" in readme
+    for c in (labels, prompt):
+        assert _git("cat-file", "-t", c) == "commit", c
+    import subprocess
+    assert subprocess.run(["git", "-C", str(ROOT), "merge-base", "--is-ancestor", labels, prompt]).returncode == 0
+    touched = _git("show", "--name-only", "--format=", labels).split()
+    assert "eval/datause/preregistration-v3.json" in touched
