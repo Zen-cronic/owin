@@ -1,10 +1,20 @@
-// Judge start page. Every number is recomputed by the server from recorded runs on each load (GET /api/selective).
+// Start page. Every number is recomputed by the server from recorded runs on each load (GET /api/selective).
+// Motion: each line and numeral rises in once as it enters the viewport. Without JS, or when the reader
+// prefers reduced motion, nothing is hidden and nothing moves.
 'use strict';
+const MOTION = matchMedia('(prefers-reduced-motion: no-preference)').matches && 'IntersectionObserver' in window;
+const io = MOTION && new IntersectionObserver((entries) => entries.forEach((e) => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), { rootMargin: '0px 0px -8% 0px' });
+function reveal(root) { if (MOTION) (root || document).querySelectorAll('.reveal:not(.in)').forEach((n) => io.observe(n)); }
+if (MOTION) document.documentElement.classList.add('motion');
+reveal();
+
 (async () => {
   const $ = (id) => document.getElementById(id);
   const frac = (s) => s.split('/').map(Number);
-  const stat = (value, caption) => {
-    const d = document.createElement('div'); d.className = 'stat';
+  const stat = (i, value, caption) => {
+    const d = document.createElement('div'); d.className = 'stat reveal'; d.style.setProperty('--i', i);
     const v = document.createElement('p'); v.className = 'v'; v.textContent = value;
     const c = document.createElement('p'); c.className = 'c'; c.textContent = caption;
     d.append(v, c); return d;
@@ -15,16 +25,18 @@
     const j = await r.json(), s = j.selective;
     const [auto, cells] = frac(s.auto_answered), [right, answered] = frac(s.auto_correct), [maj, conf] = frac(s.confirm_majority_right);
     const perReading = j.per_call.mean_cost_usd, perEndpoint = perReading * 3;
-    $('big').textContent = `On ${s.vendors} AI vendors it had never seen, Owin filled ${auto} of ${cells} answers on its own.`;
+    $('big').textContent = `On ${s.vendors} AI vendors it had never seen, recomputed from recorded runs when this page loaded:`;
     $('stats').replaceChildren(
-      stat(`${right}/${answered}`, 'correct when Owin answered on its own, each with the vendor’s own sentence'),
-      stat(String(s.sent_to_confirm), `handed to a person to confirm; the majority reading would have been right on only ${maj} of ${conf}`),
-      stat(`$${perReading.toFixed(4)}`, `per reading on Nebius Token Factory; about ${Math.round(j.per_call.mean_latency_s_exact_runs)} s, and $${perEndpoint.toFixed(3)} per endpoint (three readings)`));
-    $('sub').textContent = `Split ${s.split}: ${s.items} features from ${s.vendors} vendors, labels committed before the prompt was written. Model: ${j.model}.`;
+      stat(1, `${auto}/${cells}`, 'answers Owin filled on its own'),
+      stat(2, `${right}/${answered}`, 'right among those, each with the vendor’s own sentence'),
+      stat(3, String(s.sent_to_confirm), `handed to a person to confirm; a majority vote would have been right on only ${maj} of ${conf}`));
+    reveal($('stats'));
+    $('sub').textContent = `Split ${s.split}: ${s.items} features from ${s.vendors} vendors, labels committed before the prompt was written. $${perReading.toFixed(4)} per reading on Nebius Token Factory, about ${Math.round(j.per_call.mean_latency_s_exact_runs)} s each, $${perEndpoint.toFixed(3)} per endpoint (three readings). Model ${j.model}.`;
     const miss = (s.auto_misses || [])[0];
-    if (miss && miss.footnote) $('fn').textContent = `The one confident miss (${miss.item}, ${miss.field.replace('_', ' ')}): ${miss.footnote}`;
+    if (miss && miss.footnote) $('fn').replaceChildren(Object.assign(document.createElement('span'), { textContent: `The one confident miss (${miss.item}, ${miss.field.replace('_', ' ')}): ${miss.footnote}` }));
   } catch (e) {
-    $('big').textContent = 'Couldn’t recompute the number right now.';
+    $('big').textContent = 'Couldn’t recompute the numbers right now.';
+    $('stats').replaceChildren();
     $('sub').textContent = 'Run the command below, or reload. No number is shown that was not recomputed.';
   } finally {
     $('judge').setAttribute('aria-busy', 'false');

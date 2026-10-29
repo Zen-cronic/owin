@@ -222,7 +222,7 @@ function render() {
 // Summary: the counts for every answer, in the hero's right column (stacked under the headline on mobile).
 function renderSummary(p) {
   const c = p.counts;
-  const rows = [['not_true', 'Not true'], ['stale', 'Stale'], ['confirm', 'To confirm'], ['held_unspecified', 'Not stated'], ['still_true', 'Still true']]
+  const rows = [['not_true', 'Not true'], ['stale', 'Stale'], ['confirm', 'To confirm'], ['held_unspecified', 'Held'], ['still_true', 'Still true']]
     .filter(([k]) => c[k] || k === 'still_true' || k === 'not_true');
   $('summary').replaceChildren(
     el('h2', {}, `${p.answers.length} answers · ${p.stack.endpoints.length} endpoints · ${p.stack.providers.length} providers`),
@@ -266,7 +266,7 @@ const CHIP = {
   contradicts: { cls: 'bad', icon: 'warn', word: 'Not true' },
   stale: { cls: 'stale', icon: 'stale', word: 'Stale' },
   confirm: { cls: 'confirm', icon: 'ask', word: 'Confirm' },
-  held: { cls: 'held', icon: 'held', word: 'Not stated' },
+  held: { cls: 'held', icon: 'held', word: 'Held' },
 };
 
 // Answers that no endpoint's vendor page states (e.g. region) are said once under the stack, not on every row.
@@ -279,7 +279,7 @@ function legend(p) {
     el('span', { class: 'li' }, [...p.answers].sort((x, y) => x.number.localeCompare(y.number)).map((a) => el('span', {}, el('i', {}, a.number), QSHORT[a.number] || a.question))));
   const kids = [nums];
   const he = heldEverywhere(p);
-  if (he.length) kids.push(el('p', { class: 'legend note' }, el('span', { class: 'lh' }, 'Not stated'),
+  if (he.length) kids.push(el('p', { class: 'legend note' }, el('span', { class: 'lh' }, 'Held'),
     el('span', {}, `No vendor page states answer${he.length > 1 ? 's' : ''} ${he.join(', ')} for any endpoint, so Owin leaves ${he.length > 1 ? 'them' : 'it'} for you to confirm.`)));
   return el('div', { class: 'legends' }, kids);
 }
@@ -361,7 +361,7 @@ function renderPages(p) {
     el('h3', {}, 'Vendor pages', el('span', {}, `${p.watch.pages_watched} watched · checked ${fmtLocal(p.watch.last_checked_local)}`)),
   ];
   if (items.length) kids.push(el('ul', {}, items));
-  kids.push(el('p', { class: 'reset' }, 'You get an alert when a sentence an answer relies on changes.'));
+  kids.push(el('p', { class: 'reset' }, 'Each check re-reads these pages; an answer goes Stale when a sentence it relies on changes.'));
   if (Object.keys(state.sets).length) {
     kids.push(el('p', { class: 'reset' }, 'You changed ', ...Object.keys(state.sets).map((x) => el('span', { class: 'mono nw' }, x)), '. ',
       el('button', { onclick: () => { state.sets = {}; load({ recompute: true }); } }, 'Reset to the demo stack')));
