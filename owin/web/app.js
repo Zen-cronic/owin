@@ -29,7 +29,10 @@ const BADGE = {
   still_true: { cls: 'ok', icon: 'check' },
 };
 
-const state = { pack: null, catalog: null, watch: null, sets: readSets(), drawn: false, seq: 0 };
+const state = { pack: null, catalog: null, watch: null, sets: readSets(), drawn: false, seq: 0, base: null, changes: [] };
+// Prose words for a badge, for the one-line narration of what a change moved. Severity orders the narration.
+const WORD = { not_true: 'not true', stale: 'stale', confirm: 'to confirm', held_unspecified: 'held', still_true: 'still true' };
+const SEV = { not_true: 0, stale: 1, confirm: 2, held_unspecified: 3, still_true: 4 };
 
 // DOM helpers
 function el(tag, attrs, ...kids) {
@@ -107,19 +110,28 @@ async function load({ recompute = false } = {}) {
   app.setAttribute('aria-busy', 'true');
   if (recompute) { app.classList.add('recomputing'); say('Recomputing from your change…'); }
   try {
-    const [pack, catalog, watch, health] = await Promise.all([
+    const changed = Object.keys(state.sets).length > 0;
+    const [pack, catalog, watch, health, base] = await Promise.all([
       getJSON('/api/pack' + setQuery()),
       state.catalog ? state.catalog : getJSON('/api/catalog'),
       state.watch ? state.watch : getJSON('/api/watch').catch(() => null),
       state.health ? state.health : getJSON('/healthz').catch(() => null),
+      // The demo stack's pack is the baseline a change is narrated against (same keyless endpoint, no sets).
+      changed && !state.base ? getJSON('/api/pack').catch(() => null) : null,
     ]);
     state.health = health;
     if (seq !== state.seq) return;
     state.pack = pack; state.catalog = catalog; state.watch = watch;
+    state.base = changed ? (state.base || base) : pack;
+    state.changes = changed ? badgeChanges(state.base, pack) : [];
     history.replaceState(null, '', location.pathname + setQuery() + location.hash);
     render();
     say('');
-    if (recompute) { $('announce').textContent = recomputedLine(pack); toast(recomputedLine(pack)); }
+    if (recompute) {
+      $('announce').textContent = recomputedLine(pack); toast(recomputedLine(pack));
+      const first = state.changes[0] && $('q-' + state.changes[0].a.id);
+      if (first && !MOBILE.matches) first.scrollIntoView({ block: 'nearest', behavior: REDUCED.matches ? 'auto' : 'smooth' });
+    }
   } catch (e) {
     if (seq !== state.seq) return;
     if (state.pack) {
@@ -141,7 +153,35 @@ function recomputedLine(p) {
   if (c.confirm) parts.push(`${c.confirm} to confirm`);
   if (c.held_unspecified) parts.push(`${c.held_unspecified} held`);
   parts.push(`${c.still_true} still true`);
-  return `Recomputed at ${nowET()}: ${parts.join(', ')}.`;
+  const moved = state.changes.map((ch) => `answer ${+ch.a.number} ${WORD[ch.a.badge] || ch.a.badge} (was ${WORD[ch.was.badge] || ch.was.badge})`);
+  return `Recomputed at ${nowET()}: ${moved.length ? moved.join(', ') + '; ' : ''}${parts.join(', ')}.`;
+}
+
+// What your change moved: each answer whose code-computed badge differs from the demo stack's, with the changed
+// endpoints whose cell verdict moved. Badges and verdicts only; no prose is read.
+function badgeChanges(base, p) {
+  if (!base) return [];
+  const before = Object.fromEntries(base.answers.map((a) => [a.id, a]));
+  const key = (c) => (c.stale ? 'stale:' : '') + c.verdict;
+  const out = [];
+  for (const a of p.answers) {
+    const was = before[a.id];
+    if (!was || was.badge === a.badge) continue;
+    const old = Object.fromEntries(was.cells.map((c) => [c.endpoint, key(c)]));
+    const paths = a.cells.filter((c) => c.endpoint in state.sets && old[c.endpoint] !== key(c)).map((c) => c.endpoint);
+    out.push({ a, was, paths });
+  }
+  return out.sort((x, y) => (SEV[x.was.badge] ?? 9) - (SEV[y.was.badge] ?? 9));
+}
+function joinPaths(paths) {
+  const out = [];
+  paths.forEach((x, i) => { if (i) out.push(i === paths.length - 1 ? ' and ' : ', '); out.push(el('span', { class: 'mono nw' }, x)); });
+  return out;
+}
+function changeSentence(ch) {
+  return [`Answer ${+ch.a.number} is now ${WORD[ch.a.badge] || ch.a.badge_label.toLowerCase()}`,
+    ...(ch.paths.length ? [' for ', ...joinPaths(ch.paths)] : []),
+    `; it was ${WORD[ch.was.badge] || ch.was.badge_label.toLowerCase()}.`];
 }
 
 // API down: no answers are shown, so nothing is guessed.
@@ -205,7 +245,9 @@ function render() {
   renderPages(p);
 
   // Answers
-  $('answers').replaceChildren(...p.order.map((id) => answerRow(p, byId[id], staleEv)));
+  const pinned = state.changes.map((ch) => ch.a.id);
+  const order = [...pinned, ...p.order.filter((id) => !pinned.includes(id))];
+  $('answers').replaceChildren(...order.map((id) => answerRow(p, byId[id], staleEv)));
   $('export-btn').disabled = false;
 
   // Footnote under the answers column
@@ -245,6 +287,8 @@ function renderCatch(p, byId, staleEv) {
   k.replaceChildren(...parts);
 
   const h = $('catch-h'), todo = $('todo');
+  const oldDelta = $('delta'); if (oldDelta) oldDelta.remove();
+  if (state.changes.length) h.after(el('p', { class: 'lede delta', id: 'delta' }, state.changes.flatMap((ch, i) => [i ? ' ' : '', ...changeSentence(ch)])));
   if (p.catch) {
     h.replaceChildren(...withPaths(p.catch.sentence, 'ep'));
     todo.replaceChildren(
@@ -294,7 +338,8 @@ function endpointRow(p, s, staleEv) {
   let finding = null;
   const bad = Object.values(cells).find((x) => x.v === 'contradicts');
   const stale = Object.values(cells).find((x) => x.v === 'stale');
-  const conf = Object.values(cells).filter((x) => x.v === 'confirm' || (x.c.stale && x.c.verdict === 'confirm'));
+  // Confirm shows on a chip only for an answer whose badge is Confirm, the ones the summary counts.
+  const conf = Object.values(cells).filter((x) => x.a.badge === 'confirm' && (x.v === 'confirm' || (x.c.stale && x.c.verdict === 'confirm')));
   if (bad) finding = el('p', { class: 'finding' }, `${bad.c.value_label}.`);
   else if (stale && staleEv) finding = el('p', { class: 'finding' }, `${staleEv.provider_display} changed its sub-processor list on `, el('span', { class: 'nw' }, fmtLong(staleEv.after.last_updated, false)), '.');
   else if (conf.length) finding = el('p', { class: 'finding' }, 'Readings of the vendor page disagree.');
@@ -302,11 +347,11 @@ function endpointRow(p, s, staleEv) {
   // Only the answers this endpoint affects, as chips. Stale and confirm on one cell give two chips.
   const chips = [];
   for (const n of Object.keys(cells).sort()) {
-    const { c } = cells[n];
+    const { c, a } = cells[n];
     const states = [];
     if (c.verdict === 'contradicts') states.push('contradicts');
     if (c.stale) states.push('stale');
-    if (c.verdict === 'confirm') states.push('confirm');
+    if (c.verdict === 'confirm' && a.badge === 'confirm') states.push('confirm');
     if (c.verdict === 'held' && !he.has(n)) states.push('held');
     for (const v of states) {
       const k = CHIP[v];
@@ -453,6 +498,8 @@ function answerRow(p, a, staleEv) {
   const b = BADGE[a.badge] || BADGE.held_unspecified;
   const isCatch = p.catch && p.catch.question === a.id;
   const body = el('div', { class: 'body' });
+  const ch = state.changes.find((x) => x.a.id === a.id);
+  if (ch) body.append(el('p', { class: 'delta' }, 'Was ', el('b', {}, ch.was.badge_label), ...(ch.paths.length ? [' before you changed ', ...joinPaths(ch.paths)] : [' before your change']), '.'));
   const sentence = a.badge === 'stale' ? a.answer.replace(/\s*Review the change\.\s*$/, '') : a.answer;
   body.append(el('p', {}, withPaths(sentence)));
 
@@ -491,10 +538,11 @@ function answerRow(p, a, staleEv) {
   }
   // A confirm cell inside an answer whose badge is driven by something else still shows its readings.
   if (a.badge !== 'confirm' && a.cells.some((c) => c.verdict === 'confirm')) {
-    body.append(el('details', { class: 'more' }, el('summary', {}, `${a.cells.filter((c) => c.verdict === 'confirm').length} endpoint readings to confirm`), confirmBlock(a)));
+    const n = a.cells.filter((c) => c.verdict === 'confirm').length;
+    body.append(el('details', { class: 'more' }, el('summary', {}, `${n} endpoint reading${n === 1 ? '' : 's'} to confirm`), confirmBlock(a)));
   }
 
-  const art = el('article', { class: 'ans' + (isCatch ? ' sel' : '') + (a.badge === 'stale' ? ' stale' : ''), id: 'q-' + a.id, 'data-badge': a.badge, tabindex: '-1', 'aria-labelledby': `h-${a.id}` },
+  const art = el('article', { class: 'ans' + (isCatch ? ' sel' : '') + (a.badge === 'stale' ? ' stale' : '') + (ch ? ' changed' : ''), id: 'q-' + a.id, 'data-badge': a.badge, tabindex: '-1', 'aria-labelledby': `h-${a.id}` },
     el('span', { class: 'n' }, a.number),
     el('h3', { id: `h-${a.id}` }, a.question),
     el('span', { class: 'badge ' + b.cls }, icon(b.icon), a.badge_label),

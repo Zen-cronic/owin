@@ -68,6 +68,8 @@ h1 .ep{font-size:.95em;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
 .status.err{color:var(--ink);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .status.err svg{color:var(--muted)}
 .lede{margin-top:8px;font-size:14.5px;color:var(--muted);max-width:68ch}
+.lede.delta{color:var(--ink)}
+.lede.delta .mono{font-size:.95em}
 
 .btn{font:600 15px/1 var(--sans);border-radius:4px;padding:13px 18px;cursor:pointer;border:1px solid transparent;white-space:nowrap;color:var(--ink);background:none;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
 .btn.primary{background:var(--act);color:var(--on-act)}
@@ -147,6 +149,9 @@ h1 .ep{font-size:.95em;font-weight:700;letter-spacing:-.04em;white-space:nowrap}
 .ans .body{grid-column:2/4;min-width:0}
 .ans .body p{font-size:15px;margin-top:8px}
 .ans .body p.dim{color:var(--muted)}
+.ans .body p.delta{font-size:12.5px;color:var(--muted);margin-top:4px}
+.ans .body p.delta b{color:var(--ink);font-weight:600}
+.ans.changed h3::after{content:"changed";font:500 11px var(--sans);color:var(--muted);margin-left:8px;letter-spacing:.01em;vertical-align:middle}
 .ans.sel{border:1px solid var(--act);border-radius:4px;background:var(--surface)}
 .ans.sel + .ans{border-top-color:transparent}
 blockquote{margin-top:10px;padding-left:12px;border-left:2px solid var(--edge);font-size:14px;line-height:1.5;overflow-wrap:anywhere}
