@@ -97,6 +97,8 @@ svg.i{width:14px;height:14px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .theme-switch label:hover input:checked + span{background:none}
 .theme-switch input:focus-visible + span{outline:2px solid var(--focus);outline-offset:2px}
 :root:not([data-theme]) .theme-switch{display:none}
+.theme-select{display:none;font:500 12px/1 var(--sans);color:var(--ink);background:var(--surface);border:var(--hair) solid var(--line);border-radius:var(--r-sm);padding:4px 6px;max-width:140px}
+.theme-select:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 
 .wrap{max-width:1280px;margin:0 auto;padding:28px 32px 56px}
 
@@ -328,11 +330,13 @@ details.more summary:hover{color:var(--ink)}
   .top .ctx{grid-column:2/4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .top .replay{font-size:12px;margin-left:0;grid-column:1/3;grid-row:2;min-width:0;overflow:hidden;text-overflow:ellipsis}
   .top .judge{grid-column:3;grid-row:2;justify-self:end;font-size:12px}
-  .top .theme-switch{grid-column:1/-1;grid-row:3;justify-self:end;margin:0 -4px 0 0;padding:0;border:0}
+  .top .theme-switch{display:none}
+  :root[data-theme] .top .theme-select{display:block;grid-column:3;grid-row:1;justify-self:end;align-self:center}
+  .top .ctx{grid-column:2/3}
   .top .theme-switch label > span:not(.sr){height:22px}
   .judge-page .top .replay.judge{grid-column:3;grid-row:1}
   .judge-page .top .ctx{grid-column:2/3}
-  .judge-page .top .theme-switch{grid-row:2}
+  :root[data-theme] .judge-page .top .theme-select{grid-row:2}
   .catch{grid-template-columns:minmax(0,1fr)}
   .catch > .summary{display:none}
   .wrap{padding:16px 16px 48px}
@@ -366,7 +370,7 @@ details.more summary:hover{color:var(--ink)}
   .menu{min-width:260px}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
-@media print{.theme-switch{display:none!important}}
+@media print{.theme-switch,.theme-select{display:none!important}}
 .ans.sel + .ans.stale{margin-top:8px}
 
 /* Judge start page */
