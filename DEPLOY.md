@@ -140,7 +140,10 @@ fetched list became a first baseline): 29 vendors swept (22 fetched live through
 `eval/sweeps/job-daily-20261029T033329Z.json` (the job), `eval/sweeps/sweep-3-live-20261029T033329Z.json` (the sweep)
 and `eval/sweeps/job-daily-20261029T033329Z-readings.json` (the readings); the Token Factory calls are the
 `pack-registry` lines in `ledger/usage.jsonl` at 2026-10-28T23:34 EDT. About 29 Tavily credits per run on a fresh
-state dir (22 list fetches + 7 pages); a repeat run adds an advanced-depth re-fetch for each unchanged list.
+state dir (22 list fetches + 7 pages); a repeat run adds an advanced-depth re-fetch for each unchanged list. A repeat
+sweep of the four vendors with recorded fixtures against those baselines seven minutes later
+(`eval/sweeps/sweep-4-live-repeat-20261029T034046Z.json`): 4 no_change, 3 of them re-fetched at advanced depth before
+Owin said so, about 10 credits.
 
 1. Create an Object Storage bucket for state, for example `owin-state` (console: Object Storage -> Create bucket).
 2. Store both keys in SecretStash: console -> SecretStash -> Create secret, name `owin-keys`, payload keys
