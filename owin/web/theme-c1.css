@@ -203,7 +203,7 @@
   .judge-page .num-sep{width:.34em}
   .judge-page .num-tile .h{background:none}
   .judge-page .num-tile .h::after,.judge-page .num-sep::after{color:#1E1A16;font-weight:800;font-stretch:75%}
-  .judge-page .num-sep::after{color:var(--muted)}
+  .judge-page .num-sep::after{color:#5E5A55}
   .judge-page .stat .c{margin-top:62px;color:var(--on-field);font:600 16px/1.45 var(--sans);max-width:24ch}
   .judge-page .stat.skel .v{min-width:3.4em;min-height:1.1em}
   .judge-page .stat.skel .c .bar{background:rgba(255,255,255,.16)}
