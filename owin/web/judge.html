@@ -84,7 +84,7 @@
       <li><a href="/README.md">README: what we’ll tell you before you find it</a><span>Earlier prompts that failed, the labelling limit (an AI coding agent labelled every item, a second agent pass spot-checked, no independent human audit yet), the label error we found ourselves, what is fictional.</span></li>
       <li><a href="/pack/print">The buyer’s copy</a><span>The answer pack as a buyer would receive it (print to PDF). No internal reasons, no fix drafts.</span></li>
       <li><a href="/api/pack?format=csv">CSV</a><span>One row per question and endpoint, with the vendor sentence and its link.</span></li>
-      <li id="sponsor"><b>What runs it</b><span>Tavily <span class="mono">extract</span> fetches each vendor page. NVIDIA Nemotron 3 Super, an open-weight model on Nebius Token Factory, reads it three times. Code, not the model, decides every answer.</span></li>
+      <li id="sponsor"><b>What runs it</b><span>Tavily <span class="mono">extract</span> fetched each vendor page, and re-fetches on a sweep or from “Re-check this page” when the server has a key. NVIDIA Nemotron 3 Super, an open-weight model on Nebius Token Factory, read each page three times; this page replays those recorded runs. Code, not the model, decides every answer.</span></li>
     </ul>
   </section>
   <p class="foot">Lumen Notes, its endpoints, settings and trust-page answers are fictional; every vendor sentence, link and fetch time is real. ZDR settings are as the company states them; Owin cannot see vendor consoles. Owin is not legal advice.</p>

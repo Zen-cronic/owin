@@ -18,7 +18,7 @@ export VIRTUAL_ENV="$HOME/.pyenv/versions/.owin"; export PATH="$VIRTUAL_ENV/bin:
 poetry install && owin serve      # then open http://127.0.0.1:8787/judge
 ```
 
-No key, no network, no login: the app and every number run from committed files. `/judge` is the start page: the number (recomputed on load), three guided paths, and the evidence.
+No key, no network, no login: the app and every number run from committed files. With a Tavily key set on the server, "Re-check this page" under an endpoint fetches that vendor page live; without one, the button says so. `/judge` is the start page: the number (recomputed on load), three guided paths, and the evidence.
 
 | Path on `/judge` | What it shows | Label |
 |---|---|---|
@@ -53,8 +53,8 @@ owin facts check                                               # every claim in 
 
 ## Why these sponsors
 
-- **NVIDIA Nemotron 3 Super (`nvidia/nemotron-3-super-120b-a12b`, open-weight) on Nebius Token Factory** reads each vendor page and proposes structured fields plus the sentence for each. Measured on `v3fresh`: **$0.0029 per reading** (39 calls, $0.115 total, list price $0.30 / $0.90 per M tokens), mean 8.8 s, p95 15.9 s. One endpoint costs about **$0.009** to answer (three readings). We use three cheap readings and agreement instead of one larger model: in our first spike, Nemotron Ultra did not beat Super on extraction, and agreement across readings is what separates the 26/27 from the 6 that need a person.
-- **Tavily `extract`** fetches the vendor pages at runtime (whole page, no query), and the pack's readings run on its captures. When Tavily serves an older copy than one we already trust (OpenAI's list came back dated July 9, 2026 after Wayback showed October 14, 2026), Owin **holds** that copy and never uses it: the stale-source rule. `owin pack refresh` re-fetches; `owin sweep` covers a 29-vendor index.
+- **NVIDIA Nemotron 3 Super (`nvidia/nemotron-3-super-120b-a12b`, open-weight) on Nebius Token Factory** reads each vendor page and proposes structured fields plus the sentence for each. Measured on `v3fresh`: **$0.0029 per reading** (39 calls, $0.115 total, list price $0.30 / $0.90 per M tokens), mean 8.8 s, p95 15.9 s over the runs that were exactly right. One endpoint costs about **$0.009** to answer (three readings). We use three cheap readings and agreement instead of one larger model: in our first spike, Nemotron Ultra did not beat Super on extraction, and agreement across readings is what separates the 26/27 from the 6 that need a person.
+- **Tavily `extract`** fetches each vendor page whole (no query) whenever Owin fetches: `owin pack refresh` and `owin sweep` on the CLI, the daily `owin job daily`, and the app's "Re-check this page" button when a Tavily key is set on the server. The pages a judge opens replay recorded captures; no page view calls Tavily. The pack's readings run on those captures. When Tavily serves an older copy than one we already trust (OpenAI's list came back dated July 9, 2026 after Wayback showed October 14, 2026), Owin **holds** that copy and never uses it: the stale-source rule. `owin sweep` covers 29 vendors per sweep.
 
 ## Architecture
 
@@ -86,8 +86,8 @@ rules (code)   ──► answer pack ──► app / PDF / CSV / share link
 - **The demo company is fictional.** Lumen Notes, its endpoints, its trust-page answers and its **ZDR settings are assumed** (Owin cannot see vendor consoles). The vendor sentences, links, fetch times and the OpenAI list change (Wayback captures; OpenAI changed Cloudflare's entry and added OAI International) are real.
 - **Region never decides.** Vendor region text is free text, so no rule reads it; answer 4 is held unless you state your own setting.
 - **Some vendor pages are not watchable.** Vercel's sub-processor list is a JavaScript widget; OpenAI's DPA hides its clauses in accordions; Supabase's list is a PDF with only a date to diff. Tavily sometimes serves an older copy; Owin holds it.
-- **Answer-pack runs and the scored corpus differ.** The pack's readings run on Tavily captures; the scored corpus pages were fetched by plain HTTP. OpenAI Embeddings in the demo is not in the scored corpus.
-- **The watch is not scheduled yet.** Pages are re-fetched by command (`owin pack refresh`); a daily job on Nebius Serverless Jobs is next.
+- **Answer-pack runs and the scored corpus differ.** The pack's readings and the `v3fresh` corpus pages were both fetched with Tavily `extract` (basic depth, markdown); most of the older corpus pages were fetched by plain HTTP (urllib), some with Tavily. OpenAI Embeddings in the demo is not in the scored corpus.
+- **The watch is not scheduled yet.** Pages are re-fetched by command (`owin pack refresh`) or from the app's "Re-check this page" button when a key is set; the daily job on Nebius Serverless AI jobs is written up in [DEPLOY.md](DEPLOY.md) and has not run yet.
 - **Not legal advice.** Owin quotes vendors and compares answers; it does not tell you what you are permitted to do.
 
 ## Earlier work in this repo
