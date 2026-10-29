@@ -949,11 +949,11 @@
          "key": "Purpose",
          "value": "Content delivery network provider",
          "match": true,
-         "was": "Content delivery network providerWeb Hosting"
+         "was": "Content delivery network provider; Web Hosting"
         },
         {
          "key": "Locations",
-         "value": "Processing is performed at the data center that is closest to the End User.For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected; processing region.",
+         "value": "Processing is performed at the data center that is closest to the End User. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected; processing region.",
          "match": true,
          "was": "Processing is performed at the data center that is closest to the End User"
         }
@@ -1032,7 +1032,7 @@
       ],
       "after_cells": {
        "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
-       "locations": "Processing is performed at the data center that is closest to the End User.For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected; processing region.",
+       "locations": "Processing is performed at the data center that is closest to the End User. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected; processing region.",
        "purpose": "Content delivery network provider"
       }
      },
@@ -1052,11 +1052,11 @@
          "key": "Purpose",
          "value": "Content delivery network provider",
          "match": true,
-         "was": "Content delivery network providerWeb Hosting"
+         "was": "Content delivery network provider; Web Hosting"
         },
         {
          "key": "Locations",
-         "value": "Processing is performed at the data center that is closest to the End User.For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected; processing region.",
+         "value": "Processing is performed at the data center that is closest to the End User. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected; processing region.",
          "match": true,
          "was": "Processing is performed at the data center that is closest to the End User"
         }

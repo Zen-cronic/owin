@@ -3,6 +3,7 @@ import copy
 import csv
 import io
 import json
+from html import unescape as html_unescape
 
 import pytest
 
@@ -336,3 +337,41 @@ def test_pack_readings_follow_the_headline_prompt_version():
         if e.get("live_check"):
             assert e["live_check"]["prompt_version"] == want, fid
     assert want == "v3"
+
+
+def test_print_copy_speaks_to_the_buyer(demo):
+    """The print copy is the buyer's document: the company's answers (the revised wording for the contradicted one),
+    plain statuses, the vendor's evidence as a quote or key/value rows, and nothing addressed to the person who runs
+    Owin: no internal badges, no "review", no file paths, no workflow states as vendor sentences."""
+    h = export.to_html(demo)
+    for internal in ("Not true", "Held · unspecified", ">Stale<", "Review the change", "Being confirmed against the vendor's page",
+                     "data/datause", "(your setting)", "not in your answer", "Fix answer", "Draft trust-page change", "badge"):
+        assert internal not in h, internal
+    # Answer 3 ships the revised wording Owin drafted, with the exceptions spelled out, not the contradicted sentence.
+    assert demo["catch"]["fix"]["text"] in h and "Yes, except: /api/crm-sync" in h
+    q3 = next(a for a in demo["answers"] if a["id"] == "Q03")
+    assert "Wording revised on" in h and q3["stated"]["text"] not in h
+    # The vendor sentence behind it is still there, with its link and fetch time.
+    assert "The MCP connector is not covered by ZDR arrangements." in h and "fetched 2026-10-2" in h
+    # Table-row evidence renders as key/value rows with the answering cell marked, never a flattened "a · b · c".
+    assert '<dl class="kv">' in h and "<dt>Zero Data Retention eligible</dt>" in h and 'class="hit"' in h
+    assert "· No · 30 days ·" not in h
+    # Plain statuses and notes a buyer can read.
+    for status in ("Supported by the vendors' pages", "Revised to match the vendors' pages", "A vendor page changed after this answer",
+                   "Partly stated by the vendors' pages", "Company statement; the vendors' pages do not say"):
+        assert html_unescape(status) in html_unescape(h), status
+    assert "OpenAI updated its sub-processor list on October 14, 2026 (previously June 2, 2026)" in h
+    # The label keeps the fictional-company disclosure and drops the sentence that named repository files.
+    s = export.to_share(demo)
+    assert s["label"].startswith("DEMO COMPANY (fictional).") and "registry.json" not in s["label"]
+    assert all(a["buyer_status"] for a in s["answers"]) and s["answers"][2]["answer"].startswith("Yes, except:")
+
+
+def test_print_confirm_cell_is_pending_never_a_vendor_sentence():
+    m = pack.set_feature(pack.load_demo(), "/api/embed", "openai-responses")
+    h = export.to_html(pack.build(m))
+    assert "<td>Being confirmed</td>" in h and "Being confirmed against the vendor's page" not in h
+    assert "Readings disagree" not in h and "Cloudflare, Ltd. (changed)" in h  # the list change is the evidence shown
+    m["stated"]["stated_at"] = "2026-10-21"  # no list change to show: the cell says it is pending, with no sentence
+    h = export.to_html(pack.build(m))
+    assert "Pending the company's confirmation." in h and "<td>Being confirmed</td>" in h
