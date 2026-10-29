@@ -59,11 +59,25 @@ def _ultra() -> dict:
 
 
 @lru_cache(maxsize=None)
+def _ladder() -> dict:
+    from .datause import ladder
+    return ladder.report()
+
+
+def _arm(name: str) -> str:
+    a = _ladder()["arms"][name]
+    return f"{a['auto_answered']}, {a['auto_correct']}, {a['sent_to_confirm']}"
+
+
+LADDER = "owin eval ladder --corpus datause --brief"
+
+
+@lru_cache(maxsize=None)
 def thinking() -> dict:
     """Nemotron Super with reasoning on (the pre-registered headline run) vs off (same prompt v3, same split, same
-    selective rule), from the two recorded run files. The rule, written before the off run: the live path turns
-    reasoning off only if the off arm's right-share among auto answers is at least the on arm's and it adds no
-    confident miss. One cell can decide it (27 auto cells); the rule is kept as written."""
+    selective rule), from the two recorded run files. The decision rule (stated in the same commit as the result,
+    so it is NOT pre-registered): reasoning goes off only if the off arm's right-share among auto answers is at
+    least the on arm's and it adds no confident miss. One cell could decide it (27 auto cells); here 7 do."""
     from .datause import evaluate as dv, selective
     import statistics
     arms = {}
@@ -81,8 +95,8 @@ def thinking() -> dict:
     on, off = arms["on"], arms["off"]
     adopt = off["auto_precision"] >= on["auto_precision"] and off["confident_misses"] <= on["confident_misses"]
     return {"_about": "Recomputed by owin/facts.py::thinking from the two run files; written by `owin facts write`.",
-            "rule": "turn reasoning off on the live path only if the off arm's right-share among auto answers is >= the "
-                    "on arm's and it adds no confident miss (written before the off run)",
+            "rule": "turn reasoning off only if the off arm's right-share among auto answers is >= the on arm's and it "
+                    "adds no confident miss (stated with the result, not pre-registered)",
             "on": on, "off": off, "live_path_reasoning": "off" if adopt else "on"}
 
 
@@ -207,8 +221,32 @@ FACTS = [
      lambda: f"{thinking()['off']['mean_latency_s']:.1f} vs {thinking()['on']['mean_latency_s']:.1f}"),
     ("think.tokens", "Output tokens over the 39 readings, reasoning off vs on", "6292 vs 72524", NOTHINK_RUN,
      lambda: f"{thinking()['off']['completion_tokens']} vs {thinking()['on']['completion_tokens']}"),
-    ("think.live", "Reasoning setting the live recheck path uses (by the rule written before the off run)", "on",
+    ("think.live", "Reasoning setting every reading uses (the off arm adds 6 confident misses)", "on",
      "eval/thinking-off-vs-on.json", lambda: thinking()["live_path_reasoning"]),
+    ("ladder.ultra", "Nemotron Ultra x3 alone, same split, prompt and rule: auto-answered, right, sent to a person", "30/33, 29/30, 3", LADDER,
+     lambda: _arm("ultra")),
+    ("ladder.cost", "Cost per reading, Ultra vs Super (USD)", "0.0136 vs 0.0029", LADDER,
+     lambda: f"{_ladder()['arms']['ultra']['cost_per_reading_usd']:.4f} vs {_ladder()['arms']['super']['cost_per_reading_usd']:.4f}"),
+    ("ladder.esc", "Pre-registered escalation (Super x3; Ultra x3 only where Super's readings split): auto-answered, right, sent to a person",
+     "31/33, 30/31, 2", LADDER, lambda: (lambda e: f"{e['auto_answered']}, {e['auto_correct']}, {e['sent_to_person']}")(_ladder()["escalation"])),
+    ("ladder.esc.k", "Of the 6 cells Super sends to a person: answered by Ultra / right", "4 / 4", LADDER,
+     lambda: (lambda n, r: f"{r} / {n}")(*map(int, _ladder()["escalation"]["resolved_by_ultra"].split("/")[::-1]))),
+    ("ladder.esc.cost", "Ultra readings per escalated feature (3 readings, USD)", 0.0352, LADDER,
+     lambda: _ladder()["escalation"]["extra_cost_per_feature_usd"]),
+    ("ladder.esc.adopted", "The escalation met its pre-registered bar (fewer than 6 to a person, no new confident miss)", True, LADDER,
+     lambda: _ladder()["escalation"]["adopted"]),
+    ("ladder.retract", "Pre-registered retraction triggered: Ultra alone gets more cells right than Super alone", True, LADDER,
+     lambda: _ladder()["retraction"]["triggered"]),
+    ("ladder.nano", "Nemotron Nano 30B-A3B x3 alone: auto-answered, right, sent to a person", "25/33, 24/25, 8", LADDER, lambda: _arm("nano")),
+    ("ladder.lightning", "Nemotron 3.5 Lightning x3 alone: auto-answered, right, sent to a person", "0/33, 0/0, 33", LADDER, lambda: _arm("lightning")),
+    ("ladder.lightning.err", "Lightning readings that ran out the 8,000-token budget reasoning (errored, abstained), of 39", 32, LADDER,
+     lambda: _ladder()["arms"]["lightning"]["errored_abstained"]),
+    ("ladder.nano.lat", "Mean latency per reading, Nano vs Super (s)", "44.8 vs 9.7", LADDER,
+     lambda: f"{_ladder()['arms']['nano']['mean_latency_s']:.1f} vs {_ladder()['arms']['super']['mean_latency_s']:.1f}"),
+    ("ladder.cascade", "Pre-registered Nano-first cascade (reported, decides nothing): auto-answered, right, cost per feature vs Super's (USD)",
+     "30/33, 29/30, 0.0091 vs 0.0086", LADDER,
+     lambda: (lambda c: f"{c['auto_answered']}, {c['auto_correct']}, {c['cost_per_feature_usd']:.4f} vs {c['super_cost_per_feature_usd']:.4f}")(
+         _ladder()["cascade_nano_first"])),
     ("sweep.vendors", "Vendors in the sub-processor sweep index", 29, "data/index/vendors.json",
      lambda: len(_json("data/index/vendors.json")["vendors"])),
     ("sweep.live", "One real sweep with the Tavily key (2026-10-29): vendors swept / lists fetched live", "29 / 22",
@@ -251,6 +289,9 @@ def render() -> str:
               "| Copy rules: no compliance claims, Nemotron described as open-weight, not legal advice | `tests/test_facts.py::test_copy_rules` |",
               "| Every value here checks on a fresh clone with no key and no page text: the arithmetic recomputes from recorded runs; the keyword baseline is replayed from its recorded output per page sha256 (equal to the recomputed output when the pages are present); the verbatim gate uses its recorded results. CI runs the suite and this ledger on every push | `.github/workflows/proof.yml`, `tests/test_a1_datause.py::test_recorded_baseline_equals_the_recomputed_baseline` |",
               "| Every recorded reading names the same page bytes the labels were written from (the sha256 each reading recorded equals the labelled capture's) | `tests/test_a1_datause.py::test_every_recorded_reading_was_made_on_the_labelled_bytes` |",
+              "| The Nemotron ladder's arms, the Ultra escalation rule, its bar and the retraction condition were committed before any arm ran; every arm's run_at is later | `eval/datause/escalation-preregistration.json`, `tests/test_ladder.py::test_every_arm_ran_after_the_preregistration_was_committed` |",
+              "| The escalation never re-opens an answer Super gave on its own and only uses a value Super's readings gave | `tests/test_ladder.py` |",
+              "| A live Nemotron re-reading on `POST /api/recheck` can only hand fields to a person, in that response only | `tests/test_recheck.py::test_property_live_readings_only_ever_move_fields_to_confirm` |",
               "| The README number badge is computed from the recomputed headline | `owin/facts.py::badge_url`, `tests/test_facts.py::test_number_badge_is_the_recomputed_headline` |", ""]
     return "\n".join(lines)
 

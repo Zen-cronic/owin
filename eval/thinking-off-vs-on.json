@@ -1,6 +1,6 @@
 {
  "_about": "Recomputed by owin/facts.py::thinking from the two run files; written by `owin facts write`.",
- "rule": "turn reasoning off on the live path only if the off arm's right-share among auto answers is >= the on arm's and it adds no confident miss (written before the off run)",
+ "rule": "turn reasoning off only if the off arm's right-share among auto answers is >= the on arm's and it adds no confident miss (stated with the result, not pre-registered)",
  "on": {
   "run_file": "eval/datause/runs/20261021T221257-v3fresh-nemotron-3-super-120b-a12b.json",
   "auto_answered": "27/33",

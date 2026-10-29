@@ -133,7 +133,17 @@ def selective_summary() -> dict:
                          "cost_per_exact_run_usd": sc["per_successful_run"]["cost_per_successful_run_usd"],
                          "mean_latency_s_exact_runs": sc["per_successful_run"]["mean_latency_s"],
                          "p95_latency_s_exact_runs": sc["per_successful_run"]["p95_latency_s"]},
-            "recompute": "owin eval selective --corpus datause --split v3fresh"}
+            "recompute": "owin eval selective --corpus datause --split v3fresh",
+            "ladder": _ladder_brief()}
+
+
+def _ladder_brief() -> dict | None:
+    """The Nemotron ladder and the pre-registered Ultra escalation, recomputed from recorded runs (additive field)."""
+    from .datause import ladder
+    try:
+        return {**ladder.brief(ladder.report()), "recompute": "owin eval ladder --corpus datause --brief"}
+    except (FileNotFoundError, KeyError):
+        return None
 
 
 PACK_TYPES = {"json": "application/json", "brief": "application/json", "share": "application/json",

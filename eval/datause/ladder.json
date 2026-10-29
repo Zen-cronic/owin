@@ -1,0 +1,12 @@
+{
+ "disclosures": [
+  "A first Nano run and a first Lightning run (2026-10-29 ~11:15 EDT) crashed before writing a run file: the page captures were briefly unavailable on the build machine, so every later reading had no input. Under the one_run_rule (a third or more of the readings did not complete) each was rerun once; the crashed attempts' Token Factory calls stay in ledger/usage.jsonl. The Ultra run was unaffected."
+ ],
+ "_about": "The one scored run per arm (eval/datause/escalation-preregistration.json, one_run_rule). Every run_at is later than the pre-registration's written_at; tests/test_ladder.py checks it.",
+ "preregistration_written_at": "2026-10-29T11:13-04:00",
+ "arms": {
+  "lightning": "eval/datause/runs/20261029T112816-v3fresh-Nemotron-3_5-Lightning.json",
+  "nano": "eval/datause/runs/20261029T112550-v3fresh-NVIDIA-Nemotron-3-Nano-30B-A3B.json",
+  "ultra": "eval/datause/runs/20261029T111519-v3fresh-Nemotron-3-Ultra-550b-a55b.json"
+ }
+}

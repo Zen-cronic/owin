@@ -1,0 +1,1643 @@
+{
+ "run_at": "2026-10-29T11:25:50-0400",
+ "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+ "runs_per_item": 3,
+ "split": "v3fresh",
+ "prompt_version": "v3",
+ "wall_s": 313.2,
+ "corpus_sha256": "0bbb4f7b6b723cfc133cb4fc6a76febd018d8a525d5e08913398056f6cd7e3f7",
+ "calls": [
+  {
+   "id": "cohere-saas-api",
+   "run": 0,
+   "vendor": "cohere-saas-api",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "f80cdc6d3e914fe3df7f242c12b3c0a93783ec8095c2a33e5d2c63793604728a",
+   "input_mode": "whole",
+   "input_chars": 13216,
+   "latency_s": 42.4,
+   "prompt_tokens": 3867,
+   "completion_tokens": 2304,
+   "cost_usd": 0.000785,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 30,
+    "retention_condition": "unless your usage is flagged as potentially violating our terms",
+    "retention_quote": "We automatically delete logged prompts and generations after 30 days, unless we need it to comply with a legal requirement or customer contract, or unless your usage is flagged as potentially violating our terms, including our Usage Policy (e.g. abuse or misuse of our services).",
+    "used_for_training": "opt_out",
+    "training_quote": "You can opt out from your prompts and generations being used to train Cohere models in your dashboard settings at any time.",
+    "zdr": "available",
+    "zdr_quote": "Zero data retention (ZDR) means we do not log any prompts or generations.",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "cohere-saas-api",
+   "run": 1,
+   "vendor": "cohere-saas-api",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "f80cdc6d3e914fe3df7f242c12b3c0a93783ec8095c2a33e5d2c63793604728a",
+   "input_mode": "whole",
+   "input_chars": 13216,
+   "latency_s": 73.42,
+   "prompt_tokens": 3867,
+   "completion_tokens": 4888,
+   "cost_usd": 0.001405,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 30,
+    "retention_condition": "30 days, unless flagged or legal",
+    "retention_quote": "We automatically delete logged prompts and generations after 30 days, unless we need it to comply with a legal requirement or customer contract, or unless your usage is flagged as potentially violating our terms, including our Usage Policy (e.g. abuse or misuse of our services).",
+    "used_for_training": "opt_out",
+    "training_quote": "You can opt out from your prompts and generations being used to train Cohere models in your dashboard settings at any time.",
+    "zdr": "unspecified",
+    "zdr_quote": "Zero data retention (ZDR) means we do not log any prompts or generations.",
+    "region": "unspecified",
+    "region_quote": "We apply the following data handling and retention controls on the SaaS Platform:",
+    "third_party_access": "unspecified",
+    "third_party_quote": "In third-party cloud AI/ML platforms and private deployment solutions, Cohere does not receive any customer inputs (prompts) or outputs (generations).",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true,
+     "region": true,
+     "third_party_access": true
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "cohere-saas-api",
+   "run": 2,
+   "vendor": "cohere-saas-api",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "f80cdc6d3e914fe3df7f242c12b3c0a93783ec8095c2a33e5d2c63793604728a",
+   "input_mode": "whole",
+   "input_chars": 13216,
+   "latency_s": 62.27,
+   "prompt_tokens": 3867,
+   "completion_tokens": 4062,
+   "cost_usd": 0.001207,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 30,
+    "retention_condition": "after 30 days unless legal requirement",
+    "retention_quote": "We automatically delete logged prompts and generations after 30 days, unless we need it to comply with a legal requirement or customer contract, or unless your usage is flagged as potentially violating our terms, including our Usage Policy (e.g. abuse or misuse of our services).",
+    "used_for_training": "opt_out",
+    "training_quote": "You can opt out from your prompts and generations being used to train Cohere models in your dashboard settings at any time.",
+    "zdr": "unspecified",
+    "zdr_quote": "If you are approved for zero data retention, Cohere does not log any customer prompts or generations.",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "no",
+    "third_party_quote": "Access to logs containing prompts and generations is limited to authorized employees and service providers bound by confidentiality and security controls that require access for engineering support, legal compliance, and safety and security monitoring.",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": false,
+     "region": false,
+     "third_party_access": true
+    },
+    "status": "partial",
+    "hold_reasons": [
+     "zdr: quote not verbatim; answer withheld"
+    ],
+    "model_claimed": {
+     "zdr": "available"
+    }
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "perplexity-api",
+   "run": 0,
+   "vendor": "perplexity-api",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "b36c9cd7c56f8c144a9fe36094175145555473330f9ab58b73a920cd8bc3c239",
+   "input_mode": "whole",
+   "input_chars": 3408,
+   "latency_s": 42.32,
+   "prompt_tokens": 1775,
+   "completion_tokens": 2299,
+   "cost_usd": 0.000658,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "",
+    "retention_quote": "",
+    "used_for_training": "no",
+    "training_quote": "No training by default: Under the API Terms of Service, Perplexity does not use Customer Content to train generative AI models.",
+    "zdr": "available",
+    "zdr_quote": "Zero Data Retention is not default: ZDR is available only to eligible customers through an account-level configuration under a written agreement with Perplexity.",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "yes",
+    "third_party_quote": "Third-party model terms apply: Models served by third-party providers are also subject to those providers’ terms and policies.",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": true,
+     "zdr": true,
+     "region": false,
+     "third_party_access": true
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "perplexity-api",
+   "run": 1,
+   "vendor": "perplexity-api",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "b36c9cd7c56f8c144a9fe36094175145555473330f9ab58b73a920cd8bc3c239",
+   "input_mode": "whole",
+   "input_chars": 3408,
+   "latency_s": 70.06,
+   "prompt_tokens": 1775,
+   "completion_tokens": 4769,
+   "cost_usd": 0.001251,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "not default",
+    "retention_quote": "Zero Data Retention is not default: ZDR is available only to eligible customers through an account-level configuration under a written agreement with Perplexity.",
+    "used_for_training": "no",
+    "training_quote": "No training by default: Under the API Terms of Service, Perplexity does not use Customer Content to train generative AI models.",
+    "zdr": "available",
+    "zdr_quote": "Zero Data Retention is not default: ZDR is available only to eligible customers through an account-level configuration under a written agreement with Perplexity.",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "perplexity-api",
+   "run": 2,
+   "vendor": "perplexity-api",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "b36c9cd7c56f8c144a9fe36094175145555473330f9ab58b73a920cd8bc3c239",
+   "input_mode": "whole",
+   "input_chars": 3408,
+   "latency_s": 42.89,
+   "prompt_tokens": 1775,
+   "completion_tokens": 2384,
+   "cost_usd": 0.000679,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "",
+    "retention_quote": "",
+    "used_for_training": "no",
+    "training_quote": "No training by default: Under the API Terms of Service, Perplexity does not use Customer Content to train generative AI models.",
+    "zdr": "available",
+    "zdr_quote": "Zero Data Retention is not default: ZDR is available only to eligible customers through an account-level configuration under a written agreement with Perplexity.",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": true,
+     "zdr": true,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "xai-chat",
+   "run": 0,
+   "vendor": "xai-chat",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "input_mode": "whole",
+   "input_chars": 11049,
+   "latency_s": 83.02,
+   "prompt_tokens": 3597,
+   "completion_tokens": 6534,
+   "cost_usd": 0.001784,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 30,
+    "retention_condition": "automatically deleted after 30 days",
+    "retention_quote": "By default, all API requests and responses are stored on our servers (encrypted at rest) for 30 days for auditing purposes in the event of suspected abuse or misuse.",
+    "used_for_training": "opt_in",
+    "training_quote": "SpaceXSI never trains on your API inputs or outputs without your explicit permission.",
+    "zdr": "available",
+    "zdr_quote": "Applied at a team level: If enabled, ZDR is team-wide.",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "xai-chat",
+   "run": 1,
+   "vendor": "xai-chat",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "input_mode": "whole",
+   "input_chars": 11049,
+   "latency_s": 54.34,
+   "prompt_tokens": 3597,
+   "completion_tokens": 4963,
+   "cost_usd": 0.001407,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 30,
+    "retention_condition": "30 days",
+    "retention_quote": "By default, all API requests and responses are stored on our servers (encrypted at rest) for 30 days for auditing purposes in the event of suspected abuse or misuse.",
+    "used_for_training": "opt_in",
+    "training_quote": "SpaceXSI never trains on your API inputs or outputs without your explicit permission.",
+    "zdr": "available",
+    "zdr_quote": "No storage of prompts: ZDR ensures that API request inputs (i.e., your prompt) and outputs (i.e., the tokens generated by the LLM) are never persisted to disk.",
+    "region": "unspecified",
+    "region_quote": "The default endpoint, https://api.x.ai, does not guarantee a processing region.",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true,
+     "region": true,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "xai-chat",
+   "run": 2,
+   "vendor": "xai-chat",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "input_mode": "whole",
+   "input_chars": 11049,
+   "latency_s": 98.82,
+   "prompt_tokens": 3597,
+   "completion_tokens": 8000,
+   "cost_usd": 0.002136,
+   "finish_reason": "length",
+   "terms": null,
+   "error": "unparseable JSON (truncated: finish_reason=length)",
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "xai-batch",
+   "run": 0,
+   "vendor": "xai-batch",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "input_mode": "whole",
+   "input_chars": 11049,
+   "latency_s": 96.92,
+   "prompt_tokens": 3585,
+   "completion_tokens": 7981,
+   "cost_usd": 0.002131,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "stored until they are processed",
+    "retention_quote": "Batched requests are stored until they are processed, so the Batch API is unavailable under ZDR.",
+    "used_for_training": "opt_in",
+    "training_quote": "SpaceXSI never trains on your API inputs or outputs without your explicit permission.",
+    "zdr": "unspecified",
+    "zdr_quote": "| Batch API | Why it is unavailable under ZDR |",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "partial",
+    "hold_reasons": [
+     "zdr: quote not verbatim; answer withheld"
+    ],
+    "model_claimed": {
+     "zdr": "excluded"
+    }
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "xai-batch",
+   "run": 1,
+   "vendor": "xai-batch",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "input_mode": "whole",
+   "input_chars": 11049,
+   "latency_s": 69.41,
+   "prompt_tokens": 3585,
+   "completion_tokens": 5411,
+   "cost_usd": 0.001514,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "Batched requests are stored until they are processed, so the Batch API is unavailable under ZDR",
+    "retention_quote": "",
+    "used_for_training": "no",
+    "training_quote": "SpaceXSI does not train on this data, and it is automatically deleted after 30 days.",
+    "zdr": "excluded",
+    "zdr_quote": "Batched requests are stored until they are processed, so the Batch API is unavailable under ZDR",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": true,
+     "zdr": true,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "xai-batch",
+   "run": 2,
+   "vendor": "xai-batch",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "3d5721ab045fb8ca41b8e5b3f6fc198e32efdd6e503878648e4294e0f76408d3",
+   "input_mode": "whole",
+   "input_chars": 11049,
+   "latency_s": 47.7,
+   "prompt_tokens": 3585,
+   "completion_tokens": 3504,
+   "cost_usd": 0.001056,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 30,
+    "retention_condition": "until processed",
+    "retention_quote": "Batched requests are stored until they are processed, so the Batch API is unavailable under ZDR.",
+    "used_for_training": "no",
+    "training_quote": "SpaceXSI does not train on this data, and it is automatically deleted after 30 days.",
+    "zdr": "excluded",
+    "zdr_quote": "Batched requests are stored until they are processed, so the Batch API is unavailable under ZDR.",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "openrouter-inference-zdr",
+   "run": 0,
+   "vendor": "openrouter-inference-zdr",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "input_mode": "whole",
+   "input_chars": 10253,
+   "latency_s": 65.96,
+   "prompt_tokens": 3259,
+   "completion_tokens": 4978,
+   "cost_usd": 0.00139,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 0,
+    "retention_condition": "not retained unless you specifically opt in to prompt logging",
+    "retention_quote": "OpenRouter itself has a ZDR policy; your prompts are not retained unless you specifically opt in to prompt logging.",
+    "used_for_training": "opt_in",
+    "training_quote": "your prompts are not retained unless you specifically opt in to prompt logging.",
+    "zdr": "available",
+    "zdr_quote": "ZDR enforcement only applies to provider routing for inference requests.",
+    "region": "unspecified",
+    "region_quote": "See Privacy and regional availability for each server tool’s execution path and backend policy.",
+    "third_party_access": "unspecified",
+    "third_party_quote": "These may be operated by third‑party services with their own data retention policies.",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true,
+     "region": true,
+     "third_party_access": false
+    },
+    "status": "partial",
+    "hold_reasons": [
+     "third_party_access: quote not verbatim; answer withheld"
+    ],
+    "model_claimed": {
+     "third_party_access": "yes"
+    }
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "openrouter-inference-zdr",
+   "run": 1,
+   "vendor": "openrouter-inference-zdr",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "input_mode": "whole",
+   "input_chars": 10253,
+   "latency_s": 46.37,
+   "prompt_tokens": 3259,
+   "completion_tokens": 4205,
+   "cost_usd": 0.001205,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 0,
+    "retention_condition": "not retained",
+    "retention_quote": "OpenRouter itself has a ZDR policy; your prompts are not retained unless you specifically opt in to prompt logging.",
+    "used_for_training": "no",
+    "training_quote": "Providers that do not retain your data are also unable to train on your data.",
+    "zdr": "available",
+    "zdr_quote": "ZDR enforcement only applies to provider routing for inference requests.",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "openrouter-inference-zdr",
+   "run": 2,
+   "vendor": "openrouter-inference-zdr",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "input_mode": "whole",
+   "input_chars": 10253,
+   "latency_s": 41.86,
+   "prompt_tokens": 3259,
+   "completion_tokens": 3799,
+   "cost_usd": 0.001107,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 0,
+    "retention_condition": "not retained",
+    "retention_quote": "OpenRouter itself has a ZDR policy; your prompts are not retained unless you specifically opt in to prompt logging.",
+    "used_for_training": "no",
+    "training_quote": "Providers that do not retain your data are also unable to train on your data.",
+    "zdr": "available",
+    "zdr_quote": "ZDR enforcement only applies to provider routing for inference requests.",
+    "region": "unspecified",
+    "region_quote": "OpenRouter works with providers to understand each of their data policies and structures the policy data in a way that gives you control over which providers you want to route to.",
+    "third_party_access": "unspecified",
+    "third_party_quote": "OpenRouter works with providers to understand each of their data policies and structures the policy data in a way that gives you control over which providers you want to route to.",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": true,
+     "region": true,
+     "third_party_access": true
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "openrouter-web-search",
+   "run": 0,
+   "vendor": "openrouter-web-search",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "input_mode": "whole",
+   "input_chars": 10253,
+   "latency_s": 65.71,
+   "prompt_tokens": 3248,
+   "completion_tokens": 4709,
+   "cost_usd": 0.001325,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "It does not apply to plugins and tools you choose to enable, such as web search.",
+    "retention_quote": "",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "excluded",
+    "zdr_quote": "It does not apply to plugins and tools you choose to enable, such as web search.",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "yes",
+    "third_party_quote": "These may be operated by third-party services with their own data retention policies.",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": false,
+     "zdr": true,
+     "region": false,
+     "third_party_access": true
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "openrouter-web-search",
+   "run": 1,
+   "vendor": "openrouter-web-search",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "input_mode": "whole",
+   "input_chars": 10253,
+   "latency_s": 39.44,
+   "prompt_tokens": 3248,
+   "completion_tokens": 2945,
+   "cost_usd": 0.000902,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "",
+    "retention_quote": "",
+    "used_for_training": "yes",
+    "training_quote": "If OpenRouter is not able to establish or ascertain a clear policy for a provider or endpoint, we take a conservative stance and assume that the endpoint both retains and trains on data and mark it as such.",
+    "zdr": "excluded",
+    "zdr_quote": "ZDR enforcement only applies to provider routing for inference requests. It does not apply to plugins and tools you choose to enable, such as web search.",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "These may be operated by third-party services with their own data retention policies.",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": true,
+     "zdr": true,
+     "region": false,
+     "third_party_access": true
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "openrouter-web-search",
+   "run": 2,
+   "vendor": "openrouter-web-search",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "2e733aa7b7a1cf3ef6fe0f566d2e1dd3dd01c2c4ac503f70d6b4b9a1e42b42c8",
+   "input_mode": "whole",
+   "input_chars": 10253,
+   "latency_s": 73.74,
+   "prompt_tokens": 3248,
+   "completion_tokens": 5160,
+   "cost_usd": 0.001433,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "to scan for abuse or for legal reasons",
+    "retention_quote": "However we do have some endpoints & providers who do not retain your data but do retain it (e.g. to scan for abuse or for legal reasons).",
+    "used_for_training": "unspecified",
+    "training_quote": "These may be operated by third-party services with their own data retention policies.",
+    "zdr": "excluded",
+    "zdr_quote": "ZDR enforcement only applies to provider routing for inference requests. It does not apply to plugins and tools you choose to enable, such as web search.",
+    "region": "unspecified",
+    "region_quote": "See Privacy and regional availability for each server tool’s execution path and backend policy.",
+    "third_party_access": "yes",
+    "third_party_quote": "These may be operated by third-party services with their own data retention policies.",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": true,
+     "zdr": true,
+     "region": true,
+     "third_party_access": true
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "cerebras-prompt-caching",
+   "run": 0,
+   "vendor": "cerebras-prompt-caching",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "59e8943deede02c76aacdb1aa57625a7006573e983887e0bd6d41d750da938dc",
+   "input_mode": "whole",
+   "input_chars": 29391,
+   "latency_s": 46.92,
+   "prompt_tokens": 9002,
+   "completion_tokens": 2740,
+   "cost_usd": 0.001198,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 0,
+    "retention_condition": "5 minutes TTL",
+    "retention_quote": "Automatic Expiration: Cached data is ephemeral. We guarantee a Time-To-Live (TTL) of 5 minutes, though caches may persist up to 1 hour depending on system load.",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "available",
+    "zdr_quote": "Yes, it is fully ZDR-compliant.",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": false,
+     "zdr": true,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "cerebras-prompt-caching",
+   "run": 1,
+   "vendor": "cerebras-prompt-caching",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "59e8943deede02c76aacdb1aa57625a7006573e983887e0bd6d41d750da938dc",
+   "input_mode": "whole",
+   "input_chars": 29391,
+   "latency_s": 44.36,
+   "prompt_tokens": 9002,
+   "completion_tokens": 2513,
+   "cost_usd": 0.001143,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 0,
+    "retention_condition": "TTL of 5 minutes",
+    "retention_quote": "We guarantee a Time-To-Live (TTL) of 5 minutes, though caches may persist up to 1 hour depending on system load.",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "available",
+    "zdr_quote": "Yes, it is fully ZDR-compliant.",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": false,
+     "zdr": true,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "cerebras-prompt-caching",
+   "run": 2,
+   "vendor": "cerebras-prompt-caching",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "59e8943deede02c76aacdb1aa57625a7006573e983887e0bd6d41d750da938dc",
+   "input_mode": "whole",
+   "input_chars": 29391,
+   "latency_s": 79.72,
+   "prompt_tokens": 9002,
+   "completion_tokens": 5971,
+   "cost_usd": 0.001973,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "Cached data is ephemeral.",
+    "retention_quote": "",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "available",
+    "zdr_quote": "Yes, it is fully ZDR-compliant.",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": false,
+     "zdr": true,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "cerebras-predicted-outputs",
+   "run": 0,
+   "vendor": "cerebras-predicted-outputs",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "90c1dd3ca7fc0f40623d79ffe06d4787ec7edebfefeab66b4808700826f9e0b4",
+   "input_mode": "whole",
+   "input_chars": 9807,
+   "latency_s": 28.93,
+   "prompt_tokens": 3471,
+   "completion_tokens": 1916,
+   "cost_usd": 0.000668,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 0,
+    "retention_condition": "No, we do not store any prediction data.",
+    "retention_quote": "No, we do not store any prediction data.",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "cerebras-predicted-outputs",
+   "run": 1,
+   "vendor": "cerebras-predicted-outputs",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "90c1dd3ca7fc0f40623d79ffe06d4787ec7edebfefeab66b4808700826f9e0b4",
+   "input_mode": "whole",
+   "input_chars": 9807,
+   "latency_s": 32.37,
+   "prompt_tokens": 3471,
+   "completion_tokens": 2757,
+   "cost_usd": 0.00087,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 0,
+    "retention_condition": "we do not store any prediction data",
+    "retention_quote": "No, we do not store any prediction data",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "cerebras-predicted-outputs",
+   "run": 2,
+   "vendor": "cerebras-predicted-outputs",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "90c1dd3ca7fc0f40623d79ffe06d4787ec7edebfefeab66b4808700826f9e0b4",
+   "input_mode": "whole",
+   "input_chars": 9807,
+   "latency_s": 38.23,
+   "prompt_tokens": 3471,
+   "completion_tokens": 3494,
+   "cost_usd": 0.001047,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 0,
+    "retention_condition": "no retention",
+    "retention_quote": "No, we do not store any prediction data.",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "vertex-implicit-caching",
+   "run": 0,
+   "vendor": "vertex-implicit-caching",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "00029dda746103b77f93361b07c5e9df365465d498097e39bfe08dcd68a8c578",
+   "input_mode": "whole",
+   "input_chars": 8797,
+   "latency_s": 56.56,
+   "prompt_tokens": 3052,
+   "completion_tokens": 5819,
+   "cost_usd": 0.00158,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 1,
+    "retention_condition": "up to 24 hours",
+    "retention_quote": "A cached prefix expires no later than 24 hours after it's created, and most entries are evicted earlier.",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "If you have data retention concerns, see Zero data retention, which describes how cached data is handled and how to disable each tier.",
+    "region": "unspecified",
+    "region_quote": "Context caching is available in regions where Generative AI on Agent Platform is available.",
+    "third_party_access": "unspecified",
+    "third_party_quote": "Google Cloud uses your project number to isolate cached data, and cached content is never shared across projects.",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": false,
+     "zdr": true,
+     "region": true,
+     "third_party_access": true
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "vertex-implicit-caching",
+   "run": 1,
+   "vendor": "vertex-implicit-caching",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "00029dda746103b77f93361b07c5e9df365465d498097e39bfe08dcd68a8c578",
+   "input_mode": "whole",
+   "input_chars": 8797,
+   "latency_s": 27.65,
+   "prompt_tokens": 3052,
+   "completion_tokens": 2516,
+   "cost_usd": 0.000787,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 1,
+    "retention_condition": "expires no later than 24 hours",
+    "retention_quote": "A cached prefix expires no later than 24 hours after it's created, and most entries are evicted earlier.",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "Context caching is available in regions where Generative AI on Agent Platform is available.",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": false,
+     "zdr": false,
+     "region": true,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "vertex-implicit-caching",
+   "run": 2,
+   "vendor": "vertex-implicit-caching",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "00029dda746103b77f93361b07c5e9df365465d498097e39bfe08dcd68a8c578",
+   "input_mode": "whole",
+   "input_chars": 8797,
+   "latency_s": 29.26,
+   "prompt_tokens": 3052,
+   "completion_tokens": 3242,
+   "cost_usd": 0.000961,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 1,
+    "retention_condition": "expires no later than 24 hours after it's created",
+    "retention_quote": "A cached prefix expires no later than 24 hours after it's created, and most entries are evicted earlier.",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "If you have data retention concerns, see Zero data retention, which describes how cached data is handled and how to disable each tier.",
+    "region": "unspecified",
+    "region_quote": "Context caching is available in regions where Generative AI on Agent Platform is available.",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": false,
+     "zdr": true,
+     "region": true,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "deepinfra-inference",
+   "run": 0,
+   "vendor": "deepinfra-inference",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "input_mode": "whole",
+   "input_chars": 2658,
+   "latency_s": 30.54,
+   "prompt_tokens": 1692,
+   "completion_tokens": 3404,
+   "cost_usd": 0.000918,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 0,
+    "retention_condition": "deleted from memory",
+    "retention_quote": "once inference is complete, the data is deleted from memory",
+    "used_for_training": "no",
+    "training_quote": "We do not use data you submit to our APIs for training models, except when using Google or Anthropic models, where the receiving company’s training policy applies.",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "yes",
+    "third_party_quote": "Personal information and data provided when using certain models through our API may be shared with the relevant model API endpoints, as specified at the time of use.",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": false,
+     "region": false,
+     "third_party_access": true
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "deepinfra-inference",
+   "run": 1,
+   "vendor": "deepinfra-inference",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "input_mode": "whole",
+   "input_chars": 2658,
+   "latency_s": 20.42,
+   "prompt_tokens": 1692,
+   "completion_tokens": 2218,
+   "cost_usd": 0.000634,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 0,
+    "retention_condition": "deleted from memory",
+    "retention_quote": "Output data is not stored — it is sent to you and then deleted from memory",
+    "used_for_training": "no",
+    "training_quote": "We do not use data you submit to our APIs for training models",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "deepinfra-inference",
+   "run": 2,
+   "vendor": "deepinfra-inference",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "input_mode": "whole",
+   "input_chars": 2658,
+   "latency_s": 21.58,
+   "prompt_tokens": 1692,
+   "completion_tokens": 2514,
+   "cost_usd": 0.000705,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": 0,
+    "retention_condition": "deleted from memory",
+    "retention_quote": "Output data is not stored — it is sent to you and then deleted from memory",
+    "used_for_training": "unspecified",
+    "training_quote": "We do not train on your data (except Google/Anthropic model exceptions below).",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "partial",
+    "hold_reasons": [
+     "used_for_training: quote not verbatim; answer withheld"
+    ],
+    "model_claimed": {
+     "used_for_training": "no"
+    }
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "deepinfra-bulk",
+   "run": 0,
+   "vendor": "deepinfra-bulk",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "input_mode": "whole",
+   "input_chars": 2658,
+   "latency_s": 29.94,
+   "prompt_tokens": 1685,
+   "completion_tokens": 3440,
+   "cost_usd": 0.000927,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "after a short retention period",
+    "retention_quote": "Once inference is complete and results are returned to you, the data is deleted from disk and memory after a short retention period.",
+    "used_for_training": "no",
+    "training_quote": "We do not use data you submit to our APIs for training models, except when using Google or Anthropic models, where the receiving company’s training policy applies.",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "deepinfra-bulk",
+   "run": 1,
+   "vendor": "deepinfra-bulk",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "input_mode": "whole",
+   "input_chars": 2658,
+   "latency_s": 25.14,
+   "prompt_tokens": 1685,
+   "completion_tokens": 3157,
+   "cost_usd": 0.000859,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "after a short retention period",
+    "retention_quote": "Once inference is complete and results are returned to you, the data is deleted from disk and memory after a short retention period.",
+    "used_for_training": "no",
+    "training_quote": "We do not use data you submit to our APIs for training models, except when using Google or Anthropic models, where the receiving company’s training policy applies.",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "deepinfra-bulk",
+   "run": 2,
+   "vendor": "deepinfra-bulk",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "9eef25daf8814852352a1d90ab3449f1c863149c5ac1956cced90964ab6e0630",
+   "input_mode": "whole",
+   "input_chars": 2658,
+   "latency_s": 33.02,
+   "prompt_tokens": 1685,
+   "completion_tokens": 3872,
+   "cost_usd": 0.00103,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "after a short retention period",
+    "retention_quote": "Once inference is complete and results are returned to you, the data is deleted from disk and memory after a short retention period.",
+    "used_for_training": "no",
+    "training_quote": "We do not use data you submit to our APIs for training models, except when using Google or Anthropic models, where the receiving company’s training policy applies.",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "no",
+    "third_party_quote": "We do not share your data with third parties (except Google/Anthropic model exceptions below)",
+    "verbatim": {
+     "retention_days": true,
+     "used_for_training": true,
+     "zdr": false,
+     "region": false,
+     "third_party_access": true
+    },
+    "status": "ok",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "neg-deepseek-platform-tos",
+   "run": 0,
+   "vendor": "neg-deepseek-platform-tos",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "280452143ac9a79ef0557840c4cfe5756e3d6e758875e74244ee77dab37e91c0",
+   "input_mode": "whole",
+   "input_chars": 22940,
+   "latency_s": 14.25,
+   "prompt_tokens": 5695,
+   "completion_tokens": 1767,
+   "cost_usd": 0.000766,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "",
+    "retention_quote": "",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "no_terms",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "neg-deepseek-platform-tos",
+   "run": 1,
+   "vendor": "neg-deepseek-platform-tos",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "280452143ac9a79ef0557840c4cfe5756e3d6e758875e74244ee77dab37e91c0",
+   "input_mode": "whole",
+   "input_chars": 22940,
+   "latency_s": 44.73,
+   "prompt_tokens": 5695,
+   "completion_tokens": 4401,
+   "cost_usd": 0.001398,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "unspecified",
+    "retention_quote": "",
+    "used_for_training": "unspecified",
+    "training_quote": "We will collect and process the personal information you provide as the data subject in accordance with the \"DeepSeek Privacy Policy\".",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": true,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "no_terms",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "neg-deepseek-platform-tos",
+   "run": 2,
+   "vendor": "neg-deepseek-platform-tos",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "280452143ac9a79ef0557840c4cfe5756e3d6e758875e74244ee77dab37e91c0",
+   "input_mode": "whole",
+   "input_chars": 22940,
+   "latency_s": 12.3,
+   "prompt_tokens": 5695,
+   "completion_tokens": 1548,
+   "cost_usd": 0.000713,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "",
+    "retention_quote": "",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "no_terms",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "neg-perplexity-search-best-practices",
+   "run": 0,
+   "vendor": "neg-perplexity-search-best-practices",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "42cb49fb9ed2be859b90c21845d6d533a3afb984a92ab19486c67d957884db8f",
+   "input_mode": "keyword-windows",
+   "input_chars": 39792,
+   "latency_s": 19.83,
+   "prompt_tokens": 11044,
+   "completion_tokens": 1896,
+   "cost_usd": 0.001118,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "unspecified",
+    "retention_quote": "",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "no_terms",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "neg-perplexity-search-best-practices",
+   "run": 1,
+   "vendor": "neg-perplexity-search-best-practices",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "42cb49fb9ed2be859b90c21845d6d533a3afb984a92ab19486c67d957884db8f",
+   "input_mode": "keyword-windows",
+   "input_chars": 39792,
+   "latency_s": 32.26,
+   "prompt_tokens": 11044,
+   "completion_tokens": 2359,
+   "cost_usd": 0.001229,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "unspecified",
+    "retention_quote": "",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "no_terms",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  },
+  {
+   "id": "neg-perplexity-search-best-practices",
+   "run": 2,
+   "vendor": "neg-perplexity-search-best-practices",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "source_sha256": "42cb49fb9ed2be859b90c21845d6d533a3afb984a92ab19486c67d957884db8f",
+   "input_mode": "keyword-windows",
+   "input_chars": 39792,
+   "latency_s": 15.26,
+   "prompt_tokens": 11044,
+   "completion_tokens": 1410,
+   "cost_usd": 0.001001,
+   "finish_reason": "stop",
+   "terms": {
+    "retention_days": null,
+    "retention_condition": "unspecified",
+    "retention_quote": "",
+    "used_for_training": "unspecified",
+    "training_quote": "",
+    "zdr": "unspecified",
+    "zdr_quote": "",
+    "region": "unspecified",
+    "region_quote": "",
+    "third_party_access": "unspecified",
+    "third_party_quote": "",
+    "verbatim": {
+     "retention_days": false,
+     "used_for_training": false,
+     "zdr": false,
+     "region": false,
+     "third_party_access": false
+    },
+    "status": "no_terms",
+    "hold_reasons": [],
+    "model_claimed": {}
+   },
+   "error": null,
+   "raw_head": "",
+   "extra": {
+    "reasoning_tokens": 0
+   }
+  }
+ ]
+}
