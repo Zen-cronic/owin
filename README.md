@@ -15,7 +15,7 @@
 
 ```bash
 export VIRTUAL_ENV="$HOME/.pyenv/versions/.owin"; export PATH="$VIRTUAL_ENV/bin:$PATH"   # or any Python 3.12 env
-poetry install && owin serve      # then open http://127.0.0.1:8787/judge
+poetry install && poetry run owin serve   # then open http://127.0.0.1:8787/judge  (or: pip install -e . && owin serve)
 ```
 
 No key, no network, no login: the app and every number run from committed files. With a Tavily key set on the server, "Re-check this page" under an endpoint fetches that vendor page live; without one, the button says so. `/judge` is the start page: the number (recomputed on load), three guided paths, and the evidence.

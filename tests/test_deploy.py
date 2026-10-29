@@ -11,6 +11,7 @@ ROOT = config.ROOT
 def test_healthz_reports_mode_and_never_a_key(monkeypatch):
     monkeypatch.delenv("TOKEN_FACTORY_API_KEY", raising=False)
     monkeypatch.delenv("TAVILY_API_KEY", raising=False)
+    monkeypatch.setenv("OWIN_ENV_FILE", "/nonexistent")
     code, ctype, body = server.handle("/healthz", {})
     h = json.loads(body)
     assert code == 200 and h["ok"] is True and h["mode"] == "demo"
