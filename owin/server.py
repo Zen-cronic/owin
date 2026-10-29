@@ -15,7 +15,9 @@ POST /api/recheck  (body: {"endpoint": "/api/crm-sync"})      ->  re-fetch that 
                                                                   and rerun the rules (owin/recheck.py; demo answer without a key)
 GET /healthz                                                  ->  liveness + mode (demo | live), no secrets
 Stateless per request, on a ThreadingHTTPServer, so concurrent judges do not block each other. The only request
-that calls a paid API is POST /api/recheck, and only when a Tavily key is set (capped, cooled down, ledgered).
+that calls a paid API is POST /api/recheck: Tavily `extract` when a Tavily key is set (capped, cooled down,
+ledgered), and three Nemotron Super readings on Token Factory when a quoted sentence is gone and a Token Factory
+key is set (daily budget, breaker, 45 s deadline; the readings can only hand fields to a person).
 """
 from __future__ import annotations
 
@@ -108,7 +110,8 @@ def healthz() -> dict:
     ok = bool(registry.load())
     return {"ok": ok, "mode": config.mode(), "keys": config.keys_present(),
             "state_dir": config.state_dir() is not None,
-            "serving": "recorded runs and committed captures; only POST /api/recheck calls a paid API (Tavily), when a key is set"}
+            "serving": "recorded runs and committed captures; only POST /api/recheck calls a paid API: Tavily extract when "
+                       "its key is set, plus Nemotron re-reading on Token Factory when a quoted sentence is gone and its key is set"}
 
 
 def selective_summary() -> dict:
