@@ -1,0 +1,72 @@
+{
+ "run_at": "2026-10-29T03:40:46Z",
+ "tavily_key_present": true,
+ "live_requested": true,
+ "vendors": 4,
+ "counts": {
+  "no_change": 4
+ },
+ "wall_s": 0.96,
+ "rows": [
+  {
+   "vendor": "openai",
+   "display": "OpenAI",
+   "list_url": "https://openai.com/policies/sub-processor-list/",
+   "source_kind": "tavily",
+   "retrieved": "2026-10-29T03:40:45Z",
+   "latency_s": 0.17,
+   "refetched": true,
+   "parser": "markdown_table",
+   "entities": 21,
+   "last_updated": "October 14, 2026",
+   "prev_last_updated": "October 14, 2026",
+   "state": "no_change",
+   "reason": "entity table identical"
+  },
+  {
+   "vendor": "anthropic",
+   "display": "Anthropic",
+   "list_url": "https://trust.anthropic.com/subprocessors",
+   "source_kind": "tavily",
+   "retrieved": "2026-10-29T03:40:46Z",
+   "latency_s": 0.13,
+   "refetched": true,
+   "parser": "vanta_cards",
+   "entities": 24,
+   "last_updated": null,
+   "prev_last_updated": null,
+   "state": "no_change",
+   "reason": "entity table identical"
+  },
+  {
+   "vendor": "stripe",
+   "display": "Stripe",
+   "list_url": "https://stripe.com/legal/service-providers",
+   "source_kind": "tavily",
+   "retrieved": "2026-10-29T03:40:46Z",
+   "latency_s": 0.14,
+   "refetched": true,
+   "parser": "linked_rows",
+   "entities": 38,
+   "last_updated": "September 27, 2026",
+   "prev_last_updated": "September 27, 2026",
+   "state": "no_change",
+   "reason": "entity table identical"
+  },
+  {
+   "vendor": "supabase",
+   "display": "Supabase",
+   "list_url": "https://supabase.com/legal/customer-resources/subprocessor-list",
+   "source_kind": "tavily",
+   "retrieved": "2026-10-29T03:40:46Z",
+   "latency_s": 0.11,
+   "refetched": false,
+   "parser": "none",
+   "entities": 0,
+   "last_updated": "October 12, 2026",
+   "prev_last_updated": "October 12, 2026",
+   "state": "no_change",
+   "reason": "date only, unchanged"
+  }
+ ]
+}

@@ -88,6 +88,11 @@ class _Tables(HTMLParser):
             self.cell.append("; ")
 
     def handle_endtag(self, tag):
+        if tag in ("p", "div", "li") and self.cell is not None:
+            # A block boundary inside a cell separates values the way <br> does ("Content delivery network
+            # provider" / "Web Hosting"); after a finished sentence it is only a space.
+            sofar = "".join(self.cell).rstrip()
+            self.cell.append(" " if sofar.endswith((".", "!", "?")) else "; ")
         if tag in ("td", "th") and self.cell is not None and self.row is not None:
             self.row.append("".join(self.cell))
             self.cell = None

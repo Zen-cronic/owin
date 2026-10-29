@@ -91,11 +91,18 @@ def chat(prompt: str, *, model: str = SUPER, purpose: str = "", temperature: flo
 
 
 def _log(c: Completion, purpose: str) -> None:
+    log_usage(purpose, model=c.model, prompt_tokens=c.prompt_tokens, completion_tokens=c.completion_tokens,
+              cost_usd=c.cost_usd, latency_s=c.latency_s, error=c.error)
+
+
+def log_usage(purpose: str, *, model: str, latency_s: float, error: str | None = None, cost_usd: float = 0.0,
+              prompt_tokens: int = 0, completion_tokens: int = 0, **extra) -> None:
+    """One line per paid call (Token Factory, or a Tavily call made at request time), never a key or page text."""
     LEDGER.parent.mkdir(parents=True, exist_ok=True)
     with LEDGER.open("a") as f:
-        f.write(json.dumps({"ts": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "purpose": purpose, "model": c.model,
-                            "prompt_tokens": c.prompt_tokens, "completion_tokens": c.completion_tokens,
-                            "cost_usd": c.cost_usd, "latency_s": c.latency_s, "error": c.error}) + "\n")
+        f.write(json.dumps({"ts": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "purpose": purpose, "model": model,
+                            "prompt_tokens": prompt_tokens, "completion_tokens": completion_tokens,
+                            "cost_usd": cost_usd, "latency_s": latency_s, "error": error, **extra}) + "\n")
 
 
 def ledger_total() -> float:

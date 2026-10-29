@@ -85,8 +85,9 @@ def consensus(calls: list[dict]) -> tuple[dict | None, str]:
     return {**chosen, "terms": terms}, f"{n}/{len(calls)}"
 
 
-def extract_live(feature_ids: list[str], runs: int = 3, workers: int = 6) -> Path:
-    """Nemotron reads each feature's Tavily capture `runs` times. Records every call (no page text)."""
+def extract_live(feature_ids: list[str], runs: int = 3, workers: int = 6, out_dir: Path | None = None) -> Path:
+    """Nemotron reads each feature's Tavily capture `runs` times. Records every call (no page text) under
+    eval/datause/registry-runs/ (or `out_dir`: the state dir when a job runs in the image)."""
     cat = load_catalog()
     man = json.loads((ROOT / "fixtures" / "manifest.json").read_text()).get("datause_tavily", {})
     jobs = []
@@ -110,8 +111,9 @@ def extract_live(feature_ids: list[str], runs: int = 3, workers: int = 6) -> Pat
     out = {"run_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "model": tf.SUPER, "runs_per_item": runs,
            "prompt_version": PROMPT_VERSION, "input": "Tavily extract captures (fixtures/raw/datause-tavily/)",
            "wall_s": round(time.time() - t0, 1), "calls": calls}
-    LIVE_RUNS.mkdir(parents=True, exist_ok=True)
-    path = LIVE_RUNS / f"{time.strftime('%Y%m%dT%H%M%S')}-tavily-{tf.SUPER.split('/')[-1]}.json"
+    out_dir = out_dir or LIVE_RUNS
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / f"{time.strftime('%Y%m%dT%H%M%S')}-tavily-{tf.SUPER.split('/')[-1]}.json"
     path.write_text(json.dumps(out, indent=1, ensure_ascii=False))
     return path
 
@@ -120,6 +122,15 @@ def _entry_terms(t: dict) -> dict:
     keep = list(ANSWER_FIELDS) + list(QUOTE_OF.values()) + ["retention_condition", "verbatim", "status", "hold_reasons",
                                                             "model_claimed"]
     return {k: t.get(k) for k in keep}
+
+
+def _rel(p: Path) -> str:
+    """A run file's path relative to the repo, or to the state dir when a job wrote it there."""
+    p = Path(p).resolve()
+    for base in (ROOT, config.state_dir()):
+        if base and p.is_relative_to(base.resolve()):
+            return str(p.relative_to(base.resolve()))
+    return str(p)
 
 
 def export(live_runs: list[Path] | None = None) -> Path:
@@ -136,7 +147,7 @@ def export(live_runs: list[Path] | None = None) -> Path:
         d = json.loads(Path(p).read_text())
         for c in d["calls"]:
             live.setdefault(c["id"], []).append(c)
-            live_meta[c["id"]] = {"run_file": str(Path(p).resolve().relative_to(ROOT)), "model": d["model"],
+            live_meta[c["id"]] = {"run_file": _rel(p), "model": d["model"],
                                   "prompt_version": d["prompt_version"], "page_fetched_at": c.get("page_fetched_at"),
                                   "page_source_kind": c.get("page_source_kind")}
     feats = {}
@@ -150,8 +161,9 @@ def export(live_runs: list[Path] | None = None) -> Path:
             chosen, agree = consensus([c for _, c in calls])
             run_file = next((rf for rf, c in calls if chosen and c["run"] == chosen["run"]), calls[0][0])
             it = corpus[f["corpus_id"]]
+            rd = json.loads((ROOT / run_file).read_text())
             entry |= {"origin": "a1_recorded", "measured": True, "run_file": run_file, "runs_agreeing": agree,
-                      "model": json.loads((ROOT / run_file).read_text())["model"], "prompt_version": "v2",
+                      "model": rd["model"], "prompt_version": rd.get("prompt_version", "v1"),
                       "captured_at": it["fetched_at"], "capture_kind": "urllib", "source_sha256": it["source_sha256"],
                       "terms": _entry_terms(chosen["terms"]) if chosen else None}
         elif lv is not None:
@@ -180,11 +192,10 @@ def export(live_runs: list[Path] | None = None) -> Path:
         feats[fid] = entry
     out = {"_about": "Exported by `owin pack registry` from recorded runs only. The answer pack reads structured fields "
                      "from here; quotes are display evidence and never decide an answer.",
-           "a1_run_files": [str(Path(p).resolve().relative_to(ROOT)) for p in a1_files],
-           "live_run_files": [str(Path(p).resolve().relative_to(ROOT)) for p in live_files],
+           "a1_run_files": [_rel(p) for p in a1_files], "live_run_files": [_rel(p) for p in live_files],
            "features": feats}
-    REGISTRY.write_text(json.dumps(out, indent=1, ensure_ascii=False) + "\n")
-    return REGISTRY
+    # The committed file when no state dir is set; the state dir's copy (what the endpoint serves) when one is.
+    return config.write_atomic("data/datause/registry.json", json.dumps(out, indent=1, ensure_ascii=False) + "\n")
 
 
 def load() -> dict:

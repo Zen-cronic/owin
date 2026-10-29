@@ -7,8 +7,10 @@ terms abstains (it neither agrees nor disagrees). Every other cell is
 gated structured values, never model prose; the pack (owin/datause/pack.py) uses the same `agreement` function.
 
 `owin eval selective --corpus datause [--split v3fresh]` recomputes the numbers from recorded runs, keyless:
-auto-answered cells, correct among them, cells sent to confirm, and how often the majority value would have
-been right on the confirm cells (what a "just take the majority" system would have shipped there).
+auto-answered cells, correct among them (split into answers that carry an asserted value with the page's verbatim
+sentence and correct "not stated" answers on pages that say nothing), cells sent to confirm, how often the majority
+value would have been right on the confirm cells and on every cell (what a "just take the majority" system would
+have shipped), the distinct pages, and the vendor families the split adds to the corpus.
 """
 from __future__ import annotations
 
@@ -75,16 +77,21 @@ def evaluate(paths: Sequence[Path], split: str | None = None, kinds: tuple[str, 
         for f in SCORED_FIELDS:
             a = agreement(runs, f)
             gold = it["gold"][f]
-            cells.append({"item": iid, "vendor": it["vendor"], "field": f, "gold": gold, **a,
+            cells.append({"item": iid, "vendor": it["vendor"], "url": it["url"], "field": f, "gold": gold, **a,
                           "correct": a["state"] == "auto" and a["value"] == gold,
+                          # An asserted value (anything but null / "unspecified") carries the page's verbatim sentence;
+                          # a correct "not stated" is a page that says nothing on the field, read as saying nothing.
+                          "asserted": a["state"] == "auto" and a["value"] not in (None, "unspecified"),
                           "majority_right": a["has_majority"] and a["majority"] == gold})
     auto = [c for c in cells if c["state"] == "auto"]
     conf = [c for c in cells if c["state"] == "confirm"]
     ok = [c for c in auto if c["correct"]]
     return {
         "cells": len(cells), "items": len({c["item"] for c in cells}), "vendors": len({c["vendor"] for c in cells}),
+        "pages": len({c["url"] for c in cells}),
         "auto_answered": f"{len(auto)}/{len(cells)}", "auto_correct": f"{len(ok)}/{len(auto)}",
         "auto_precision": round(len(ok) / len(auto), 4) if auto else None,
+        "correct_with_sentence": sum(c["asserted"] for c in ok), "correct_not_stated": sum(not c["asserted"] for c in ok),
         "sent_to_confirm": len(conf),
         "confirm_majority_right": f"{sum(c['majority_right'] for c in conf)}/{len(conf)}",
         "all_cells_majority_right": f"{sum(c['majority_right'] for c in cells)}/{len(cells)}",
@@ -101,10 +108,26 @@ FOOTNOTES = {
 }
 
 
+def vendor_family(vendor: str) -> str:
+    """'Google Cloud (Vertex AI / Gemini Enterprise Agent Platform)' and 'Google Cloud' are one vendor family."""
+    return vendor.split(" (")[0].strip().lower()
+
+
+def vendors_new(split: str | None, kinds: tuple[str, ...] = ("heldout", "tuned")) -> int:
+    """Vendor families in `split` that appear nowhere else in the corpus (all when split is None)."""
+    corpus = dv.load_corpus()
+    inside = {vendor_family(i["vendor"]) for i in corpus if i["kind"] in kinds and (not split or i["split"] == split)}
+    if not split:
+        return len(inside)
+    outside = {vendor_family(i["vendor"]) for i in corpus if i["split"] != split}
+    return len(inside - outside)
+
+
 def report(split: str = "v3fresh", files: Sequence[Path] | None = None) -> dict:
     """The headline (pre-registered split, prompt v3) plus clearly labelled non-clean references."""
     head_files = list(files) if files else dv.headline_runs()
     head = evaluate(head_files, split=split or None)
+    head["vendors_new"] = vendors_new(split or None)
     misses = [{**m, "footnote": FOOTNOTES.get((m["item"], m["field"]))} for m in head["auto_misses"]]
     out = {
         "rule": "a cell (feature x scored field) is auto-answered only when at least 2 runs succeeded and every "
@@ -129,8 +152,11 @@ def report(split: str = "v3fresh", files: Sequence[Path] | None = None) -> dict:
 def brief(rep: dict) -> dict:
     h = rep["headline"]
     return {"split": rep["split"], "cells": h["cells"], "items": h["items"], "vendors": h["vendors"],
+            "vendors_new": h["vendors_new"], "pages": h["pages"],
             "auto_answered": h["auto_answered"], "auto_correct": h["auto_correct"],
+            "with_sentence": h["correct_with_sentence"], "not_stated": h["correct_not_stated"],
             "sent_to_confirm": h["sent_to_confirm"], "confirm_majority_right": h["confirm_majority_right"],
+            "all_cells_majority_right": h["all_cells_majority_right"],
             "auto_misses": h["auto_misses"],
             "reference_not_clean": {k: {x: v[x] for x in ("auto_answered", "auto_correct", "sent_to_confirm")}
                                     for k, v in (rep.get("reference_not_clean") or {}).items() if k != "_about"}}

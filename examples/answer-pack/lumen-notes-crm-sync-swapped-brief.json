@@ -1,5 +1,5 @@
 {
- "pack_id": "a7826f803f52290c",
+ "pack_id": "60a3b11401251785",
  "as_of_local": "2026-10-21 21:23 EDT",
  "headline": {
   "kicker": "1 stale",
@@ -62,7 +62,7 @@
     "/api/crm-sync": "Page does not say",
     "/api/summarize": "Page does not say",
     "/api/digest": "Page does not say",
-    "/api/embed": "Page does not say"
+    "/api/embed": "Region stated on the page (see quote)"
    }
   },
   {
@@ -73,7 +73,7 @@
     "/api/crm-sync": "Anthropic",
     "/api/summarize": "Anthropic",
     "/api/digest": "Anthropic",
-    "/api/embed": "Readings disagree: Others see it or Page does not say"
+    "/api/embed": "OpenAI"
    }
   }
  ]

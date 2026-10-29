@@ -3,8 +3,8 @@
  "version": 1,
  "readonly": true,
  "company": "Lumen Notes Inc.",
- "label": "DEMO COMPANY (fictional). Lumen Notes, its endpoints, settings and trust-page answers are invented for the replay. Every vendor sentence, URL and fetch time is real and comes from data/datause/registry.json and data/datause/observations.json.",
- "pack_id": "3631aa43a7c32513",
+ "label": "DEMO COMPANY (fictional). Lumen Notes, its endpoints, settings and trust-page answers are invented for the replay.",
+ "pack_id": "474a21ab1924a861",
  "as_of": "2026-10-22T01:23:45Z",
  "as_of_local": "2026-10-21 21:23 EDT",
  "answers": [
@@ -12,8 +12,10 @@
    "number": "01",
    "question": "Is our data used to train AI models?",
    "answer": "No. Customer data is never used to train AI models.",
+   "note": null,
    "status": "still_true",
    "status_label": "Still true",
+   "buyer_status": "Supported by the vendors' pages",
    "as_of": "2026-10-22T01:23:45Z",
    "as_of_local": "2026-10-21 21:23 EDT",
    "changes": [],
@@ -25,6 +27,11 @@
      "pending_confirmation": false,
      "quote": "Retained data is never used for model training without your express permission.",
      "quote_display": "Retained data is never used for model training without your express permission.",
+     "evidence": {
+      "kind": "list_entry",
+      "text": "Retained data is never used for model training without your express permission."
+     },
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
      "source_label": "Anthropic, API and data retention",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -37,6 +44,11 @@
      "pending_confirmation": false,
      "quote": "Retained data is never used for model training without your express permission.",
      "quote_display": "Retained data is never used for model training without your express permission.",
+     "evidence": {
+      "kind": "list_entry",
+      "text": "Retained data is never used for model training without your express permission."
+     },
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
      "source_label": "Anthropic, API and data retention",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -49,6 +61,11 @@
      "pending_confirmation": false,
      "quote": "Retained data is never used for model training without your express permission.",
      "quote_display": "Retained data is never used for model training without your express permission.",
+     "evidence": {
+      "kind": "list_entry",
+      "text": "Retained data is never used for model training without your express permission."
+     },
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
      "source_label": "Anthropic, API and data retention",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -61,6 +78,11 @@
      "pending_confirmation": false,
      "quote": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
      "quote_display": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us).",
+     "evidence": {
+      "kind": "sentence",
+      "text": "Your data is your data. As of March 1, 2023, data sent to the OpenAI API is not used to train or improve OpenAI models (unless you explicitly opt in to share data with us)."
+     },
+     "list_evidence": [],
      "source_url": "https://developers.openai.com/api/docs/guides/your-data",
      "source_label": "OpenAI, your data",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -72,8 +94,10 @@
    "number": "02",
    "question": "How long do AI providers retain our data?",
    "answer": "Our AI providers keep prompts and outputs for at most 30 days.",
+   "note": "Supported by the vendors' pages for 3 of 4 endpoints; for /api/crm-sync the vendor's page does not state this.",
    "status": "held_unspecified",
    "status_label": "Held · unspecified",
+   "buyer_status": "Partly stated by the vendors' pages",
    "as_of": "2026-10-22T01:23:45Z",
    "as_of_local": "2026-10-21 21:23 EDT",
    "changes": [],
@@ -83,8 +107,13 @@
      "provider": "anthropic",
      "vendor_says": "No period stated",
      "pending_confirmation": false,
-     "quote": "",
-     "quote_display": "",
+     "quote": "Data exchanged with MCP servers, including tool definitions and execution results, is retained according to Anthropic's standard data retention policy.",
+     "quote_display": "Data exchanged with MCP servers, including tool definitions and execution results, is retained according to Anthropic's standard data retention policy.",
+     "evidence": {
+      "kind": "sentence",
+      "text": "Data exchanged with MCP servers, including tool definitions and execution results, is retained according to Anthropic's standard data retention policy."
+     },
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
      "source_label": "Anthropic, MCP connector",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -97,6 +126,11 @@
      "pending_confirmation": false,
      "quote": "Conversation content (your prompts and Claude's outputs) is not retained by default; the exception is Covered Models, which require 30-day retention.",
      "quote_display": "Conversation content (your prompts and Claude's outputs) is not retained by default; the exception is Covered Models, which require 30-day retention.",
+     "evidence": {
+      "kind": "list_entry",
+      "text": "Only what is technically necessary for the feature to work is retained. Conversation content (your prompts and Claude's outputs) is not retained by default; the exception is Covered Models, which require 30-day retention."
+     },
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
      "source_label": "Anthropic, API and data retention",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -107,8 +141,41 @@
      "provider": "anthropic",
      "vendor_says": "29 days",
      "pending_confirmation": false,
-     "quote": "| Batch processing | /v1/messages/batches | No | No | 29-day retention; async storage required. See Batch processing.",
-     "quote_display": "Batch processing · /v1/messages/batches · No · No · 29-day retention; async storage required. See Batch processing.",
+     "quote": "| Batch processing | /v1/messages/batches | No | No | 29-day retention; async storage required. See Batch processing",
+     "quote_display": "Batch processing · /v1/messages/batches · No · No · 29-day retention; async storage required. See Batch processing",
+     "evidence": {
+      "kind": "table_row",
+      "row_label": "Batch processing",
+      "rows": [
+       {
+        "key": "Feature",
+        "value": "Batch processing",
+        "match": false
+       },
+       {
+        "key": "Endpoint",
+        "value": "/v1/messages/batches",
+        "match": false
+       },
+       {
+        "key": "ZDR eligible",
+        "value": "No",
+        "match": false
+       },
+       {
+        "key": "HIPAA eligible",
+        "value": "No",
+        "match": false
+       },
+       {
+        "key": "Details",
+        "value": "29-day retention; async storage required. See Batch processing.",
+        "match": true
+       }
+      ],
+      "match_key": "Details"
+     },
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
      "source_label": "Anthropic, API and data retention",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -119,8 +186,46 @@
      "provider": "openai",
      "vendor_says": "Not retained under ZDR (30 days without)",
      "pending_confirmation": false,
-     "quote": "By default, abuse monitoring logs are generated for all API feature usage and retained for up to 30 days, unless longer retention is required by law, or is reasonably necessary to protect our services or any third party from harm.",
-     "quote_display": "By default, abuse monitoring logs are generated for all API feature usage and retained for up to 30 days, unless longer retention is required by law, or is reasonably necessary to protect our services or any third party from harm.",
+     "quote": "| /v1/embeddings | No | 30 days | None | Yes | No |",
+     "quote_display": "/v1/embeddings · No · 30 days · None · Yes · No",
+     "evidence": {
+      "kind": "table_row",
+      "row_label": "/v1/embeddings",
+      "rows": [
+       {
+        "key": "Endpoint",
+        "value": "/v1/embeddings",
+        "match": false
+       },
+       {
+        "key": "Data used for training",
+        "value": "No",
+        "match": false
+       },
+       {
+        "key": "Abuse monitoring retention",
+        "value": "30 days",
+        "match": true
+       },
+       {
+        "key": "Application state retention",
+        "value": "None",
+        "match": false
+       },
+       {
+        "key": "Zero Data Retention eligible",
+        "value": "Yes",
+        "match": false
+       },
+       {
+        "key": "Private Retention with PSP and Safety Retention eligible",
+        "value": "No",
+        "match": false
+       }
+      ],
+      "match_key": "Abuse monitoring retention"
+     },
+     "list_evidence": [],
      "source_url": "https://developers.openai.com/api/docs/guides/your-data",
      "source_label": "OpenAI, your data",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -131,9 +236,11 @@
   {
    "number": "03",
    "question": "Do you have zero data retention with your AI providers?",
-   "answer": "Yes. We use zero data retention with our AI providers. Exception: nightly digests (/api/digest) use Anthropic Message Batches, kept up to 29 days.",
+   "answer": "Yes, except: /api/crm-sync (Anthropic Messages API with mcp_servers (MCP connector), not covered by ZDR); /api/digest (Anthropic Message Batches, not covered by ZDR).",
+   "note": "Wording revised on 2026-10-21 21:23 EDT to match the vendors' pages.",
    "status": "not_true",
    "status_label": "Not true",
+   "buyer_status": "Revised to match the vendors' pages",
    "as_of": "2026-10-22T01:23:45Z",
    "as_of_local": "2026-10-21 21:23 EDT",
    "changes": [],
@@ -145,6 +252,11 @@
      "pending_confirmation": false,
      "quote": "The MCP connector is not covered by ZDR arrangements.",
      "quote_display": "The MCP connector is not covered by ZDR arrangements.",
+     "evidence": {
+      "kind": "sentence",
+      "text": "The MCP connector is not covered by ZDR arrangements."
+     },
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
      "source_label": "Anthropic, MCP connector",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -153,10 +265,15 @@
     {
      "endpoint": "/api/summarize",
      "provider": "anthropic",
-     "vendor_says": "ZDR (your setting)",
+     "vendor_says": "ZDR (company setting)",
      "pending_confirmation": false,
-     "quote": "| Messages API | /v1/messages | Yes | Yes | Standard API calls for generating Claude responses. |",
-     "quote_display": "Messages API · /v1/messages · Yes · Yes · Standard API calls for generating Claude responses.",
+     "quote": "Claude Messages and Token Counting APIs: ZDR applies to these endpoints for eligible features listed in the feature eligibility table.",
+     "quote_display": "Claude Messages and Token Counting APIs: ZDR applies to these endpoints for eligible features listed in the feature eligibility table.",
+     "evidence": {
+      "kind": "list_entry",
+      "text": "Claude Messages and Token Counting APIs: ZDR applies to these endpoints for eligible features listed in the feature eligibility table. Features that ride on /v1/messages but are marked \"No\" in the table (such as code execution) are not covered."
+     },
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
      "source_label": "Anthropic, API and data retention",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -167,8 +284,41 @@
      "provider": "anthropic",
      "vendor_says": "Not covered by ZDR (disclosed exception)",
      "pending_confirmation": false,
-     "quote": "| Batch processing | /v1/messages/batches | No | No | 29-day retention; async storage required. See Batch processing.",
-     "quote_display": "Batch processing · /v1/messages/batches · No · No · 29-day retention; async storage required. See Batch processing.",
+     "quote": "| Batch processing | /v1/messages/batches | No | No | 29-day retention; async storage required. See Batch processing",
+     "quote_display": "Batch processing · /v1/messages/batches · No · No · 29-day retention; async storage required. See Batch processing",
+     "evidence": {
+      "kind": "table_row",
+      "row_label": "Batch processing",
+      "rows": [
+       {
+        "key": "Feature",
+        "value": "Batch processing",
+        "match": false
+       },
+       {
+        "key": "Endpoint",
+        "value": "/v1/messages/batches",
+        "match": false
+       },
+       {
+        "key": "ZDR eligible",
+        "value": "No",
+        "match": true
+       },
+       {
+        "key": "HIPAA eligible",
+        "value": "No",
+        "match": false
+       },
+       {
+        "key": "Details",
+        "value": "29-day retention; async storage required. See Batch processing.",
+        "match": false
+       }
+      ],
+      "match_key": "ZDR eligible"
+     },
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
      "source_label": "Anthropic, API and data retention",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -177,10 +327,48 @@
     {
      "endpoint": "/api/embed",
      "provider": "openai",
-     "vendor_says": "ZDR (your setting)",
+     "vendor_says": "ZDR (company setting)",
      "pending_confirmation": false,
      "quote": "| /v1/embeddings | No | 30 days | None | Yes | No |",
      "quote_display": "/v1/embeddings · No · 30 days · None · Yes · No",
+     "evidence": {
+      "kind": "table_row",
+      "row_label": "/v1/embeddings",
+      "rows": [
+       {
+        "key": "Endpoint",
+        "value": "/v1/embeddings",
+        "match": false
+       },
+       {
+        "key": "Data used for training",
+        "value": "No",
+        "match": false
+       },
+       {
+        "key": "Abuse monitoring retention",
+        "value": "30 days",
+        "match": false
+       },
+       {
+        "key": "Application state retention",
+        "value": "None",
+        "match": false
+       },
+       {
+        "key": "Zero Data Retention eligible",
+        "value": "Yes",
+        "match": true
+       },
+       {
+        "key": "Private Retention with PSP and Safety Retention eligible",
+        "value": "No",
+        "match": false
+       }
+      ],
+      "match_key": "Zero Data Retention eligible"
+     },
+     "list_evidence": [],
      "source_url": "https://developers.openai.com/api/docs/guides/your-data",
      "source_label": "OpenAI, your data",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -192,8 +380,10 @@
    "number": "04",
    "question": "Where is our data processed?",
    "answer": "In the United States.",
+   "note": "The vendors' pages do not state this; the answer rests on the company's own settings.",
    "status": "held_unspecified",
    "status_label": "Held · unspecified",
+   "buyer_status": "Company statement; the vendors' pages do not say",
    "as_of": "2026-10-22T01:23:45Z",
    "as_of_local": "2026-10-21 21:23 EDT",
    "changes": [],
@@ -205,6 +395,8 @@
      "pending_confirmation": false,
      "quote": "",
      "quote_display": "",
+     "evidence": null,
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
      "source_label": "Anthropic, MCP connector",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -217,6 +409,8 @@
      "pending_confirmation": false,
      "quote": "",
      "quote_display": "",
+     "evidence": null,
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
      "source_label": "Anthropic, API and data retention",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -229,6 +423,8 @@
      "pending_confirmation": false,
      "quote": "",
      "quote_display": "",
+     "evidence": null,
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
      "source_label": "Anthropic, API and data retention",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -237,10 +433,53 @@
     {
      "endpoint": "/api/embed",
      "provider": "openai",
-     "vendor_says": "Page does not say",
+     "vendor_says": "Region stated on the page (see quote)",
      "pending_confirmation": false,
-     "quote": "",
-     "quote_display": "",
+     "quote": "| /v1/embeddings | Embeddings | All listed regions | United States, Europe (EEA + Switzerland), United Arab Emirates | text-embedding-3-small, text-embedding-3-large, text-embedding-ada-002 | United Arab Emirates: text-embedding-3-large | — ",
+     "quote_display": "/v1/embeddings · Embeddings · All listed regions · United States, Europe (EEA + Switzerland), United Arab Emirates · text-embedding-3-small, text-embedding-3-large, text-embedding-ada-002 · United Arab Emirates: text-embedding-3-large · —",
+     "evidence": {
+      "kind": "table_row",
+      "row_label": "/v1/embeddings",
+      "rows": [
+       {
+        "key": "Endpoint or feature",
+        "value": "/v1/embeddings",
+        "match": false
+       },
+       {
+        "key": "Service",
+        "value": "Embeddings",
+        "match": false
+       },
+       {
+        "key": "Storage regions",
+        "value": "All listed regions",
+        "match": true
+       },
+       {
+        "key": "Processing regions",
+        "value": "United States, Europe (EEA + Switzerland), United Arab Emirates",
+        "match": false
+       },
+       {
+        "key": "Supported models and snapshots",
+        "value": "text-embedding-3-small, text-embedding-3-large, text-embedding-ada-002",
+        "match": false
+       },
+       {
+        "key": "Regional processing snapshot exceptions",
+        "value": "United Arab Emirates: text-embedding-3-large",
+        "match": false
+       },
+       {
+        "key": "Notes",
+        "value": "—",
+        "match": false
+       }
+      ],
+      "match_key": "Storage regions"
+     },
+     "list_evidence": [],
      "source_url": "https://developers.openai.com/api/docs/guides/your-data",
      "source_label": "OpenAI, your data",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -252,23 +491,27 @@
    "number": "05",
    "question": "Which AI providers see our data?",
    "answer": "Anthropic and OpenAI, under their published sub-processor lists.",
+   "note": null,
    "status": "stale",
    "status_label": "Stale",
+   "buyer_status": "A vendor page changed after this answer",
    "as_of": "2026-10-22T01:23:45Z",
    "as_of_local": "2026-10-21 21:23 EDT",
    "changes": [
     {
-     "text": "OpenAI updated its sub-processor list on October 14, 2026 (was June 2, 2026), after this answer was written (2026-09-01). Review the change."
+     "text": "OpenAI updated its sub-processor list on October 14, 2026 (previously June 2, 2026), after this answer was written (2026-09-01)."
     }
    ],
    "endpoints": [
     {
      "endpoint": "/api/crm-sync",
      "provider": "anthropic",
-     "vendor_says": "Being confirmed",
-     "pending_confirmation": true,
+     "vendor_says": "Anthropic",
+     "pending_confirmation": false,
      "quote": "",
      "quote_display": "",
+     "evidence": null,
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/agents-and-tools/mcp-connector",
      "source_label": "Anthropic, MCP connector",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -281,6 +524,8 @@
      "pending_confirmation": false,
      "quote": "",
      "quote_display": "",
+     "evidence": null,
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
      "source_label": "Anthropic, API and data retention",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -293,6 +538,8 @@
      "pending_confirmation": false,
      "quote": "",
      "quote_display": "",
+     "evidence": null,
+     "list_evidence": [],
      "source_url": "https://platform.claude.com/docs/en/manage-claude/api-and-data-retention",
      "source_label": "Anthropic, API and data retention",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -301,10 +548,63 @@
     {
      "endpoint": "/api/embed",
      "provider": "openai",
-     "vendor_says": "Being confirmed",
-     "pending_confirmation": true,
+     "vendor_says": "OpenAI",
+     "pending_confirmation": false,
      "quote": "",
      "quote_display": "",
+     "evidence": null,
+     "list_evidence": [
+      {
+       "kind": "list_entry_table",
+       "entity": "Cloudflare, Ltd.",
+       "change": "changed",
+       "rows": [
+        {
+         "key": "Services",
+         "value": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+         "match": false,
+         "was": null
+        },
+        {
+         "key": "Purpose",
+         "value": "Content delivery network provider",
+         "match": true,
+         "was": "Content delivery network provider; Web Hosting"
+        },
+        {
+         "key": "Locations",
+         "value": "Processing is performed at the data center that is closest to the End User. For requests sent to us.api.openai.com or eu.api.openai.com, OpenAI uses Cloudflare Regional Services so that TLS termination and HTTPS decryption occur within the selected; processing region.",
+         "match": true,
+         "was": "Processing is performed at the data center that is closest to the End User"
+        }
+       ]
+      },
+      {
+       "kind": "list_entry_table",
+       "entity": "OAI International, Inc.",
+       "change": "added",
+       "rows": [
+        {
+         "key": "Services",
+         "value": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
+         "match": false,
+         "was": null
+        },
+        {
+         "key": "Purpose",
+         "value": "Vendor affiliate (parent: OpenAI, OpCo, LLC)",
+         "match": false,
+         "was": null
+        },
+        {
+         "key": "Locations",
+         "value": "United States",
+         "match": false,
+         "was": null
+        }
+       ]
+      }
+     ],
      "source_url": "https://developers.openai.com/api/docs/guides/your-data",
      "source_label": "OpenAI, your data",
      "fetched_at": "2026-10-22T01:23:45Z",
@@ -313,5 +613,5 @@
    ]
   }
  ],
- "share_id": "554acc3d8df2fb35"
+ "share_id": "c6aaf164be62fed2"
 }

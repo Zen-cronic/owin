@@ -28,6 +28,15 @@ check /pack/print     text/html
 check /app.js         text/javascript
 check /api/catalog    application/json
 
+# POST /api/recheck answers the contract with or without a key: 200 and a JSON body with ok and mode.
+rc=$(curl -sS --max-time 60 ${AUTH[@]+"${AUTH[@]}"} -X POST -H 'Content-Type: application/json' -d '{"endpoint": "/api/crm-sync"}' "$BASE/api/recheck")
+python3 - "$rc" <<'PY' || fail=1
+import json, sys
+r = json.loads(sys.argv[1])
+assert "ok" in r and r.get("mode") in ("demo", "live"), f"recheck contract: {r}"
+print(f"ok   /api/recheck mode={r['mode']} ok={r['ok']}" + (f" state={r.get('state')} credits={r.get('credits_used')}" if r["ok"] else ""))
+PY
+
 health=$(curl -sS --max-time 10 ${AUTH[@]+"${AUTH[@]}"} "$BASE/healthz")
 python3 - "$health" <<'PY' || fail=1
 import json, sys

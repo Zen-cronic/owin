@@ -18,10 +18,12 @@ import re
 from functools import lru_cache
 from pathlib import Path
 
+from .. import config
 from .observations import quote_id
 
 ROOT = Path(__file__).resolve().parents[2]
-INDEX = ROOT / "data" / "datause" / "evidence.json"
+INDEX_REL = "data/datause/evidence.json"
+INDEX = ROOT / INDEX_REL
 TAVILY_RAW = ROOT / "fixtures" / "raw" / "datause-tavily"
 
 # Which column (or cell) answers which question. Matched against header names first, then cell text.
@@ -137,7 +139,8 @@ def _hit(ev: dict, field: str | None) -> int | None:
 
 @lru_cache(maxsize=1)
 def _index() -> dict:
-    return json.loads(INDEX.read_text())["quotes"] if INDEX.exists() else {}
+    p = config.read_path(INDEX_REL)
+    return json.loads(p.read_text())["quotes"] if p.exists() else {}
 
 
 def for_quote(q: str, field: str | None = None) -> dict | None:
@@ -189,9 +192,9 @@ def build_index() -> Path:
     out = {"_about": "Evidence type per quote id (sentence | table_row | list_entry), built by `owin pack evidence` "
                      "from the Tavily captures. Display only; no rule reads it.",
            "pages_missing": sorted(missing), "quotes": dict(sorted(quotes.items()))}
-    INDEX.write_text(json.dumps(out, indent=1, ensure_ascii=False) + "\n")
+    p = config.write_atomic(INDEX_REL, json.dumps(out, indent=1, ensure_ascii=False) + "\n")
     _index.cache_clear()
-    return INDEX
+    return p
 
 
 def list_entry(name: str, kind: str, before: dict | None, after: dict | None, fields: list[str] | None) -> dict:

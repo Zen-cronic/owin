@@ -19,8 +19,8 @@ Anything not in those pages is marked **UNVERIFIED**.
 | `PORT` | `8080` (image default) | not used | port `owin serve` binds; must equal `--container-port` |
 | `OWIN_HOST` | `0.0.0.0` (image default) | not used | bind address |
 | `OWIN_STATE_DIR` | optional, `/state` (read-only bucket) | **required**, `/state` (read-write bucket) | refreshed observations and list snapshots; unset = committed state only |
-| `TOKEN_FACTORY_API_KEY` | **do not set** | not needed for `owin job daily` | only `owin pack extract` / `owin eval run` call Token Factory |
-| `TAVILY_API_KEY` | **do not set** | SecretStash secret | `owin job daily` re-fetches vendor pages with Tavily |
+| `TOKEN_FACTORY_API_KEY` | **do not set** | SecretStash secret | `owin job daily --read` (the default) re-reads the demo stack's pages with Nemotron; also `owin pack extract` / `owin eval run` |
+| `TAVILY_API_KEY` | optional (SecretStash secret) | SecretStash secret | `owin job daily` re-fetches vendor pages with Tavily; on the endpoint it enables `POST /api/recheck` (one Tavily `extract` per call, 200 calls/day per process, 60 s per endpoint; unset = the route answers `mode: demo`) |
 | `OWIN_LEDGER` | image default | `/state/ledger/usage.jsonl` | Token Factory spend ledger |
 
 The image never contains `.env`, `fixtures/raw/` (vendor page text), `var/`, the spend ledger, tests or design files:
@@ -124,16 +124,31 @@ builds all return 200. Expected last line: `SMOKE PASS <url>`. Then open `$ENDPO
 Stop or delete when done: `nebius ai endpoint stop "$ENDPOINT_ID"` (keeps it, no compute charge; API path documented
 as `/ai/v1/endpoints/stop`, CLI verb **UNVERIFIED**) or `nebius ai endpoint delete "$ENDPOINT_ID"`.
 
-## 4. A2: daily refresh on Serverless AI jobs (documented, not executed)
+## 4. A2: daily refresh on Serverless AI jobs (run once from a laptop; not yet executed on Nebius)
 
-`owin job daily` runs `owin sweep --live` (29-vendor index) and `owin pack refresh` (Tavily `extract` on the 7
-pages the demo relies on, about 7 credits per run) in one process and writes only into `$OWIN_STATE_DIR`. It refuses to
-run without `OWIN_STATE_DIR`. A free wiring check that makes no Tavily calls: `OWIN_STATE_DIR=$(mktemp -d) owin job daily --no-fetch`.
+`owin job daily` runs, in one process and writing only into `$OWIN_STATE_DIR`: `owin sweep --live` (the 29-vendor
+index), `owin pack refresh` (Tavily `extract` on the 7 pages the demo relies on), then the Nemotron step: the demo
+stack's four features are re-read three times each on the fresh captures (`owin pack extract`), the registry and the
+evidence index are re-exported into the state dir, and the endpoint serves them from there. A reading that errors
+abstains from the agreement; a feature with fewer than two successful readings is left for a person; a step that fails
+is written into the job record, never hidden. It refuses to run without `OWIN_STATE_DIR`. A free wiring check that
+makes no paid calls: `OWIN_STATE_DIR=$(mktemp -d) owin job daily --no-fetch --no-read`.
+
+It has run once for real, on 2026-10-29 03:33 UTC with both keys, from this repository (a fresh state dir, so every
+fetched list became a first baseline): 29 vendors swept (22 fetched live through Tavily, 9 not watchable, 2 unfetched),
+7 pages refreshed, 12 Nemotron readings with 0 errors for $0.065, 51 s wall clock. The records are committed:
+`eval/sweeps/job-daily-20261029T033329Z.json` (the job), `eval/sweeps/sweep-3-live-20261029T033329Z.json` (the sweep)
+and `eval/sweeps/job-daily-20261029T033329Z-readings.json` (the readings); the Token Factory calls are the
+`pack-registry` lines in `ledger/usage.jsonl` at 2026-10-28T23:34 EDT. About 29 Tavily credits per run on a fresh
+state dir (22 list fetches + 7 pages); a repeat run adds an advanced-depth re-fetch for each unchanged list. A repeat
+sweep of the four vendors with recorded fixtures against those baselines seven minutes later
+(`eval/sweeps/sweep-4-live-repeat-20261029T034046Z.json`): 4 no_change, 3 of them re-fetched at advanced depth before
+Owin said so, about 10 credits.
 
 1. Create an Object Storage bucket for state, for example `owin-state` (console: Object Storage -> Create bucket).
-2. Store the Tavily key in SecretStash: console -> SecretStash -> Create secret, name `owin-keys`, payload key
-   `TAVILY_API_KEY`, value = the key. (The endpoint's console form also offers "Create secret" under **Secret
-   environment variables**.) Never put the key in `--env`, the image or the repo.
+2. Store both keys in SecretStash: console -> SecretStash -> Create secret, name `owin-keys`, payload keys
+   `TAVILY_API_KEY` and `TOKEN_FACTORY_API_KEY`. (The endpoint's console form also offers "Create secret" under **Secret
+   environment variables**.) Never put a key in `--env`, the image or the repo.
 3. Run the job:
 
 ```bash
@@ -143,7 +158,7 @@ nebius ai job create \
   --container-command owin \
   --args "job daily" \
   --env "OWIN_STATE_DIR=/state,OWIN_LEDGER=/state/ledger/usage.jsonl" \
-  --env-secret "TAVILY_API_KEY=owin-keys" \
+  --env-secret "TAVILY_API_KEY=owin-keys,TOKEN_FACTORY_API_KEY=owin-keys" \
   --volume "owin-state:/state:rw" \
   --platform cpu-d3 \
   --preset 2vcpu-8gb \
@@ -162,8 +177,8 @@ nebius ai job create \
    (10:00 UTC = 06:00 EDT), where that script holds the command in step 3. Each run is a new job; delete old ones
    with `nebius ai job delete <id>`.
 
-Cost of the job: the same `cpu-d3` / `2vcpu-8gb` rate ($0.0496/hour), billed only while it runs (a sweep plus a
-refresh takes minutes), plus about 7 Tavily credits per day.
+Cost of the job: the same `cpu-d3` / `2vcpu-8gb` rate ($0.0496/hour), billed only while it runs (about a minute),
+plus about 29 Tavily credits and $0.07 of Token Factory per day.
 
 ## What was and was not validated (2026-10-22, no Docker on this machine)
 

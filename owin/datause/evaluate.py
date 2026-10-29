@@ -248,8 +248,14 @@ def _headline_key(key: str) -> list[Path]:
 
 
 def registry_runs() -> list[Path]:
-    """The A1 runs the A3 registry reads (pinned to v2 so a new headline does not silently change the answer pack)."""
+    """The A1 runs the A3 registry reads: pinned in headline.json to the headline's prompt version (v3), so a new
+    headline run changes the answer pack only when the pin moves."""
     return _headline_key("registry_runs") or headline_runs()
+
+
+def headline_prompt_version() -> str:
+    """The prompt version of the frozen headline run; the pack's readings follow it."""
+    return json.loads(headline_runs()[0].read_text()).get("prompt_version", "v1")
 
 
 def reference_runs() -> list[Path]:

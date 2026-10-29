@@ -1,0 +1,60 @@
+{
+ "_about": "Super vs Ultra on the same 10 labelled DPAs (objection-window terms, 5 scored fields, verbatim quote gate), 3 readings each, the same prompt. Recompute: owin eval score --brief (Super, headline runs) and owin eval score --brief --file eval/runs/20261028T233749-Nemotron-3-Ultra-550b-a55b.json (Ultra). Ultra run on 2026-10-28 23:37 EDT, 30 calls; the earlier spike (2026-10-21, not recorded in this repository) had both at 8/10 with an older prompt.",
+ "items": [
+  "vercel",
+  "supabase",
+  "mistral",
+  "anthropic",
+  "nebius",
+  "openai",
+  "stripe",
+  "nvidia",
+  "aws",
+  "google"
+ ],
+ "super": {
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "run_files": [
+   "eval/runs/20261021T202651-nemotron-3-super-120b-a12b.json",
+   "eval/runs/20261021T202832-nemotron-3-super-120b-a12b.json"
+  ],
+  "dpas_exact_majority": "10/10",
+  "readings_exact": "30/30",
+  "consistent": "10/10",
+  "calls": 30,
+  "errors": 0,
+  "cost_total_usd": 0.0587,
+  "cost_per_reading_usd": 0.002,
+  "mean_latency_s": 6.81,
+  "p95_latency_s": 9.94,
+  "tokens_in": 99720,
+  "tokens_out": 31992,
+  "list_price_per_m_tokens": {
+   "input": 0.3,
+   "output": 0.9
+  }
+ },
+ "ultra": {
+  "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+  "run_files": [
+   "eval/runs/20261028T233749-Nemotron-3-Ultra-550b-a55b.json"
+  ],
+  "dpas_exact_majority": "10/10",
+  "readings_exact": "30/30",
+  "consistent": "10/10",
+  "calls": 30,
+  "errors": 0,
+  "cost_total_usd": 0.2307,
+  "cost_per_reading_usd": 0.0077,
+  "mean_latency_s": 6.47,
+  "p95_latency_s": 12.54,
+  "tokens_in": 99720,
+  "tokens_out": 43676,
+  "list_price_per_m_tokens": {
+   "input": 1.0,
+   "output": 3.0
+  }
+ },
+ "cost_ratio_ultra_over_super": 3.9,
+ "reading": "Equal accuracy on this set (10/10 both, 30/30 readings both); Ultra costs about 3.9x per reading, so three Super readings cost less than one Ultra reading. This set is small and saturated; it supports the price choice, not a general accuracy ranking."
+}

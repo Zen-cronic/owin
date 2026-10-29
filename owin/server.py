@@ -11,8 +11,11 @@ GET /pack/print                                               ->  print-ready HT
 GET /                                                         ->  the answer screen (owin/web/, owin/webui.py)
 GET /api/catalog, /api/watch                                  ->  features for the swap control; per-page watch status
 GET /debug                                                    ->  unstyled replay debug page
+POST /api/recheck  (body: {"endpoint": "/api/crm-sync"})      ->  re-fetch that endpoint's vendor page through Tavily now
+                                                                  and rerun the rules (owin/recheck.py; demo answer without a key)
 GET /healthz                                                  ->  liveness + mode (demo | live), no secrets
-Stateless per request, on a ThreadingHTTPServer, so concurrent judges do not block each other.
+Stateless per request, on a ThreadingHTTPServer, so concurrent judges do not block each other. The only request
+that calls a paid API is POST /api/recheck, and only when a Tavily key is set (capped, cooled down, ledgered).
 """
 from __future__ import annotations
 
@@ -72,7 +75,31 @@ def handle(path: str, qs: dict) -> tuple[int, str, str]:
     if path == "/api/score":
         res = evaluate.score(evaluate.headline_runs())
         return 200, "application/json", json.dumps({k: res[k] for k in ("headline", "per_successful_run", "quotes_rechecked_against_source")})
+    if path == "/api/recheck":
+        return 405, "application/json", json.dumps({"error": 'POST a JSON body {"endpoint": "/api/crm-sync"}'})
     return 404, "application/json", json.dumps({"error": "not found"})
+
+
+def handle_post(path: str, raw: bytes, qs: dict) -> tuple[int, str, str]:
+    """POST /api/pack (a stack manifest) and POST /api/recheck ({"endpoint": ...}); everything else is 404."""
+    if path not in ("/api/pack", "/api/recheck"):
+        return 404, "application/json", json.dumps({"error": "not found"})
+    if len(raw) > MAX_BODY:
+        return 413, "application/json", json.dumps({"error": "body too large"})
+    try:
+        m = json.loads(raw or b"null")
+    except json.JSONDecodeError:
+        return 400, "application/json", json.dumps({"error": "invalid JSON"})
+    if path == "/api/pack":
+        if not isinstance(m, dict):
+            return 400, "application/json", json.dumps({"error": "body must be a JSON stack manifest"})
+        return pack_response(m, qs)
+    from . import recheck
+    ep = m.get("endpoint") if isinstance(m, dict) else None
+    if not isinstance(ep, str) or not ep:
+        return 400, "application/json", json.dumps({"error": 'body must be {"endpoint": "<endpoint path>"}'})
+    code, body = recheck.run(ep)
+    return code, "application/json", json.dumps(body)
 
 
 def healthz() -> dict:
@@ -81,7 +108,7 @@ def healthz() -> dict:
     ok = bool(registry.load())
     return {"ok": ok, "mode": config.mode(), "keys": config.keys_present(),
             "state_dir": config.state_dir() is not None,
-            "serving": "recorded runs and committed captures; no request calls a paid API"}
+            "serving": "recorded runs and committed captures; only POST /api/recheck calls a paid API (Tavily), when a key is set"}
 
 
 def selective_summary() -> dict:
@@ -90,8 +117,12 @@ def selective_summary() -> dict:
     rep = selective.report("v3fresh")
     sc = dv.score(dv.headline_runs())
     v3 = sc["headline"]["v3fresh"]
+    h = rep["headline"]
     return {"type": "owin.selective", "selective": selective.brief(rep), "run_files": rep["run_files"],
             "quotes_rechecked_against_source": rep["quotes_rechecked_against_source"],
+            "majority_all_cells": h["all_cells_majority_right"],
+            "correct_with_sentence": h["correct_with_sentence"], "correct_not_stated": h["correct_not_stated"],
+            "pages": h["pages"], "vendors_new": h["vendors_new"],
             "items_exact_majority": v3["items_exact_majority"], "negative_items_held": v3["negative_items_held"],
             "baseline_items_exact": v3["baseline_items_exact"], "model": sc["model"],
             "per_call": {"calls": sc["per_successful_run"]["total_calls"], "total_cost_usd": sc["per_successful_run"]["total_cost_usd"],
@@ -129,19 +160,11 @@ def pack_response(manifest: dict | None, qs: dict, *, html_default: bool = False
 class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         u = urlparse(self.path)
-        if u.path != "/api/pack":
-            code, ctype, body = 404, "application/json", json.dumps({"error": "not found"})
+        n = int(self.headers.get("Content-Length") or 0)
+        if n > MAX_BODY:
+            code, ctype, body = 413, "application/json", json.dumps({"error": "body too large"})
         else:
-            n = int(self.headers.get("Content-Length") or 0)
-            if n > MAX_BODY:
-                code, ctype, body = 413, "application/json", json.dumps({"error": "manifest too large"})
-            else:
-                try:
-                    m = json.loads(self.rfile.read(n) or b"null")
-                    code, ctype, body = pack_response(m if isinstance(m, dict) else None, parse_qs(u.query)) if isinstance(m, dict) \
-                        else (400, "application/json", json.dumps({"error": "body must be a JSON stack manifest"}))
-                except json.JSONDecodeError:
-                    code, ctype, body = 400, "application/json", json.dumps({"error": "invalid JSON"})
+            code, ctype, body = handle_post(u.path, self.rfile.read(n), parse_qs(u.query))
         data = body.encode()
         self.send_response(code)
         self.send_header("Content-Type", ctype)

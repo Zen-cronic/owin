@@ -10,8 +10,14 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | `sel.correct` | Correct among the auto-filled answers | **26/27** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.confirm` | Answers sent to a person to confirm | **6** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.majority` | Confirm cells where the majority reading would have been right | **2/6** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.sentence` | Correct auto-filled answers that assert a value with the vendor's verbatim sentence | **18** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.notstated` | Correct auto-filled answers that are 'not stated' (the page says nothing on that field) | **8** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.majority_all` | All 33 cells: where a majority vote would have been right (what a majority-vote system ships) | **28/33** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.vendors` | AI vendors in v3fresh positives | **7** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.vendors_new` | Vendor families in v3fresh that appear nowhere in the older corpus (Google Cloud is not new) | **6** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.items` | Features (vendor pages) in v3fresh positives | **11** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.pages` | Distinct vendor pages behind those 11 features | **8** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.swing` | Whole-item points one v3fresh item moves (100 / items) | **9** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.miss` | The one confident miss (self-disclosed label error, kept per pre-registration) | **openrouter-inference-zdr retention_days** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.neg` | Negative-control cells auto-answered correctly (page says nothing; Owin answers 'not stated') | **6/6** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.ref.v3old` | Reference, NOT clean: v3 on the older items, auto / correct | **80/90, 77/80** | `owin eval selective --corpus datause --split v3fresh` |
@@ -23,6 +29,9 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | `v3.passed` | v3 passed its pre-registered 80% bar | **false** | `owin eval score --corpus datause --brief` |
 | `v2.old` | Prompt v2 on the older 30 features (after one disclosed relabel) | **23/30** | `eval/datause/v2-score.json` |
 | `v1.prereg` | Pre-registered prompt v1, first 24 features (failed) | **16/24** | `eval/datause/preregistered-v1-score.json` |
+| `v3.calls` | Token Factory calls in the v3fresh run (11 features + 2 negatives, 3 readings each) | **39** | `owin eval score --corpus datause --brief` |
+| `v3.cost.total` | Token Factory spend for the v3fresh run (USD) | **0.115** | `owin eval score --corpus datause --brief` |
+| `price.super` | Token Factory list price for Nemotron Super, USD per M input / output tokens | **0.30 / 0.90** | `owin/tokenfactory.py` |
 | `cost.call` | Mean Token Factory cost per reading, v3fresh (USD) | **0.0029** | `owin eval score --corpus datause --brief` |
 | `cost.feature` | Cost to answer one endpoint (3 readings, USD) | **0.0088** | `owin eval score --corpus datause --brief` |
 | `lat.mean` | Mean latency per reading, exactly-right runs (s) | **8.81** | `owin eval score --corpus datause --brief` |
@@ -36,9 +45,18 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | `demo.oai` | OpenAI ADDED OAI International | **added** | `owin pack build --format brief` |
 | `demo.swap` | Change one input: /api/crm-sync -> Anthropic Messages makes answer 3 still true | **still_true** | `owin pack build --format brief --set /api/crm-sync=anthropic-messages` |
 | `demo.thin` | Thin evidence: every vendor field for /api/crm-sync is held, none invented | **held,held,held,held** | `owin pack build --format brief --set /api/crm-sync=thin-anthropic-rate-limits` |
-| `demo.confirm` | Confirm example: answer 3 when /api/embed calls OpenAI Responses | **confirm** | `owin pack build --format brief --set /api/crm-sync=anthropic-messages --set /api/embed=openai-responses` |
+| `demo.confirm` | Confirm example: answer 5's /api/embed cell when it calls OpenAI Responses (the v3 readings of OpenAI's page split 2 to 1 on third-party access; answer 5 itself stays Stale because OpenAI's list changed) | **confirm, 2/3** | `owin pack build --format brief --set /api/embed=openai-responses` |
+| `demo.v3` | The pack's readings use the headline's prompt version (every registry entry and live check) | **v3** | `owin pack registry` |
 | `demo.region` | Region never decides: answer 4 is held | **held_unspecified** | `owin pack build --format brief` |
 | `dpa.items` | Earlier subject (objection windows): DPAs exact, tuned + held-out | **10/10 + 7/7** | `owin eval score --brief` |
+| `dpa.runs` | Earlier subject: readings exact on all five fields, tuned + held-out | **51/51** | `owin eval score --brief` |
+| `dpa.neg` | Earlier subject: thin-evidence controls held | **6/6** | `owin eval score --brief` |
+| `model.ultra` | Nemotron Ultra on the same 10 labelled DPAs, 3 readings each: DPAs exact by majority / readings exact | **10/10 / 30/30** | `owin eval score --brief --file eval/runs/20261028T233749-Nemotron-3-Ultra-550b-a55b.json` |
+| `model.super` | Nemotron Super on those 10 DPAs: DPAs exact by majority / readings exact | **10/10 / 30/30** | `owin eval score --brief` |
+| `model.cost` | Cost per reading on those 10 DPAs, Super vs Ultra (USD; Ultra / Super) | **0.002 vs 0.0077 (3.9x)** | `eval/super-vs-ultra.json` |
+| `sweep.vendors` | Vendors in the sub-processor sweep index | **29** | `data/index/vendors.json` |
+| `sweep.live` | One real sweep with the Tavily key (2026-10-29): vendors swept / lists fetched live | **29 / 22** | `eval/sweeps/sweep-3-live-20261029T033329Z.json` |
+| `job.readings` | One real `owin job daily` (2026-10-29): Nemotron readings made / errored (abstained) / cost (USD) | **12 / 0 / 0.0651** | `eval/sweeps/job-daily-20261029T033329Z.json` |
 
 ## Qualitative claims and where they are enforced
 
