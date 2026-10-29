@@ -7,7 +7,7 @@
 <title>Owin · Start here</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect width=%2216%22 height=%2216%22 rx=%223%22 fill=%22%230E0F0F%22/%3E%3Ccircle cx=%228%22 cy=%228%22 r=%223%22 fill=%22%23FFD21F%22/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/app.css">
 </head>
@@ -22,18 +22,22 @@
   <section class="story" aria-labelledby="story-h">
     <p class="kick reveal">Why it exists</p>
     <h1 id="story-h" class="reveal" style="--i:1">I built Owin because a buyer’s security questionnaire asks whether your AI providers keep customer data, and the true answer differs per endpoint.</h1>
+    <div class="lede">
     <p class="what reveal" style="--i:2">Anthropic’s Messages API can run under zero data retention, its MCP connector is not covered, and Message Batches keep data for 29 days. For each endpoint you run, Owin fills the AI section from the vendor’s own page: retention, training, ZDR, region, who sees it. An answer goes Stale when that page changes after you wrote it, and when Owin’s three readings disagree, it asks you.</p>
 
     <p class="catchline reveal" style="--i:3">
-      <span class="badge bad"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 15 14H1z"/><path d="M8 6v3.6M8 11.6v.1"/></svg>Not true</span>
+      <span class="badge bad flap"><span class="lbl"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 15 14H1z"/><path d="M8 6v3.6M8 11.6v.1"/></svg>Not true</span></span>
       <span class="cl">The catch, on real vendor text: Lumen Notes’ trust page says “zero data retention”, but <span class="mono nw">/api/crm-sync</span> calls Anthropic’s MCP connector, and Anthropic’s page says “The MCP connector is not covered by ZDR arrangements.”<span class="act"><a class="btn primary" href="/">Open answer 3</a></span></span>
     </p>
+    </div>
 
-    <p class="big reveal" id="big" style="--i:4">Recomputing from recorded runs…</p>
-    <div class="stats" id="stats" aria-live="polite">
-      <div class="stat skel"><p class="v"><span class="bar w60"></span></p><p class="c"><span class="bar w80"></span></p></div>
-      <div class="stat skel"><p class="v"><span class="bar w60"></span></p><p class="c"><span class="bar w80"></span></p></div>
-      <div class="stat skel"><p class="v"><span class="bar w40"></span></p><p class="c"><span class="bar w90"></span></p></div>
+    <div class="board">
+      <p class="big" id="big">Recomputing from recorded runs…</p>
+      <div class="stats" id="stats" aria-live="polite">
+        <div class="stat skel"><p class="v"><span class="tiles" aria-hidden="true"><span class="tile"></span><span class="tile"></span><span class="sep" data-c="/"></span><span class="tile"></span><span class="tile"></span></span></p><p class="c"><span class="bar w80"></span></p></div>
+        <div class="stat skel"><p class="v"><span class="tiles" aria-hidden="true"><span class="tile"></span><span class="tile"></span><span class="sep" data-c="/"></span><span class="tile"></span><span class="tile"></span></span></p><p class="c"><span class="bar w80"></span></p></div>
+        <div class="stat skel"><p class="v"><span class="tiles" aria-hidden="true"><span class="tile"></span></span></p><p class="c"><span class="bar w90"></span></p></div>
+      </div>
     </div>
     <ul class="ev method reveal" style="--i:5">
       <li><b>Method</b><span class="mx">

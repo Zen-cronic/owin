@@ -362,3 +362,112 @@ code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13
 /* Enter motion: a line rises 12px into place once, in order (--i); nothing is hidden without JS or with reduced motion */
 .motion .reveal{opacity:0;transform:translateY(12px);transition:opacity .5s var(--ease),transform .5s var(--ease);transition-delay:calc(var(--i,0)*70ms)}
 .motion .reveal.in{opacity:1;transform:none}
+
+/* Start page board (/judge only). Every rule below is scoped to body.judge-page, so the app at / does not change.
+   A dark departures board: the opening line on ten of twelve columns, one hairline, the catch, then the three
+   recomputed numbers on split-flap tiles. Yellow stays on the thing to act on. */
+.judge-page{
+  --bg:#0E0F0F; --raise:#232424; --tile:#121313; --ink:#F3F1EA; --muted:#A9A79F; --line:#3A3B3B;
+  --act:#FFD21F; --on-act:#0E0F0F;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --display:'Inter Tight','Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --gut:clamp(16px,3.4vw,48px); --col:24px;
+}
+.judge-page .top{padding:18px var(--gut);border-bottom-color:var(--line)}
+.judge-page .word{font-family:var(--display);font-size:20px}
+.judge-page .btn{font-family:var(--sans);border-radius:2px}
+.judge-page .jg{max-width:1440px;padding:0 var(--gut) 96px}
+.judge-page .jg .story{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--col);margin-top:0;padding:72px 0 0;border-bottom:0}
+.judge-page .story > *{grid-column:1/-1}
+.judge-page .story .kick{font:500 14px/1.4 var(--sans);color:var(--muted)}
+.judge-page .story h1{grid-column:1/span 10;margin-top:20px;font:600 clamp(34px,4.6vw,66px)/1 var(--display);letter-spacing:-.018em}
+
+/* The hairline under the opening line, then the explanation beside the catch */
+.judge-page .lede{position:relative;display:grid;grid-template-columns:subgrid;margin-top:44px;padding-top:28px}
+.judge-page .lede::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:var(--line);transform-origin:0 50%}
+.judge-page .story .what{grid-column:1/span 5;margin:0;font:400 17px/1.6 var(--sans);color:var(--cite);max-width:none}
+.judge-page .catchline{grid-column:7/-1;display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:start;margin:0;padding:0;border:0;font:400 18px/1.5 var(--sans);color:var(--ink)}
+.judge-page .catchline .cl{max-width:none}
+.judge-page .catchline .act{margin-top:20px}
+
+/* The "Not true" flap tag: square, matte, split at the middle */
+.judge-page .badge.flap{position:relative;height:34px;margin-top:-2px;padding:0;border-radius:2px;perspective:240px;font:600 14px/1 var(--sans);box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.judge-page .badge.flap .lbl{display:inline-flex;align-items:center;gap:7px;height:100%;padding:0 12px}
+.judge-page .badge.flap::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(14,15,15,.28)}
+
+/* The board: a full-bleed housing, three numbers on tiles, captions in the body face */
+.judge-page .board{margin-top:72px;padding:28px 0 36px;background:var(--raise);box-shadow:0 0 0 100vmax var(--raise);clip-path:inset(0 -100vmax)}
+.judge-page .jg .big{margin:0 0 24px;font:500 14px/1.4 var(--sans);color:var(--muted)}
+.judge-page .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:0;border:0}
+.judge-page .stat,.judge-page .stat + .stat{padding:0 var(--col);border:0}
+.judge-page .stat:first-child{padding-left:0}
+.judge-page .stat + .stat{border-left:1px solid var(--line)}
+.judge-page .stat{--d:clamp(60px,6.6vw,96px)}
+.judge-page .stat .v{font:700 var(--d)/1 var(--display);letter-spacing:0}
+.judge-page .tiles{display:flex;align-items:center;gap:.06em}
+.judge-page .tile,.judge-page .sep{position:relative;flex:none;width:.72em;height:1.16em;perspective:4em;background:var(--tile);border-radius:3px;box-shadow:0 1px 0 rgba(0,0,0,.5)}
+.judge-page .sep{width:.42em}
+.judge-page .tile:empty,.judge-page .sep{background:linear-gradient(var(--tile) calc(50% - .5px),#070808 0 calc(50% + .5px),var(--tile) 0);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 1px 0 rgba(0,0,0,.5)}
+.judge-page .tile::before,.judge-page .tile::after{content:"";position:absolute;z-index:3;top:calc(50% - .035em);width:2px;height:.07em;background:#2C2D2D;border-radius:1px}
+.judge-page .tile::before{left:0}
+.judge-page .tile::after{right:0}
+.judge-page .tile .h{position:absolute;left:0;right:0;height:50%;overflow:hidden;background:var(--tile);backface-visibility:hidden}
+.judge-page .tile .t,.judge-page .tile .ft{top:0;border-radius:3px 3px 0 0;box-shadow:inset 0 1px 0 rgba(255,255,255,.07)}
+.judge-page .tile .b,.judge-page .tile .fb{bottom:0;border-radius:0 0 3px 3px;box-shadow:inset 0 1px 0 #070808}
+.judge-page .tile .ft{transform-origin:50% 100%;z-index:2}
+.judge-page .tile .fb{transform-origin:50% 0;z-index:2}
+.judge-page .tile .ft,.judge-page .tile .fb{visibility:hidden}
+.judge-page .tile.turning .ft,.judge-page .tile.turning .fb{visibility:visible}
+.judge-page .tile .h::after{content:attr(data-c);position:absolute;left:0;right:0;height:200%;display:flex;align-items:center;justify-content:center;color:var(--ink);font-variant-numeric:tabular-nums}
+.judge-page .tile .t::after,.judge-page .tile .ft::after{top:0}
+.judge-page .tile .b::after,.judge-page .tile .fb::after{bottom:0}
+.judge-page .sep::after{content:attr(data-c);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.judge-page .stat .c{margin-top:18px;font:400 15px/1.5 var(--sans);color:#C9CBC5;max-width:34ch}
+.judge-page .stat.skel .c .bar{background:var(--tile)}
+
+/* Method, paths, evidence on the same twelve columns */
+.judge-page .ev.method{margin-top:40px}
+.judge-page .ev li,.judge-page .ev.method li{grid-template-columns:minmax(0,3fr) minmax(0,9fr);gap:6px var(--col);padding:16px 0;border-color:var(--line);font-size:15px}
+.judge-page .ev li span{font-size:14.5px;max-width:72ch}
+.judge-page .ev.method .sub,.judge-page .ev.method .fn span{max-width:72ch}
+.judge-page code.cmd{font-family:var(--mono);border-radius:0;border-color:var(--line)}
+.judge-page .jg section{margin-top:112px}
+.judge-page .jg .story{margin-top:0}
+.judge-page .jg h2{margin-bottom:24px;font:600 28px/1.1 var(--display);letter-spacing:-.015em;color:var(--ink)}
+.judge-page .paths{gap:var(--col)}
+.judge-page .path-card{padding:24px;border-color:var(--line);border-radius:0;gap:8px}
+.judge-page .path-card:hover{background:var(--raise);border-color:var(--line)}
+.judge-page .path-card .step{font:700 14px/1 var(--display);font-variant-numeric:tabular-nums;color:var(--muted)}
+.judge-page .path-card .t{font:600 22px/1.15 var(--display);letter-spacing:-.015em}
+.judge-page .path-card .d{font-size:15px}
+.judge-page .jg .also{margin-top:20px;font-size:14.5px;max-width:84ch}
+.judge-page .foot{margin-top:48px}
+
+/* Motion: the rule draws, the tag turns over once; the board flips from judge.js. Nothing moves with reduced motion */
+.motion .judge-page .lede::before{animation:jg-draw .4s cubic-bezier(.2,.8,.2,1) .52s both}
+.motion .judge-page .badge.flap .lbl{animation:jg-turn .26s cubic-bezier(.3,.7,.3,1) .87s both}
+@keyframes jg-draw{from{transform:scaleX(0)}}
+@keyframes jg-turn{from{transform:rotateX(-90deg)}}
+
+@media (max-width:900px){
+  .judge-page .top .ctx{white-space:normal;overflow:visible}
+  .judge-page .jg .story{padding-top:40px}
+  .judge-page .story h1{grid-column:1/-1;font-size:clamp(28px,7.6vw,52px);line-height:1.04;letter-spacing:-.02em}
+  .judge-page .lede{margin-top:32px;padding-top:28px}
+  .judge-page .story .what{grid-column:1/-1;font-size:16px}
+  .judge-page .catchline{grid-column:1/-1;grid-template-columns:minmax(0,1fr);gap:14px;margin-top:32px;font-size:17px}
+  .judge-page .badge.flap{justify-self:start}
+  .judge-page .board{margin-top:64px;padding:24px 0 8px}
+  .judge-page .stats{grid-template-columns:minmax(0,1fr)}
+  .judge-page .stat,.judge-page .stat + .stat{display:grid;grid-template-columns:calc(var(--d) * 3.5) minmax(0,1fr);gap:16px;align-items:center;padding:16px 0;border-left:0}
+  .judge-page .stat .c{margin-top:0;font-size:14px}
+  .judge-page .stat:first-child{padding-top:0}
+  .judge-page .stat + .stat{border-top:1px solid var(--line)}
+  .judge-page .stat{--d:clamp(40px,11vw,56px)}
+  .judge-page .ev li,.judge-page .ev.method li{grid-template-columns:minmax(0,1fr)}
+  .judge-page .jg section{margin-top:72px}
+  .judge-page .jg h2{font-size:24px}
+}
+
+@media (max-width:420px){body.judge-page .ctx .fict{display:none}}
