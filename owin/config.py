@@ -53,8 +53,17 @@ def write_atomic(rel: str, text: str) -> Path:
 
 
 def keys_present() -> dict[str, bool]:
-    """Which keys the environment provides. Never returns a value."""
-    return {k: bool(os.environ.get(k)) for k in ("TOKEN_FACTORY_API_KEY", "TAVILY_API_KEY")}
+    """Which keys are available, by the same rule the clients use (environment, else the
+    OWIN_ENV_FILE / ../.env line). Never returns a value."""
+    names = ("TOKEN_FACTORY_API_KEY", "TAVILY_API_KEY")
+    found = {k: bool(os.environ.get(k)) for k in names}
+    env = Path(os.environ.get("OWIN_ENV_FILE", Path(__file__).resolve().parent.parent / ".env"))
+    if env.is_file():
+        for line in env.read_text().splitlines():
+            key, sep, value = line.partition("=")
+            if sep and key.strip() in names and value.strip():
+                found[key.strip()] = True
+    return found
 
 
 def mode() -> str:

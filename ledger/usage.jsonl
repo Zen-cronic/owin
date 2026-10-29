@@ -562,3 +562,4 @@
 {"ts": "2026-10-28T23:37:43-0400", "purpose": "eval:google", "model": "nvidia/Nemotron-3-Ultra-550b-a55b", "prompt_tokens": 5404, "completion_tokens": 2270, "cost_usd": 0.012214, "latency_s": 8.49, "error": null}
 {"ts": "2026-10-28T23:37:43-0400", "purpose": "eval:google", "model": "nvidia/Nemotron-3-Ultra-550b-a55b", "prompt_tokens": 5404, "completion_tokens": 3125, "cost_usd": 0.014779, "latency_s": 12.54, "error": null}
 {"ts": "2026-10-28T23:37:49-0400", "purpose": "eval:stripe", "model": "nvidia/Nemotron-3-Ultra-550b-a55b", "prompt_tokens": 1682, "completion_tokens": 7004, "cost_usd": 0.022694, "latency_s": 23.87, "error": null}
+{"ts": "2026-10-29T00:24:22-0400", "purpose": "recheck:/api/crm-sync", "model": "tavily/extract", "prompt_tokens": 0, "completion_tokens": 0, "cost_usd": 0.0, "latency_s": 0.22, "error": null, "credits": 1, "page": "anthropic-mcp-connector"}
