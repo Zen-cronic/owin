@@ -97,11 +97,15 @@ def validate(t: DataUseTerms, source: str) -> DataUseTerms:
 
 
 def extract(item_id: str, vendor: str, feature: str, source: str, *, model: str = tf.SUPER,
-            purpose: str = "datause") -> Extraction:
+            purpose: str = "datause", thinking: bool | None = None, timeout: float = 600,
+            attempts: int = 3) -> Extraction:
+    """One reading. `thinking`, `timeout` and `attempts` pass through to tokenfactory.chat (the live recheck path
+    uses a short deadline; batch runs keep the defaults every recorded run used)."""
     clean = strip_markdown(source)
     text, mode = select_text(clean, feature)
     prompt = PROMPT.replace("{feature}", feature).replace("{vendor}", vendor).replace("{text}", text)
-    c = tf.chat(prompt, model=model, purpose=f"{purpose}:{item_id}", max_tokens=8000)
+    c = tf.chat(prompt, model=model, purpose=f"{purpose}:{item_id}", max_tokens=8000, thinking=thinking,
+                timeout=timeout, attempts=attempts)
     terms, err = None, c.error
     if not err:
         parsed = parse_json(c.content)
@@ -114,4 +118,5 @@ def extract(item_id: str, vendor: str, feature: str, source: str, *, model: str 
                 err = f"schema: {e}"
     return Extraction(item_id, model, sha256(source), mode, len(text), c.latency_s, c.prompt_tokens,
                       c.completion_tokens, c.cost_usd, c.finish_reason, terms, err,
-                      "" if terms else (c.content or "")[:400])
+                      "" if terms else (c.content or "")[:400],
+                      {"reasoning_tokens": c.reasoning_tokens, **({"thinking": thinking} if thinking is not None else {})})

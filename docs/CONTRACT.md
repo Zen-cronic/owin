@@ -32,7 +32,9 @@ It returns `{run_files, model, quotes_rechecked_against_source, headline{...}, p
 
 ## Usage ledger (`ledger/usage.jsonl`)
 
-Each Token Factory call adds one line: `{ts, purpose, model, prompt_tokens, completion_tokens, cost_usd, latency_s, error}`. The ledger never contains a key. `owin eval run` refuses to start when the ledger total is at or above `--budget` (default $3).
+Each Token Factory call adds one line: `{ts, purpose, model, prompt_tokens, completion_tokens, cost_usd, latency_s, error, reasoning_tokens, attempts}` (plus `thinking` when the call set Nemotron's reasoning switch). The ledger never contains a key. Two caps read it: `owin eval run` and `owin pack extract` refuse to start when the **lifetime** ledger total is at or above `--budget` (default $3), a cap on experiments; `owin job daily` skips its Nemotron step when **today's (UTC)** spend is at or above `--budget` (`tokenfactory.spent_today`), so a scheduled job is never stopped for good by past spend.
+
+Client behaviour (`owin/tokenfactory.py::chat`): `timeout` is per attempt and `attempts` counts every try (batch defaults 600 s and 3; the live recheck path uses 45 s and 2). Only 429/5xx, timeouts and resets are retried; `Retry-After` is honoured (capped at 30 s); there is no wait after the last attempt. A process-level circuit breaker opens after 3 consecutive failed calls for 120 s (`tokenfactory.available()`); request-path callers check it, batch commands do not.
 
 ## Decision layer (`owin.decide`, P2)
 

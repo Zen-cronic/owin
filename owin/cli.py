@@ -161,9 +161,9 @@ def job_read(features: list[str], *, runs: int = 3, budget: float = 3.0) -> dict
         tf.api_key()
     except tf.MissingKey:
         return {"skipped": "TOKEN_FACTORY_API_KEY not set; the pack keeps its recorded readings"}
-    spent = tf.ledger_total()
+    spent = tf.spent_today()
     if spent >= budget:
-        return {"skipped": f"budget cap reached: ledger total ${spent:.4f} >= ${budget}"}
+        return {"skipped": f"daily budget reached: ${spent:.4f} spent today (UTC) >= ${budget}"}
     try:
         run_file = registry.extract_live(features, runs=runs, out_dir=config.write_path("eval/datause/registry-runs/run.json").parent)
         reg_path = registry.export(live_runs=[run_file])
@@ -186,7 +186,7 @@ def job_read(features: list[str], *, runs: int = 3, budget: float = 3.0) -> dict
             "calls": len(d["calls"]), "errored_abstained": sum(1 for c in d["calls"] if c["error"]),
             "cost_usd": round(sum(c["cost_usd"] for c in d["calls"]), 4), "wall_s": d["wall_s"],
             "run_file": str(run_file), "registry": str(reg_path), "evidence": str(ev_path),
-            "ledger_total_usd": round(tf.ledger_total(), 4), "features": per}
+            "ledger_total_usd": round(tf.ledger_total(), 4), "spent_today_usd": round(tf.spent_today(), 4), "features": per}
 
 
 def _pack_manifest(a) -> dict:
@@ -313,7 +313,7 @@ def main(argv: list[str] | None = None) -> int:
     jb.add_argument("--set", action="append", metavar="PATH=FEATURE", help=argparse.SUPPRESS)
     jb.add_argument("--features", default="", help="re-read these feature ids instead of the stack's")
     jb.add_argument("--runs", type=int, default=3)
-    jb.add_argument("--budget", type=float, default=3.0, help="skip the re-reading when the usage ledger total reaches this (USD)")
+    jb.add_argument("--budget", type=float, default=3.0, help="skip the re-reading when today's (UTC) Token Factory spend in the ledger reaches this (USD)")
     jb.set_defaults(fn=cmd_job)
     pk = sub.add_parser("pack", help="security-review answer pack (AI and data section), per endpoint")
     pk.add_argument("action", choices=["build", "refresh", "registry", "extract", "evidence"],
