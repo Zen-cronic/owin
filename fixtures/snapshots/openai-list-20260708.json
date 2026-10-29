@@ -10,7 +10,7 @@
    "key": "cloudflare",
    "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
    "locations": "Processing is performed at the data center that is closest to the End User",
-   "purpose": "Content delivery network providerWeb Hosting",
+   "purpose": "Content delivery network provider; Web Hosting",
    "section": "table1"
   },
   {
@@ -74,7 +74,7 @@
    "key": "taskus",
    "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
    "locations": "Philippines",
-   "purpose": "All Services:; Customer supportAPI & ChatGPT Business:; Moderation of contentChatGPT Enterprise, Edu & ChatGPT Business:; Moderation of GPTs",
+   "purpose": "All Services:; Customer support; API & ChatGPT Business:; Moderation of content; ChatGPT Enterprise, Edu & ChatGPT Business:; Moderation of GPTs",
    "section": "table1"
   },
   {
@@ -106,7 +106,7 @@
    "key": "accenture international",
    "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
    "locations": "United States; Canada; Philippines",
-   "purpose": "Customer supportAPI & ChatGPT Business:; Moderation of content",
+   "purpose": "Customer support; API & ChatGPT Business:; Moderation of content",
    "section": "table1"
   },
   {
@@ -130,7 +130,7 @@
    "key": "cinder technologies",
    "services": "API; ChatGPT Enterprise; ChatGPT Edu; ChatGPT Business",
    "locations": "United States",
-   "purpose": "API & ChatGPT Business:; Platform for content moderationChatGPT Enterprise, Edu & ChatGPT Business:; Platform for moderation of GPTs",
+   "purpose": "API & ChatGPT Business:; Platform for content moderation; ChatGPT Enterprise, Edu & ChatGPT Business:; Platform for moderation of GPTs",
    "section": "table1"
   },
   {
