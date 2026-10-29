@@ -423,7 +423,7 @@ code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13
 .judge-page .tile .t::after,.judge-page .tile .ft::after{top:0}
 .judge-page .tile .b::after,.judge-page .tile .fb::after{bottom:0}
 .judge-page .sep::after{content:attr(data-c);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink)}
-.judge-page .stat .c{margin-top:18px;font:400 15px/1.5 var(--sans);color:var(--muted);max-width:34ch}
+.judge-page .stat .c{margin-top:18px;font:400 15px/1.5 var(--sans);color:#C9CBC5;max-width:34ch}
 .judge-page .stat.skel .c .bar{background:var(--tile)}
 
 /* Method, paths, evidence on the same twelve columns */
@@ -469,3 +469,5 @@ code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13
   .judge-page .jg section{margin-top:72px}
   .judge-page .jg h2{font-size:24px}
 }
+
+@media (max-width:420px){body.judge-page .ctx .fict{display:none}}
