@@ -120,11 +120,12 @@
 :root[data-theme="c4"] .judge-page .jg .big{margin:0 0 20px;font:500 15px/1.4 var(--sans);color:var(--cite)}
 :root[data-theme="c4"] .judge-page .stats{gap:16px}
 :root[data-theme="c4"] .judge-page .stat,:root[data-theme="c4"] .judge-page .stat + .stat{display:flex;flex-direction:column;padding:0;background:var(--field);border:var(--hair) solid var(--field-line)}
-:root[data-theme="c4"] .judge-page .stat{--d:clamp(56px,6vw,88px)}
-:root[data-theme="c4"] .judge-page .stat .v{padding:28px 24px 26px}
-:root[data-theme="c4"] .judge-page .stat .c{flex:1;margin:0;max-width:none;padding:12px 16px 14px;border-top:var(--hair) solid var(--field-line);background:var(--bg);font:400 14px/1.45 var(--sans);color:var(--cite)}
+/* Numerals typed large into short fields: the tile is cut to the figure height (Courier Prime caps sit near .6em) */
+:root[data-theme="c4"] .judge-page .stat{--d:clamp(64px,8.4vw,120px)}
+:root[data-theme="c4"] .judge-page .stat .v{padding:26px 24px 14px}
+:root[data-theme="c4"] .judge-page .stat .c{flex:1;margin:0;max-width:none;padding:11px 16px 12px;border-top:var(--hair) solid var(--field-line);background:var(--bg);font:500 15px/1.4 var(--sans);color:var(--cite)}
 :root[data-theme="c4"] .judge-page .num-row{gap:0}
-:root[data-theme="c4"] .judge-page .num-tile,:root[data-theme="c4"] .judge-page .num-sep{width:.58em;height:1.06em;background:none;perspective:none}
+:root[data-theme="c4"] .judge-page .num-tile,:root[data-theme="c4"] .judge-page .num-sep{width:.58em;height:.8em;background:none;perspective:none}
 :root[data-theme="c4"] .judge-page .num-tile .h{background:none}
 :root[data-theme="c4"] .judge-page .num-tile .h::after,:root[data-theme="c4"] .judge-page .num-sep::after{color:var(--ink)}
 /* An empty field before the numbers arrive: a typed blank */
@@ -139,13 +140,20 @@
 :root[data-theme="c4"] .judge-page .jg section > h2::after{content:"";position:absolute;top:-1px;left:calc(-1 * var(--margin));width:var(--margin);border-top:var(--hair) solid var(--edge)}
 :root[data-theme="c4"] .judge-page .jg section:not(.story){margin-top:64px}
 :root[data-theme="c4"] .judge-page .jg .story{padding-bottom:0}
-:root[data-theme="c4"] .judge-page .ev.method .sub{font-size:14.5px;color:var(--ink)}
-:root[data-theme="c4"] .judge-page .ev.method .fn{font-size:13.5px;color:var(--cite)}
-:root[data-theme="c4"] .judge-page .ev.method .recompute{font-size:13.5px}
+/* Three type steps on the form: headings, a 17px reading step for everything printed under them, 14-15px notes */
+:root[data-theme="c4"] .judge-page .ev li,:root[data-theme="c4"] .judge-page .ev.method li{font-size:17px}
+:root[data-theme="c4"] .judge-page .ev li span,:root[data-theme="c4"] .judge-page .ev.method .sub{font-size:17px;line-height:1.55;color:var(--ink)}
+:root[data-theme="c4"] .judge-page .ev li span{max-width:70ch}
+:root[data-theme="c4"] .judge-page .ev.method .fn,:root[data-theme="c4"] .judge-page .ev.method .fn span{font-size:15px;line-height:1.5;color:var(--cite)}
+:root[data-theme="c4"] .judge-page .ev.method .recompute{font-size:15px}
+:root[data-theme="c4"] .judge-page .ev.method .recompute span{font-size:inherit}
+:root[data-theme="c4"] .judge-page .path-card .d{font-size:17px;line-height:1.55}
+:root[data-theme="c4"] .judge-page .jg .also{font-size:17px;line-height:1.55}
 :root[data-theme="c4"] .judge-page .paths{gap:16px}
 :root[data-theme="c4"] .judge-page .path-card{background:var(--field);border-color:var(--field-line);transition:box-shadow var(--dur-fast) ease-out}
 :root[data-theme="c4"] .judge-page .path-card:hover{background:var(--field);border-color:var(--field-line);box-shadow:inset 2px 0 0 var(--mark)}
-:root[data-theme="c4"] .judge-page .path-card .step{display:grid;place-items:center;width:30px;height:30px;margin-bottom:10px;border:var(--hair) solid var(--edge);font:400 15px/1 var(--mono);color:var(--ink)}
+/* The section already carries its boxed number; the cards do without a second one */
+:root[data-theme="c4"] .judge-page .path-card .step{display:none}
 :root[data-theme="c4"] .judge-page .path-card .tag{font:400 13px/1.45 var(--mono);color:var(--cite)}
 :root[data-theme="c4"] .judge-page .path-card .go{font-weight:700}
 
@@ -162,8 +170,8 @@
   :root[data-theme="c4"] .judge-page .story .what::before,
   :root[data-theme="c4"] .judge-page .jg .big::before{display:inline-grid;place-items:center;width:28px;height:28px;margin-right:10px;vertical-align:middle;border:var(--hair) solid var(--edge);font:400 15px/1 var(--sans);letter-spacing:0;text-transform:none;color:var(--ink)}
   :root[data-theme="c4"] .judge-page .story .kick::before{content:"1" / ""}
-  :root[data-theme="c4"] .judge-page .story .what::before{content:"2" / "";float:left;margin:3px 12px 0 0}
-  :root[data-theme="c4"] .judge-page .jg .big::before{content:"3" / ""}
+  :root[data-theme="c4"] .judge-page .story .what::before{content:"2" / "";display:grid;margin:0 0 14px}
+  :root[data-theme="c4"] .judge-page .jg .big::before{content:"3" / "";display:grid;margin:0 0 14px}
   :root[data-theme="c4"] .judge-page #paths-h::before,:root[data-theme="c4"] .judge-page #ev-h::before{display:inline-grid;width:28px;height:28px;margin:0 10px 0 0;vertical-align:3px;font-size:15px}
   :root[data-theme="c4"] .judge-page .stat-board::after,:root[data-theme="c4"] .judge-page .jg section > h2::after{display:none}
   :root[data-theme="c4"] .judge-page .story h1{margin-top:14px;font-size:clamp(26px,6.9vw,52px);line-height:1.08}
@@ -176,9 +184,10 @@
   :root[data-theme="c4"] .judge-page .stats{gap:12px}
   :root[data-theme="c4"] .judge-page .stat,:root[data-theme="c4"] .judge-page .stat + .stat{display:flex;align-items:stretch;padding:0;border:var(--hair) solid var(--field-line)}
   :root[data-theme="c4"] .judge-page .stat:first-child{padding-top:0}
-  :root[data-theme="c4"] .judge-page .stat{--d:clamp(44px,13vw,60px)}
-  :root[data-theme="c4"] .judge-page .stat .v{padding:18px 18px 16px}
-  :root[data-theme="c4"] .judge-page .stat .c{padding:10px 14px 12px;font-size:14px}
+  :root[data-theme="c4"] .judge-page .stat{--d:clamp(56px,16vw,72px)}
+  :root[data-theme="c4"] .judge-page .stat .v{padding:24px 18px 12px}
+  :root[data-theme="c4"] .judge-page .stat .c{padding:10px 14px 12px;font-size:15px}
+  :root[data-theme="c4"] .judge-page .ev li span,:root[data-theme="c4"] .judge-page .ev.method .sub,:root[data-theme="c4"] .judge-page .path-card .d,:root[data-theme="c4"] .judge-page .jg .also{font-size:16px}
   :root[data-theme="c4"] .judge-page .jg section > h2{font-size:24px;padding-top:16px}
   :root[data-theme="c4"] .ans .n{width:26px;height:26px;font-size:13px;margin-top:0}
 }
