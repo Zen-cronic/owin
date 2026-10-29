@@ -70,6 +70,12 @@ def test_retry_after_is_honoured_and_capped(monkeypatch, isolated):
     assert c.error is None and c.attempts == 3 and isolated == [2.0, tf.MAX_RETRY_AFTER_S]
 
 
+def test_overloaded_529_is_retried(monkeypatch, isolated):
+    _transport(monkeypatch, [_http(529), OK])
+    c = tf.chat("hi", purpose="t")
+    assert c.error is None and c.attempts == 2
+
+
 def test_a_client_error_is_not_retried(monkeypatch, isolated):
     _transport(monkeypatch, [_http(401)])
     assert tf.chat("hi", purpose="t").attempts == 1 and isolated == []

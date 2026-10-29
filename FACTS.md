@@ -54,6 +54,11 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | `model.ultra` | Nemotron Ultra on the same 10 labelled DPAs, 3 readings each: DPAs exact by majority / readings exact | **10/10 / 30/30** | `owin eval score --brief --file eval/runs/20261028T233749-Nemotron-3-Ultra-550b-a55b.json` |
 | `model.super` | Nemotron Super on those 10 DPAs: DPAs exact by majority / readings exact | **10/10 / 30/30** | `owin eval score --brief` |
 | `model.cost` | Cost per reading on those 10 DPAs, Super vs Ultra (USD; Ultra / Super) | **0.002 vs 0.0077 (3.9x)** | `eval/super-vs-ultra.json` |
+| `think.off` | Nemotron reasoning OFF, same split, prompt and rule: auto-answered / right | **28/33, 21/28** | `eval/datause/runs/20261029T105717-v3fresh-nemotron-3-super-120b-a12b-nothink.json` |
+| `think.cost` | Cost per reading, reasoning off vs on (USD) | **0.0014 vs 0.0029** | `eval/datause/runs/20261029T105717-v3fresh-nemotron-3-super-120b-a12b-nothink.json` |
+| `think.lat` | Mean latency per reading, all readings, reasoning off vs on (s) | **3.0 vs 9.7** | `eval/datause/runs/20261029T105717-v3fresh-nemotron-3-super-120b-a12b-nothink.json` |
+| `think.tokens` | Output tokens over the 39 readings, reasoning off vs on | **6292 vs 72524** | `eval/datause/runs/20261029T105717-v3fresh-nemotron-3-super-120b-a12b-nothink.json` |
+| `think.live` | Reasoning setting the live recheck path uses (by the rule written before the off run) | **on** | `eval/thinking-off-vs-on.json` |
 | `sweep.vendors` | Vendors in the sub-processor sweep index | **29** | `data/index/vendors.json` |
 | `sweep.live` | One real sweep with the Tavily key (2026-10-29): vendors swept / lists fetched live | **29 / 22** | `eval/sweeps/sweep-3-live-20261029T033329Z.json` |
 | `job.readings` | One real `owin job daily` (2026-10-29): Nemotron readings made / errored (abstained) / cost (USD) | **12 / 0 / 0.0651** | `eval/sweeps/job-daily-20261029T033329Z.json` |

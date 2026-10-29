@@ -47,6 +47,8 @@ def _json(rel: str) -> dict:
 
 
 ULTRA_RUN = "eval/runs/20261028T233749-Nemotron-3-Ultra-550b-a55b.json"
+NOTHINK_RUN = "eval/datause/runs/20261029T105717-v3fresh-nemotron-3-super-120b-a12b-nothink.json"
+THINKING_JSON = ROOT / "eval" / "thinking-off-vs-on.json"
 DPA_LABELLED = ("vercel", "supabase", "mistral", "anthropic", "nebius", "openai", "stripe", "nvidia", "aws", "google")
 
 
@@ -54,6 +56,34 @@ DPA_LABELLED = ("vercel", "supabase", "mistral", "anthropic", "nebius", "openai"
 def _ultra() -> dict:
     from . import evaluate
     return evaluate.score([ROOT / ULTRA_RUN])
+
+
+@lru_cache(maxsize=None)
+def thinking() -> dict:
+    """Nemotron Super with reasoning on (the pre-registered headline run) vs off (same prompt v3, same split, same
+    selective rule), from the two recorded run files. The rule, written before the off run: the live path turns
+    reasoning off only if the off arm's right-share among auto answers is at least the on arm's and it adds no
+    confident miss. One cell can decide it (27 auto cells); the rule is kept as written."""
+    from .datause import evaluate as dv, selective
+    import statistics
+    arms = {}
+    for name, f in (("on", dv.headline_runs()[0]), ("off", ROOT / NOTHINK_RUN)):
+        r = selective.evaluate([f], split="v3fresh")
+        calls = json.loads(Path(f).read_text())["calls"]
+        lat = sorted(c["latency_s"] for c in calls)
+        arms[name] = {"run_file": str(Path(f).resolve().relative_to(ROOT)), "auto_answered": r["auto_answered"],
+                      "auto_correct": r["auto_correct"], "auto_precision": r["auto_precision"],
+                      "sent_to_confirm": r["sent_to_confirm"], "confident_misses": len(r["auto_misses"]),
+                      "readings": len(calls), "errored_abstained": sum(1 for c in calls if c["error"]),
+                      "completion_tokens": sum(c["completion_tokens"] for c in calls),
+                      "cost_per_reading_usd": round(sum(c["cost_usd"] for c in calls) / len(calls), 5),
+                      "mean_latency_s": round(statistics.mean(lat), 2), "p95_latency_s": lat[int(0.95 * (len(lat) - 1))]}
+    on, off = arms["on"], arms["off"]
+    adopt = off["auto_precision"] >= on["auto_precision"] and off["confident_misses"] <= on["confident_misses"]
+    return {"_about": "Recomputed by owin/facts.py::thinking from the two run files; written by `owin facts write`.",
+            "rule": "turn reasoning off on the live path only if the off arm's right-share among auto answers is >= the "
+                    "on arm's and it adds no confident miss (written before the off run)",
+            "on": on, "off": off, "live_path_reasoning": "off" if adopt else "on"}
 
 
 def _dpa_cost(paths, ids=DPA_LABELLED) -> tuple[float, float]:
@@ -169,6 +199,16 @@ FACTS = [
      "eval/super-vs-ultra.json",
      lambda: (lambda a, b: f"{a} vs {b} ({b / a:.1f}x)")(_dpa_cost(__import__("owin.evaluate", fromlist=["headline_runs"]).headline_runs())[0],
                                                        _dpa_cost([ROOT / ULTRA_RUN])[0])),
+    ("think.off", "Nemotron reasoning OFF, same split, prompt and rule: auto-answered / right", "28/33, 21/28", NOTHINK_RUN,
+     lambda: f"{thinking()['off']['auto_answered']}, {thinking()['off']['auto_correct']}"),
+    ("think.cost", "Cost per reading, reasoning off vs on (USD)", "0.0014 vs 0.0029", NOTHINK_RUN,
+     lambda: f"{thinking()['off']['cost_per_reading_usd']:.4f} vs {thinking()['on']['cost_per_reading_usd']:.4f}"),
+    ("think.lat", "Mean latency per reading, all readings, reasoning off vs on (s)", "3.0 vs 9.7", NOTHINK_RUN,
+     lambda: f"{thinking()['off']['mean_latency_s']:.1f} vs {thinking()['on']['mean_latency_s']:.1f}"),
+    ("think.tokens", "Output tokens over the 39 readings, reasoning off vs on", "6292 vs 72524", NOTHINK_RUN,
+     lambda: f"{thinking()['off']['completion_tokens']} vs {thinking()['on']['completion_tokens']}"),
+    ("think.live", "Reasoning setting the live recheck path uses (by the rule written before the off run)", "on",
+     "eval/thinking-off-vs-on.json", lambda: thinking()["live_path_reasoning"]),
     ("sweep.vendors", "Vendors in the sub-processor sweep index", 29, "data/index/vendors.json",
      lambda: len(_json("data/index/vendors.json")["vendors"])),
     ("sweep.live", "One real sweep with the Tavily key (2026-10-29): vendors swept / lists fetched live", "29 / 22",
@@ -227,4 +267,5 @@ def badge_url() -> str:
 
 def write() -> Path:
     FACTS_MD.write_text(render())
+    THINKING_JSON.write_text(json.dumps(thinking(), indent=1) + "\n")
     return FACTS_MD

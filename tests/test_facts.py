@@ -74,3 +74,12 @@ def test_number_badge_is_the_recomputed_headline():
     assert url in README  # the badge a reader sees is the number this suite recomputes
     h = facts._sel()["headline"]
     assert h["auto_correct"].replace("/", "%2F") in url
+
+
+def test_thinking_comparison_is_recomputed_and_the_readme_says_it():
+    assert json.loads(facts.THINKING_JSON.read_text()) == facts.thinking()
+    th = facts.thinking()
+    assert th["live_path_reasoning"] == "on"  # the off arm made confident misses the on arm did not
+    assert th["off"]["confident_misses"] > th["on"]["confident_misses"]
+    off_auto, off_right = _f("think.off").split(", ")
+    assert f"{off_right.split('/')[0]} of {off_right.split('/')[1]}" in README

@@ -53,7 +53,8 @@ def cmd_eval_datause(a) -> int:
         if spent >= a.budget:
             print(f"budget cap reached: ledger total ${spent:.4f} >= ${a.budget}", file=sys.stderr)
             return 2
-        path = dv.run(runs=a.runs, model=a.model, only=a.only.split(",") if a.only else None, split=a.split or None)
+        path = dv.run(runs=a.runs, model=a.model, only=a.only.split(",") if a.only else None, split=a.split or None,
+                      thinking=a.thinking)
         res = dv.score(path)
     else:
         res = dv.score([Path(f) for f in a.file.split(",")] if a.file else dv.headline_runs())
@@ -273,6 +274,8 @@ def main(argv: list[str] | None = None) -> int:
     e.add_argument("--only", default="")
     e.add_argument("--file", default="", help="comma-separated recorded run files (default: eval/headline.json)")
     e.add_argument("--budget", type=float, default=3.0, help="refuse to run when the usage ledger total reaches this (USD)")
+    e.add_argument("--thinking", action=argparse.BooleanOptionalAction, default=None,
+                   help="datause run: --no-thinking turns Nemotron's reasoning off (default: the model's own setting, on)")
     e.add_argument("--brief", action="store_true")
     e.set_defaults(fn=cmd_eval)
     fa = sub.add_parser("facts", help="claims ledger: recompute every README/UI number (check) or regenerate FACTS.md (write)")

@@ -48,7 +48,9 @@ def _source(item: dict) -> str | None:
 
 
 def run(runs: int = 3, model: str = tf.SUPER, only: list[str] | None = None, split: str | None = None,
-        workers: int = 6) -> Path:
+        workers: int = 6, thinking: bool | None = None) -> Path:
+    """`thinking=None` keeps the model's default (reasoning on), as every recorded headline run did; False turns
+    Nemotron's reasoning off and the run file says so (`thinking: false`, `-nothink` in its name)."""
     items = [i for i in load_corpus() if (not only or i["id"] in only) and (not split or i["split"] == split)]
     missing = sorted({i["source"] for i in items if _source(i) is None})
     if missing:
@@ -56,16 +58,19 @@ def run(runs: int = 3, model: str = tf.SUPER, only: list[str] | None = None, spl
 
     def one(job):
         item, k = job
-        e = extract(item["id"], item["vendor"], item["feature"], _source(item), model=model, purpose="eval-datause")
+        e = extract(item["id"], item["vendor"], item["feature"], _source(item), model=model, purpose="eval-datause",
+                    thinking=thinking)
         return {"id": item["id"], "run": k, **asdict(e)}
 
     t0 = time.time()
     with ThreadPoolExecutor(max_workers=workers) as ex:
         calls = list(ex.map(one, [(i, k) for i in items for k in range(runs)]))
     out = {"run_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "model": model, "runs_per_item": runs, "split": split or "all", "prompt_version": PROMPT_VERSION,
-           "wall_s": round(time.time() - t0, 1), "corpus_sha256": sha256(CORPUS.read_text()), "calls": calls}
+           "wall_s": round(time.time() - t0, 1), "corpus_sha256": sha256(CORPUS.read_text()), "calls": calls,
+           **({"thinking": thinking} if thinking is not None else {})}
     RUNS.mkdir(parents=True, exist_ok=True)
-    path = RUNS / f"{time.strftime('%Y%m%dT%H%M%S')}-{split or 'all'}-{model.split('/')[-1]}.json"
+    tag = "-nothink" if thinking is False else ""
+    path = RUNS / f"{time.strftime('%Y%m%dT%H%M%S')}-{split or 'all'}-{model.split('/')[-1]}{tag}.json"
     path.write_text(json.dumps(out, indent=1, ensure_ascii=False))
     return path
 

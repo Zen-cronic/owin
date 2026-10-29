@@ -59,7 +59,7 @@ def cost(model: str, prompt_tokens: int, completion_tokens: int) -> float:
     return prompt_tokens / 1e6 * pi + completion_tokens / 1e6 * po
 
 
-RETRIABLE = (429, 500, 502, 503, 504)
+RETRIABLE = (429, 500, 502, 503, 504, 529)  # 529: Token Factory 'overloaded' (seen 2026-10-29)
 MAX_RETRY_AFTER_S = 30.0
 
 # Circuit breaker for callers on a request path (POST /api/recheck): after BREAKER_FAILURES consecutive failed
