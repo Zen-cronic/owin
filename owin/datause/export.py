@@ -53,7 +53,7 @@ def buyer_phrase(s: str) -> str:
 
 
 def _buyer_change(ev: dict, stated_at: str) -> str:
-    """A stale event as a buyer-facing sentence: what changed and when, with nothing addressed to the company."""
+    """A stale event as a buyer-facing sentence: what changed and when, with nothing addressed to the company's own user."""
     if ev["kind"] == "list_changed":
         return (f"{ev['provider_display']} updated its sub-processor list on {ev['after']['last_updated']} "
                 f"(previously {ev['before']['last_updated']}), after this answer was written ({stated_at}).")
