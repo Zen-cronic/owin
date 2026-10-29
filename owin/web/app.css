@@ -9,7 +9,7 @@
   --bg:#FCFBF7;          /* index-card stock: answers, menus, fields */
   --surface:#FFFFFF;     /* selected card */
   --raise:#EEF4F6;       /* chips, hover, menus: a wash of the ruling ink */
-  --board:#57361D;       /* the drawer fronts on /judge */
+  --board:#432A16;       /* the drawer fronts on /judge */
   --tile:transparent;    /* numeral tiles */
   --ink:#1E1A16;         /* text */
   --muted:#5E5A55;       /* labels, captions */
@@ -25,10 +25,10 @@
   --on-mark:var(--on-act);
   --focus:#2D3E66;
   /* Colour: the catalogue (theme 1 only reads these) */
-  --field:#6B4426;       /* quarter-sawn oak, the page ground */
+  --field:#5A3D25;       /* quarter-sawn oak, the page ground */
   --on-field:#FFFFFF;
   --on-field-muted:#E9D9C4;
-  --brass:#D9AE62;       /* label frames and pulls */
+  --brass:#B98B3E;       /* label frames and pulls */
   --rule-cyan:#7FB6CF;   /* the ruled header line of a card */
   --stamp-stale:#5B3D94; /* violet date-stamp ink */
   --stamp-confirm:#2D3E66;
