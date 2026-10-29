@@ -46,6 +46,22 @@ def _json(rel: str) -> dict:
     return json.loads((ROOT / rel).read_text())
 
 
+ULTRA_RUN = "eval/runs/20261028T233749-Nemotron-3-Ultra-550b-a55b.json"
+DPA_LABELLED = ("vercel", "supabase", "mistral", "anthropic", "nebius", "openai", "stripe", "nvidia", "aws", "google")
+
+
+@lru_cache(maxsize=None)
+def _ultra() -> dict:
+    from . import evaluate
+    return evaluate.score([ROOT / ULTRA_RUN])
+
+
+def _dpa_cost(paths, ids=DPA_LABELLED) -> tuple[float, float]:
+    """(mean cost per reading, mean latency) over the recorded calls for `ids` in `paths`."""
+    calls = [c for p in paths for c in json.loads(Path(p).read_text())["calls"] if c["id"] in ids]
+    return round(sum(c["cost_usd"] for c in calls) / len(calls), 4), round(sum(c["latency_s"] for c in calls) / len(calls), 1)
+
+
 def _cell(p: dict, qid: str, ep: str) -> dict:
     a = next(a for a in p["answers"] if a["id"] == qid)
     return next(c for c in a["cells"] if c["endpoint"] == ep)
@@ -144,6 +160,15 @@ FACTS = [
          _dpa()["headline"]["labelled_runs_exact"].split("/"), _dpa()["headline"]["heldout_runs_exact"].split("/"))),
     ("dpa.neg", "Earlier subject: thin-evidence controls held", "6/6", "owin eval score --brief",
      lambda: _dpa()["headline"]["negative_controls_held"]),
+    ("model.ultra", "Nemotron Ultra on the same 10 labelled DPAs, 3 readings each: DPAs exact by majority / readings exact", "10/10 / 30/30",
+     f"owin eval score --brief --file {ULTRA_RUN}",
+     lambda: f"{_ultra()['headline']['labelled_vendors_exact_majority']} / {_ultra()['headline']['labelled_runs_exact']}"),
+    ("model.super", "Nemotron Super on those 10 DPAs: DPAs exact by majority / readings exact", "10/10 / 30/30", "owin eval score --brief",
+     lambda: f"{_dpa()['headline']['labelled_vendors_exact_majority']} / {_dpa()['headline']['labelled_runs_exact']}"),
+    ("model.cost", "Cost per reading on those 10 DPAs, Super vs Ultra (USD; Ultra / Super)", "0.002 vs 0.0077 (3.9x)",
+     "eval/super-vs-ultra.json",
+     lambda: (lambda a, b: f"{a} vs {b} ({b / a:.1f}x)")(_dpa_cost(__import__("owin.evaluate", fromlist=["headline_runs"]).headline_runs())[0],
+                                                       _dpa_cost([ROOT / ULTRA_RUN])[0])),
     ("sweep.vendors", "Vendors in the sub-processor sweep index", 29, "data/index/vendors.json",
      lambda: len(_json("data/index/vendors.json")["vendors"])),
     ("sweep.live", "One real sweep with the Tavily key (2026-10-29): vendors swept / lists fetched live", "29 / 22",
