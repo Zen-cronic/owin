@@ -17,9 +17,9 @@
 :is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .num-tile .b,
 :is(:root:not([data-theme]),:root[data-theme="c1"]) .judge-page .num-tile .fb{box-shadow:inset 0 1px 0 #070808}
 
-/* Summary counts on /: the same tile at a small size, one per digit, split at the middle. Not true takes the signal. */
+/* Summary counts on /: the same tile at a small size, one per digit, split at the middle. Not true takes the signal as a plain tile (a split there reads as a strike). */
 :is(:root:not([data-theme]),:root[data-theme="c1"]) .summary .num-tile{min-width:0;width:20px;height:26px;display:grid;place-items:center;border-radius:var(--r-tile);font:var(--num-weight) 16px/1 var(--num);color:var(--ink);background:linear-gradient(var(--raise) calc(50% - .5px),var(--bg) 0 calc(50% + .5px),var(--raise) 0)}
-:is(:root:not([data-theme]),:root[data-theme="c1"]) .summary .sm.bad .num-tile{color:var(--on-act);background:linear-gradient(var(--act) calc(50% - .5px),rgba(14,15,15,.14) 0 calc(50% + .5px),var(--act) 0)}
+:is(:root:not([data-theme]),:root[data-theme="c1"]) .summary .sm.bad .num-tile{color:var(--on-act);background:var(--act)}
 :is(:root:not([data-theme]),:root[data-theme="c1"]) .summary .sm.zero .num-tile{color:var(--muted)}
 
 /* The Not true flap tag: square, matte, lit along its top edge; at board size on /judge it is split at the middle */
