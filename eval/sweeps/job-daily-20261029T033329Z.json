@@ -1,0 +1,100 @@
+{
+ "job": "daily",
+ "at": "20261029T033329Z",
+ "mode": "live",
+ "fetch": true,
+ "state_dir": "$OWIN_STATE_DIR",
+ "wall_s": 51.4,
+ "sweep": {
+  "record": "$OWIN_STATE_DIR/var/sweeps/20261029T033329Z.json",
+  "counts": {
+   "watching": 18,
+   "not_watchable": 9,
+   "unfetched": 2
+  },
+  "vendors": 29,
+  "tavily_key_present": true,
+  "wall_s": 5.38
+ },
+ "pack_refresh": {
+  "tavily_calls": 7,
+  "observations": "data/datause/observations.json",
+  "fetched": {
+   "anthropic-batch": "tavily",
+   "anthropic-mcp-connector": "tavily",
+   "anthropic-retention": "tavily",
+   "anthropic-subprocessors": "tavily",
+   "openai-subprocessors": "tavily",
+   "openai-your-data": "tavily",
+   "anthropic-rate-limits": "tavily"
+  }
+ },
+ "readings": {
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "prompt_version": "v3",
+  "runs_per_feature": 3,
+  "calls": 12,
+  "errored_abstained": 0,
+  "cost_usd": 0.0651,
+  "wall_s": 44.9,
+  "run_file": "$OWIN_STATE_DIR/eval/datause/registry-runs/20261028T233421-tavily-nemotron-3-super-120b-a12b.json",
+  "registry": "$OWIN_STATE_DIR/data/datause/registry.json",
+  "evidence": "$OWIN_STATE_DIR/data/datause/evidence.json",
+  "ledger_total_usd": 1.9907,
+  "features": {
+   "anthropic-batch": {
+    "readings": 3,
+    "errored_abstained": 0,
+    "errors": [],
+    "runs_agreeing": "3/3",
+    "fields": {
+     "retention_days": "auto",
+     "used_for_training": "auto",
+     "zdr": "auto",
+     "third_party_access": "auto"
+    },
+    "left_to_a_person": []
+   },
+   "anthropic-mcp-connector": {
+    "readings": 3,
+    "errored_abstained": 0,
+    "errors": [],
+    "runs_agreeing": "3/3",
+    "fields": {
+     "retention_days": "auto",
+     "used_for_training": "auto",
+     "zdr": "auto",
+     "third_party_access": "auto"
+    },
+    "left_to_a_person": []
+   },
+   "anthropic-messages": {
+    "readings": 3,
+    "errored_abstained": 0,
+    "errors": [],
+    "runs_agreeing": "3/3",
+    "fields": {
+     "retention_days": "auto",
+     "used_for_training": "auto",
+     "zdr": "auto",
+     "third_party_access": "auto"
+    },
+    "left_to_a_person": []
+   },
+   "openai-embeddings": {
+    "readings": 3,
+    "errored_abstained": 0,
+    "errors": [],
+    "runs_agreeing": "3/3",
+    "fields": {
+     "retention_days": "auto",
+     "used_for_training": "auto",
+     "zdr": "auto",
+     "third_party_access": "auto"
+    },
+    "left_to_a_person": []
+   }
+  }
+ },
+ "_about": "One real run of `owin job daily` on 2026-10-29 03:33 UTC with both keys, from this repository on a laptop (not yet on a Nebius Serverless AI job). $OWIN_STATE_DIR was a fresh directory, so every fetched vendor list was accepted as a first baseline (watching). The sweep record is sweep-3-live-20261029T033329Z.json; the Nemotron readings are job-daily-20261029T033329Z-readings.json; the 12 Token Factory calls are the ledger lines with purpose pack-registry at 2026-10-28T23:34 EDT."
+}

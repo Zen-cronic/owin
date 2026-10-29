@@ -146,6 +146,13 @@ FACTS = [
      lambda: _dpa()["headline"]["negative_controls_held"]),
     ("sweep.vendors", "Vendors in the sub-processor sweep index", 29, "data/index/vendors.json",
      lambda: len(_json("data/index/vendors.json")["vendors"])),
+    ("sweep.live", "One real sweep with the Tavily key (2026-10-29): vendors swept / lists fetched live", "29 / 22",
+     "eval/sweeps/sweep-3-live-20261029T033329Z.json",
+     lambda: (lambda d: f"{d['vendors']} / {sum(1 for r in d['rows'] if r.get('source_kind') == 'tavily')}" if d["tavily_key_present"] else "no key")(
+         _json("eval/sweeps/sweep-3-live-20261029T033329Z.json"))),
+    ("job.readings", "One real `owin job daily` (2026-10-29): Nemotron readings made / errored (abstained) / cost (USD)", "12 / 0 / 0.0651",
+     "eval/sweeps/job-daily-20261029T033329Z.json",
+     lambda: (lambda r: f"{r['calls']} / {r['errored_abstained']} / {r['cost_usd']}")(_json("eval/sweeps/job-daily-20261029T033329Z.json")["readings"])),
 ]
 
 

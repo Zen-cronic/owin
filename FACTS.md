@@ -52,6 +52,8 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | `dpa.runs` | Earlier subject: readings exact on all five fields, tuned + held-out | **51/51** | `owin eval score --brief` |
 | `dpa.neg` | Earlier subject: thin-evidence controls held | **6/6** | `owin eval score --brief` |
 | `sweep.vendors` | Vendors in the sub-processor sweep index | **29** | `data/index/vendors.json` |
+| `sweep.live` | One real sweep with the Tavily key (2026-10-29): vendors swept / lists fetched live | **29 / 22** | `eval/sweeps/sweep-3-live-20261029T033329Z.json` |
+| `job.readings` | One real `owin job daily` (2026-10-29): Nemotron readings made / errored (abstained) / cost (USD) | **12 / 0 / 0.0651** | `eval/sweeps/job-daily-20261029T033329Z.json` |
 
 ## Qualitative claims and where they are enforced
 

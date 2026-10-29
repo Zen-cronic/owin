@@ -117,8 +117,10 @@ def cmd_sweep(a) -> int:
 
 
 def cmd_job(a) -> int:
-    """A2 daily refresh, one process (the Nebius Serverless Job entrypoint): `owin sweep --live` then
-    `owin pack refresh`. Writes go to $OWIN_STATE_DIR (a mounted bucket); the endpoint reads them from there."""
+    """A2 daily refresh, one process (the Nebius Serverless Job entrypoint): `owin sweep --live`, `owin pack refresh`,
+    then Nemotron re-reads the demo stack's pages on the fresh Tavily captures and the registry and evidence index are
+    re-exported. Writes go to $OWIN_STATE_DIR (a mounted bucket); the endpoint reads them from there. An errored
+    reading abstains (owin/datause/selective.py); a failed step is recorded in the job record, never hidden."""
     import time
     from . import config, sweep
     from .datause import observations, registry
@@ -127,15 +129,61 @@ def cmd_job(a) -> int:
         print("OWIN_STATE_DIR is not set; refusing to write refreshed state into the image", file=sys.stderr)
         return 2
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    t0 = time.time()
     rec = config.write_path(f"var/sweeps/{stamp}.json")
     sw = sweep.run(live=a.fetch, record=rec)
     pages = sorted(registry.load_catalog()["pages"])
     ref = observations.refresh(pages, fetch=a.fetch)
-    _print({"job": "daily", "at": stamp, "mode": config.mode(), "fetch": a.fetch, "state_dir": str(sd),
-            "sweep": {"record": str(rec), "counts": sw["counts"], "vendors": sw["vendors"]},
-            "pack_refresh": {"tavily_calls": ref["tavily_calls"], "observations": ref["observations"],
-                             "fetched": {p: v.get("source_kind") for p, v in ref["fetched"].items()}}})
+    feats = a.features.split(",") if a.features else sorted({e["feature"] for e in _pack_manifest(a)["endpoints"]})
+    readings = job_read(feats, runs=a.runs, budget=a.budget) if a.read else {"skipped": "--no-read"}
+    out = {"job": "daily", "at": stamp, "mode": config.mode(), "fetch": a.fetch, "state_dir": str(sd),
+           "wall_s": round(time.time() - t0, 1),
+           "sweep": {"record": str(rec), "counts": sw["counts"], "vendors": sw["vendors"],
+                     "tavily_key_present": sw["tavily_key_present"], "wall_s": sw["wall_s"]},
+           "pack_refresh": {"tavily_calls": ref["tavily_calls"], "observations": ref["observations"],
+                            "fetched": {p: v.get("source_kind") for p, v in ref["fetched"].items()}},
+           "readings": readings}
+    out["record"] = str(config.write_atomic(f"var/jobs/{stamp}.json", json.dumps(out, indent=1, default=str) + "\n"))
+    _print(out)
     return 0
+
+
+def job_read(features: list[str], *, runs: int = 3, budget: float = 3.0) -> dict:
+    """The job's Nemotron step: read each feature's fresh capture `runs` times, re-export the registry and the evidence
+    index into the state dir. Reports every reading that errored (it abstains from the agreement) and every feature
+    whose fields were left for a person. A missing key, a spent budget or an exception is reported, not raised."""
+    from . import config
+    from .datause import evidence, registry
+    try:
+        tf.api_key()
+    except tf.MissingKey:
+        return {"skipped": "TOKEN_FACTORY_API_KEY not set; the pack keeps its recorded readings"}
+    spent = tf.ledger_total()
+    if spent >= budget:
+        return {"skipped": f"budget cap reached: ledger total ${spent:.4f} >= ${budget}"}
+    try:
+        run_file = registry.extract_live(features, runs=runs, out_dir=config.write_path("eval/datause/registry-runs/run.json").parent)
+        reg_path = registry.export(live_runs=[run_file])
+        ev_path = evidence.build_index()
+    except Exception as e:  # recorded, not hidden; the endpoint keeps serving the previous registry
+        return {"error": f"{type(e).__name__}: {e}"[:300], "features": features, "runs": runs,
+                "ledger_total_usd": round(tf.ledger_total(), 4)}
+    d = json.loads(run_file.read_text())
+    reg = json.loads(reg_path.read_text())["features"]
+    per = {}
+    for fid in features:
+        calls = [c for c in d["calls"] if c["id"] == fid]
+        fa = reg[fid].get("field_agreement") or {}
+        per[fid] = {"readings": len(calls), "errored_abstained": sum(1 for c in calls if c["error"]),
+                    "errors": [c["error"] for c in calls if c["error"]],
+                    "runs_agreeing": (reg[fid].get("live_check") or {}).get("runs_agreeing"),
+                    "fields": {f: a["state"] for f, a in fa.items()},
+                    "left_to_a_person": sorted(f for f, a in fa.items() if a["state"] == "confirm")}
+    return {"model": d["model"], "prompt_version": d["prompt_version"], "runs_per_feature": runs,
+            "calls": len(d["calls"]), "errored_abstained": sum(1 for c in d["calls"] if c["error"]),
+            "cost_usd": round(sum(c["cost_usd"] for c in d["calls"]), 4), "wall_s": d["wall_s"],
+            "run_file": str(run_file), "registry": str(reg_path), "evidence": str(ev_path),
+            "ledger_total_usd": round(tf.ledger_total(), 4), "features": per}
 
 
 def _pack_manifest(a) -> dict:
@@ -252,10 +300,17 @@ def main(argv: list[str] | None = None) -> int:
     sw.add_argument("--seed-archive", default="", help="accept a fixtures/snapshots/*.json as the baseline first")
     sw.add_argument("--brief", action="store_true")
     sw.set_defaults(fn=cmd_sweep)
-    jb = sub.add_parser("job", help="scheduled jobs (A2): `owin job daily` = sweep --live + pack refresh into $OWIN_STATE_DIR")
+    jb = sub.add_parser("job", help="scheduled jobs (A2): `owin job daily` = sweep --live + pack refresh + Nemotron re-read into $OWIN_STATE_DIR")
     jb.add_argument("name", choices=["daily"])
     jb.add_argument("--fetch", action=argparse.BooleanOptionalAction, default=True,
                     help="--no-fetch re-records from captures on disk with no Tavily calls (a free wiring check)")
+    jb.add_argument("--read", action=argparse.BooleanOptionalAction, default=True,
+                    help="--no-read skips the Nemotron re-reading (no Token Factory calls)")
+    jb.add_argument("--stack", default="", help="stack manifest whose features are re-read (default: fixtures/demo/stack.json)")
+    jb.add_argument("--set", action="append", metavar="PATH=FEATURE", help=argparse.SUPPRESS)
+    jb.add_argument("--features", default="", help="re-read these feature ids instead of the stack's")
+    jb.add_argument("--runs", type=int, default=3)
+    jb.add_argument("--budget", type=float, default=3.0, help="skip the re-reading when the usage ledger total reaches this (USD)")
     jb.set_defaults(fn=cmd_job)
     pk = sub.add_parser("pack", help="security-review answer pack (AI and data section), per endpoint")
     pk.add_argument("action", choices=["build", "refresh", "registry", "extract", "evidence"],
