@@ -1,6 +1,6 @@
 # Owin
 
-**On 7 AI vendors it had never seen (pre-registered split `v3fresh`, 11 features), Owin filled 27 of 33 security-review answers on its own and got 26 right, each with the vendor's own sentence; the other 6 it asked a person to confirm, and on those a majority vote would have been right only 2 times.** The one confident miss is a label error we found ourselves and kept as pre-registered ([below](#what-well-tell-you-before-you-find-it)). Recompute it with no key: `owin eval selective --corpus datause --split v3fresh`. Every number in this file is in [FACTS.md](FACTS.md), and a test recomputes each one.
+**On 7 AI vendors (6 of them new to Owin; pre-registered split `v3fresh`: 11 features on 8 pages), Owin filled 27 of 33 security-review answers on its own and got 26 right, 19 with the vendor's sentence and 7 correctly "not stated"; the other 6 it asked a person to confirm, and on those a majority vote would have been right only 2 times. A plain majority vote over all 33 gets 28; it is wrong on 4 of the 6 Owin hands to a person.** The one confident miss is a label error we found ourselves and kept as pre-registered ([below](#what-well-tell-you-before-you-find-it)). Recompute it with no key: `owin eval selective --corpus datause --split v3fresh`. The headline numbers in this file are in [FACTS.md](FACTS.md), and a test recomputes each one.
 
 ## What, who, why (30 seconds)
 
@@ -37,8 +37,8 @@ CLI equivalents: `owin pack build --format brief`, `--set /api/crm-sync=anthropi
 | split `v3fresh` (clean, pre-registered) | result |
 |---|---|
 | Answered automatically | **27/33** cells |
-| Right among those | **26/27** |
-| Sent to a person to confirm | **6** (a majority vote would have been right on 2/6) |
+| Right among those | **26/27** (19 with the vendor's sentence, 7 correctly "not stated") |
+| Sent to a person to confirm | **6** (a majority vote would have been right on 2/6; over all 33 cells a plain majority vote gets 28/33) |
 | Negative controls (pages with no data-use terms) | 6/6 cells answered "not stated", correctly |
 | Whole-item score, all three fields exact by majority (the pre-registered metric) | **7/11, which fails our own 80% bar**; keyword baseline 4/11 |
 | Negatives held, whole-item | 2/2; keyword baseline 0/2 |
