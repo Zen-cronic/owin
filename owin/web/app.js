@@ -264,7 +264,7 @@ function render() {
 // Summary: the counts for every answer, in the hero's right column (stacked under the headline on mobile).
 function renderSummary(p) {
   const c = p.counts;
-  const rows = [['not_true', 'Not true'], ['stale', 'Stale'], ['confirm', 'To confirm'], ['held_unspecified', 'Held'], ['still_true', 'Still true']]
+  const rows = [['not_true', 'Not true'], ['stale', 'Stale'], ['confirm', 'To confirm'], ['held_unspecified', 'Held · unspecified'], ['still_true', 'Still true']]
     .filter(([k]) => c[k] || k === 'still_true' || k === 'not_true');
   $('summary').replaceChildren(
     el('h2', {}, `${p.answers.length} answers · ${p.stack.endpoints.length} endpoints · ${p.stack.providers.length} providers`),
@@ -310,7 +310,7 @@ const CHIP = {
   contradicts: { cls: 'bad', icon: 'warn', word: 'Not true' },
   stale: { cls: 'stale', icon: 'stale', word: 'Stale' },
   confirm: { cls: 'confirm', icon: 'ask', word: 'Confirm' },
-  held: { cls: 'held', icon: 'held', word: 'Held' },
+  held: { cls: 'held', icon: 'held', word: 'Held · unspecified' },
 };
 
 // Answers that no endpoint's vendor page states (e.g. region) are said once under the stack, not on every row.
