@@ -32,6 +32,8 @@ number recomputes identically (27/33, 26/27, 6); only `quotes_rechecked_against_
 
 The CPU platforms are x86 (`cpu-d3` is AMD EPYC Genoa), so build for `linux/amd64`.
 
+**No Docker at hand?** `.github/workflows/image.yml` builds this same image on every push to `main`, runs `scripts/smoke.sh` against the container, and pushes `ghcr.io/zen-cronic/owin:<short-sha>` and `:latest`. Make the package public once (GitHub → Packages → owin → Package settings → Change visibility), then skip to the endpoint step with that image.
+
 ```bash
 cd /path/to/owin
 git checkout main            # or feat/owin/finish
