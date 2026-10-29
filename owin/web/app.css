@@ -2,7 +2,7 @@
    This file is the layout and the token layer. Every colour, family, radius, hairline, texture and duration below is
    a custom property; components read only tokens. The defaults on :root are theme 1 ("Departures"), so a page with
    no data-theme attribute renders theme 1. theme-c1.css … theme-c5.css restyle the tokens and the decoration hooks
-   (.num-tile, .num-sep, .num-row, .stat-board, .catch-mark, .catch-text, .rule-draw) under html[data-theme="cN"].
+   (.num-tile, .num-sep, .num-row, .stat-board, .catch-mark, .catch-text, .catch-phrase, .rule-draw) under html[data-theme="cN"].
    The signal colour (--act) marks only the one thing to act on. */
 :root{
   /* Colour */
@@ -81,6 +81,7 @@ svg.i{width:14px;height:14px;flex:none;stroke:currentColor;fill:none;stroke-widt
 .fict{color:var(--muted);margin-left:6px}
 .fict::before{content:"·";margin-right:6px;color:var(--edge)}
 .top .replay{margin-left:0}
+.top .replay .rp-short{display:none}
 .top .judge{color:var(--ink)}
 
 /* Theme switch: five native radios, keyboard arrows move between them; hidden without JS (no data-theme) and in print */
@@ -531,3 +532,6 @@ code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13
 }
 
 @media (max-width:420px){body.judge-page .ctx .fict{display:none}}
+
+/* Phone: the provenance line takes its short form so it never truncates */
+@media (max-width:600px){.top .replay .rp-long{display:none}.top .replay .rp-short{display:inline}}

@@ -229,7 +229,10 @@ function render() {
 
   // Top bar
   $('company').textContent = p.company;
-  $('replay').textContent = `Real-source replay · as of ${fmtLocal(p.as_of_local)}`;
+  // Long form on wide screens, a short one that fits beside the theme picker on a phone.
+  const asOf = fmtLocal(p.as_of_local), asOfDay = asOf.replace(/,.*$/, '');
+  $('replay').replaceChildren(el('span', { class: 'rp-long' }, `Real-source replay · as of ${asOf}`),
+    el('span', { class: 'rp-short' }, `Replay · ${asOfDay}`));
   document.title = `Owin · ${p.company}`;
 
   renderCatch(p, byId, staleEv);
@@ -239,7 +242,6 @@ function render() {
   $('panes').hidden = false;
   $('ct-ans').textContent = p.answers.length;
   $('ct-stack').textContent = p.stack.endpoints.length;
-  $('stack-meta').textContent = `${p.stack.endpoints.length} endpoints · ${p.stack.providers.length} providers`;
   const eps = Object.values(status).sort((x, y) => x.worst - y.worst);
   $('endpoints').replaceChildren(...eps.map((s) => endpointRow(p, s, staleEv)),
     legend(p));

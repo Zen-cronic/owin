@@ -35,7 +35,7 @@
 
     <p class="catchline reveal" style="--i:3">
       <span class="badge bad flap catch-mark"><span class="lbl"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 15 14H1z"/><path d="M8 6v3.6M8 11.6v.1"/></svg>Not true</span></span>
-      <span class="cl">The catch, on real vendor text: Lumen Notes’ trust page says “zero data retention”, but <span class="mono nw">/api/crm-sync</span> calls Anthropic’s MCP connector, and Anthropic’s page says <span class="catch-text">“The MCP connector is not covered by ZDR arrangements.”</span><span class="act"><a class="btn primary" href="/">Open answer 3</a></span></span>
+      <span class="cl">The catch, on real vendor text: Lumen Notes’ trust page says “<span class="catch-phrase">zero data retention</span>”, but <span class="mono nw">/api/crm-sync</span> calls Anthropic’s MCP connector, and Anthropic’s page says <span class="catch-text">“The MCP connector is <span class="catch-phrase">not covered by ZDR arrangements</span>.”</span><span class="act"><a class="btn primary" href="/">Open answer 3</a></span></span>
     </p>
     </div>
 
@@ -49,6 +49,7 @@
     </div>
     <ul class="ev method reveal" style="--i:5">
       <li><b>Method</b><span class="mx">
+        <span class="sub qual" id="qual"></span>
         <span class="sub" id="sub"></span>
         <span class="recompute"><a href="/api/selective">Recompute it now: /api/selective ↗</a><code class="cmd" tabindex="0" aria-label="Command to recompute locally">owin eval selective <span class="nw">--corpus datause</span> <span class="nw">--split v3fresh</span></code></span>
         <span class="fn" id="fn"></span>

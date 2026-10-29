@@ -95,10 +95,13 @@ const seen = (el) => new Promise((done) => {
     const newVendors = s.vendors_new != null ? ` (${s.vendors_new} of them new to Owin)` : '';
     $('big').textContent = `On ${s.vendors} AI vendors${newVendors}, recomputed from recorded runs when this page loaded:`;
     $('stats').replaceChildren(
-      stat(`${auto}/${cells}`, 'answers Owin filled on its own'),
-      stat(`${right}/${answered}`, `right among those: ${withSentence} with the vendor’s sentence, ${notStated} correctly “not stated”`),
-      stat(String(s.sent_to_confirm), `handed to a person to confirm; a majority vote would have been right on only ${maj} of ${conf}`
-        + (allMaj ? `, and on ${allMaj[0]} of ${allMaj[1]} cells overall` : '')));
+      stat(`${auto}/${cells}`, 'filled on its own'),
+      stat(`${right}/${answered}`, 'right when it answered'),
+      stat(String(s.sent_to_confirm), 'handed to a person'));
+    // The qualifiers behind the three short captions live in the Method row.
+    $('qual').textContent = `Of the ${right} right, ${withSentence} quote the vendor’s sentence and ${notStated} are correctly “not stated”. `
+      + `On the ${s.sent_to_confirm} handed to a person, a majority vote of the three readings would have been right on only ${maj} of ${conf}`
+      + (allMaj ? `, and on ${allMaj[0]} of ${allMaj[1]} cells overall.` : '.');
     $('sub').textContent = `Split ${s.split}: ${s.items} features${s.pages ? ` on ${s.pages} pages` : ''} from ${s.vendors} vendors${newVendors}, labels committed before the prompt was written. $${perReading.toFixed(4)} per reading on Nebius Token Factory, about ${Math.round(j.per_call.mean_latency_s_exact_runs)} s per reading on the runs that were exactly right, $${perEndpoint.toFixed(3)} per endpoint (three readings). Model ${j.model}.`;
     const miss = (s.auto_misses || [])[0];
     if (miss && miss.footnote) $('fn').replaceChildren(Object.assign(document.createElement('span'), { textContent: `The one confident miss (${miss.item}, ${miss.field.replace('_', ' ')}): ${miss.footnote}` }));
