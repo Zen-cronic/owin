@@ -30,7 +30,7 @@
   --on-field-muted:#C7D8EA;
   --frame:#A4C6DE;       /* cyanotype line: label frames and pulls */
   --rule-cyan:#7FB6CF;   /* the ruled header line of a card */
-  --stamp-stale:#5B3D94; /* violet date-stamp ink */
+  --stamp-stale:#0F6B7F; /* cyanotype teal: the Stale stamp's ink, apart from Confirm navy by hue and frame */
   --stamp-confirm:#2D3E66;
   --stamp-held:#5E5A55;
   /* Type */
