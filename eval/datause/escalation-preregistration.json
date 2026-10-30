@@ -3,7 +3,7 @@
  "written_at": "2026-10-29T11:13-04:00",
  "split": "v3fresh",
  "frozen": {
-  "labels": {"file": "eval/datause/preregistration-v3.json", "labels_commit": "cbfe737", "sha256": "de6241fb900f611b7fbf4f15b7540af0ec9ef32af4dc27aff87c16cd6e15991c"},
+  "labels": {"file": "eval/datause/preregistration-v3.json", "labels_commit": "42b8994", "sha256": "de6241fb900f611b7fbf4f15b7540af0ec9ef32af4dc27aff87c16cd6e15991c"},
   "corpus": {"file": "eval/datause/corpus.json", "sha256": "0bbb4f7b6b723cfc133cb4fc6a76febd018d8a525d5e08913398056f6cd7e3f7"},
   "prompt_and_gate": {"file": "owin/datause/extract.py", "prompt_version": "v3", "sha256": "114691277913825fcff5cde1d2fee38ff512973d42e5ded8847059f95dd5ee11"},
   "rule": "No relabel and no gate change after these runs. A disputed label is reported beside the result, never applied to it."

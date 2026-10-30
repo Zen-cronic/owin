@@ -50,7 +50,7 @@ The number badge is computed from the recomputed headline (`owin/facts.py::badge
 | Whole-item score, all three fields exact by majority (the pre-registered metric) | **7/11, which fails our own 80% bar**; keyword baseline 4/11 |
 | Negatives correctly left unanswered, whole-item | 2/2; keyword baseline 0/2 |
 
-The labels for `v3fresh` were committed (`cbfe737`) before prompt v3 was written and frozen (`b556245`); nothing was edited after scoring. The older items are not a clean test because earlier misses on them shaped the prompt. For reference only: v3 there fills 80/90 cells automatically and gets 77/80 right; v2 fills 77/90 and gets 72/77.
+The labels for `v3fresh` were committed (`42b8994`) before prompt v3 was written and frozen (`8205f8d`); nothing was edited after scoring. The older items are not a clean test because earlier misses on them shaped the prompt. For reference only: v3 there fills 80/90 cells automatically and gets 77/80 right; v2 fills 77/90 and gets 72/77.
 
 ```bash
 owin eval selective --corpus datause --split v3fresh --brief   # the line-one number
