@@ -5,7 +5,7 @@ from owin import server, webui
 
 
 def test_root_serves_the_app_and_debug_moves():
-    code, ctype, body = server.handle("/", {})
+    code, ctype, body = server.handle("/app", {})
     assert code == 200 and ctype.startswith("text/html") and 'src="/app.js"' in body
     for path, kind in (("/app.js", "javascript"), ("/app.css", "css")):
         code, ctype, _ = server.handle(path, {})
@@ -62,7 +62,7 @@ def test_repo_docs_are_an_allowlist():
 
 
 def test_both_pages_carry_one_theme_and_no_picker():
-    for path in ("/", "/judge"):
+    for path in ("/app", "/judge"):
         body = server.handle(path, {})[2]
         head = body[:body.index("</head>")]
         assert 'data-theme="c1"' in head and 'href="/theme-c1.css"' in head, path
@@ -78,7 +78,8 @@ def test_both_pages_carry_one_theme_and_no_picker():
 
 def test_app_is_served_at_app_too_and_pages_link_there():
     code, ctype, body = server.handle("/app", {})
-    assert code == 200 and "html" in ctype and body == server.handle("/", {})[2]
+    assert code == 200 and "html" in ctype and 'id="app"' in body
+    assert server.handle("/", {})[2] == server.handle("/about", {})[2]  # the product page is the front door
     for path in ("/judge", "/about"):
         page = server.handle(path, {})[2]
         assert 'href="/"' not in page and 'href="/?' not in page, path
