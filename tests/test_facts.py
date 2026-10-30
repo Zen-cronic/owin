@@ -24,7 +24,8 @@ def _f(fid):
 
 
 def test_readme_line_one_matches_the_ledger():
-    line1 = README.split("\n")[2]
+    lines = README.split("\n")
+    line1 = lines[lines.index("# Owin") + 2]  # the headline under the title (a logo sits above it)
     auto, cells = _f("sel.auto").split("/")
     right, _ = _f("sel.correct").split("/")
     maj = _f("sel.majority").split("/")[0]

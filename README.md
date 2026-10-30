@@ -1,3 +1,10 @@
+<p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="owin/web/img/logo-dark.svg">
+    <img src="owin/web/img/logo-light.svg" alt="Owin" height="72">
+  </picture>
+</p>
+
 # Owin
 
 **On 7 AI vendors (6 of them new to Owin; pre-registered split `v3fresh`: 11 features on 8 pages), Owin filled 27 of 33 security-review answers on its own and got 26 right, 18 with the vendor's sentence and 8 correctly "not stated"; the other 6 it handed to a person to review, and on those a majority vote would have been right only 2 times. A plain majority vote over all 33 gets 28; it is wrong on 4 of the 6 Owin hands to a person.** The one confident miss is a label error we found ourselves and kept as pre-registered ([below](#what-well-tell-you-before-you-find-it)). Recompute it with no key: `owin eval selective --corpus datause --split v3fresh`. The headline numbers in this file are in [FACTS.md](FACTS.md), and a test recomputes each one.
