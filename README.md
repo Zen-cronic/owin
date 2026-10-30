@@ -90,6 +90,17 @@ rules (code)   ──► buyer report ──► app / PDF / CSV / share link
 - **Rules** (`owin/datause/pack.py`): compare vendor fields with the answers you already gave, from enums and integers only, and set Not true / Outdated / Needs review / Not stated / Verified.
 - **App and exports** (`owin/server.py`, `owin/web/`, `owin/datause/export.py`): a stdlib HTTP server with no build step; the buyer exports never include internal reasons or fix drafts.
 
+## Sponsor technology
+
+| Sponsor | Technology | What it does in Owin |
+|---|---|---|
+| Nebius | Token Factory | Hosts every model call. Each reading is one call: $0.0029 and about 9 s on the clean split, from Token Factory's own usage figures (`owin/tokenfactory.py`). |
+| NVIDIA | Nemotron 3 Super (open weights) | The only reader. It reads each vendor page three times into five fields, each with a verbatim quote; an answer is filled only when the readings agree. Reasoning on: 26 of 27 right; off: 21 of 28 (`owin/datause/extract.py`). |
+| NVIDIA | Nemotron 3 Ultra | Reads a page only where Super's three readings split, under the same pre-registered rule: hand-offs drop from 6 to 2. |
+| Nebius | AI Cloud: Serverless AI Endpoint | Runs the whole app as one container (`cpu-d3`, 2 vCPU, 8 GB): the app, /judge, the buyer page and the buyer report ([DEPLOY.md](DEPLOY.md)). |
+| Nebius | AI Cloud: Compute VM | The owin.cloud front door: HTTPS in front of the endpoint. |
+| Tavily | Extract | Fetches each vendor page whole and records the time, hash and "Last updated" date, so "Outdated" is a dated observation. It runs on "Re-check this page" and on the scheduled re-fetch (`owin/tavily.py`, `owin/refetch.py`). |
+
 ## How Owin meets the judging criteria
 
 - **Technological implementation.** Nemotron on Token Factory is the reader in a measured loop: pre-registered labels, a keyword baseline, negative controls, three readings per page, a verbatim gate, and selective answering recomputed from recorded runs by one command. Cost and latency come from Token Factory's own usage figures. Four Nemotron sizes are measured on the same split and rule (`owin eval ladder`), and a pre-registered escalation sends only Super's split cells to Ultra: 6 hand-offs become 2, no new miss. Nemotron's reasoning switch is measured too and stays on. Code decides every answer; a test shows model prose cannot change a verdict, and on `POST /api/recheck` a live Nemotron re-reading can only hand an answer to a person.
