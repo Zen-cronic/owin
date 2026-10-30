@@ -213,6 +213,30 @@ def _reading_sentence(rd: dict) -> str:
     return f" Nemotron re-read it {rd['readings_ok']} times: every answer it reads still agrees."
 
 
+def fetch_observe(page: str, url: str, prev: dict | None, fetch, *, purpose: str) -> tuple[dict | None, str | None, int, str | None]:
+    """One page's Tavily fetch and observation, shared by Re-check and the scheduled re-fetch (owin/refetch.py):
+    basic depth, then one advanced re-fetch when that copy would mark a quoted sentence gone. One ledger line.
+    Returns (observation or None, text, credits, error)."""
+    t0 = time.time()
+    credits, error, o, text = 0, None, None, None
+    f = fetch(url, "basic")
+    credits += CREDITS["basic"]
+    if f.content:
+        o, text = _observe(page, url, f, "basic"), f.content
+        if _lost(prev, o):  # a worse copy at first sight: look once more, harder, before recording the loss
+            g2 = fetch(url, "advanced")
+            credits += CREDITS["advanced"]
+            if g2.content:
+                o2 = _observe(page, url, g2, "advanced")
+                if _present(o2)[0] >= _present(o)[0]:
+                    o, text = o2, g2.content
+    else:
+        error = f.error or "tavily returned no content"
+    tf.log_usage(purpose, model="tavily/extract", latency_s=round(time.time() - t0, 2), error=error,
+                 credits=credits, page=page)
+    return o, text, credits, error
+
+
 def run(endpoint: str, *, manifest: dict | None = None, now: float | None = None, fetch=None, read=None) -> tuple[int, dict]:
     """(HTTP status, body). `fetch(url, depth)` defaults to tavily.extract and `read()` to one Nemotron reading of the
     fetched text; tests pass stubs."""
@@ -230,23 +254,7 @@ def run(endpoint: str, *, manifest: dict | None = None, now: float | None = None
     obs_before = obsmod.load()
     po = (obs_before["pages"].get(page) or {}).get("observations", [])
     prev = next((o for o in reversed(po) if not o.get("held")), None)
-    t0 = time.time()
-    credits, error, o, text = 0, None, None, None
-    f = fetch(url, "basic")
-    credits += CREDITS["basic"]
-    if f.content:
-        o, text = _observe(page, url, f, "basic"), f.content
-        if _lost(prev, o):  # a worse copy at first sight: look once more, harder, before recording the loss
-            g2 = fetch(url, "advanced")
-            credits += CREDITS["advanced"]
-            if g2.content:
-                o2 = _observe(page, url, g2, "advanced")
-                if _present(o2)[0] >= _present(o)[0]:
-                    o, text = o2, g2.content
-    else:
-        error = f.error or "tavily returned no content"
-    tf.log_usage(f"recheck:{endpoint}", model="tavily/extract", latency_s=round(time.time() - t0, 2), error=error,
-                 credits=credits, page=page)
+    o, text, credits, error = fetch_observe(page, url, prev, fetch, purpose=f"recheck:{endpoint}")
     if o is None:
         return 502, {"ok": False, "mode": "live", "reason": error, "credits_used": credits, "endpoint": endpoint, "page": page}
     before = _endpoint_cells(pack.build(r["manifest"], obs=obs_before), endpoint)

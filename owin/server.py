@@ -14,7 +14,8 @@ GET /api/catalog, /api/watch                                  ->  features for t
 GET /debug                                                    ->  unstyled replay debug page
 POST /api/recheck  (body: {"endpoint": "/api/crm-sync"})      ->  re-fetch that endpoint's vendor page through Tavily now
                                                                   and rerun the rules (owin/recheck.py; demo answer without a key)
-GET /healthz                                                  ->  liveness + mode (demo | live), no secrets
+GET /healthz                                                  ->  liveness + mode (demo | live) + the scheduled re-fetch
+                                                                  status (owin/refetch.py), no secrets
 Stateless per request, on a ThreadingHTTPServer, so concurrent judges do not block each other. The only request
 that calls a paid API is POST /api/recheck: Tavily `extract` when a Tavily key is set (capped, cooled down,
 ledgered), and three Nemotron Super readings on Token Factory when a quoted sentence is gone and a Token Factory
@@ -108,11 +109,14 @@ def handle_post(path: str, raw: bytes, qs: dict) -> tuple[int, str, str]:
 def healthz() -> dict:
     """Liveness for the platform and the smoke test. Reports which keys exist, never their values."""
     from .datause import registry
+    from . import refetch
     ok = bool(registry.load())
     return {"ok": ok, "mode": config.mode(), "keys": config.keys_present(),
             "state_dir": config.state_dir() is not None,
             "serving": "recorded runs and committed captures; only POST /api/recheck calls a paid API: Tavily extract when "
-                       "its key is set, plus Nemotron re-reading on Token Factory when a quoted sentence is gone and its key is set"}
+                       "its key is set, plus Nemotron re-reading on Token Factory when a quoted sentence is gone and its key is set; "
+                       "the scheduled re-fetch (below) makes the same Tavily extract calls in the background",
+            "refetch": refetch.status()}
 
 
 def selective_summary() -> dict:
@@ -243,7 +247,10 @@ class Server(ThreadingHTTPServer):
     request_queue_size = 64
 
 
-def serve(host: str | None = None, port: int | None = None) -> None:
+def serve(host: str | None = None, port: int | None = None, refetch_schedule: str | None = None) -> None:
+    from . import refetch
     host = host or os.environ.get("OWIN_HOST", "127.0.0.1")
     port = int(port or os.environ.get("PORT", 8787))
-    Server((host, port), Handler).serve_forever()
+    httpd = Server((host, port), Handler)
+    refetch.start(refetch_schedule)  # off unless a schedule is set or a Tavily key is present (owin/refetch.py)
+    httpd.serve_forever()

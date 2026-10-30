@@ -9,12 +9,15 @@
                          observations and list snapshots are written there and read from there first; the
                          committed files under data/ and fixtures/snapshots/ are the fallback. Unset: the app
                          serves the committed, recorded state only.
+  OWIN_REFETCH_SCHEDULE  Scheduled re-fetch of the watched vendor pages inside `owin serve` (owin/refetch.py): off,
+                         an interval (6h, 30m) or daily@HH:MM UTC. Default daily@06:00 with a Tavily key, else off.
   PORT / OWIN_HOST       Where `owin serve` binds (defaults 8787 / 127.0.0.1; the image sets 0.0.0.0:8080).
 
 Serving a page never calls a paid API: every page and every GET is computed from recorded runs and committed
 captures, so the app works with no keys at all (demo mode) and several people can use it at once. The one
 exception is `POST /api/recheck`, which makes one Tavily call per request when a key is set, and three Nemotron
-readings when a quoted sentence is gone and a Token Factory key is set.
+readings when a quoted sentence is gone and a Token Factory key is set. Outside requests, the scheduled re-fetch
+(OWIN_REFETCH_SCHEDULE) makes the same Tavily `extract` calls, one per watched page per run.
 """
 from __future__ import annotations
 

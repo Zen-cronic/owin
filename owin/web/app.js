@@ -64,6 +64,19 @@ function withPaths(text, cls = 'mono nw') {
 }
 
 // Dates: the API gives "2026-10-21 21:23 EDT", ISO UTC and "October 14, 2026"; show "Oct 21, 21:23 EDT".
+// The scheduled re-fetch's next run, from /healthz; the line stays hidden when the schedule is off or unknown.
+async function nextCheck(node) {
+  try {
+    const r = (await (await fetch('/healthz')).json()).refetch || {};
+    if (!r.next_run) return;
+    const d = new Date(r.next_run);
+    if (isNaN(d)) return;
+    const when = d.toLocaleString('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit', hour12: false, timeZoneName: 'short' });
+    node.textContent = `Next scheduled check: ${when}`;
+    node.hidden = false;
+  } catch (e) { /* the line is optional */ }
+}
 function fmtLocal(s) {
   const m = /^(\d{4})-(\d\d)-(\d\d) (\d\d:\d\d) (\w+)$/.exec(s || '');
   return m ? `${MON[+m[2] - 1]} ${+m[3]}, ${m[4]} ${m[5]}` : (s || '');
@@ -464,6 +477,9 @@ function renderPages(p) {
   ];
   if (items.length) kids.push(el('ul', {}, items));
   kids.push(el('p', { class: 'reset' }, 'Each check re-reads these pages; an answer is marked Outdated when a sentence it relies on changes.'));
+  const next = el('p', { class: 'reset', hidden: '' });
+  kids.push(next);
+  nextCheck(next);
   if (Object.keys(state.sets).length) {
     kids.push(el('p', { class: 'reset' }, 'You changed ', ...joinPaths(Object.keys(state.sets)), '. ',
       el('button', { onclick: () => { state.sets = {}; load({ recompute: true }); } }, 'Reset to the demo stack')));

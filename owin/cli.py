@@ -261,7 +261,7 @@ def cmd_serve(a) -> int:
     from . import config
     host, port = a.host or os.environ.get("OWIN_HOST", "127.0.0.1"), a.port or int(os.environ.get("PORT", 8787))
     print(f"Owin on http://{host}:{port}/ (mode: {config.mode()})", file=sys.stderr, flush=True)
-    server.serve(host, port)
+    server.serve(host, port, a.refetch)
     return 0
 
 
@@ -343,6 +343,9 @@ def main(argv: list[str] | None = None) -> int:
     sv = sub.add_parser("serve", help="JSON API + debug page")
     sv.add_argument("--host", default=None, help="default: $OWIN_HOST or 127.0.0.1")
     sv.add_argument("--port", type=int, default=None, help="default: $PORT or 8787")
+    sv.add_argument("--refetch", default=None, metavar="SCHEDULE",
+                    help="scheduled re-fetch of the watched vendor pages: off, an interval (6h, 30m) or daily@HH:MM UTC "
+                         "(default: $OWIN_REFETCH_SCHEDULE, else daily@06:00 with a Tavily key, else off)")
     sv.set_defaults(fn=cmd_serve)
     a = p.parse_args(argv)
     return a.fn(a)

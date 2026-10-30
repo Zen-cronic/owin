@@ -21,6 +21,7 @@ Anything not in those pages is marked **UNVERIFIED**.
 | `OWIN_STATE_DIR` | optional, `/state` (read-only bucket) | **required**, `/state` (read-write bucket) | refreshed observations and list snapshots; unset = committed state only |
 | `TOKEN_FACTORY_API_KEY` | optional (SecretStash secret): enables Nemotron re-reading inside `POST /api/recheck`, only when a quoted sentence is gone, capped by `OWIN_RECHECK_READ_BUDGET_USD` (default $0.25 per UTC day); unset = the recheck is Tavily-only | SecretStash secret | `owin job daily --read` (the default) re-reads the demo stack's pages with Nemotron; also `owin pack extract` / `owin eval run` |
 | `TAVILY_API_KEY` | optional (SecretStash secret) | SecretStash secret | `owin job daily` re-fetches vendor pages with Tavily; on the endpoint it enables `POST /api/recheck` (one Tavily `extract` per call, 200 calls/day per process, 60 s per endpoint; unset = the route answers `mode: demo`) |
+| `OWIN_REFETCH_SCHEDULE` | optional: `off`, an interval (`6h`, `30m`) or `daily@HH:MM` UTC; default `daily@06:00` when `TAVILY_API_KEY` is set, else `off`; a bad value logs a message and runs as `off` | not used | scheduled re-fetch inside `owin serve` (same as `--refetch`): one Tavily `extract` per watched vendor page per run, observations kept in memory or in `OWIN_STATE_DIR`; status in `/healthz` `refetch` |
 | `OWIN_LEDGER` | image default | `/state/ledger/usage.jsonl` | Token Factory spend ledger |
 
 The image never contains `.env`, `fixtures/raw/` (vendor page text), `var/`, the spend ledger, tests or design files:
@@ -125,6 +126,17 @@ builds all return 200. Expected last line: `SMOKE PASS <url>`. Then open `$ENDPO
 
 Stop or delete when done: `nebius ai endpoint stop "$ENDPOINT_ID"` (keeps it, no compute charge; API path documented
 as `/ai/v1/endpoints/stop`, CLI verb **UNVERIFIED**) or `nebius ai endpoint delete "$ENDPOINT_ID"`.
+
+## Scheduled re-fetch inside the endpoint
+
+`owin serve` starts a background thread that re-fetches every watched vendor page (the pages the answers quote) on
+`OWIN_REFETCH_SCHEDULE` / `--refetch`: `off`, an interval such as `6h` or `30m` (minimum 1 minute), or `daily@HH:MM`
+in UTC. With a Tavily key and no setting it runs `daily@06:00`; without a key it is `off`. Each run makes the same
+per-page Tavily `extract` call as `POST /api/recheck` (basic depth, one advanced look when a quoted sentence seems
+gone, one ledger line per page), about 5 credits a run, and appends the dated observations: to `OWIN_STATE_DIR` when it
+is set and writable, else to the process memory (lost on restart). It never changes the recorded runs, the registry or
+the Nemotron readings, so the headline numbers stay the same. One run at a time; a failure is recorded, not raised.
+Check it with `curl -s $URL/healthz`: `refetch` = `{schedule, next_run, last_run, last_result, running}`.
 
 ## 4. A2: daily refresh on Serverless AI jobs (run once from a laptop; not yet executed on Nebius)
 
