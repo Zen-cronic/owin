@@ -97,7 +97,7 @@ def test_numbers_on_the_page_are_the_ledger():
     assert f"On {_f('sel.vendors')} AI vendors, {_f('sel.vendors_new')} of them new to Owin" in TEXT
     assert f"{_f('sel.items')} features on {_f('sel.pages')} pages" in TEXT
     assert f"On the {_f('sel.confirm')} answers it handed over, a majority vote would have been right only {maj} times" in TEXT
-    assert f"moves the score by {_f('sel.swing')} points" in TEXT
+    assert "moves the score by" not in TEXT  # the small-split note lives in the README, not on the product page
     assert "/api/selective" in JS  # the plates are refreshed from the server's recomputation on load
 
 
