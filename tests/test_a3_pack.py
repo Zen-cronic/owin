@@ -91,7 +91,7 @@ def test_change_one_input_flips_q03_to_still_true():
     m = pack.set_feature(pack.load_demo(), "/api/crm-sync", "anthropic-messages")
     p = pack.build(m)
     assert badges(p)["Q03"] == "still_true" and badges(p)["Q02"] == "still_true"
-    assert p["catch"] is None and p["headline"]["kicker"] == "1 stale"
+    assert p["catch"] is None and p["headline"]["kicker"] == "1 outdated"
     assert pack.build()["catch"]["question"] == "Q03"  # the demo input itself is untouched
 
 
@@ -245,7 +245,11 @@ def test_csv_one_row_per_question_and_endpoint(demo):
     rows = list(csv.DictReader(io.StringIO(export.to_csv(demo))))
     assert len(rows) == 5 * 4 and list(rows[0]) == export.CSV_COLUMNS
     r = next(r for r in rows if r["question_number"] == "03" and r["endpoint"] == "/api/crm-sync")
-    assert r["status"] == "not_true" and r["quote"] == "The MCP connector is not covered by ZDR arrangements."
+    assert r["status"] == "Not true" and r["endpoint_verdict"] == "Contradicts the answer"
+    assert r["quote"] == "The MCP connector is not covered by ZDR arrangements."
+    # The CSV carries the words a person reads, never the API's enum codes.
+    assert {r["status"] for r in rows} <= set(pack.BADGE_LABEL.values())
+    assert not {r["endpoint_verdict"] for r in rows} & {"holds", "held", "confirm", "contradicts", "disclosed"}
     assert r["source_url"].startswith("https://") and r["fetched_at"]
 
 
@@ -344,7 +348,7 @@ def test_print_copy_speaks_to_the_buyer(demo):
     plain statuses, the vendor's evidence as a quote or key/value rows, and nothing addressed to the person who runs
     Owin: no internal badges, no "review", no file paths, no workflow states as vendor sentences."""
     h = export.to_html(demo)
-    for internal in ("Not true", "Held · unspecified", ">Stale<", "Review the change", "Being confirmed against the vendor's page",
+    for internal in ("Not true", "Not stated<", ">Outdated<", "Review the change", "Under review against the vendor's page",
                      "data/datause", "(your setting)", "not in your answer", "Fix answer", "Draft trust-page change", "badge"):
         assert internal not in h, internal
     # Answer 3 ships the revised wording Owin drafted, with the exceptions spelled out, not the contradicted sentence.
@@ -370,8 +374,8 @@ def test_print_copy_speaks_to_the_buyer(demo):
 def test_print_confirm_cell_is_pending_never_a_vendor_sentence():
     m = pack.set_feature(pack.load_demo(), "/api/embed", "openai-responses")
     h = export.to_html(pack.build(m))
-    assert "<td>Being confirmed</td>" in h and "Being confirmed against the vendor's page" not in h
+    assert "<td>Under review</td>" in h and "Under review against the vendor's page" not in h
     assert "Readings disagree" not in h and "Cloudflare, Ltd. (changed)" in h  # the list change is the evidence shown
     m["stated"]["stated_at"] = "2026-10-21"  # no list change to show: the cell says it is pending, with no sentence
     h = export.to_html(pack.build(m))
-    assert "Pending the company's confirmation." in h and "<td>Being confirmed</td>" in h
+    assert "Pending the company's review." in h and "<td>Under review</td>" in h

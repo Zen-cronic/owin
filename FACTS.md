@@ -8,8 +8,8 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 |---|---|---|---|
 | `sel.auto` | Answers Owin filled on its own on split v3fresh (every successful reading agrees, at least 2) | **27/33** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.correct` | Correct among the auto-filled answers | **26/27** | `owin eval selective --corpus datause --split v3fresh` |
-| `sel.confirm` | Answers sent to a person to confirm | **6** | `owin eval selective --corpus datause --split v3fresh` |
-| `sel.majority` | Confirm cells where the majority reading would have been right | **2/6** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.confirm` | Answers handed to a person to review | **6** | `owin eval selective --corpus datause --split v3fresh` |
+| `sel.majority` | Needs-review cells where the majority reading would have been right | **2/6** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.sentence` | Correct auto-filled answers that assert a value with the vendor's verbatim sentence | **18** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.notstated` | Correct auto-filled answers that are 'not stated' (the page says nothing on that field) | **8** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.majority_all` | All 33 cells: where a majority vote would have been right (what a majority-vote system ships) | **28/33** | `owin eval selective --corpus datause --split v3fresh` |
@@ -23,9 +23,9 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | `sel.ref.v3old` | Reference, NOT clean: v3 on the older items, auto / correct | **80/90, 77/80** | `owin eval selective --corpus datause --split v3fresh` |
 | `sel.ref.v2old` | Reference, NOT clean: v2 on the older items, auto / correct | **77/90, 72/77** | `owin eval selective --corpus datause --split v3fresh` |
 | `v3.items` | Pre-registered v3 on v3fresh: items with all three fields exact (majority of runs) | **7/11** | `owin eval score --corpus datause --brief` |
-| `v3.neg` | v3fresh negatives held | **2/2** | `owin eval score --corpus datause --brief` |
+| `v3.neg` | v3fresh negatives correctly left unanswered | **2/2** | `owin eval score --corpus datause --brief` |
 | `v3.base` | Keyword baseline on v3fresh, items exact | **4/11** | `owin eval score --corpus datause --brief` |
-| `v3.base.neg` | Keyword baseline on v3fresh, negatives held | **0/2** | `owin eval score --corpus datause --brief` |
+| `v3.base.neg` | Keyword baseline on v3fresh, negatives correctly left unanswered | **0/2** | `owin eval score --corpus datause --brief` |
 | `v3.passed` | v3 passed its pre-registered 80% bar | **false** | `owin eval score --corpus datause --brief` |
 | `v2.old` | Prompt v2 on the older 30 features (after one disclosed relabel) | **23/30** | `eval/datause/v2-score.json` |
 | `v1.prereg` | Pre-registered prompt v1, first 24 features (failed) | **16/24** | `eval/datause/preregistered-v1-score.json` |
@@ -39,18 +39,18 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | `model` | Model | **nvidia/nemotron-3-super-120b-a12b** | `owin eval score --corpus datause --brief` |
 | `demo.q03` | Demo: answer 3 (ZDR) is not true for /api/crm-sync | **not_true** | `owin pack build --format brief` |
 | `demo.quote` | Demo: the vendor sentence behind answer 3 | **The MCP connector is not covered by ZDR arrangements.** | `owin pack build --format brief` |
-| `demo.q05` | Demo: answer 5 is stale | **stale** | `owin pack build --format brief` |
+| `demo.q05` | Demo: answer 5 is Outdated (badge code `stale`) | **stale** | `owin pack build --format brief` |
 | `demo.list` | OpenAI sub-processor list dates (before, after) | **June 2, 2026 -> October 14, 2026** | `owin pack build --format brief` |
 | `demo.cloudflare` | OpenAI CHANGED Cloudflare's entry (not added) | **changed** | `owin pack build --format brief` |
 | `demo.oai` | OpenAI ADDED OAI International | **added** | `owin pack build --format brief` |
-| `demo.swap` | Change one input: /api/crm-sync -> Anthropic Messages makes answer 3 still true | **still_true** | `owin pack build --format brief --set /api/crm-sync=anthropic-messages` |
-| `demo.thin` | Thin evidence: every vendor field for /api/crm-sync is held, none invented | **held,held,held,held** | `owin pack build --format brief --set /api/crm-sync=thin-anthropic-rate-limits` |
-| `demo.confirm` | Confirm example: answer 5's /api/embed cell when it calls OpenAI Responses (the v3 readings of OpenAI's page split 2 to 1 on third-party access; answer 5 itself stays Stale because OpenAI's list changed) | **confirm, 2/3** | `owin pack build --format brief --set /api/embed=openai-responses` |
-| `demo.v3` | The pack's readings use the headline's prompt version (every registry entry and live check) | **v3** | `owin pack registry` |
-| `demo.region` | Region never decides: answer 4 is held | **held_unspecified** | `owin pack build --format brief` |
+| `demo.swap` | Change one input: /api/crm-sync -> Anthropic Messages makes answer 3 Verified (badge code `still_true`) | **still_true** | `owin pack build --format brief --set /api/crm-sync=anthropic-messages` |
+| `demo.thin` | Thin evidence: every vendor field for /api/crm-sync is Not stated (verdict code `held`), none invented | **held,held,held,held** | `owin pack build --format brief --set /api/crm-sync=thin-anthropic-rate-limits` |
+| `demo.confirm` | Needs review example (verdict code `confirm`): answer 5's /api/embed cell when it calls OpenAI Responses (the v3 readings of OpenAI's page split 2 to 1 on third-party access; answer 5 itself stays Outdated because OpenAI's list changed) | **confirm, 2/3** | `owin pack build --format brief --set /api/embed=openai-responses` |
+| `demo.v3` | The report's readings use the headline's prompt version (every registry entry and live check) | **v3** | `owin pack registry` |
+| `demo.region` | Region never decides: answer 4 is Not stated (badge code `held_unspecified`) | **held_unspecified** | `owin pack build --format brief` |
 | `dpa.items` | Earlier subject (objection windows): DPAs exact, tuned + held-out | **10/10 + 7/7** | `owin eval score --brief` |
 | `dpa.runs` | Earlier subject: readings exact on all five fields, tuned + held-out | **51/51** | `owin eval score --brief` |
-| `dpa.neg` | Earlier subject: thin-evidence controls held | **6/6** | `owin eval score --brief` |
+| `dpa.neg` | Earlier subject: thin-evidence controls correctly left unanswered | **6/6** | `owin eval score --brief` |
 | `model.ultra` | Nemotron Ultra on the same 10 labelled DPAs, 3 readings each: DPAs exact by majority / readings exact | **10/10 / 30/30** | `owin eval score --brief --file eval/runs/20261028T233749-Nemotron-3-Ultra-550b-a55b.json` |
 | `model.super` | Nemotron Super on those 10 DPAs: DPAs exact by majority / readings exact | **10/10 / 30/30** | `owin eval score --brief` |
 | `model.cost` | Cost per reading on those 10 DPAs, Super vs Ultra (USD; Ultra / Super) | **0.002 vs 0.0077 (3.9x)** | `eval/super-vs-ultra.json` |
@@ -80,10 +80,10 @@ value keyless from committed files and fails if any drifts. Run `owin facts chec
 | claim | enforced by |
 |---|---|
 | Code, not the model, decides every answer; quotes and stated text are never read by a rule | `tests/test_a3_pack.py` ::test_model_and_stated_prose_cannot_change_any_badge |
-| An answer is auto-filled only when at least 2 readings succeeded and every successful reading agrees (an errored reading abstains); otherwise Confirm | `tests/test_selective.py` |
+| An answer is auto-filled only when at least 2 readings succeeded and every successful reading agrees (an errored reading abstains); otherwise Needs review | `tests/test_selective.py` |
 | Every asserted value carries a verbatim sentence from the vendor's page | `owin/datause/extract.py::validate`, `tests/test_a1_datause.py` |
 | Region text never decides an answer | `tests/test_a3_pack.py::test_region_is_never_computed_from_vendor_free_text` |
-| Tavily `extract` fetches the evidence pages; an older copy is held, never used | `data/datause/observations.json`, `tests/test_ui.py::test_watch_holds_the_stale_tavily_copy_of_the_openai_list` |
+| Tavily `extract` fetches the evidence pages; an older copy is set aside, never used | `data/datause/observations.json`, `tests/test_ui.py::test_watch_holds_the_stale_tavily_copy_of_the_openai_list` |
 | Lumen Notes and its settings are fictional; vendor sentences, links and fetch times are real | `fixtures/demo/stack.json` `_label` |
 | Copy rules: no compliance claims, Nemotron described as open-weight, not legal advice | `tests/test_facts.py::test_copy_rules` |
 | Every value here checks on a fresh clone with no key and no page text: the arithmetic recomputes from recorded runs; the keyword baseline is replayed from its recorded output per page sha256 (equal to the recomputed output when the pages are present); the verbatim gate uses its recorded results. CI runs the suite and this ledger on every push | `.github/workflows/proof.yml`, `tests/test_a1_datause.py::test_recorded_baseline_equals_the_recomputed_baseline` |

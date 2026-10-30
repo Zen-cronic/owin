@@ -1,9 +1,9 @@
 // Product page. Everything here is progressive: with no script, or when the reader prefers reduced motion, the page
 // is complete and still (html.motion is set in the head only when motion is welcome). With motion:
 //  - the founder's line inks in word by word as it is read;
-//  - two pinned stories step with the scroll: the catch (an answer, its endpoint, the vendor's sentence, the stamp)
-//    and how it works (fetch, read, decide, pack), whose photogram opens from an inset print to the full page;
-//  - each row of the stamps ledger acts out its state as it crosses the screen, then its stamp is inked;
+//  - two pinned stories step with the scroll: the finding (an answer, its endpoint, the vendor's sentence, the status)
+//    and how it works (fetch, read, decide, report), whose photogram opens from an inset print to the full page;
+//  - each row of the statuses ledger acts out its state as it crosses the screen, then its status is inked;
 //  - the counts on the tally card count up once, and the background loops play only while on screen.
 // The floating nav marks the section being read. The tally is refreshed
 // from GET /api/selective, the same recomputation the start page shows.
@@ -37,7 +37,7 @@
   pins.forEach((p) => p.el.style.setProperty('--steps', p.steps));
 
   // Ledger rows. Where the browser runs CSS view timelines, --t comes from CSS and is read back here; otherwise it
-  // is computed here and written to the row. The script only decides the moments that change text or ink a stamp.
+  // is computed here and written to the row. The script only decides the moments that change text or ink a status.
   const NATIVE = !!(window.CSS && CSS.supports && CSS.supports('animation-timeline: view()'));
   const DAY = 86400000, ANSWERED = Date.UTC(2026, 8, 1), CHANGED = Date.UTC(2026, 9, 14), AS_OF = Date.UTC(2026, 9, 21);
   const fmt = (t) => new Date(t).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
@@ -54,7 +54,7 @@
       let inked = t >= 0.5;
       if (r.state === 'stale') {
         // The replay's clock runs from the day the answer was written to the replay's as-of date; the page's
-        // "Last updated" changes when the clock reaches October 14, and only then is the answer stale.
+        // "Last updated" changes when the clock reaches October 14, and only then is the answer outdated.
         const now = ANSWERED + Math.round(clamp(t / 0.62) * (AS_OF - ANSWERED) / DAY) * DAY;
         const label = fmt(now);
         if (label !== r.last) { r.last = label; r.asof.textContent = label; }

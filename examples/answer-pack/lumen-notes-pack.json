@@ -60,7 +60,7 @@
   "still_true": 1
  },
  "headline": {
-  "kicker": "1 not true · 1 stale",
+  "kicker": "1 not true · 1 outdated",
   "text": "Your trust page says “zero data retention”, but /api/crm-sync calls Anthropic's MCP connector, which is outside ZDR."
  },
  "catch": {
@@ -101,7 +101,7 @@
     }
    },
    "badge": "still_true",
-   "badge_label": "Still true",
+   "badge_label": "Verified",
    "answer": "Holds on all 4 endpoints.",
    "as_of": "2026-10-22T01:23:45Z",
    "as_of_local": "2026-10-21 21:23 EDT",
@@ -240,7 +240,7 @@
     }
    },
    "badge": "held_unspecified",
-   "badge_label": "Held · unspecified",
+   "badge_label": "Not stated",
    "answer": "Holds for 3 of 4 endpoints. The vendor's page does not say for /api/crm-sync, so Owin does not answer for it. Confirm your settings.",
    "as_of": "2026-10-22T01:23:45Z",
    "as_of_local": "2026-10-21 21:23 EDT",
@@ -645,7 +645,7 @@
     }
    },
    "badge": "held_unspecified",
-   "badge_label": "Held · unspecified",
+   "badge_label": "Not stated",
    "answer": "The vendor pages do not say for any of your endpoints, so Owin does not answer this question. Confirm your settings.",
    "as_of": "2026-10-22T01:23:45Z",
    "as_of_local": "2026-10-21 21:23 EDT",
@@ -817,7 +817,7 @@
     }
    },
    "badge": "stale",
-   "badge_label": "Stale",
+   "badge_label": "Outdated",
    "answer": "OpenAI updated its sub-processor list on October 14, 2026 (was June 2, 2026), after this answer was written (2026-09-01). Review the change.",
    "as_of": "2026-10-22T01:23:45Z",
    "as_of_local": "2026-10-21 21:23 EDT",

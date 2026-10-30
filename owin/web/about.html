@@ -23,8 +23,8 @@
   <div class="nav-in">
     <a class="word" href="/about" aria-label="Owin, top of the page">owin</a>
     <nav class="nav-links" aria-label="On this page">
-      <a href="#catch">The catch</a>
-      <a href="#stamps">Stamps</a>
+      <a href="#catch">The finding</a>
+      <a href="#stamps">Statuses</a>
       <a href="#how">How it works</a>
       <a href="#number">The number</a>
       <a href="#limits">Limits</a>
@@ -72,7 +72,7 @@
     <div class="stage">
       <div class="wrap stage-in">
         <div class="steps">
-          <h2 id="catch-h"><span class="ln">The catch,</span><br> <span class="ln">on real vendor text</span></h2>
+          <h2 id="catch-h"><span class="ln">The finding,</span><br> <span class="ln">on real vendor text</span></h2>
           <ol class="beats" role="list">
             <li data-beat="0"><b>Your trust page says “zero data retention”.</b> Lumen Notes wrote answer 3 on September 1, 2026, and listed one exception.</li>
             <li data-beat="1"><b>One endpoint calls a feature ZDR does not cover.</b> <span class="mono nw">/api/crm-sync</span> writes call summaries into the customer’s CRM through Anthropic’s MCP connector.</li>
@@ -105,8 +105,8 @@
   <section class="stamps" id="stamps" aria-labelledby="stamps-h">
     <div class="sheet">
       <div class="wrap">
-        <h2 id="stamps-h"><span class="ln">Five stamps.</span><br> <span class="ln">None of them is a guess.</span></h2>
-        <p class="sub">Plain code picks the stamp from the vendor’s own page. The frame of each stamp carries its meaning, so it reads without colour too.</p>
+        <h2 id="stamps-h"><span class="ln">Five statuses.</span><br> <span class="ln">None of them is a guess.</span></h2>
+        <p class="sub">Plain code picks the status from the vendor’s own page. Each status has its own frame, so it reads without colour too.</p>
         <div class="ledger">
           <div class="row" data-state="bad">
             <span class="stamp bad">Not true</span>
@@ -114,7 +114,7 @@
             <div class="viz" aria-hidden="true"><span class="strike">Yes, ZDR</span></div>
           </div>
           <div class="row" data-state="stale">
-            <span class="stamp stale">Stale</span>
+            <span class="stamp stale">Outdated</span>
             <div class="say"><p class="m">The page your answer rests on changed after you wrote it.</p><p class="ex">Answer 5, written September 1: OpenAI updated its sub-processor list on October 14, 2026.</p></div>
             <div class="viz" aria-hidden="true">
               <dl class="clock">
@@ -124,17 +124,17 @@
             </div>
           </div>
           <div class="row" data-state="confirm">
-            <span class="stamp confirm">Confirm</span>
+            <span class="stamp confirm">Needs review</span>
             <div class="say"><p class="m">Owin’s three readings disagree, so it asks you instead of picking a side.</p><p class="ex">OpenAI Responses, who else sees the data: two readings say third parties do, one finds nothing stated.</p></div>
             <div class="viz" aria-hidden="true"><ul class="reads"><li><svg viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg>yes</li><li><svg viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg>yes</li><li class="n">not stated</li></ul></div>
           </div>
           <div class="row" data-state="held">
-            <span class="stamp held">Held</span>
-            <div class="say"><p class="m">The page says nothing on it, so the answer is held, never invented.</p><p class="ex">Anthropic’s rate-limits page has no data-use terms: every field for that endpoint is held.</p></div>
+            <span class="stamp held">Not stated</span>
+            <div class="say"><p class="m">The page says nothing on it, so the answer is marked not stated, never invented.</p><p class="ex">Anthropic’s rate-limits page has no data-use terms: every field for that endpoint is marked not stated.</p></div>
             <div class="viz" aria-hidden="true"><span class="blank">not stated</span></div>
           </div>
           <div class="row" data-state="ok">
-            <span class="stamp ok"><svg class="i" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg>Still true</span>
+            <span class="stamp ok"><svg class="i" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg>Verified</span>
             <div class="say"><p class="m">The vendor’s sentence still supports your answer.</p><p class="ex">Point <span class="mono nw">/api/crm-sync</span> at Anthropic’s Messages API, and answer 3 holds again.</p></div>
             <div class="viz" aria-hidden="true"><span class="held-ok">ZDR<svg viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg></span></div>
           </div>
@@ -155,7 +155,7 @@
         <h2 id="how-h"><span class="ln">Nemotron reads.</span><br> <span class="ln">Plain code decides.</span></h2>
         <ol class="beats" role="list">
           <li data-beat="0">
-            <div class="say"><b>Tavily fetches each vendor page whole.</b> With its fetch time, hash and “Last updated” date, so Stale is a dated observation, not a hunch.</div>
+            <div class="say"><b>Tavily fetches each vendor page whole.</b> With its fetch time, hash and “Last updated” date, so Outdated is a dated observation, not a hunch.</div>
             <figure class="proof" aria-label="The fetched page">
               <p class="lbl">Vendor page</p>
               <p class="url">platform.claude.com/docs/en/agents-and-tools/mcp-connector</p>
@@ -180,7 +180,7 @@
             </figure>
           </li>
           <li data-beat="2">
-            <div class="say"><b>Plain code decides.</b> An answer is filled only when every successful reading agrees, at least two of them; otherwise it goes to a person. A test feeds model prose into every stamp, and nothing moves.</div>
+            <div class="say"><b>Plain code decides.</b> An answer is filled only when every successful reading agrees, at least two of them; otherwise it goes to a person. A test feeds model prose into every status, and nothing moves.</div>
             <figure class="proof" aria-label="The rule for /api/crm-sync">
               <p class="lbl">The rule, for <span class="mono">/api/crm-sync</span></p>
               <dl class="facts">
@@ -191,9 +191,9 @@
             </figure>
           </li>
           <li data-beat="3">
-            <div class="say"><b>Your buyer gets a read-only pack.</b> PDF, CSV or link, with the vendor’s sentence, link and fetch time behind every answer, and none of your internal notes.</div>
-            <figure class="proof" aria-label="A row of the buyer’s pack">
-              <p class="lbl">Buyer’s pack · read-only</p>
+            <div class="say"><b>Your buyer gets a read-only report.</b> PDF, CSV or link, with the vendor’s sentence, link and fetch time behind every answer, and none of your internal notes.</div>
+            <figure class="proof" aria-label="A row of the buyer report">
+              <p class="lbl">Buyer report · read-only</p>
               <p class="pq">Do you have zero data retention with your AI providers?</p>
               <p class="pr"><span class="mono">/api/crm-sync</span> Not covered by ZDR</p>
               <p class="pc">“The MCP connector is not covered by ZDR arrangements.” platform.claude.com · fetched 2026-10-21 21:23 EDT</p>

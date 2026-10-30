@@ -1,4 +1,4 @@
-"""The security-review answer pack (A3): the AI-and-data section of a buyer questionnaire, per endpoint.
+"""The security-review buyer report (A3, the "answer pack" in code and the API): the AI-and-data section of a buyer questionnaire, per endpoint.
 
 Inputs: a stack manifest (endpoint -> feature id from data/datause/catalog.json), the startup's own
 settings, and its stated answers (each a display `text` plus a structured `claim`).
@@ -15,7 +15,7 @@ successful run agreed on it (an errored run abstains)
 (`field_agreement` in the registry, computed by owin/datause/selective.py). Otherwise the cell is `confirm`:
 no rule runs on it, and the differing values and their quotes are shown for a person to choose.
 
-Badges (per question, most severe wins):
+Badges (per question, most severe wins; the words shown for each are BADGE_LABEL):
   not_true          an endpoint's vendor field contradicts the stated claim
   stale             a page the answer relies on changed after the answer was written
                     (sub-processor list entity diff since `stated_at`, or the quote is gone from the latest
@@ -51,8 +51,9 @@ QUESTIONS = [
 QUOTE_FIELD = {"used_for_training": "training_quote", "retention_days": "retention_quote", "zdr": "zdr_quote",
                "region": "region_quote", "third_party_access": "third_party_quote"}
 SEVERITY = ["not_true", "stale", "confirm", "held_unspecified", "still_true"]
-BADGE_LABEL = {"not_true": "Not true", "stale": "Stale", "confirm": "Confirm", "held_unspecified": "Held · unspecified",
-               "still_true": "Still true"}
+# What a person reads for each badge. The badge codes are the API's enum and never change; only these words are shown.
+BADGE_LABEL = {"not_true": "Not true", "stale": "Outdated", "confirm": "Needs review", "held_unspecified": "Not stated",
+               "still_true": "Verified"}
 CONFIRM = object()  # sentinel: the runs disagree on this field
 NULL = {"retention_days": None, "used_for_training": "unspecified", "zdr": "unspecified", "region": "unspecified",
         "third_party_access": "unspecified"}
@@ -306,7 +307,7 @@ def _sentence(qid: str, badge: str, cells: list[dict], stated: dict, stale: list
         return f"A sentence this answer relies on changed on {s['provider_display']}'s page after it was written. Review the change."
     if badge == "confirm":
         return (f"Holds for {ok} of {n} endpoints. Owin's readings of the vendor's page disagree for {', '.join(conf)}, "
-                "so it asks you to confirm which value is right.")
+                "so it asks you to review which value is right.")
     if badge == "held_unspecified" and not ok:
         return ("The vendor pages do not say for any of your endpoints, so Owin does not answer this question. "
                 "Confirm your settings.")
@@ -456,20 +457,24 @@ def build(manifest: dict | None = None, *, reg: dict | None = None, obs: dict | 
     }
 
 
+def _needs_review(n: int) -> str:
+    return f"{n} {'needs' if n == 1 else 'need'} review"
+
+
 def _headline(counts: dict, catch: dict | None, answers: list[dict], eps: list[dict]) -> dict:
     if counts["not_true"]:
-        kicker = f"{counts['not_true']} not true" + (f" · {counts['stale']} stale" if counts["stale"] else "")
+        kicker = f"{counts['not_true']} not true" + (f" · {counts['stale']} outdated" if counts["stale"] else "")
     elif counts["stale"]:
-        kicker = f"{counts['stale']} stale" + (f" · {counts['confirm']} to confirm" if counts["confirm"] else "")
+        kicker = f"{counts['stale']} outdated" + (f" · {_needs_review(counts['confirm'])}" if counts["confirm"] else "")
     elif counts["confirm"]:
-        kicker = f"{counts['confirm']} to confirm"
+        kicker = _needs_review(counts["confirm"])
     else:
         kicker = None
     if catch:
         text = catch["sentence"]
     elif counts["stale"] or counts["held_unspecified"] or counts["confirm"]:
-        parts = [f"{counts['stale']} stale" if counts["stale"] else "", f"{counts['confirm']} to confirm" if counts["confirm"] else "",
-                 f"{counts['held_unspecified']} held" if counts["held_unspecified"] else ""]
+        parts = [f"{counts['stale']} outdated" if counts["stale"] else "", _needs_review(counts["confirm"]) if counts["confirm"] else "",
+                 f"{counts['held_unspecified']} not stated" if counts["held_unspecified"] else ""]
         text = f"No answer is contradicted by your {len(eps)} endpoints; " + ", ".join(x for x in parts if x) + "."
     else:
         text = f"All {len(answers)} answers hold for your {len(eps)} endpoints."

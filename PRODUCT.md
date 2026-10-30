@@ -9,23 +9,23 @@ web
 ## Users
 
 - **Primary:** the founder or CTO of a 2–50 person B2B SaaS company facing an enterprise buyer's security review. The questionnaire's AI section asks five things: is our data used for training, how long is it kept, do you have zero data retention (ZDR), where is it processed, who sees it. They answer it at a desk, usually against a deadline, with the vendor pages open in other tabs.
-- **Secondary:** the buyer's security reviewer, who receives the read-only answer pack (PDF, CSV or link) and checks each answer against the vendor sentence behind it.
+- **Secondary:** the buyer's security reviewer, who receives the read-only buyer report (PDF, CSV or link) and checks each answer against the vendor sentence behind it.
 - **First-time evaluators** arrive at the start page (`/judge`) with no login and no key and need to see the mechanism work within a minute.
 
 ## Product Purpose
 
-Owin fills the AI section of a security questionnaire per endpoint, from each AI vendor's own page, with the sentence that supports every answer. It flags the answer that is not true for the stack, marks answers stale when a page they rely on changed, and asks a person to confirm when its readings disagree. Success is a trust page and an answer pack that stay true, with proof a buyer can check.
+Owin fills the AI section of a security questionnaire per endpoint, from each AI vendor's own page, with the sentence that supports every answer. It flags the answer that is not true for the stack, marks answers outdated when a page they rely on changed, and hands an answer to a person to review when its readings disagree. Success is a trust page and a buyer report that stay true, with proof a buyer can check.
 
 ## Positioning
 
-The honest answer is per feature, not per vendor: one vendor can run one endpoint under ZDR and keep another endpoint's data for 29 days. Owin answers per endpoint, quotes the vendor's own sentence, and holds an answer rather than inventing one when the page does not say. Code, not the model, decides every answer.
+The honest answer is per feature, not per vendor: one vendor can run one endpoint under ZDR and keep another endpoint's data for 29 days. Owin answers per endpoint, quotes the vendor's own sentence, and marks an answer not stated rather than inventing one when the page does not say. Code, not the model, decides every answer.
 
 ## Operating Context
 
-- The answer screen (`/`) shows one company's stack (endpoints and the vendor feature each calls), the five questionnaire answers with a state badge each (Not true, Stale, Confirm, Held · unspecified, Still true), the quoted vendor evidence, a fix draft, and exports.
+- The answer screen (`/`) shows one company's stack (endpoints and the vendor feature each calls), the five questionnaire answers with a state badge each (Not true, Outdated, Needs review, Not stated, Verified), the quoted vendor evidence, a fix draft, and exports.
 - The start page (`/judge`) explains why the product exists, shows three recomputed numbers, three guided paths, and the evidence ledger.
 - The demo company (Lumen Notes) and its endpoints are fictional; every vendor sentence, link and fetch time is real.
-- Artefacts in the user's world: vendor trust pages, sub-processor lists, data-retention policies, the buyer's questionnaire spreadsheet, the PDF answer pack.
+- Artefacts in the user's world: vendor trust pages, sub-processor lists, data-retention policies, the buyer's questionnaire spreadsheet, the PDF buyer report.
 
 ## Capabilities and Constraints
 

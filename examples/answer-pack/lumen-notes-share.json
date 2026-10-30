@@ -14,7 +14,7 @@
    "answer": "No. Customer data is never used to train AI models.",
    "note": null,
    "status": "still_true",
-   "status_label": "Still true",
+   "status_label": "Verified",
    "buyer_status": "Supported by the vendors' pages",
    "as_of": "2026-10-22T01:23:45Z",
    "as_of_local": "2026-10-21 21:23 EDT",
@@ -96,7 +96,7 @@
    "answer": "Our AI providers keep prompts and outputs for at most 30 days.",
    "note": "Supported by the vendors' pages for 3 of 4 endpoints; for /api/crm-sync the vendor's page does not state this.",
    "status": "held_unspecified",
-   "status_label": "Held · unspecified",
+   "status_label": "Not stated",
    "buyer_status": "Partly stated by the vendors' pages",
    "as_of": "2026-10-22T01:23:45Z",
    "as_of_local": "2026-10-21 21:23 EDT",
@@ -382,7 +382,7 @@
    "answer": "In the United States.",
    "note": "The vendors' pages do not state this; the answer rests on the company's own settings.",
    "status": "held_unspecified",
-   "status_label": "Held · unspecified",
+   "status_label": "Not stated",
    "buyer_status": "Company statement; the vendors' pages do not say",
    "as_of": "2026-10-22T01:23:45Z",
    "as_of_local": "2026-10-21 21:23 EDT",
@@ -493,7 +493,7 @@
    "answer": "Anthropic and OpenAI, under their published sub-processor lists.",
    "note": null,
    "status": "stale",
-   "status_label": "Stale",
+   "status_label": "Outdated",
    "buyer_status": "A vendor page changed after this answer",
    "as_of": "2026-10-22T01:23:45Z",
    "as_of_local": "2026-10-21 21:23 EDT",
@@ -613,5 +613,5 @@
    ]
   }
  ],
- "share_id": "c6aaf164be62fed2"
+ "share_id": "217798e77701fce9"
 }
