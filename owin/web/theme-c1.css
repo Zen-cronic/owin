@@ -51,7 +51,7 @@
   .kicker svg{color:var(--link-signal)}
   .kicker.calm svg{color:var(--on-field-muted)}
   h1{font-family:var(--display);font-weight:700;font-stretch:112%;letter-spacing:-.012em;font-size:44px;line-height:1.08;margin-top:14px}
-  h1 .ep{font-family:var(--mono);font-weight:700;font-size:.84em;letter-spacing:-.02em;box-shadow:inset 0 -.12em 0 rgba(244,182,174,.55)}
+  h1 .ep{font-family:var(--mono);font-weight:800;font-size:.84em;letter-spacing:-.02em;box-shadow:inset 0 -.12em 0 rgba(244,182,174,.55)}
   .lede.delta{color:var(--on-field);margin-top:12px;font-size:15.5px}
   .todo{margin-top:28px}
   /* Secondary actions are outlined pills, never underlined text: the primary's shape, drawn in line */
@@ -98,7 +98,7 @@
 
   /* Endpoints: drawer labels, a white card in a cyanotype frame */
   #endpoints{gap:14px}
-  .ep-row{background:var(--bg);border:0;box-shadow:0 0 0 2px var(--frame);padding:14px 16px 16px}
+  .ep-row{background:var(--bg);border:0;box-shadow:0 0 0 1px rgba(164,198,222,.6);padding:14px 16px 16px}
   .ep-row:hover{background:var(--surface)}
   .ep-row.sel{background:var(--surface);box-shadow:0 0 0 2px var(--act)}
   .ep-row .path{font:700 15px/1.3 var(--mono);color:var(--ink)}
@@ -106,6 +106,8 @@
   .ep-row .finding{color:var(--ink)}
   .ep-row.changed .path::after{font:700 11px/1 var(--display);text-transform:uppercase;letter-spacing:.06em;color:var(--stamp-stale);border:1px solid currentColor;border-radius:5px;padding:2px 5px 1px;vertical-align:2px}
   .recheck .rc{color:var(--muted)}
+  .recheck .btn.ghost{border-color:transparent;background:var(--raise);color:var(--stamp-confirm)}
+  .recheck .btn.ghost:hover{background:var(--ruled)}
   /* Pushed back, not faded: a related-away or recomputing card keeps opaque stock in a darker shade */
   .dimmed,.recomputing .ep-row,.recomputing .ans{opacity:1}
   .ans.dimmed,.recomputing .ans{background:var(--stock-back)}
@@ -116,10 +118,10 @@
   .chip{font-size:11px;padding:3px 6px 2px;border-width:1.5px;border-radius:6px}
   .chip .mono{font-family:var(--display);font-weight:800;letter-spacing:.04em}
   .badge.bad,.chip.bad{background:var(--act);border-color:var(--act);color:#FFFFFF}
-  .badge.stale,.chip.stale{color:var(--stamp-stale);border-style:double;border-width:4px;padding:3px 6px 2px}
+  .badge.stale,.chip.stale{color:var(--stamp-stale);background:color-mix(in srgb, var(--stamp-stale) 9%, transparent);border-style:double;border-width:4px;padding:3px 6px 2px}
   .chip.stale{border-width:3px;padding:2px 4px 1px}
-  .badge.confirm,.chip.confirm{color:var(--stamp-confirm);border-style:dashed}
-  .badge.held,.chip.held{color:var(--stamp-held);border-width:1px;padding:6px 8px 5px}
+  .badge.confirm,.chip.confirm{color:var(--stamp-confirm);background:color-mix(in srgb, var(--stamp-confirm) 7%, transparent);border-style:dashed}
+  .badge.held,.chip.held{color:var(--stamp-held);background:color-mix(in srgb, var(--stamp-held) 7%, transparent);border-width:1px;padding:6px 8px 5px}
   .chip.held{padding:4px 6px 3px}
   .badge.ok{border-color:transparent;padding-inline:0;color:var(--ink)}
 
@@ -207,14 +209,14 @@
   .judge-page .stat,.judge-page .stat + .stat{padding:36px 20px 30px;border:0;border-radius:24px;display:flex;flex-direction:column;align-items:center;text-align:center;background:var(--field);box-shadow:inset 0 0 0 1px rgba(0,0,0,.35),inset 0 2px 0 rgba(255,255,255,.07)}
   .judge-page .stat{--d:clamp(64px,7.4vw,112px)}
   .judge-page .stat .v{position:relative;background:var(--bg);color:#1E1A16;padding:.1em .26em .04em;border-radius:16px;box-shadow:0 0 0 4px var(--frame),inset 0 0 0 1px rgba(0,0,0,.08);line-height:1}
-  .judge-page .stat .v::after{content:"";position:absolute;left:50%;top:calc(100% + 26px);width:72px;height:16px;margin-left:-36px;border:4px solid var(--frame);border-top:0;border-radius:0 0 36px 36px}
+  .judge-page .stat .v::after{content:none}
   .judge-page .num-row{gap:0}
   .judge-page .num-tile,.judge-page .num-sep{width:.62em;height:1.04em;background:none;border-radius:0;perspective:none}
   .judge-page .num-sep{width:.4em}
   .judge-page .num-tile .h{background:none}
   .judge-page .num-tile .h::after,.judge-page .num-sep::after{color:#1E1A16;font-weight:800;font-stretch:75%}
   .judge-page .num-sep::after{color:#5E5A55}
-  .judge-page .stat .c{margin-top:62px;color:var(--on-field);font:600 16px/1.45 var(--sans);max-width:24ch}
+  .judge-page .stat .c{margin-top:22px;color:var(--on-field);font:600 16px/1.45 var(--sans);max-width:24ch}
   .judge-page .stat.skel .v{min-width:3.4em;min-height:1.1em}
   .judge-page .stat.skel .c .bar{background:rgba(255,255,255,.16)}
 
@@ -248,7 +250,10 @@
   @media (max-width:900px){
     .top{padding-block:10px}
     .word{font-size:16px;padding:5px 8px 4px}
-    .theme-select{padding:3px 6px}
+    .theme-select{padding:3px 8px;background:transparent;color:var(--on-field);border:1.5px solid var(--on-field-line)}
+    .theme-select option{color:#1E1A16;background:var(--bg)}
+    .todo{flex-wrap:wrap}
+    .todo .link{white-space:nowrap}
     h1{font-size:27px;line-height:1.12}
     .ans{padding:16px 14px 32px}
     .ans .body{margin:12px -14px 0;padding:12px 14px 0}
@@ -269,7 +274,6 @@
     .judge-page .stats{gap:12px}
     .judge-page .stat,.judge-page .stat + .stat{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:center;justify-items:start;text-align:left;padding:18px 16px 30px}
     .judge-page .stat{--d:clamp(46px,13vw,64px)}
-    .judge-page .stat .v::after{top:calc(100% + 14px);width:46px;height:10px;margin-left:-23px;border-width:3px}
     .judge-page .stat .c{margin-top:0;font-size:15px}
     .judge-page .ev{padding:2px 16px}
     .judge-page .paths{padding:0 16px}

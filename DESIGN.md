@@ -288,7 +288,7 @@ Flat. Depth is material, not light: card stock sits on the blueprint field, the 
 
 ### Shadow Vocabulary
 - **Card edge** (`box-shadow: 0 1px 0 rgba(0,0,0,.25)`): the bottom edge of every answer card and of the primary button on the field.
-- **Cyanotype frame** (`box-shadow: 0 0 0 2px var(--frame)`): drawer labels, tally card, wordmark plate, toast. Numeral plates use 4px.
+- **Cyanotype frame** (`box-shadow: 0 0 0 2px var(--frame)`): tally card, wordmark plate, toast. Numeral plates use 4px; drawer labels use a 1px hairline at 60% so the answers column leads.
 - **Selected frame** (`box-shadow: 0 0 0 2px var(--act)`): the selected answer card and drawer label.
 - **Outline pill** (`box-shadow: inset 0 0 0 1.5px var(--on-field-muted)`): secondary actions on the field.
 - **Drawer front bevel** (`box-shadow: inset 0 0 0 1px rgba(0,0,0,.35), inset 0 2px 0 rgba(255,255,255,.07)`): the routed edge of a drawer front.
@@ -299,7 +299,7 @@ Flat. Depth is material, not light: card stock sits on the blueprint field, the 
 
 ## Shapes
 
-Rounded, as library index cards are: answer cards 20px, the finding card and guided-path list 22px, drawer fronts 24px, tally card and shelf lists 18px, numeral plates 16px, drawer labels and menus 14px, toast and theme select 12px, the wordmark plate 10px, status labels 8px, chips 6px, changed tags 5px, the command line 8px. Buttons and secondary actions are full pills. Lines are 1px hairlines on cards, 2px for ruled header lines and frames, 4px for numeral-plate frames and the double-rule Outdated label. Nothing is tilted: status labels on answer cards and the Not true count in the tally sit square. The drawer pull under each numeral plate stays a 4px cyanotype U (72px by 16px, 36px bottom radius).
+Rounded, as library index cards are: answer cards 20px, the finding card and guided-path list 22px, drawer fronts 24px, tally card and shelf lists 18px, numeral plates 16px, drawer labels and menus 14px, toast and theme select 12px, the wordmark plate 10px, status labels 8px, chips 6px, changed tags 5px, the command line 8px. Buttons and secondary actions are full pills. Lines are 1px hairlines on cards, 2px for ruled header lines and frames, 4px for numeral-plate frames and the double-rule Outdated label. Nothing is tilted: status labels on answer cards and the Not true count in the tally sit square. There is no drawer pull under the numeral plates.
 
 ## Components
 
@@ -318,6 +318,7 @@ One grammar for every state; the frame form carries the state as much as the ink
 - **Needs review:** navy ink in a 2px dashed frame.
 - **Not stated:** grey ink in a thin 1px frame.
 - **Verified:** a bare tick and word, no frame.
+- **Fill:** Outdated, Needs review and Not stated carry a faint fill of their own ink (9%, 7%, 7%), so the set reads as one graded scale; the frame form still carries the state without colour.
 - **Motion:** each label appears on its card once on load (scale from 1.35 to 1 with opacity, 0.34s, staggered 60ms per card), always square; static under reduced motion.
 
 ### Cards / Containers
@@ -328,7 +329,7 @@ One grammar for every state; the frame form carries the state as much as the ink
 - **Internal Padding:** 20px 22px 24px; 16px 14px 32px on phones.
 
 ### Drawer labels (endpoints)
-A white card with 14px corners held in a 2px cyanotype frame. The endpoint path in bold mono, the vendor feature as a dotted-underlined picker, the finding, the status chips, and a ghost Re-check pill. Selected: fresh white with a red frame. Pushed back: stock-back ground with a 45% cyanotype frame.
+A white card with 14px corners held in a 1px cyanotype hairline. The endpoint path in bold mono, the vendor feature as a dotted-underlined picker, the finding, the status chips, and a quiet Re-check pill (wash fill, navy text, no outline). Selected: fresh white with a red frame. Pushed back: stock-back ground with a 45% cyanotype frame.
 
 ### Tally card
 A filed card at top right of the answer screen in a cyanotype frame with 18px corners, its head in label capitals over a cyan rule, one line per state with a numeral; the Not true count sits in a red box with 7px corners.
@@ -339,10 +340,10 @@ A filed card at top right of the answer screen in a cyanotype frame with 18px co
 - **Endpoint picker:** a native select laid invisibly over the feature line, so the line itself is the control.
 
 ### Navigation
-The header sits on the field with a hairline below. The wordmark is a Parkinsans 800 plate on card stock with 10px corners in a 2px cyanotype frame. Theme numbers sit in 8px rounded squares; the chosen one is filled pale cyan with dark ink. On phones the radios give way to a compact pill select framed in pale cyan. "Start here" and "Open the app" in the header are secondary pills. Mobile tabs are Parkinsans on the field with a 3px pale cyan underline on the active tab.
+The header sits on the field with a hairline below. The wordmark is a Parkinsans 800 plate on card stock with 10px corners in a 2px cyanotype frame. Theme numbers sit in 8px rounded squares; the chosen one is filled pale cyan with dark ink. On phones the radios give way to a compact pill select drawn as a quiet outline on the field, so it never reads as a second wordmark. "Start here" and "Open the app" in the header are secondary pills. Mobile tabs are Parkinsans on the field with a 3px pale cyan underline on the active tab.
 
 ### Numeral plates and drawer fronts (signature)
-On the start page, three drawer fronts in Prussian blue with 24px corners sit inside a full-bleed deep-Prussian band. Each holds a card-stock plate with 16px corners in a 4px cyanotype frame with the number in Parkinsans 800; the ratio slash is set in muted card ink. A pale cyan pull hangs below and the caption sits under it in white. On entry each number rises into its plate once (0.55s, 80ms stagger); static under reduced motion.
+On the start page, three drawer fronts in Prussian blue with 24px corners sit inside a full-bleed deep-Prussian band. Each holds a card-stock plate with 16px corners in a 4px cyanotype frame with the number in Parkinsans 800; the ratio slash is set in muted card ink. The caption sits 22px under the plate in white; there is no pull. On entry each number rises into its plate once (0.55s, 80ms stagger); static under reduced motion.
 
 ### Finding card (signature)
 The start page's finding is a filed card on the field with 22px corners: the Not true label, a full-width red rule under it, the sentence with its key phrase underlit in pale red, and the primary button in Prussian blue.
