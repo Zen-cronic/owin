@@ -61,21 +61,16 @@ def test_repo_docs_are_an_allowlist():
     assert server.handle("/pyproject.toml", {})[0] == 404
 
 
-def test_both_pages_carry_five_switchable_themes():
+def test_both_pages_carry_one_theme_and_no_picker():
     for path in ("/", "/judge"):
         body = server.handle(path, {})[2]
         head = body[:body.index("</head>")]
-        assert head.index("data-theme") < head.index('href="/app.css"'), path  # theme set before the first stylesheet
-        for i in range(1, 6):
-            assert f'href="/theme-c{i}.css"' in head and f'name="theme" value="c{i}"' in body, (path, i)
-        assert 'src="/theme.js"' in body
-    for i in range(1, 6):
-        code, ctype, css = server.handle(f"/theme-c{i}.css", {})
-        assert code == 200 and "css" in ctype
-        if i > 1:
-            assert f':root[data-theme="c{i}"]' in css
-    assert server.handle("/theme.js", {})[0] == 200
-    for name in ("theme.js", *(f"theme-c{i}.css" for i in range(1, 6))):
-        text = (webui.WEB / name).read_text()
-        for needle in ("tvly-", "sk-", "nvapi-", "TAVILY_API_KEY", "Bearer "):
-            assert needle not in text, (name, needle)
+        assert 'data-theme="c1"' in head and 'href="/theme-c1.css"' in head, path
+        assert "theme-switch" not in body and 'src="/theme.js"' not in body, path
+        assert "fictional company" not in body, path
+    assert server.handle("/theme-c1.css", {})[0] == 200
+    for gone in ("/theme.js", *(f"/theme-c{i}.css" for i in range(2, 6))):
+        assert server.handle(gone, {})[0] == 404, gone
+    text = (webui.WEB / "theme-c1.css").read_text()
+    for needle in ("tvly-", "sk-", "nvapi-", "TAVILY_API_KEY", "Bearer "):
+        assert needle not in text, needle

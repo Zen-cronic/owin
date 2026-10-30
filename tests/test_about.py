@@ -107,7 +107,7 @@ def test_the_catch_is_the_demo_pack():
     assert f"“{catch['quote']}”" in TEXT and f"fetched {catch['fetched_at_local']}" in TEXT
     stated = json.loads((facts.ROOT / "fixtures/demo/stack.json").read_text())["stated"]["answers"]["Q03"]["text"]
     assert f"“{stated}”" in TEXT
-    assert "Lumen Notes is a fictional company" in TEXT
+    assert "fictional company" not in TEXT
 
 
 def test_founder_line_is_the_start_pages_line_verbatim():
