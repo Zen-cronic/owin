@@ -30,7 +30,7 @@ CLI equivalents: `owin pack build --format brief`, `--set /api/crm-sync=anthropi
 
 **Container and hosting.** `docker build -t owin . && docker run -p 8080:8080 owin` serves the same app on port 8080. Deploys to a Nebius Serverless AI Endpoint ([DEPLOY.md](DEPLOY.md): `cpu-d3`, `2vcpu-8gb`, the post-deploy check `scripts/smoke.sh <url>`, and the daily refresh job `owin job daily` on Nebius Serverless AI jobs); the container runs keyless unless keys are set, and `GET /healthz` reports the mode.
 
-<!-- LIVE_URL --> Public URL: https://port8080-npzn53xcb4necyn.tunnel.applications.us-north1.nebius.cloud/judge (no login; `scripts/smoke.sh https://port8080-npzn53xcb4necyn.tunnel.applications.us-north1.nebius.cloud` passes).
+<!-- LIVE_URL --> Public URL: https://port8080-gq5qwgkze3dq2dm.tunnel.applications.us-north1.nebius.cloud/judge (no login; `scripts/smoke.sh https://port8080-gq5qwgkze3dq2dm.tunnel.applications.us-north1.nebius.cloud` passes).
 
 ## The number, in full
 
