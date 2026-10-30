@@ -260,7 +260,7 @@
   .judge-page .story > .lede{grid-row:2;margin-top:44px;padding-bottom:104px}
   .judge-page .story .what{grid-column:1/span 6;grid-row:1}
   .judge-page .story .what > p{max-width:none}
-  .judge-page .status-key{--ink:#1E1A16;--muted:#5E5A55;display:inline-flex;gap:10px 16px;margin-top:18px;padding:11px 14px;background:var(--bg);border-radius:14px;box-shadow:0 0 0 2px var(--frame)}
+  .judge-page .status-key{--ink:#1E1A16;--muted:#5E5A55;display:inline-flex;gap:10px 16px;margin-top:18px;padding:11px 14px;background:var(--bg);border-radius:14px;box-shadow:0 0 0 2px var(--frame);width:100%;box-sizing:border-box;justify-content:space-between}
   .judge-page .story .catchline{grid-column:1/span 6;grid-row:2;margin-top:32px}
   .judge-page .catchline .cl{font-size:17px;line-height:1.45}
   .judge-page .catchline .who{font:700 11.5px/1.4 var(--display);letter-spacing:.08em;color:var(--muted)}
@@ -306,12 +306,12 @@
     .judge-page .path-card .go{grid-column:1/-1;grid-row:4;padding-top:8px;justify-self:start}
     .judge-page .jg h2{font-size:24px}
     .judge-page .hero-art{grid-row:1;margin-top:-40px}
-    .judge-page .hero-art img{object-position:78% 50%}
-    .judge-page .hero-art::after{background:linear-gradient(180deg, rgba(14,33,56,.84) 0%, rgba(14,33,56,.76) 52%, rgba(14,33,56,.1) 80%, #1B3A5E 100%)}
-    .judge-page .story h1{padding-bottom:min(46vw,210px)}
+    .judge-page .hero-art img{object-position:100% 30%}
+    .judge-page .hero-art::after{background:linear-gradient(180deg, rgba(14,33,56,.86) 0%, rgba(14,33,56,.8) 72%, rgba(14,33,56,.35) 90%, #1B3A5E 100%)}
+    .judge-page .story h1{padding-bottom:min(18vw,84px)}
     .judge-page .story > .lede{margin-top:4px;padding-bottom:0}
     .judge-page .story .what > p{max-width:none}
-    .judge-page .status-key{display:flex;gap:10px 14px}
+    .judge-page .status-key{display:flex;justify-content:flex-start;gap:10px 8px;padding:10px}
     .judge-page .story .catchline{grid-column:1/-1;grid-row:1;margin-top:0}
     .judge-page .catchline .said{font-size:17px}
     .judge-page .story .stat-board{margin-top:48px}
