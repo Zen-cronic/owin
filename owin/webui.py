@@ -1,7 +1,7 @@
 """The product UI: static files in owin/web/, plus two read-only JSON helpers it binds to.
 
 GET /                 ->  owin/web/index.html (the answer screen; binds to /api/pack)
-GET /app.css, /app.js ->  static assets (also /theme.js and /theme-c1.css … /theme-c5.css, the five looks)
+GET /app.css, /app.js ->  static assets (also /theme-c1.css, the look)
 GET /api/catalog      ->  the features an endpoint can be switched to (the "change one input" control)
 GET /api/watch        ->  per vendor page: what Owin can watch on it, from data/datause/observations.json
 GET /about            ->  owin/web/about.html (the product page; /about.css, /about.js, its stills and loops under /img/)
@@ -23,11 +23,10 @@ STATIC = {"/": ("index.html", "text/html; charset=utf-8"),
           "/app.js": ("app.js", "text/javascript; charset=utf-8"),
           "/judge": ("judge.html", "text/html; charset=utf-8"),
           "/judge.js": ("judge.js", "text/javascript; charset=utf-8"),
-          "/theme.js": ("theme.js", "text/javascript; charset=utf-8"),
           "/about": ("about.html", "text/html; charset=utf-8"),
           "/about.css": ("about.css", "text/css; charset=utf-8"),
           "/about.js": ("about.js", "text/javascript; charset=utf-8"),
-          **{f"/theme-c{i}.css": (f"theme-c{i}.css", "text/css; charset=utf-8") for i in range(1, 6)}}
+          "/theme-c1.css": ("theme-c1.css", "text/css; charset=utf-8")}
 # The product page's stills and background loops, served as bytes. The allowlist is the files in owin/web/img/ whose
 # names match, read once at import, so a request path is only ever looked up, never joined onto the filesystem.
 IMAGE_TYPES = {".avif": "image/avif", ".webp": "image/webp", ".mp4": "video/mp4",

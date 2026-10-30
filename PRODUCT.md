@@ -32,7 +32,7 @@ The honest answer is per feature, not per vendor: one vendor can run one endpoin
 - Stdlib Python HTTP server, static vanilla HTML/CSS/JS under `owin/web/`, no build step. Static files are an explicit allowlist in `owin/webui.py`.
 - Runs keyless from committed files; "Re-check this page" calls Tavily only when a key is set on the server.
 - A demo recorder and the test suite bind to element ids, classes and `aria-busy`; the DOM contract is frozen (see DESIGN.md).
-- Five switchable looks (`html[data-theme="c1".."c5"]`), set before first paint from `?theme=`, then saved choice, then the default.
+- One look (`html[data-theme="c1"]`, theme-c1.css over the app.css tokens).
 - Buyer exports never include internal reasons or fix drafts.
 
 ## Brand Commitments

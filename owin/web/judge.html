@@ -1,30 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="c1">
 <head>
 <meta charset="utf-8">
-<script>/* Theme before first paint: ?theme=cN wins, then the saved choice, then c1 */(function(){var d=document.documentElement,k='owin-theme',ok=/^c[1-5]$/,t=null;try{t=new URLSearchParams(location.search).get('theme')}catch(e){}if(t&&/^[1-5]$/.test(t))t='c'+t;if(t&&ok.test(t)){try{localStorage.setItem(k,t)}catch(e){}}else{try{t=localStorage.getItem(k)}catch(e){}}d.setAttribute('data-theme',ok.test(t||'')?t:'c1')})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
 <title>Owin · Start here</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wdth,wght@62..125,100..900&family=Atkinson+Hyperlegible+Mono:wght@200..800&family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Courier+Prime:wght@400;700&family=IBM+Plex+Mono:wght@400;500;700&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@100..800&family=Oswald:wght@200..700&family=Public+Sans:wght@100..900&family=Work+Sans:wght@100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Atkinson+Hyperlegible+Mono:wght@200..800&family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 <link rel="icon" href="/img/favicon.ico" sizes="32x32">
 <link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
 <link rel="stylesheet" href="/app.css">
 <link rel="stylesheet" href="/theme-c1.css">
-<link rel="stylesheet" href="/theme-c2.css">
-<link rel="stylesheet" href="/theme-c3.css">
-<link rel="stylesheet" href="/theme-c4.css">
-<link rel="stylesheet" href="/theme-c5.css">
 </head>
 <body class="judge-page">
 <header class="top">
   <a class="word" href="/judge" aria-label="Owin, start here">owin</a>
   <span class="ctx">Start here <span class="fict">no login, no key needed</span></span>
   <a class="replay judge" href="/">Open the app</a>
-  <div class="theme-switch" role="radiogroup" aria-labelledby="theme-l"><span class="tl" id="theme-l">Theme</span><label title="Catalogue"><input type="radio" name="theme" value="c1"><span>1</span><span class="sr"> Catalogue</span></label><label title="Broadsheet"><input type="radio" name="theme" value="c2"><span>2</span><span class="sr"> Broadsheet</span></label><label title="Ledger"><input type="radio" name="theme" value="c3"><span>3</span><span class="sr"> Ledger</span></label><label title="Civic form"><input type="radio" name="theme" value="c4"><span>4</span><span class="sr"> Civic form</span></label><label title="Photocopy"><input type="radio" name="theme" value="c5"><span>5</span><span class="sr"> Photocopy</span></label></div><select class="theme-select" id="theme-select" aria-label="Theme"><option value="c1">1 · Catalogue</option><option value="c2">2 · Broadsheet</option><option value="c3">3 · Ledger</option><option value="c4">4 · Civic form</option><option value="c5">5 · Photocopy</option></select>
 </header>
 
 <main class="wrap jg" id="judge" aria-busy="true">
@@ -66,7 +60,6 @@
         <a class="path-card" href="/">
           <span class="step mono">1</span>
           <span class="t">Replay a real change</span>
-          <span class="tag">Seeded replay · real vendor text · fictional company</span>
           <span class="d">Lumen Notes (fictional) wrote its answers on Sep 1, 2026. Answer 3 is not true for <span class="mono nw">/api/crm-sync</span>, because Anthropic’s MCP connector is outside ZDR; answer 5 became outdated when OpenAI changed its sub-processor list on Oct 14, 2026.</span>
           <span class="go">Open the replay<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></span>
         </a>
@@ -105,7 +98,6 @@
   </section>
   <p class="foot">Lumen Notes, its endpoints, settings and trust-page answers are fictional; every vendor sentence, link and fetch time is real. ZDR settings are as the company states them; Owin cannot see vendor consoles. Owin is not legal advice.</p>
 </main>
-<script src="/theme.js" defer></script>
 <script src="/judge.js" defer></script>
 </body>
 </html>
