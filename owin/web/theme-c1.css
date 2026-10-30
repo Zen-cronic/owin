@@ -415,3 +415,16 @@
 #app .ep-row .chip .mono{letter-spacing:.01em}
 #app .legend.note{display:block;font-size:13px;line-height:1.5}
 #app .legend.note .lh{display:none}
+
+/* Fix round: a readable rail, an even phone hero, one caption less */
+#app .ep-row .finding{font-size:14px}
+#app .ep-row .via{font-size:14px}
+#app .pages li{font-size:13.5px}
+#app .pages li .note,#app .pages .reset{color:#DCE7F2}
+#app .legend.note{font-size:14px;color:#DCE7F2;padding:2px 2px 0}
+#app .ans[data-badge="still_true"] figure.ev figcaption{display:none}
+@media (max-width:900px){
+  #app .todo{flex-direction:column;gap:10px}
+  #app .todo .btn,#app .todo .link{width:100%;justify-content:center}
+  #app .stack .ph{display:none}
+}
