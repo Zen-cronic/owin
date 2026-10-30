@@ -30,29 +30,24 @@
 <main id="main">
   <section class="intro wrap" aria-labelledby="page-h">
     <div class="intro-main">
-      <p class="kicker">AI data use · public page</p>
       <h1 id="page-h"><span id="company">Lumen Notes</span>: how each endpoint uses AI vendors</h1>
       <p class="asof" id="asof">Loading the vendor pages…</p>
-      <ul class="tally" id="tally" aria-label="Status of every check on this page"></ul>
+      <details class="key">
+        <summary>What the statuses mean<svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg></summary>
+        <dl class="legend">
+          <div><dt><span class="tag s-not_true">Not true</span></dt><dd>the vendor's page says otherwise</dd></div>
+          <div><dt><span class="tag s-stale">Outdated</span></dt><dd>the vendor changed its page after the company answered</dd></div>
+          <div><dt><span class="tag s-confirm">Needs review</span></dt><dd>readings of the vendor's page disagree</dd></div>
+          <div><dt><span class="tag s-held">Not stated</span></dt><dd>the vendor's page does not say</dd></div>
+          <div><dt><span class="tag s-verified">Verified</span></dt><dd>the vendor's page supports the company's answer</dd></div>
+        </dl>
+        <p class="key-note">Open any row for the vendor's exact sentence and a link to its page.</p>
+      </details>
     </div>
     <aside class="findings" aria-labelledby="findings-h">
       <h2 id="findings-h">What to check first</h2>
       <ul id="findings"></ul>
     </aside>
-  </section>
-
-  <section class="howto wrap" aria-labelledby="howto-h">
-    <div class="howto-in">
-      <h2 id="howto-h">How to read this</h2>
-      <p>Each card is one endpoint and the AI vendor feature it calls. Each row answers one question from the vendor's own page. Open a row for the vendor's exact sentence, a link to the page and when it was fetched.</p>
-      <dl class="legend">
-        <div><dt><span class="tag s-verified">Verified</span></dt><dd>the vendor's page supports the company's answer</dd></div>
-        <div><dt><span class="tag s-not_true">Not true</span></dt><dd>the vendor's page says otherwise</dd></div>
-        <div><dt><span class="tag s-stale">Outdated</span></dt><dd>the vendor changed its page after the company answered</dd></div>
-        <div><dt><span class="tag s-confirm">Needs review</span></dt><dd>readings of the vendor's page disagree</dd></div>
-        <div><dt><span class="tag s-held">Not stated</span></dt><dd>the vendor's page does not say</dd></div>
-      </dl>
-    </div>
   </section>
 
   <section class="eps wrap" aria-label="Endpoints">
@@ -62,12 +57,7 @@
 
 <footer class="foot">
   <div class="wrap foot-in">
-    <a class="foot-word" href="/about" aria-label="Owin"><img src="/img/logo-dark.svg" alt="Owin" width="155" height="56" loading="lazy"></a>
-    <p class="foot-note">Lumen Notes and its answers are invented for this demo. Every vendor sentence, link and date on this page is real, fetched from the vendor's own page. This page is read-only and is not legal advice.</p>
-    <nav class="foot-links" aria-label="More from Owin">
-      <a class="btn ghost" href="/judge">Start here</a>
-      <a class="btn primary" href="/app">Open the app</a>
-    </nav>
+    <a class="foot-word" href="/about" aria-label="Owin"><img src="/img/logo-dark.svg" alt="Owin" width="111" height="40" loading="lazy"></a>
   </div>
 </footer>
 <script src="/trust.js" defer></script>

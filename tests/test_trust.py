@@ -1,5 +1,5 @@
 """The public AI data-use page (/trust): served from the allowlist, built in the browser from the same answers the
-app shows (/api/pack), one card per endpoint, plain status words, no slanted arrows, and no demo label up top."""
+app shows (/api/pack), one card per endpoint, plain status words, no slanted arrows, no demo label and one set of page links."""
 import re
 
 from owin import server, webui
@@ -49,6 +49,7 @@ def test_plain_status_words_and_copy_rules():
         assert not re.search("↗|↘|⤴|&#8599;|&#x2197;|\\\\2197|\\\\u2197", src)
         assert "rotate(" not in src or src is CSS
     assert "Inter" not in CSS
-    header = HTML.split("<main", 1)[0] + HTML.split("<main", 1)[1].split("</section>", 1)[0]
-    assert "fictional" not in header.lower() and "invented" not in header.lower()
-    assert "invented for this demo" in HTML.split("<footer", 1)[1]
+    assert "fictional" not in HTML.lower() and "invented" not in HTML.lower() and "legal advice" not in HTML.lower()
+    # The app and start links appear once, in the header; the footer carries only the logo.
+    assert HTML.count('href="/app"') == 1 and HTML.count('href="/judge"') == 1
+    assert 'href="/app"' not in HTML.split("<footer", 1)[1]
