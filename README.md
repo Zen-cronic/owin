@@ -32,6 +32,7 @@ CLI equivalents: `owin pack build --format brief`, `--set /api/crm-sync=anthropi
 
 <!-- LIVE_URL --> Public URL: https://port8080-gq5qwgkze3dq2dm.tunnel.applications.us-north1.nebius.cloud/judge (no login; `scripts/smoke.sh https://port8080-gq5qwgkze3dq2dm.tunnel.applications.us-north1.nebius.cloud` passes).
 Product page: https://port8080-gq5qwgkze3dq2dm.tunnel.applications.us-north1.nebius.cloud/about (what Owin does, in one scroll).
+Also at https://owin.cloud (product page) and https://owin.cloud/judge (start page), which forward to the same Nebius endpoint.
 
 ## The number, in full
 
