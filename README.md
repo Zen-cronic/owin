@@ -122,6 +122,6 @@ rules (code)   ──► buyer report ──► app / PDF / CSV / share link
 
 ## Earlier work in this repo
 
-Owin began as an objection-window tracker for sub-processor changes (the name is from **O**bjection **Win**dow). That engine is still here and tested: Nemotron read 17 real DPAs with all five fields exact (10/10 tuned, 7/7 held out, 51/51 runs) and correctly left 6/6 thin-evidence controls unanswered (`owin eval score --brief`); `owin replay --brief` replays OpenAI's real October 14, 2026 list change; `owin sweep --brief` diffs 29 vendors' lists via Tavily. See `docs/CONTRACT.md`.
+Owin began as an objection-window tracker for sub-processor changes (the name is from **O**bjection **Win**dow). That engine is still here and tested: Nemotron read 17 real DPAs with all five fields exact (10/10 tuned, 7/7 held out, 51/51 runs) and correctly left 6/6 thin-evidence controls unanswered (`owin eval score --brief`); `owin replay --brief` replays OpenAI's real October 14, 2026 list change; `owin sweep --brief` diffs 29 vendors' lists via Tavily.
 
 License: MIT.
