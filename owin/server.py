@@ -171,6 +171,23 @@ def pack_response(manifest: dict | None, qs: dict, *, html_default: bool = False
     return 200, PACK_TYPES[fmt], body
 
 
+def byte_range(header: str | None, size: int) -> tuple[int, int] | None:
+    """One "bytes=start-end" range (either end may be open), clipped to the body; None means serve it whole."""
+    if not header or not header.startswith("bytes=") or "," in header or size == 0:
+        return None
+    first, _, last = header[6:].strip().partition("-")
+    try:
+        if first == "":
+            n = int(last)
+            start, end = max(0, size - n), size - 1
+        else:
+            start = int(first)
+            end = min(int(last), size - 1) if last else size - 1
+    except ValueError:
+        return None
+    return (start, end) if 0 <= start <= end else None
+
+
 class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         u = urlparse(self.path)
@@ -190,11 +207,21 @@ class Handler(BaseHTTPRequestHandler):
         u = urlparse(self.path)
         code, ctype, body = handle(u.path, parse_qs(u.query))
         data = body if isinstance(body, bytes) else body.encode()
-        self.send_response(code)
+        video = code == 200 and ctype.startswith("video/")
+        part = byte_range(self.headers.get("Range"), len(data)) if video else None
+        if part:  # browsers (Safari in particular) fetch a video in byte ranges
+            start, end = part
+            self.send_response(206)
+            self.send_header("Content-Range", f"bytes {start}-{end}/{len(data)}")
+            data = data[start:end + 1]
+        else:
+            self.send_response(code)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(data)))
-        if ctype.startswith("image/"):
+        if ctype.startswith(("image/", "video/")):
             self.send_header("Cache-Control", "public, max-age=86400")
+        if video:
+            self.send_header("Accept-Ranges", "bytes")
         self.send_header("X-Owin-Mode", config.mode())
         self.end_headers()
         self.wfile.write(data)

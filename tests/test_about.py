@@ -36,15 +36,55 @@ def test_every_still_the_page_names_is_served_as_bytes():
             assert ctype == "image/webp" and body[:4] == b"RIFF" and body[8:12] == b"WEBP", n
 
 
+def test_background_loop_is_served_with_byte_ranges():
+    import http.client
+    import threading
+    names = re.findall(r'data-(?:av1|h264)="/img/([a-z0-9-]+\.mp4)"', ABOUT)
+    assert len(names) == 2
+    for n in names:
+        code, ctype, body = server.handle(f"/img/{n}", {})
+        assert code == 200 and ctype == "video/mp4" and body[4:8] == b"ftyp", n
+    assert server.byte_range("bytes=0-99", 1000) == (0, 99) and server.byte_range("bytes=900-", 1000) == (900, 999)
+    assert server.byte_range("bytes=-100", 1000) == (900, 999) and server.byte_range("bytes=0-5000", 1000) == (0, 999)
+    for bad in (None, "bytes=5-1", "bytes=a-b", "items=0-1", "bytes=0-1,4-5", "bytes=2000-"):
+        assert server.byte_range(bad, 1000) is None, bad
+    srv = server.Server(("127.0.0.1", 0), server.Handler)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    try:
+        conn = http.client.HTTPConnection("127.0.0.1", srv.server_address[1], timeout=5)
+        conn.request("GET", f"/img/{names[0]}", headers={"Range": "bytes=0-1023"})
+        r = conn.getresponse()
+        assert r.status == 206 and r.getheader("Accept-Ranges") == "bytes" and len(r.read()) == 1024
+        assert r.getheader("Content-Range").startswith("bytes 0-1023/")
+        conn.request("GET", "/about")
+        r = conn.getresponse()
+        assert r.status == 200 and b'class="loop"' in r.read()
+    finally:
+        srv.shutdown()
+
+
+def test_loop_plays_only_with_motion_and_has_the_still_as_poster():
+    v = re.search(r"<video[^>]*>", ABOUT).group(0)
+    for attr in ("muted", "loop", "playsinline", 'preload="none"', 'aria-hidden="true"', 'poster="/img/about-hero-1800.webp"'):
+        assert attr in v, attr
+    assert "src=" not in v.replace("data-av1", "").replace("data-h264", "")  # sources are attached by the script, never without motion
+    assert "html:not(.motion) .loop{display:none}" in CSS and "v.pause()" in JS
+
+
+def test_stamps_are_never_tilted():
+    assert "rotate(" not in CSS
+
+
 def test_image_route_is_an_allowlist():
     for path in ("/img/../about.html", "/img/", "/img/nope.avif", "/img/about-hero-2000.png", "/web/img/about-hero-2000.avif",
                  "/img/..%2fabout.html", "/about.html"):
         assert server.handle(path, {})[0] == 404, path
 
 
-def test_stills_stay_small():
-    total = sum((webui.WEB / name).stat().st_size for name, _ in webui.IMAGES.values())
-    assert 0 < total < 2_000_000
+def test_stills_and_loops_stay_small():
+    sizes = {name: (webui.WEB / name).stat().st_size for name, _ in webui.IMAGES.values()}
+    assert 0 < sum(v for k, v in sizes.items() if not k.endswith(".mp4")) < 2_000_000
+    assert 0 < sum(v for k, v in sizes.items() if k.endswith(".mp4")) < 4_000_000
 
 
 def test_numbers_on_the_page_are_the_ledger():
@@ -98,7 +138,7 @@ def test_about_client_code_carries_no_secrets():
 def test_palette_is_the_answer_screens():
     app = (webui.WEB / "app.css").read_text()
     tok = lambda text, name: re.search(rf"{re.escape(name)}:(#[0-9A-Fa-f]{{6}})", text).group(1).upper()  # noqa: E731
-    same = ("--field", "--frame", "--act", "--act-hover", "--rule-cyan", "--stamp-stale", "--stamp-confirm",
+    same = ("--field", "--frame", "--act", "--rule-cyan", "--stamp-stale", "--stamp-confirm",
             "--stamp-held", "--ink", "--muted", "--cite", "--on-field", "--on-field-muted")
     for name in same:
         assert tok(CSS, name) == tok(app, name), name
@@ -117,4 +157,6 @@ def test_without_motion_nothing_is_hidden():
                 sel = sel.strip()
                 if sel in ("from", "to") or re.fullmatch(r"[\d.]+%", sel):
                     continue  # a keyframe step; its animation is only applied under .motion
+                if sel == ".nav:not(.past) .nav-try":
+                    continue  # the nav's button steps aside only while the hero, which carries the same button, is in view
                 assert sel.startswith(".motion"), sel
