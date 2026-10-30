@@ -27,6 +27,9 @@ STATIC = {"/": ("about.html", "text/html; charset=utf-8"),
           "/about": ("about.html", "text/html; charset=utf-8"),
           "/about.css": ("about.css", "text/css; charset=utf-8"),
           "/about.js": ("about.js", "text/javascript; charset=utf-8"),
+          "/trust": ("trust.html", "text/html; charset=utf-8"),
+          "/trust.css": ("trust.css", "text/css; charset=utf-8"),
+          "/trust.js": ("trust.js", "text/javascript; charset=utf-8"),
           "/theme-c1.css": ("theme-c1.css", "text/css; charset=utf-8")}
 # The product page's stills and background loops, served as bytes. The allowlist is the files in owin/web/img/ whose
 # names match, read once at import, so a request path is only ever looked up, never joined onto the filesystem.

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Lumen Notes · AI data use, per endpoint</title>
+<meta name="description" content="For each Lumen Notes endpoint that calls an AI vendor: whether data trains models, how long it is kept, zero data retention, where it is processed and who sees it, each with the vendor's own sentence and the date it was fetched.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@500;700&family=Atkinson+Hyperlegible+Next:wght@400;700&family=Parkinsans:wght@500..800&display=swap" rel="stylesheet">
+<link rel="icon" href="/img/favicon.ico" sizes="32x32">
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="stylesheet" href="/trust.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the endpoints</a>
+
+<header class="top">
+  <div class="top-in">
+    <a class="word" href="/about" aria-label="Owin"><img src="/img/logo-dark-small.svg" alt="Owin" width="61" height="22"></a>
+    <nav class="top-links" aria-label="Owin">
+      <a class="btn ghost" href="/judge">Start here</a>
+      <a class="btn primary" href="/app">Open the app</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="intro wrap" aria-labelledby="page-h">
+    <div class="intro-main">
+      <p class="kicker">AI data use · public page</p>
+      <h1 id="page-h"><span id="company">Lumen Notes</span>: how each endpoint uses AI vendors</h1>
+      <p class="asof" id="asof">Loading the vendor pages…</p>
+      <ul class="tally" id="tally" aria-label="Status of every check on this page"></ul>
+    </div>
+    <aside class="findings" aria-labelledby="findings-h">
+      <h2 id="findings-h">What to check first</h2>
+      <ul id="findings"></ul>
+    </aside>
+  </section>
+
+  <section class="howto wrap" aria-labelledby="howto-h">
+    <div class="howto-in">
+      <h2 id="howto-h">How to read this</h2>
+      <p>Each card is one endpoint and the AI vendor feature it calls. Each row answers one question from the vendor's own page. Open a row for the vendor's exact sentence, a link to the page and when it was fetched.</p>
+      <dl class="legend">
+        <div><dt><span class="tag s-verified">Verified</span></dt><dd>the vendor's page supports the company's answer</dd></div>
+        <div><dt><span class="tag s-not_true">Not true</span></dt><dd>the vendor's page says otherwise</dd></div>
+        <div><dt><span class="tag s-stale">Outdated</span></dt><dd>the vendor changed its page after the company answered</dd></div>
+        <div><dt><span class="tag s-confirm">Needs review</span></dt><dd>readings of the vendor's page disagree</dd></div>
+        <div><dt><span class="tag s-held">Not stated</span></dt><dd>the vendor's page does not say</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="eps wrap" aria-label="Endpoints">
+    <div class="grid" id="grid" aria-live="polite"><div class="col" id="col-a"></div><div class="col" id="col-b"></div></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <a class="foot-word" href="/about" aria-label="Owin"><img src="/img/logo-dark.svg" alt="Owin" width="155" height="56" loading="lazy"></a>
+    <p class="foot-note">Lumen Notes and its answers are invented for this demo. Every vendor sentence, link and date on this page is real, fetched from the vendor's own page. This page is read-only and is not legal advice.</p>
+    <nav class="foot-links" aria-label="More from Owin">
+      <a class="btn ghost" href="/judge">Start here</a>
+      <a class="btn primary" href="/app">Open the app</a>
+    </nav>
+  </div>
+</footer>
+<script src="/trust.js" defer></script>
+</body>
+</html>
