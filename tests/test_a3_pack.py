@@ -264,10 +264,11 @@ def test_share_json_is_read_only_and_has_no_catch_or_actions(demo):
 
 def test_print_html_uses_light_tokens_and_no_actions(demo):
     h = export.to_html(demo)
-    assert "@page { size: A4" in h and "--bg:#FFFFFF" in h and "--act:#FFD21F" in h
+    assert "@page { size: A4" in h and "--prussian:#1B3A5E" in h and "--rule:#A4C6DE" in h and "--not-true:#B3202A" in h
+    assert "Parkinsans" in h and "Atkinson Hyperlegible Next" in h and "@media print" in h
     assert "Fix answer" not in h and "Draft trust-page change" not in h
     assert "The MCP connector is not covered by ZDR arrangements." in h
-    assert "DEMO COMPANY (fictional)" in h
+    assert "DEMO COMPANY (fictional)" not in h and "↗" not in h and "Question 1<" in h
 
 
 def test_table_row_quotes_read_as_cells():
@@ -348,22 +349,24 @@ def test_print_copy_speaks_to_the_buyer(demo):
     plain statuses, the vendor's evidence as a quote or key/value rows, and nothing addressed to the person who runs
     Owin: no internal badges, no "review", no file paths, no workflow states as vendor sentences."""
     h = export.to_html(demo)
-    for internal in ("Not true", "Not stated<", ">Outdated<", "Review the change", "Under review against the vendor's page",
+    for internal in ("Review the change", "Under review against the vendor's page",
                      "data/datause", "(your setting)", "not in your answer", "Fix answer", "Draft trust-page change", "badge"):
         assert internal not in h, internal
     # Answer 3 ships the revised wording Owin drafted, with the exceptions spelled out, not the contradicted sentence.
     assert demo["catch"]["fix"]["text"] in h and "Yes, except: /api/crm-sync" in h
     q3 = next(a for a in demo["answers"] if a["id"] == "Q03")
-    assert "Wording revised on" in h and q3["stated"]["text"] not in h
+    assert "Revised on" in h and q3["stated"]["text"] not in h
     # The vendor sentence behind it is still there, with its link and fetch time.
     assert "The MCP connector is not covered by ZDR arrangements." in h and "fetched 2026-10-2" in h
     # Table-row evidence renders as key/value rows with the answering cell marked, never a flattened "a · b · c".
     assert '<dl class="kv">' in h and "<dt>Zero Data Retention eligible</dt>" in h and 'class="hit"' in h
     assert "· No · 30 days ·" not in h
-    # Plain statuses and notes a buyer can read.
-    for status in ("Supported by the vendors' pages", "Revised to match the vendors' pages", "A vendor page changed after this answer",
-                   "Partly stated by the vendors' pages", "Company statement; the vendors' pages do not say"):
-        assert html_unescape(status) in html_unescape(h), status
+    # The same plain status chips as the app, and the long repeated status sentences are gone.
+    for chip in ('still_true">Verified<', 'held_unspecified">Not stated<', 'not_true">Not true<', 'stale">Outdated<'):
+        assert chip in h, chip
+    assert "Supported by the vendors' pages" not in html_unescape(h)
+    # Endpoints that share one vendor sentence show it once, with the endpoints listed together.
+    assert h.count("Retained data is never used for model training without your express permission.") == 1
     assert "OpenAI updated its sub-processor list on October 14, 2026 (previously June 2, 2026)" in h
     # The label keeps the fictional-company disclosure and drops the sentence that named repository files.
     s = export.to_share(demo)
@@ -374,8 +377,8 @@ def test_print_copy_speaks_to_the_buyer(demo):
 def test_print_confirm_cell_is_pending_never_a_vendor_sentence():
     m = pack.set_feature(pack.load_demo(), "/api/embed", "openai-responses")
     h = export.to_html(pack.build(m))
-    assert "<td>Under review</td>" in h and "Under review against the vendor's page" not in h
+    assert '<li class="pending">Needs review</li>' in h and "Under review against the vendor's page" not in h
     assert "Readings disagree" not in h and "Cloudflare, Ltd. (changed)" in h  # the list change is the evidence shown
     m["stated"]["stated_at"] = "2026-10-21"  # no list change to show: the cell says it is pending, with no sentence
     h = export.to_html(pack.build(m))
-    assert "Pending the company's review." in h and "<td>Under review</td>" in h
+    assert "Needs review by the company." in h and '<li class="pending">Needs review</li>' in h
