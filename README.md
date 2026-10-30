@@ -75,6 +75,8 @@ On a fresh clone (vendor page text is not in the repository) the arithmetic reco
 
 ## Architecture
 
+![How Owin answers one question: your stack, Tavily extract, Nemotron 3 Super on Nebius Token Factory, rules in plain code, and what you get; it runs on a Nebius Serverless AI Endpoint behind owin.cloud](docs/architecture.png)
+
 ```
 stack manifest ──► catalog (endpoint → vendor feature → page)
 Tavily extract ──► observations (dated captures, hashes, list snapshots)
