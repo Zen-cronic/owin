@@ -166,7 +166,7 @@ def job_read(features: list[str], *, runs: int = 3, budget: float = 3.0) -> dict
     try:
         tf.api_key()
     except tf.MissingKey:
-        return {"skipped": "TOKEN_FACTORY_API_KEY not set; the pack keeps its recorded readings"}
+        return {"skipped": "TOKEN_FACTORY_API_KEY not set; the report keeps its recorded readings"}
     spent = tf.spent_today()
     if spent >= budget:
         return {"skipped": f"daily budget reached: ${spent:.4f} spent today (UTC) >= ${budget}"}
@@ -323,9 +323,9 @@ def main(argv: list[str] | None = None) -> int:
     jb.add_argument("--runs", type=int, default=3)
     jb.add_argument("--budget", type=float, default=3.0, help="skip the re-reading when today's (UTC) Token Factory spend in the ledger reaches this (USD)")
     jb.set_defaults(fn=cmd_job)
-    pk = sub.add_parser("pack", help="security-review answer pack (AI and data section), per endpoint")
+    pk = sub.add_parser("pack", help="security-review buyer report (AI and data section), per endpoint")
     pk.add_argument("action", choices=["build", "refresh", "registry", "extract", "evidence"],
-                    help="build = compute the pack (no network); refresh = re-fetch pages via Tavily and record observations; "
+                    help="build = compute the report (no network); refresh = re-fetch pages via Tavily and record observations; "
                          "registry = export data/datause/registry.json from recorded runs; extract = Nemotron on Tavily captures")
     pk.add_argument("--stack", default="", help="stack manifest JSON (default: fixtures/demo/stack.json)")
     pk.add_argument("--set", action="append", metavar="PATH=FEATURE", help="change one input, e.g. /api/crm-sync=anthropic-messages")

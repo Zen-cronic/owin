@@ -97,8 +97,8 @@ def test_confirm_badge_on_a_swapped_stack():
     assert q5["badge"] == "stale"  # OpenAI's list change outranks the confirm on the demo's stated_at
     m["stated"]["stated_at"] = "2026-10-21"  # written after the list change: the split is what is left
     q5 = next(a for a in pack.build(m)["answers"] if a["id"] == "Q05")
-    assert q5["badge"] == "confirm" and q5["badge_label"] == "Confirm" and q5["endpoints_confirm"] == 1
-    assert "confirm" in q5["answer"]
+    assert q5["badge"] == "confirm" and q5["badge_label"] == "Needs review" and q5["endpoints_confirm"] == 1
+    assert "review which value is right" in q5["answer"]
 
 
 def test_thin_evidence_is_held_never_invented():

@@ -31,11 +31,11 @@
     <h1 id="story-h" class="reveal" style="--i:1">I built Owin because a buyer’s security questionnaire asks whether your AI providers keep customer data, and the true answer differs per endpoint.</h1>
     <div class="lede">
     <i class="rule-draw" aria-hidden="true"></i>
-    <p class="what reveal" style="--i:2">Anthropic’s Messages API can run under zero data retention, its MCP connector is not covered, and Message Batches keep data for 29 days. For each endpoint you run, Owin fills the AI section from the vendor’s own page: retention, training, ZDR, region, who sees it. An answer goes Stale when that page changes after you wrote it, and when Owin’s three readings disagree, it asks you.</p>
+    <p class="what reveal" style="--i:2">Anthropic’s Messages API can run under zero data retention, its MCP connector is not covered, and Message Batches keep data for 29 days. For each endpoint you run, Owin fills the AI section from the vendor’s own page: retention, training, ZDR, region, who sees it. An answer is marked Outdated when that page changes after you wrote it, and when Owin’s three readings disagree, it asks you to review it.</p>
 
     <p class="catchline reveal" style="--i:3">
       <span class="badge bad flap catch-mark"><span class="lbl"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 15 14H1z"/><path d="M8 6v3.6M8 11.6v.1"/></svg>Not true</span></span>
-      <span class="cl">The catch, on real vendor text: Lumen Notes’ trust page says “<span class="catch-phrase">zero data retention</span>”, but <span class="mono nw">/api/crm-sync</span> calls Anthropic’s MCP connector, and Anthropic’s page says <span class="catch-text">“The MCP connector is <span class="catch-phrase">not covered by ZDR arrangements</span>.”</span><span class="act"><a class="btn primary" href="/">Open answer 3</a></span></span>
+      <span class="cl">The finding, on real vendor text: Lumen Notes’ trust page says “<span class="catch-phrase">zero data retention</span>”, but <span class="mono nw">/api/crm-sync</span> calls Anthropic’s MCP connector, and Anthropic’s page says <span class="catch-text">“The MCP connector is <span class="catch-phrase">not covered by ZDR arrangements</span>.”</span><span class="act"><a class="btn primary" href="/">Open answer 3</a></span></span>
     </p>
     </div>
 
@@ -65,7 +65,7 @@
           <span class="step mono">1</span>
           <span class="t">Replay a real change</span>
           <span class="tag">Seeded replay · real vendor text · fictional company</span>
-          <span class="d">Lumen Notes (fictional) wrote its answers on Sep 1, 2026. Answer 3 is not true for <span class="mono nw">/api/crm-sync</span>, because Anthropic’s MCP connector is outside ZDR; answer 5 went stale when OpenAI changed its sub-processor list on Oct 14, 2026.</span>
+          <span class="d">Lumen Notes (fictional) wrote its answers on Sep 1, 2026. Answer 3 is not true for <span class="mono nw">/api/crm-sync</span>, because Anthropic’s MCP connector is outside ZDR; answer 5 became outdated when OpenAI changed its sub-processor list on Oct 14, 2026.</span>
           <span class="go">Open the replay<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></span>
         </a>
       </li>
@@ -83,12 +83,12 @@
           <span class="step mono">3</span>
           <span class="t">Try thin evidence</span>
           <span class="tag">A real page with no data-use terms</span>
-          <span class="d">Point <span class="mono nw">/api/crm-sync</span> at Anthropic’s rate-limits page, which says nothing about retention, training or ZDR. Owin holds those answers for that endpoint. It never invents one.</span>
-          <span class="go">See it held<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></span>
+          <span class="d">Point <span class="mono nw">/api/crm-sync</span> at Anthropic’s rate-limits page, which says nothing about retention, training or ZDR. Owin marks those answers Not stated for that endpoint. It never invents one.</span>
+          <span class="go">See it marked Not stated<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></span>
         </a>
       </li>
     </ol>
-    <p class="also">Also: <a href="/?set=/api/embed=openai-responses">see a Confirm</a>, where Owin’s three readings of OpenAI’s page split 2-to-1 on who else sees the data for Responses, so answer 5’s <code>/api/embed</code> cell asks you to confirm instead of picking a side.</p>
+    <p class="also">Also: <a href="/?set=/api/embed=openai-responses">see an answer that needs review</a>, where Owin’s three readings of OpenAI’s page split 2-to-1 on who else sees the data for Responses, so answer 5’s <code>/api/embed</code> cell goes to you for review instead of Owin picking a side.</p>
   </section>
 
   <section aria-labelledby="ev-h" class="reveal">
@@ -96,7 +96,7 @@
     <ul class="ev">
       <li><a href="/FACTS.md">Claims ledger (FACTS.md)</a><span>Every number on this page and in the README, with the command or file it comes from. A test fails if any drifts.</span></li>
       <li><a href="/README.md">README: what we’ll tell you before you find it</a><span>Earlier prompts that failed, the labelling limit (an AI coding agent labelled every item, a second agent pass spot-checked, no independent human audit yet), the label error we found ourselves, what is fictional.</span></li>
-      <li><a href="/pack/print">The buyer’s copy</a><span>The answer pack as a buyer would receive it (print to PDF). No internal reasons, no fix drafts.</span></li>
+      <li><a href="/pack/print">The buyer’s copy</a><span>The buyer report as a buyer would receive it (print to PDF). No internal reasons, no fix drafts.</span></li>
       <li><a href="/api/pack?format=csv">CSV</a><span>One row per question and endpoint, with the vendor sentence and its link.</span></li>
       <li id="sponsor"><b>What runs it</b><span>Tavily <span class="mono">extract</span> fetched each vendor page, and re-fetches on a sweep or from “Re-check this page” when the server has a key. NVIDIA Nemotron 3 Super, an open-weight model on Nebius Token Factory, read each page three times; this page replays those recorded runs. Code, not the model, decides every answer.</span></li>
     </ul>

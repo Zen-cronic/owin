@@ -209,7 +209,7 @@ def _reading_sentence(rd: dict) -> str:
         return f" Nemotron re-read it: {rd['reason']}."
     if rd["moved_to_confirm"]:
         return (f" Nemotron re-read it {rd['readings_ok']} times: {', '.join(rd['moved_to_confirm']).replace('_', ' ')} "
-                "now goes to a person to confirm.")
+                "now goes to a person to review.")
     return f" Nemotron re-read it {rd['readings_ok']} times: every answer it reads still agrees."
 
 

@@ -50,10 +50,10 @@ python3 - "$num" <<'PY' || fail=1
 import json, sys
 s = json.loads(sys.argv[1])["selective"]
 assert s["auto_answered"] and s["auto_correct"], s
-print(f"ok   line-one number recomputed: {s['auto_answered']} auto, {s['auto_correct']} correct, {s['sent_to_confirm']} to confirm")
+print(f"ok   line-one number recomputed: {s['auto_answered']} auto, {s['auto_correct']} correct, {s['sent_to_confirm']} to a person")
 PY
 
-# Several judges at once: 12 concurrent pack builds must all return 200.
+# Several visitors at once: 12 concurrent report builds must all return 200.
 codes=$(for i in $(seq 1 12); do curl -s -o /dev/null -w '%{http_code}\n' --max-time 30 ${AUTH[@]+"${AUTH[@]}"} "$BASE/api/pack?set=/api/crm-sync=anthropic-messages" & done; wait)
 bad=$(printf '%s\n' "$codes" | grep -vc '^200$' || true)
 if [ "$bad" != "0" ]; then echo "FAIL concurrent: $bad of 12 not 200"; fail=1; else echo "ok   12 concurrent /api/pack requests all 200"; fi

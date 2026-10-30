@@ -80,7 +80,7 @@ def sweep_one(entry: dict, *, live: bool = True, refetch=None) -> dict:
     pd, cd = parse_page_date(prev.last_updated), parse_page_date(cur.last_updated)
     if pd and cd and cd < pd:
         return {**row, "state": "stale_source", "held": True,
-                "reason": f"fetched page says 'Last updated {cur.last_updated}', older than the accepted snapshot ({prev.last_updated}); likely a cached copy. Held, state not overwritten."}
+                "reason": f"fetched page says 'Last updated {cur.last_updated}', older than the accepted snapshot ({prev.last_updated}); likely a cached copy. Set aside; state not overwritten."}
     changes = diff(prev, cur)
     if not changes and f.source_kind == "tavily":
         g = (refetch or (lambda e: tavily.extract(e["list_url"], depth="advanced")))(entry)

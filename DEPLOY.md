@@ -120,7 +120,7 @@ scripts/smoke.sh "$ENDPOINT_URL"
 
 It checks `/healthz`, `/`, `/judge`, `/api/selective`, `/api/pack`, `/pack/print` (plus `/app.js`, `/api/catalog`)
 return 200 **on the deployment itself** (the effective URL after redirects must still start with `$ENDPOINT_URL`, so
-a login wall fails), that `/healthz` says `ok`, that the line-one number recomputes, and that 12 concurrent pack
+a login wall fails), that `/healthz` says `ok`, that the line-one number recomputes, and that 12 concurrent report
 builds all return 200. Expected last line: `SMOKE PASS <url>`. Then open `$ENDPOINT_URL/judge` in a private window.
 
 Stop or delete when done: `nebius ai endpoint stop "$ENDPOINT_ID"` (keeps it, no compute charge; API path documented

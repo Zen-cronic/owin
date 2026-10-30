@@ -1,7 +1,7 @@
-"""Answer pack exports: CSV, print-ready HTML (light print tokens, A4) and a read-only share JSON.
+"""Buyer report exports: CSV, print-ready HTML (light print tokens, A4) and a read-only share JSON.
 
 The buyer-facing exports (HTML, share JSON) carry the answers, the per-endpoint vendor sentences, sources
-and as-of times. The catch, the actions and "Fix" never appear in them (docs/design/brief.md). The print copy
+and as-of times. The finding, the actions and "Fix" never appear in them (docs/design/brief.md). The print copy
 is the document the buyer reads, so it speaks the buyer's language: the company's answers (the corrected
 wording where Owin drafted one), a plain status per answer, the vendor's sentence or table row with its link
 and fetch time, and nothing addressed to the person who runs Owin (no badges, no "review", no file paths).
@@ -16,7 +16,10 @@ import re
 from ..textnorm import sha256
 
 CSV_COLUMNS = ["question_number", "question", "stated_answer", "status", "endpoint", "feature", "provider", "vendor_value",
-               "endpoint_verdict", "quote", "source_url", "fetched_at", "as_of", "stale"]
+               "endpoint_verdict", "quote", "source_url", "fetched_at", "as_of", "outdated"]
+# The CSV is read by people, so its status and verdict columns carry words, not the API's enum codes.
+VERDICT_LABEL = {"holds": "Supports the answer", "disclosed": "Disclosed exception", "contradicts": "Contradicts the answer",
+                 "held": "Not stated", "confirm": "Needs review"}
 
 
 def to_csv(pack: dict) -> str:
@@ -25,8 +28,8 @@ def to_csv(pack: dict) -> str:
     w.writerow(CSV_COLUMNS)
     for a in pack["answers"]:
         for c in a["cells"]:
-            w.writerow([a["number"], a["question"], a["stated"].get("text", ""), a["badge"], c["endpoint"], c["feature"],
-                        c["provider"], c["value_label"], c["verdict"], c["quote"], c["source_url"], c["fetched_at"] or "",
+            w.writerow([a["number"], a["question"], a["stated"].get("text", ""), a["badge_label"], c["endpoint"], c["feature"],
+                        c["provider"], c["value_label"], VERDICT_LABEL.get(c["verdict"], c["verdict"]), c["quote"], c["source_url"], c["fetched_at"] or "",
                         a["as_of"] or "", "yes" if c.get("stale") else ""])
     return buf.getvalue()
 
@@ -34,14 +37,14 @@ def to_csv(pack: dict) -> str:
 # What the buyer reads for each internal state. The internal `status` enum stays in the share JSON for the app;
 # the print copy shows only these words.
 BUYER_STATUS = {"still_true": "Supported by the vendors' pages", "not_true": "Revised to match the vendors' pages",
-                "stale": "A vendor page changed after this answer", "confirm": "Being confirmed",
+                "stale": "A vendor page changed after this answer", "confirm": "Under review",
                 "held_unspecified": "Company statement; the vendors' pages do not say"}
 _BUYER_PHRASES = (("(your setting)", "(company setting)"), ("(not in your answer)", "(not named in this answer)"),
-                  ("Readings disagree: ", "Being confirmed: "))
+                  ("Readings disagree: ", "Under review: "))
 
 
 def buyer_label(label: str | None) -> str:
-    """The pack's label without any sentence that names a file in the repository."""
+    """The report's label without any sentence that names a file in the repository."""
     parts = re.split(r"(?<=[.!?])\s+", (label or "").strip())
     return " ".join(x for x in parts if x and not re.search(r"\b[\w.-]+/[\w./-]+\.\w+", x))
 
@@ -85,7 +88,7 @@ def buyer_status(a: dict) -> str:
 
 
 def to_share(pack: dict) -> dict:
-    """Read-only buyer view for the live link. No catch, no actions, no fix, no internal reasons."""
+    """Read-only buyer view for the live link. No finding, no actions, no fix, no internal reasons."""
     answers = []
     for a in pack["answers"]:
         text, note = buyer_answer(pack, a)
@@ -94,9 +97,9 @@ def to_share(pack: dict) -> dict:
             "status": a["badge"], "status_label": a["badge_label"], "buyer_status": buyer_status(a),
             "as_of": a["as_of"], "as_of_local": a["as_of_local"],
             "changes": [{"text": _buyer_change(ev, pack["stated_at"])} for ev in a["stale_events"]] if a["badge"] == "stale" else [],
-            # A cell held for confirmation is the startup's own review step; the buyer sees only that it is pending.
+            # A cell that needs review is the startup's own step; the buyer sees only that it is pending.
             "endpoints": [{"endpoint": c["endpoint"], "provider": c["provider"],
-                           "vendor_says": "Being confirmed" if c["verdict"] == "confirm" else buyer_phrase(c["value_label"]),
+                           "vendor_says": "Under review" if c["verdict"] == "confirm" else buyer_phrase(c["value_label"]),
                            "pending_confirmation": c["verdict"] == "confirm",
                            "quote": c["quote"], "quote_display": c.get("quote_display") or c["quote"],
                            "evidence": c.get("evidence"), "list_evidence": c.get("list_evidence") or [],
@@ -199,7 +202,7 @@ def to_html(pack: dict) -> str:
         for c in a["endpoints"]:
             ev = _evidence_html(c)
             if not ev:
-                ev = ("<span class=\"src\">Pending the company's confirmation.</span>" if c.get("pending_confirmation") else
+                ev = ("<span class=\"src\">Pending the company's review.</span>" if c.get("pending_confirmation") else
                       "<span class=\"src\">The page does not state this.</span>" if c["vendor_says"].startswith("Page does not say") else
                       "<span class=\"src\">No further third party is named on this page.</span>" if a["number"] == "05" else
                       "<span class=\"src\">See the vendor's page.</span>")

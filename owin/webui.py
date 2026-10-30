@@ -99,7 +99,7 @@ def watch() -> dict:
         elif latest_any is not latest and latest_any.get("held"):
             status = "held_copy"
             note = (f"The latest fetch served an older copy (“Last updated {latest_any.get('last_updated')}”). "
-                    f"Owin held it and keeps the {latest.get('last_updated') or 'previous'} copy.")
+                    f"Owin set it aside and keeps the {latest.get('last_updated') or 'previous'} copy.")
         else:
             status, note = "watching", None
         out.append({"page": pid, "url": page["url"], "label": page["label"], "kind": page["kind"],

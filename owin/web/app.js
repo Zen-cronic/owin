@@ -30,9 +30,9 @@ const BADGE = {
 };
 
 const state = { pack: null, catalog: null, watch: null, sets: readSets(), drawn: false, seq: 0, base: null, changes: [], recheck: {} };
-const LABEL = { not_true: 'Not true', stale: 'Stale', confirm: 'Confirm', held_unspecified: 'Held · unspecified', still_true: 'Still true' };
+const LABEL = { not_true: 'Not true', stale: 'Outdated', confirm: 'Needs review', held_unspecified: 'Not stated', still_true: 'Verified' };
 // Prose words for a badge, for the one-line narration of what a change moved. Severity orders the narration.
-const WORD = { not_true: 'not true', stale: 'stale', confirm: 'to confirm', held_unspecified: 'held', still_true: 'still true' };
+const WORD = { not_true: 'not true', stale: 'outdated', confirm: 'needs review', held_unspecified: 'not stated', still_true: 'verified' };
 const SEV = { not_true: 0, stale: 1, confirm: 2, held_unspecified: 3, still_true: 4 };
 
 // DOM helpers
@@ -150,11 +150,11 @@ function say(text) { const s = $('status'); s.className = 'status'; s.textConten
 function recomputedLine(p) {
   const c = p.counts, parts = [];
   if (c.not_true) parts.push(`${c.not_true} not true`);
-  if (c.stale) parts.push(`${c.stale} stale`);
-  if (c.confirm) parts.push(`${c.confirm} to confirm`);
-  if (c.held_unspecified) parts.push(`${c.held_unspecified} held`);
-  parts.push(`${c.still_true} still true`);
-  const moved = state.changes.map((ch) => `answer ${+ch.a.number} ${WORD[ch.a.badge] || ch.a.badge} (was ${WORD[ch.was.badge] || ch.was.badge})`);
+  if (c.stale) parts.push(`${c.stale} outdated`);
+  if (c.confirm) parts.push(`${c.confirm} ${c.confirm === 1 ? 'needs' : 'need'} review`);
+  if (c.held_unspecified) parts.push(`${c.held_unspecified} not stated`);
+  parts.push(`${c.still_true} verified`);
+  const moved = state.changes.map((ch) => `answer ${+ch.a.number} now ${WORD[ch.a.badge] || ch.a.badge} (was ${WORD[ch.was.badge] || ch.was.badge})`);
   return `Recomputed at ${nowET()}: ${moved.length ? moved.join(', ') + '; ' : ''}${parts.join(', ')}.`;
 }
 
@@ -180,9 +180,9 @@ function joinPaths(paths) {
   return out;
 }
 function changeSentence(ch) {
-  return [`Answer ${+ch.a.number} is now ${WORD[ch.a.badge] || ch.a.badge_label.toLowerCase()}`,
+  return [`Answer ${+ch.a.number} is now “${LABEL[ch.a.badge] || ch.a.badge_label}”`,
     ...(ch.paths.length ? [' for ', ...joinPaths(ch.paths)] : []),
-    `; it was ${WORD[ch.was.badge] || ch.was.badge_label.toLowerCase()}.`];
+    `; it was “${LABEL[ch.was.badge] || ch.was.badge_label}”.`];
 }
 
 // API down: no answers are shown, so nothing is guessed.
@@ -193,7 +193,7 @@ function renderDown(e) {
   say('');
   const old = $('down-lede'); if (old) old.remove();
   $('catch-h').after(el('p', { class: 'lede', id: 'down-lede' }, `Tried at ${nowET()}. No answers are shown until the evidence loads, so none is guessed.`));
-  console.info('owin: pack load failed', e.message);
+  console.info('owin: answers failed to load', e.message);
   $('todo').replaceChildren(el('button', { class: 'btn primary', onclick: () => location.reload() }, 'Retry'));
   $('panes').hidden = true;
 }
@@ -267,7 +267,7 @@ function render() {
 // Summary: the counts for every answer, in the hero's right column (stacked under the headline on mobile).
 function renderSummary(p) {
   const c = p.counts;
-  const rows = [['not_true', 'Not true'], ['stale', 'Stale'], ['confirm', 'To confirm'], ['held_unspecified', 'Held · unspecified'], ['still_true', 'Still true']]
+  const rows = [['not_true', 'Not true'], ['stale', 'Outdated'], ['confirm', 'Needs review'], ['held_unspecified', 'Not stated'], ['still_true', 'Verified']]
     .filter(([k]) => c[k] || k === 'still_true' || k === 'not_true');
   $('summary').replaceChildren(
     el('h2', {}, `${p.answers.length} answers · ${p.stack.endpoints.length} endpoints · ${p.stack.providers.length} providers`),
@@ -280,10 +280,10 @@ function renderCatch(p, byId, staleEv) {
   const k = $('kicker'), c = p.counts;
   const bits = [];
   if (c.not_true) bits.push(el('b', {}, `${c.not_true} not true`));
-  if (c.stale) bits.push(el('span', { class: 'st' }, `${c.stale} stale${staleEv ? ' since ' + fmtLong(staleEv.after.last_updated, false) : ''}`));
-  if (c.confirm) bits.push(el('span', { class: 'st' }, `${c.confirm} to confirm`));
-  if (!c.not_true && c.held_unspecified) bits.push(el('span', {}, `${c.held_unspecified} held`));
-  if (!bits.length) bits.push(el('span', {}, `All ${p.answers.length} answers still true`));
+  if (c.stale) bits.push(el('span', { class: 'st' }, `${c.stale} outdated${staleEv ? ' since ' + fmtLong(staleEv.after.last_updated, false) : ''}`));
+  if (c.confirm) bits.push(el('span', { class: 'st' }, `${c.confirm} ${c.confirm === 1 ? 'needs' : 'need'} review`));
+  if (!c.not_true && c.held_unspecified) bits.push(el('span', {}, `${c.held_unspecified} not stated`));
+  if (!bits.length) bits.push(el('span', {}, `All ${p.answers.length} answers verified`));
   const parts = [icon(c.not_true || c.stale ? 'warn' : 'check')];
   bits.forEach((b, i) => { if (i) parts.push(el('span', { class: 'sep', 'aria-hidden': 'true' }, '·')); parts.push(b); });
   k.className = 'kicker' + (c.not_true ? '' : ' calm');
@@ -301,7 +301,7 @@ function renderCatch(p, byId, staleEv) {
     h.replaceChildren(...withPaths(p.headline.text, 'ep'));
     const staleA = p.answers.find((a) => a.badge === 'stale');
     const confA = p.answers.find((a) => a.badge === 'confirm');
-    const confBtn = confA && el('button', { class: staleA ? 'btn ghost' : 'btn primary', id: 'confirm-go', onclick: () => goTo(confA.id) }, `Confirm answer ${+confA.number}`);
+    const confBtn = confA && el('button', { class: staleA ? 'btn ghost' : 'btn primary', id: 'confirm-go', onclick: () => goTo(confA.id) }, `Review answer ${+confA.number}`);
     todo.replaceChildren(...(staleA
       ? [el('button', { class: 'btn primary', id: 'review', onclick: () => openChange(staleA.id) }, `Review answer ${+staleA.number}`), confBtn]
       : confA ? [confBtn] : [el('button', { class: 'btn primary', onclick: () => toggleMenu(true) }, 'Export answers')]).filter(Boolean));
@@ -311,9 +311,9 @@ function renderCatch(p, byId, staleEv) {
 // Chips: one encoding for "this endpoint affects this answer", the same word and icon as the answer badges.
 const CHIP = {
   contradicts: { cls: 'bad', icon: 'warn', word: 'Not true' },
-  stale: { cls: 'stale', icon: 'stale', word: 'Stale' },
-  confirm: { cls: 'confirm', icon: 'ask', word: 'Confirm' },
-  held: { cls: 'held', icon: 'held', word: 'Held · unspecified' },
+  stale: { cls: 'stale', icon: 'stale', word: 'Outdated' },
+  confirm: { cls: 'confirm', icon: 'ask', word: 'Needs review' },
+  held: { cls: 'held', icon: 'held', word: 'Not stated' },
 };
 
 // Answers that no endpoint's vendor page states (e.g. region) are said once under the stack, not on every row.
@@ -326,8 +326,8 @@ function legend(p) {
     el('span', { class: 'li' }, [...p.answers].sort((x, y) => x.number.localeCompare(y.number)).map((a) => el('span', {}, el('i', {}, a.number), QSHORT[a.number] || a.question))));
   const kids = [nums];
   const he = heldEverywhere(p);
-  if (he.length) kids.push(el('p', { class: 'legend note' }, el('span', { class: 'lh' }, 'Held'),
-    el('span', {}, `No vendor page states answer${he.length > 1 ? 's' : ''} ${he.join(', ')} for any endpoint, so Owin leaves ${he.length > 1 ? 'them' : 'it'} for you to confirm.`)));
+  if (he.length) kids.push(el('p', { class: 'legend note' }, el('span', { class: 'lh' }, 'Not stated'),
+    el('span', {}, `No vendor page states answer${he.length > 1 ? 's' : ''} ${he.join(', ')} for any endpoint, so Owin leaves ${he.length > 1 ? 'them' : 'it'} for you to answer.`)));
   return el('div', { class: 'legends' }, kids);
 }
 
@@ -341,7 +341,7 @@ function endpointRow(p, s, staleEv) {
   let finding = null;
   const bad = Object.values(cells).find((x) => x.v === 'contradicts');
   const stale = Object.values(cells).find((x) => x.v === 'stale');
-  // Confirm shows on a chip only for an answer whose badge is Confirm, the ones the summary counts.
+  // Needs review shows on a chip only for an answer whose badge is confirm, the ones the summary counts.
   const conf = Object.values(cells).filter((x) => x.a.badge === 'confirm' && (x.v === 'confirm' || (x.c.stale && x.c.verdict === 'confirm')));
   if (bad) finding = el('p', { class: 'finding' }, `${bad.c.value_label}.`);
   else if (stale && staleEv) finding = el('p', { class: 'finding' }, `${staleEv.provider_display} changed its sub-processor list on `, el('span', { class: 'nw' }, fmtLong(staleEv.after.last_updated, false)), '.');
@@ -459,7 +459,7 @@ function renderPages(p) {
     el('h3', {}, 'Vendor pages', el('span', {}, `${p.watch.pages_watched} watched · checked ${fmtLocal(p.watch.last_checked_local)}`)),
   ];
   if (items.length) kids.push(el('ul', {}, items));
-  kids.push(el('p', { class: 'reset' }, 'Each check re-reads these pages; an answer goes Stale when a sentence it relies on changes.'));
+  kids.push(el('p', { class: 'reset' }, 'Each check re-reads these pages; an answer is marked Outdated when a sentence it relies on changes.'));
   if (Object.keys(state.sets).length) {
     kids.push(el('p', { class: 'reset' }, 'You changed ', ...joinPaths(Object.keys(state.sets)), '. ',
       el('button', { onclick: () => { state.sets = {}; load({ recompute: true }); } }, 'Reset to the demo stack')));
@@ -510,7 +510,7 @@ function perEndpoint(a) {
     const v = c.stale ? 'stale' : c.verdict;
     const vv = c.verdict === 'confirm' ? 'confirm' : v;
     return el('div', { class: vv === 'contradicts' ? 'x' : vv === 'held' ? 'h' : vv === 'confirm' ? 'c' : null },
-      el('dt', {}, short(c.endpoint)), el('dd', {}, vv === 'held' ? 'Page does not say' : vv === 'confirm' ? 'Confirm' : c.value_label));
+      el('dt', {}, short(c.endpoint)), el('dd', {}, vv === 'held' ? 'Page does not say' : vv === 'confirm' ? 'Needs review' : c.value_label));
   }));
 }
 
@@ -593,7 +593,7 @@ function answerRow(p, a, staleEv) {
   // A confirm cell inside an answer whose badge is driven by something else still shows its readings.
   if (a.badge !== 'confirm' && a.cells.some((c) => c.verdict === 'confirm')) {
     const n = a.cells.filter((c) => c.verdict === 'confirm').length;
-    body.append(el('details', { class: 'more' }, el('summary', {}, `${n} endpoint reading${n === 1 ? '' : 's'} to confirm`), confirmBlock(a)));
+    body.append(el('details', { class: 'more' }, el('summary', {}, `${n} endpoint reading${n === 1 ? ' needs' : 's need'} review`), confirmBlock(a)));
   }
 
   const art = el('article', { class: 'ans' + (isCatch ? ' sel' : '') + (a.badge === 'stale' ? ' stale' : '') + (ch ? ' changed' : ''), id: 'q-' + a.id, 'data-badge': a.badge, tabindex: '-1', 'aria-labelledby': `h-${a.id}` },
@@ -633,7 +633,7 @@ function changePanel(a, ev) {
     rows.push(el('dt', {}, 'Before'), el('dd', {}, el('a', { href: ev.before.url, target: '_blank', rel: 'noopener' }, `“Last updated ${ev.before.last_updated}”, captured ${fmtIsoDay(ev.before.observed_at)} ↗`)));
     rows.push(el('dt', {}, 'After'), el('dd', {}, el('a', { href: ev.after.url, target: '_blank', rel: 'noopener' }, `“Last updated ${ev.after.last_updated}”, captured ${fmtIsoDay(ev.after.observed_at)} ↗`)));
     const lead = `${ev.provider_display} changed ${ev.changed.length} ${ev.changed.length === 1 ? 'entry' : 'entries'}${ex && ex.kind === 'changed' ? `, including ${ex.entity} (${ex.fields.join(', ')})` : ''}, added ${ev.added.length} and removed ${ev.removed.length}.`;
-    const held = (ev.held_observations || []).map((o) => el('p', { class: 'hint' }, `A fetch on ${fmtIsoDay(o.observed_at)} served an older copy (“Last updated ${o.last_updated}”). Owin held it and did not use it.`));
+    const held = (ev.held_observations || []).map((o) => el('p', { class: 'hint' }, `A fetch on ${fmtIsoDay(o.observed_at)} served an older copy (“Last updated ${o.last_updated}”). Owin set it aside and did not use it.`));
     return el('div', { class: 'panel', id: `change-${a.id}`, hidden: true },
       el('h4', {}, `What changed on ${ev.provider_display}’s sub-processor list`),
       el('p', {}, lead), el('dl', { class: 'changes' }, rows), held,
