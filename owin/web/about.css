@@ -79,7 +79,8 @@ h2{font-weight:700;font-size:clamp(32px, 3.4vw, 50px);line-height:1.06;letter-sp
 /* Navigation: the wordmark, small catalogue-label links, and one button once the hero has gone */
 .nav{position:fixed;top:14px;left:50%;z-index:50;transform:translateX(-50%);width:max-content;max-width:calc(100% - 24px)}
 .nav-in{display:flex;align-items:center;gap:24px;height:56px;padding:0 8px 0 22px;background:var(--field-deep);border-radius:999px;box-shadow:0 0 0 1px rgba(164,198,222,.3),0 14px 34px -20px rgba(14,33,56,.9)}
-.word{font:800 23px/1 var(--display);letter-spacing:-.025em;color:var(--on-field);text-decoration:none;padding:6px 2px}
+.word{display:block;color:var(--on-field);text-decoration:none;padding:6px 2px;line-height:0}
+.word img{display:block;height:22px;width:auto}
 .nav-links{display:flex;gap:22px}
 .nav-links a{font:700 12.5px/1 var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--on-field);text-decoration:none;padding:8px 0 6px;border-bottom:1.5px dotted transparent}
 .nav-links a:hover,.nav-links a[aria-current="true"]{color:var(--on-field);border-bottom-color:var(--frame)}
@@ -323,8 +324,10 @@ html:not(.motion) .loop{display:none}
 .close h2{font-weight:800;font-size:clamp(40px, 5.2vw, 80px);line-height:1.02;letter-spacing:-.022em;max-width:12ch}
 .close .ctas{margin-top:40px}
 
-/* Footer: the wordmark, large, cut by the bottom edge like a drawer label */
+/* Footer: the wordmark, large, then the credits and links */
 .foot{background:var(--field-deep);padding-block:44px 52px}
+.foot-word{display:inline-block;margin-bottom:40px;line-height:0}
+.foot-word img{display:block;height:clamp(64px, 8vw, 112px);width:auto}
 .foot-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px 48px}
 .foot-row p{font-size:15px;color:var(--on-field-muted);max-width:68ch}
 .foot-row nav{display:flex;flex-wrap:wrap;gap:4px 22px}

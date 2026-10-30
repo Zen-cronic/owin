@@ -30,9 +30,10 @@ STATIC = {"/": ("index.html", "text/html; charset=utf-8"),
           **{f"/theme-c{i}.css": (f"theme-c{i}.css", "text/css; charset=utf-8") for i in range(1, 6)}}
 # The product page's stills and background loops, served as bytes. The allowlist is the files in owin/web/img/ whose
 # names match, read once at import, so a request path is only ever looked up, never joined onto the filesystem.
-IMAGE_TYPES = {".avif": "image/avif", ".webp": "image/webp", ".mp4": "video/mp4"}
+IMAGE_TYPES = {".avif": "image/avif", ".webp": "image/webp", ".mp4": "video/mp4",
+               ".png": "image/png", ".svg": "image/svg+xml", ".ico": "image/x-icon"}  # the last three: logo and icons
 IMAGES = {f"/img/{f.name}": (f"img/{f.name}", IMAGE_TYPES[f.suffix])
-          for f in sorted((WEB / "img").glob("*")) if f.suffix in IMAGE_TYPES and re.fullmatch(r"[a-z0-9-]+\.(avif|webp|mp4)", f.name)}
+          for f in sorted((WEB / "img").glob("*")) if f.suffix in IMAGE_TYPES and re.fullmatch(r"[a-z0-9-]+\.(avif|webp|mp4|png|svg|ico)", f.name)}
 DOCS = {"/README.md": "README.md", "/FACTS.md": "FACTS.md"}  # repo-root docs, served read-only as plain text
 ET = ZoneInfo("America/New_York")
 

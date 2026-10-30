@@ -158,3 +158,20 @@ def test_without_motion_nothing_is_hidden():
                 if sel in ("from", "to") or re.fullmatch(r"[\d.]+%", sel):
                     continue  # a keyframe step; its animation is only applied under .motion
                 assert sel.startswith(".motion"), sel
+
+
+def test_logo_and_icons_are_served_and_linked_on_every_page():
+    for path, kind in (("/img/favicon.ico", "image/x-icon"), ("/img/favicon.svg", "image/svg+xml"),
+                       ("/img/apple-touch-icon.png", "image/png"), ("/img/logo.svg", "image/svg+xml"),
+                       ("/img/logo-dark.svg", "image/svg+xml"), ("/img/social-card.png", "image/png")):
+        code, ctype, body = server.handle(path, {})
+        assert code == 200 and ctype == kind and isinstance(body, bytes) and body, path
+    for page in ("index.html", "judge.html", "about.html"):
+        html = (webui.WEB / page).read_text()
+        assert '<link rel="icon" href="/img/favicon.ico" sizes="32x32">' in html, page
+        assert '<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">' in html, page
+        assert '<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">' in html, page
+    assert 'src="/img/logo-dark-small.svg" alt="Owin"' in ABOUT and 'src="/img/logo-dark.svg" alt="Owin"' in ABOUT
+    assert '<a class="word" href="/about" aria-label="Owin">' in ABOUT
+    for path in ("/img/logo.SVG", "/img/favicon.gif", "/img/../README.md"):
+        assert server.handle(path, {})[0] == 404, path
