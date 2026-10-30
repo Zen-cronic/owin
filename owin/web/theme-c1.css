@@ -340,7 +340,9 @@
 /* Start page: colour by role. Method on pale cyan, the paths each in their own stock, evidence on the deep field. */
 :is(:root:not([data-theme]),:root[data-theme="c1"]){
   .judge-page .stat:nth-child(2){background:#0F6B7F}
-  .judge-page .stat:nth-child(3){background:#122A46}
+  .judge-page .stat:nth-child(3){background:#A4C6DE;box-shadow:none}
+  .judge-page .stat:nth-child(3) .c{color:#1E1A16}
+  .judge-page .stat:nth-child(3) .v{box-shadow:0 0 0 4px #FCFBF7,inset 0 0 0 1px rgba(0,0,0,.08)}
   .judge-page .ev.method{background:#A4C6DE;--muted:#1B3A5E;--cite:#1E1A16;--line:rgba(27,58,94,.28);padding:6px var(--card-pad)}
   .judge-page .ev.method li{grid-template-columns:120px minmax(0,1fr)}
   .judge-page .ev.method li > b{color:#1B3A5E}
@@ -389,7 +391,10 @@
   .judge-page .ev.docs li b{font-size:18px;color:#A4C6DE}
   .judge-page .ev.docs li span{font-size:15px;line-height:1.5;color:#C7D8EA}
   .judge-page .ev.docs li span.mono{color:#FFFFFF}
-  .judge-page .foot{max-width:90ch}
+  .judge-page .foot{max-width:90ch;margin-top:36px}
+  .judge-page .jg{padding-bottom:56px}
+  .judge-page .catchline .catch-text{position:relative;display:block;margin:8px 6px 2px;padding:12px 16px;background:#EEF4F6;border-radius:10px}
+  .judge-page .catchline .catch-text::before{content:"";position:absolute;inset:-7px;pointer-events:none;border:2px solid #1B3A5E;border-radius:14px;-webkit-mask:linear-gradient(#000,#000) left top/26px 26px no-repeat,linear-gradient(#000,#000) right bottom/26px 26px no-repeat;mask:linear-gradient(#000,#000) left top/26px 26px no-repeat,linear-gradient(#000,#000) right bottom/26px 26px no-repeat}
 
   @media (max-width: 760px){
     .judge-page .ev.method li{grid-template-columns:minmax(0,1fr)}
