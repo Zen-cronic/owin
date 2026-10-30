@@ -1,4 +1,4 @@
-"""DataUseTerms: what a vendor's own page says about one AI feature (data contract v1, Pivot A).
+"""DataUseTerms: what a vendor's own page says about one AI feature (data contract v1).
 
 One field per security-questionnaire question, so the answer pack (A3) can fill
 each question from one field plus its verbatim quote:

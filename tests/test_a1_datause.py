@@ -1,4 +1,4 @@
-"""A1: measurement harness for AI data-use terms per feature (Pivot A)."""
+"""Measurement harness for AI data-use terms per feature."""
 import io
 import json
 from contextlib import redirect_stdout

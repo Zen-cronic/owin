@@ -42,7 +42,7 @@ def write() -> Path:
     for k, v in new.items():  # keep recorded hashes when the raw file is absent locally
         if "sha256" not in v and k in old:
             v |= {kk: old[k][kk] for kk in ("chars", "sha256") if kk in old[k]}
-    if "datause" in old:  # Pivot A provenance, written by owin.datause.fetch
+    if "datause" in old:  # data-use provenance, written by owin.datause.fetch
         new["datause"] = old["datause"]
     MANIFEST.write_text(json.dumps(new, indent=1) + "\n")
     return MANIFEST

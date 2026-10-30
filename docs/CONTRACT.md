@@ -36,7 +36,7 @@ Each Token Factory call adds one line: `{ts, purpose, model, prompt_tokens, comp
 
 Client behaviour (`owin/tokenfactory.py::chat`): `timeout` is per attempt and `attempts` counts every try (batch defaults 600 s and 3; the live recheck path uses 45 s and 2). Only 429/5xx, timeouts and resets are retried; `Retry-After` is honoured (capped at 30 s); there is no wait after the last attempt. A process-level circuit breaker opens after 3 consecutive failed calls for 120 s (`tokenfactory.available()`); request-path callers check it, batch commands do not.
 
-## Decision layer (`owin.decide`, P2)
+## Decision layer (`owin.decide`)
 
 The default path follows the reframe of 2026-10-21. Evidence says people rarely miss windows. They ignore the email, and the real pain is on the processor side, telling your own customers. So the default is **accept and notify**, and objecting is the rare path.
 
@@ -81,7 +81,7 @@ The record holds `{record_id, version, decided_at, decided_by{name, role}, decis
 
 `Snapshot{vendor, source_url, retrieved, source_kind: archive|tavily|fixture|live, last_updated, entities: Entity{name, key, services, locations, purpose, section}[], content_sha256}`. Entities are keyed by a normalised name: lower case, no corporate suffix, no punctuation. Cells are compared as token sets, so markdown, links, pagers, duplicated tables and whitespace never produce a diff.
 
-## Sweep (`owin sweep [--no-live] [--only a,b] [--record path] [--seed-archive snapshot.json] [--brief]`, P3)
+## Sweep (`owin sweep [--no-live] [--only a,b] [--record path] [--seed-archive snapshot.json] [--brief]`)
 
 The command returns `{run_at, tavily_key_present, live_requested, vendors, counts{state: n}, wall_s, rows[]}`. Each row is `{vendor, display, list_url, state, source_kind: tavily|fixture|unfetched, retrieved, latency_s, refetched, parser: html_table|markdown_table|vanta_cards|linked_rows|none, entities, last_updated, prev_last_updated, reason, material?, changes?[{kind, entity, why, new_locations?}], held?}`.
 
@@ -92,9 +92,9 @@ The row `state` is one of `watching` (baseline accepted), `no_change`, `changed`
 - Tavily calls use `extract` with no `query`, so the page comes back whole and diffable. Without `TAVILY_API_KEY`, results come from recorded fixtures labelled `fixture`. Vendors with no fixture are `unfetched`.
 - The vendor index is `data/index/vendors.json` (29 vendors, each with a `watch_mode` verified on 2026-10-21). Per-vendor state lives in `var/state/` (gitignored, or `OWIN_STATE_DIR`).
 
-## DataUseTerms (`owin.datause.schema.DataUseTerms`, Pivot A, A1)
+## DataUseTerms (`owin.datause.schema.DataUseTerms`)
 
-These are the terms one vendor page states for one AI feature. There is one field per security-questionnaire question, so the answer pack (A3) fills each question from one field and its verbatim quote.
+These are the terms one vendor page states for one AI feature. There is one field per security-questionnaire question, so the buyer report fills each question from one field and its verbatim quote.
 
 | questionnaire question | field | type | set by |
 |---|---|---|---|
@@ -112,9 +112,9 @@ These are the terms one vendor page states for one AI feature. There is one fiel
 - **Labelling rules:** these are in `owin.datause.schema.LABEL_RULES`, and the prompt states the same rules.
 - **`owin eval score --corpus datause [--brief] [--file a.json]`:** returns `{corpus, run_files, model, prompt_versions, quotes_rechecked_against_source, acceptance{rule, positive_items_exact, negative_items_held, passed}, headline{positive_items_exact_majority, positive_runs_exact, tuned, heldout, fresh_heldout, negative_items_held, negative_runs_held, raw_model_positive_runs_exact, consistent_items, field_accuracy_positive_runs, baseline_*}, per_successful_run{...}, items{<id>: {kind, split, vendor, feature, gold, runs, exact_runs, n_runs, majority_exact, raw_model_exact_runs, consistent, withheld_fields, mismatched_fields, third_party_runs_exact, errors}}, baseline}`.
 - **Corpus:** each item in `eval/datause/corpus.json` is `{id, kind: tuned|heldout|negative, split: tuned|heldout|fresh, source, vendor, feature, url, file, fetched_at, source_sha256, gold{retention_days, used_for_training, zdr}, secondary{retention_condition, region, third_party_access}, evidence{retention, training, zdr, region, third_party}, label_note}`.
-- **Label changes after a run:** recorded per item in `label_history` and in `RELABELS` (`owin/datause/evaluate.py`). The first one (2026-10-21, A3): `together-serverless` `used_for_training` went from `opt_in` to `opt_out` under the product-improvement rule in `LABEL_RULES`. The pre-change score is in `eval/datause/v2-before-relabel-score.json`.
+- **Label changes after a run:** recorded per item in `label_history` and in `RELABELS` (`owin/datause/evaluate.py`). The first one (2026-10-21): `together-serverless` `used_for_training` went from `opt_in` to `opt_out` under the product-improvement rule in `LABEL_RULES`. The pre-change score is in `eval/datause/v2-before-relabel-score.json`.
 
-## Buyer report (`owin.datause.pack`, A3; `answer_pack` in the API)
+## Buyer report (`owin.datause.pack`; `answer_pack` in the API)
 
 ### Inputs
 
@@ -157,7 +157,7 @@ These are the terms one vendor page states for one AI feature. There is one fiel
 
 ### Rules (code only)
 
-1. A vendor field counts only when it is asserted and its quote passed the A1 verbatim gate (`verbatim[field]`). Otherwise the field is null or `unspecified`, after `inherits` is tried.
+1. A vendor field counts only when it is asserted and its quote passed the verbatim gate (`verbatim[field]`). Otherwise the field is null or `unspecified`, after `inherits` is tried.
 2. Per-question cell rules:
    - Q01: `no`/`opt_in` means not used, and `yes`/`opt_out` means used. `unspecified` is held.
    - Q02: with `zdr=available` and `settings.zdr_enabled[provider]`, the cell holds (not retained). Otherwise `retention_days <= max_retention_days`. `null` is held.
@@ -166,7 +166,7 @@ These are the terms one vendor page states for one AI feature. There is one fiel
    - Q05: a provider not in `providers` contradicts. `third_party_access=yes` without `includes_subprocessors` contradicts.
 3. **Outdated** (badge code `stale`) has two sources. (a) For Q05, the provider's sub-processor list: the entity diff between the last trusted observation on or before `stated_at` and the latest trusted observation is not empty. Observations marked `held` (stale_source: Tavily served an older "Last updated") are never used. (b) For any question, the cell's quote is checked absent (`null`) in the latest capture, and the extraction on that capture (`live_check`) does not reproduce the value with a verbatim quote. If it does reproduce the value, the cell re-anchors to that quote and is not stale.
 4. Badge: any `contradicts` gives `not_true`; else any stale event gives `stale`; else any `confirm` gives `confirm`; else any `held` gives `held_unspecified`; else `still_true`. The codes are the API's enum; `badge_label` carries the words a person reads: Not true, Outdated (`stale`), Needs review (`confirm`), Not stated (`held_unspecified`), Verified (`still_true`).
-5. Selective answering (P1, `owin/datause/selective.py`): a vendor field reaches a rule only when at least 2 extraction runs succeeded and every successful run agreed on it (registry `features[id].field_agreement[field].state == "auto"`; the runs are the 3 on the latest Tavily capture when they exist, else the 3 recorded A1 runs; an errored run abstains, it neither agrees nor disagrees). Otherwise the cell has `verdict: "confirm"`, `vendor_value: null` and `confirm{runs_agreeing (agreeing/successful), readings_ok, readings_failed, basis, options[{value, label, runs, quote, quote_display, evidence, quote_failed_gate}]}`. There is no exception: a split reading is always `confirm`, the same rule as `owin eval selective`. Region never decides, so it is never `auto` or `confirm`. Buyer exports show a confirm cell as "Being confirmed" with no quote.
+5. Selective answering (`owin/datause/selective.py`): a vendor field reaches a rule only when at least 2 extraction runs succeeded and every successful run agreed on it (registry `features[id].field_agreement[field].state == "auto"`; the runs are the 3 on the latest Tavily capture when they exist, else the 3 recorded runs; an errored run abstains, it neither agrees nor disagrees). Otherwise the cell has `verdict: "confirm"`, `vendor_value: null` and `confirm{runs_agreeing (agreeing/successful), readings_ok, readings_failed, basis, options[{value, label, runs, quote, quote_display, evidence, quote_failed_gate}]}`. There is no exception: a split reading is always `confirm`, the same rule as `owin eval selective`. Region never decides, so it is never `auto` or `confirm`. Buyer exports show a confirm cell as "Under review" with no quote.
 
 `owin eval selective --corpus datause [--split v3fresh] [--file runs.json] [--brief]` recomputes keyless from recorded runs: `auto_answered`, `auto_correct`, `correct_with_sentence` (correct auto cells that assert a value, each with the page's verbatim sentence) and `correct_not_stated` (correct auto cells on a page that says nothing on that field), `sent_to_confirm`, `confirm_majority_right`, `all_cells_majority_right` (what a majority vote would have shipped on every cell), `pages` (distinct URLs), `vendors_new` (vendor families absent from the rest of the corpus; a name is a family up to its first parenthesis), `auto_misses` (with footnotes), negative controls, and labelled non-clean references. `--brief` carries them as `with_sentence`, `not_stated`, `all_cells_majority_right`, `pages`, `vendors_new`; `GET /api/selective` adds `majority_all_cells`, `correct_with_sentence`, `correct_not_stated`, `pages`, `vendors_new` at the top level beside `selective` (the brief).
 5. `set_feature(manifest, path, feature)` (`--set PATH=FEATURE`, `?set=PATH=FEATURE`) is the change-one-input path.
