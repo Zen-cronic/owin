@@ -2,9 +2,9 @@
 name: Owin
 description: Security review answers per endpoint, filed like a card catalogue.
 colors:
-  field: "#5A3D25"
-  field-deep: "#432A16"
-  brass: "#B98B3E"
+  field: "#1B3A5E"
+  field-deep: "#122A46"
+  frame: "#A4C6DE"
   card-stock: "#FCFBF7"
   card-selected: "#FFFFFF"
   stock-back: "#E9E2D6"
@@ -22,8 +22,8 @@ colors:
   ink-cite: "#3A3631"
   edge: "#6A645C"
   on-field: "#FFFFFF"
-  on-field-muted: "#E9D9C4"
-  link-signal-on-field: "#F2B8B0"
+  on-field-muted: "#C7D8EA"
+  link-signal-on-field: "#F4B6AE"
 typography:
   display:
     fontFamily: "Archivo, Arial, system-ui, sans-serif"
@@ -171,15 +171,15 @@ components:
 
 **Creative North Star: "The Card Catalogue"**
 
-Owin files vendor evidence the way a library files its holdings. The page ground is a flat field of quarter-sawn oak. Every endpoint is a drawer label held in a brass frame; every questionnaire answer is a ruled index card; the state of an answer is a rubber stamp inked onto that card; the note on the card is the vendor's own sentence. The world is daylight, paper and wood, read at a desk.
+Owin files vendor evidence the way a library files its holdings. The page ground is a flat field of Prussian blue, the ground of a cyanotype. Every endpoint is a drawer label held in a pale cyanotype frame; every questionnaire answer is a ruled index card; the state of an answer is a rubber stamp inked onto that card; the note on the card is the vendor's own sentence. The world is daylight, paper and blueprint ink, read at a desk.
 
-Density is that of a working catalogue: many cards, each short, each ruled. Hierarchy comes from material (oak, card, brass, ink) rather than from tint or elevation. Red is reserved for what is not true and for its fix, so a red mark always means "act here". The system rejects the dark developer dashboard with a single neon accent, wood-grain texture, glow, and rounded soft cards.
+Density is that of a working catalogue: many cards, each short, each ruled. Hierarchy comes from material (blueprint field, card, cyanotype frame, ink) rather than from tint or elevation. Red is reserved for what is not true and for its fix, so a red mark always means "act here". The system rejects the dark developer dashboard with a single neon accent, blueprint grid texture, glow, and rounded soft cards. The field is all cool, so nothing on the page is warm except the signal.
 
 This file records theme 1 ("Catalogue"), the default look. Four alternate themes ship as opt-in and are described under Layout only as far as the theme system binds them.
 
 **Key Characteristics:**
-- Flat oak field carrying white text; white card stock carrying dark ink.
-- Brass frames (2px ring, 4px on numeral plates) around labels, never a fill behind body text.
+- Flat Prussian-blue field carrying white text; white card stock carrying dark ink.
+- Pale cyanotype frames (2px ring, 4px on numeral plates) around labels, never a fill behind body text.
 - A 2px cyan ruled header line under every card head; red replaces it on the one card that is not true.
 - State stamps whose frame form carries meaning as much as their ink: filled box, double rule, dashed, thin rule, bare tick.
 - Archivo in three widths: expanded for entries, normal for titles, condensed for stamp and label caps.
@@ -187,14 +187,14 @@ This file records theme 1 ("Catalogue"), the default look. Four alternate themes
 
 ## Colors
 
-A warm wood-and-paper palette with one hot signal and three stamp inks.
+A cool blueprint-and-paper palette: a Prussian-blue field, pale cyanotype frames and white card stock, with one hot signal and three stamp inks. Signal red is the only warm colour on the page.
 
 ### Primary
 - **Not True Red** (signal-red): the Not true stamp, the selected card's frame and header rule, the primary button, the struck-through wrong text in the fix panel, and the failing cell in the per-endpoint row. Nothing else.
 - **Pressed Red** (signal-red-deep): hover state of the primary button only.
 
 ### Secondary
-- **Catalogue Brass** (brass): label frames around the wordmark, drawer labels, tally card, numeral plates and the export menu; drawer pulls under numerals; the selected theme number; the active mobile tab underline; the rule under the finding. Decorative framing only, never text on the field.
+- **Cyanotype Line** (frame): label frames around the wordmark, drawer labels, tally card, numeral plates and the export menu; drawer pulls under numerals; the selected theme number; the active mobile tab underline; the rule under the finding. Decorative framing only, never text on the field.
 
 ### Tertiary
 - **Date-Stamp Violet** (stamp-stale): the Stale stamp and the "changed" tag.
@@ -203,22 +203,22 @@ A warm wood-and-paper palette with one hot signal and three stamp inks.
 - **Ruling Cyan** (rule-cyan): the 2px ruled header line of every card, the fix panel's top rule, and source-link underlines.
 
 ### Neutral
-- **Quarter-Sawn Oak** (field): the page ground and the drawer fronts.
-- **Dark Oak** (field-deep): the full-bleed band that houses the drawer fronts on the start page.
+- **Prussian Blue** (field): the page ground and the drawer fronts.
+- **Deep Prussian** (field-deep): the full-bleed band that houses the drawer fronts on the start page.
 - **Index Stock** (card-stock): answer cards, drawer labels, tally, menus, shelf-list cards.
 - **Fresh Card** (card-selected): the selected or stale card, fields, the command line.
 - **Pushed-Back Stock** (stock-back): a card related away from the current focus or recomputing; it darkens instead of fading.
 - **Ruling Wash** (wash): hover and chip wash on cards.
 - **Highlighted Row** (hit): the table row that answers the question.
 - **Card Ink** (ink), **Card Muted** (ink-muted), **Quoted Ink** (ink-cite), **Control Edge** (edge): text, captions, quoted vendor sentences and control borders on card stock.
-- **On Oak** (on-field) and **On Oak Muted** (on-field-muted): text set directly on the field.
-- **Pale Signal** (link-signal-on-field): the connector line from the failing endpoint to its answer, drawn over the oak, and the warning icon in the finding line.
+- **On Prussian** (on-field) and **On Prussian Muted** (on-field-muted): text set directly on the field.
+- **Pale Signal** (link-signal-on-field): the connector line from the failing endpoint to its answer, drawn over the field, and the warning icon in the finding line.
 
 ### Named Rules
 
 **The Red Means Act Rule.** Signal red marks only Not true and its fix. Stale, Confirm and Held each have their own ink; none borrows red.
 
-**The Two Contexts Rule.** Anything set on the oak reads the on-field tokens; anything filed on a card reads the card tokens. A component never mixes the two, and switching context is done by re-pointing --ink, --muted, --cite, --edge, --line and --focus, not by new colours.
+**The Two Contexts Rule.** Anything set on the field reads the on-field tokens; anything filed on a card reads the card tokens. A component never mixes the two, and switching context is done by re-pointing --ink, --muted, --cite, --edge, --line and --focus, not by new colours.
 
 ## Typography
 
@@ -229,7 +229,7 @@ A warm wood-and-paper palette with one hot signal and three stamp inks.
 **Character:** A catalogue's typeset entries over a reading face built for legibility. Width does the work: expanded Archivo for main entries, condensed Archivo caps for anything that behaves like a stamp or a drawer label.
 
 ### Hierarchy
-- **Display** (700, 44px, 1.08, width 112): the finding on the answer screen, set straight on the oak. 27px at 900px and below.
+- **Display** (700, 44px, 1.08, width 112): the finding on the answer screen, set straight on the field. 27px at 900px and below.
 - **Display, start page** (700, clamp(30px, 3.3vw, 48px), 1.1, width 108): the opening line on the start page, across eleven of twelve columns.
 - **Headline** (700, 30px, 1.1, width 112): section heads on the start page. 24px on phones.
 - **Title** (700, 20px, 1.3): the question on each answer card; 22px for guided-path titles. 18px on phones.
@@ -245,15 +245,15 @@ A warm wood-and-paper palette with one hot signal and three stamp inks.
 
 ## Layout
 
-The answer screen centres a 1280px column with 32px side padding. Under the header, the finding takes the left column and the tally card a 320px right column, separated by 56px. Below a brass rule, two panes: the stack of drawer labels at 360px (sticky) and the answer cards in the remaining width, 56px apart. Drawer labels stack with a 14px gap, answer cards with 18px; card padding is 22px.
+The answer screen centres a 1280px column with 32px side padding. Under the header, the finding takes the left column and the tally card a 320px right column, separated by 56px. Below a cyanotype rule, two panes: the stack of drawer labels at 360px (sticky) and the answer cards in the remaining width, 56px apart. Drawer labels stack with a 14px gap, answer cards with 18px; card padding is 22px.
 
-The start page runs on a twelve-column grid inside a 1440px container with a fluid gutter (clamp(16px, 3.4vw, 48px)) and 24px column gaps. The opening line spans eleven columns; the explanation takes columns one to five and the catch card columns seven to twelve. The drawer-front band runs full bleed in dark oak with three equal drawer fronts. Sections sit 112px apart.
+The start page runs on a twelve-column grid inside a 1440px container with a fluid gutter (clamp(16px, 3.4vw, 48px)) and 24px column gaps. The opening line spans eleven columns; the explanation takes columns one to five and the catch card columns seven to twelve. The drawer-front band runs full bleed in deep Prussian blue with three equal drawer fronts. Sections sit 112px apart.
 
 At 900px and below, everything collapses to one column; the answer screen switches to two tabs (Answers, Your stack), the tally card is hidden, connectors are hidden, and drawer fronts become rows with the numeral plate left and its caption right. No layout scrolls horizontally at 390px.
 
 ### Theme system
 
-`html[data-theme]` is set before first paint by an inline script: `?theme=cN` (or `?theme=N`) wins and is saved, then the saved choice, then `c1`. Theme 1 is the `:root` default in the token layer, so a page with no attribute renders theme 1; its arrangement and decoration are scoped to `:is(:root:not([data-theme]), :root[data-theme="c1"])`. Themes 2 to 5 (Broadsheet, Ledger, Civic form, Photocopy) are opt-in alternates; each defines all of its own colour and type tokens and never inherits theme 1's look. These tokens belong to theme 1 only and no alternate reads them: `--field`, `--on-field`, `--on-field-muted`, `--brass`, `--rule-cyan`, `--stamp-stale`, `--stamp-confirm`, `--stamp-held`. Components read tokens only; a new colour or family is added as a token, never as a literal in a component rule.
+`html[data-theme]` is set before first paint by an inline script: `?theme=cN` (or `?theme=N`) wins and is saved, then the saved choice, then `c1`. Theme 1 is the `:root` default in the token layer, so a page with no attribute renders theme 1; its arrangement and decoration are scoped to `:is(:root:not([data-theme]), :root[data-theme="c1"])`. Themes 2 to 5 (Broadsheet, Ledger, Civic form, Photocopy) are opt-in alternates; each defines all of its own colour and type tokens and never inherits theme 1's look. These tokens belong to theme 1 only and no alternate reads them: `--field`, `--on-field`, `--on-field-muted`, `--frame`, `--rule-cyan`, `--stamp-stale`, `--stamp-confirm`, `--stamp-held`. Components read tokens only; a new colour or family is added as a token, never as a literal in a component rule.
 
 ### Frozen DOM contract
 
@@ -276,11 +276,11 @@ A demo recorder and the test suite bind to these hooks. Their ids, classes, attr
 
 ## Elevation & Depth
 
-Flat. Depth is material, not light: card stock sits on oak, the selected card goes from stock to fresh white, and a card pushed back darkens to the stock-back tone rather than fading. The only shadow-like values are a card's 1px bottom edge and frames drawn with zero-blur rings.
+Flat. Depth is material, not light: card stock sits on the blueprint field, the selected card goes from stock to fresh white, and a card pushed back darkens to the stock-back tone rather than fading. The only shadow-like values are a card's 1px bottom edge and frames drawn with zero-blur rings.
 
 ### Shadow Vocabulary
 - **Card edge** (`box-shadow: 0 1px 0 rgba(0,0,0,.25)`): the bottom edge of every answer card.
-- **Brass frame** (`box-shadow: 0 0 0 2px var(--brass)`): drawer labels, tally card, wordmark plate, toast. Numeral plates use 4px.
+- **Cyanotype frame** (`box-shadow: 0 0 0 2px var(--frame)`): drawer labels, tally card, wordmark plate, toast. Numeral plates use 4px.
 - **Selected frame** (`box-shadow: 0 0 0 2px var(--act)`): the selected answer card and drawer label.
 - **Drawer front bevel** (`box-shadow: inset 0 0 0 1px rgba(0,0,0,.35), inset 0 2px 0 rgba(255,255,255,.07)`): the routed edge of a drawer front.
 
@@ -290,17 +290,17 @@ Flat. Depth is material, not light: card stock sits on oak, the selected card go
 
 ## Shapes
 
-Square corners throughout (0 radius on buttons, cards, stamps, fields and numeral plates). Lines are 1px hairlines on cards, 2px for ruled header lines and frames, 4px for numeral-plate frames and the double-rule Stale stamp. Stamps on answer cards and the Not true count in the tally sit at a -2deg tilt, as if inked by hand. The one curved form is the drawer pull under each numeral plate: a 4px brass U (72px by 16px, 36px bottom radius).
+Square corners throughout (0 radius on buttons, cards, stamps, fields and numeral plates). Lines are 1px hairlines on cards, 2px for ruled header lines and frames, 4px for numeral-plate frames and the double-rule Stale stamp. Stamps on answer cards and the Not true count in the tally sit at a -2deg tilt, as if inked by hand. The one curved form is the drawer pull under each numeral plate: a 4px cyanotype U (72px by 16px, 36px bottom radius).
 
 ## Components
 
 ### Buttons
 Square, set in the label face (Archivo 700, 0.01em).
 - **Shape:** square corners (0).
-- **Primary:** signal red with white text, 13px by 18px. On the oak it gains a 2px white ring so it reads as a card-stock button pressed into the field.
-- **Hover / Focus:** primary darkens to pressed red; focus is a 2px outline offset 2px in the context's focus colour (white on oak, navy on card).
-- **Ghost:** 1px edge border, transparent ground, wash on hover; on the oak the border and text are white and hover is a 12% white wash. Small ghost: 7px by 12px, 13px text.
-- **Text link action:** the draft link beside the primary button is underlined in brass on the oak.
+- **Primary:** signal red with white text, 13px by 18px. On the field it gains a 2px white ring so it reads as a card-stock button pressed into the field.
+- **Hover / Focus:** primary darkens to pressed red; focus is a 2px outline offset 2px in the context's focus colour (white on the field, navy on card).
+- **Ghost:** 1px edge border, transparent ground, wash on hover; on the field the border and text are white and hover is a 12% white wash. Small ghost: 7px by 12px, 13px text.
+- **Text link action:** the draft link beside the primary button is underlined in pale cyan on the field.
 
 ### Stamps (badges and chips)
 One grammar for every state; the frame form carries the state as much as the ink.
@@ -319,10 +319,10 @@ One grammar for every state; the frame form carries the state as much as the ink
 - **Internal Padding:** 20px 22px 24px; 16px 14px 32px on phones.
 
 ### Drawer labels (endpoints)
-A white card held in a 2px brass frame. The endpoint path in bold mono, the vendor feature as a dotted-underlined picker, the finding, the state chips, and a ghost Re-check button. Selected: fresh white with a red frame. Pushed back: stock-back ground with a 45% brass frame.
+A white card held in a 2px cyanotype frame. The endpoint path in bold mono, the vendor feature as a dotted-underlined picker, the finding, the state chips, and a ghost Re-check button. Selected: fresh white with a red frame. Pushed back: stock-back ground with a 45% cyanotype frame.
 
 ### Tally card
-A filed card at top right of the answer screen in a brass frame, its head in label caps over a cyan rule, one line per state with a condensed numeral; the Not true count sits in a tilted red box.
+A filed card at top right of the answer screen in a cyanotype frame, its head in label caps over a cyan rule, one line per state with a condensed numeral; the Not true count sits in a tilted red box.
 
 ### Inputs / Fields
 - **Style:** fresh white, 1px edge border, square, 15px body face.
@@ -330,29 +330,29 @@ A filed card at top right of the answer screen in a brass frame, its head in lab
 - **Endpoint picker:** a native select laid invisibly over the feature line, so the line itself is the control.
 
 ### Navigation
-The header sits on the oak with a hairline below. The wordmark is an expanded Archivo 800 plate on card stock in a 2px brass frame. Theme numbers are condensed digits; the chosen one is filled brass with dark ink. On phones the radios give way to a compact select framed in brass. Mobile tabs are condensed Archivo on the oak with a 3px brass underline on the active tab.
+The header sits on the field with a hairline below. The wordmark is an expanded Archivo 800 plate on card stock in a 2px cyanotype frame. Theme numbers are condensed digits; the chosen one is filled pale cyan with dark ink. On phones the radios give way to a compact select framed in pale cyan. Mobile tabs are condensed Archivo on the field with a 3px pale cyan underline on the active tab.
 
 ### Numeral plates and drawer fronts (signature)
-On the start page, three drawer fronts in oak sit inside a full-bleed dark-oak band. Each holds a card-stock plate in a 4px brass frame with the number in condensed Archivo 800; the ratio slash is set in muted card ink. A brass pull hangs below and the caption sits under it in white. On entry each number rises into its plate once (0.55s, 80ms stagger); static under reduced motion.
+On the start page, three drawer fronts in Prussian blue sit inside a full-bleed deep-Prussian band. Each holds a card-stock plate in a 4px cyanotype frame with the number in condensed Archivo 800; the ratio slash is set in muted card ink. A pale cyan pull hangs below and the caption sits under it in white. On entry each number rises into its plate once (0.55s, 80ms stagger); static under reduced motion.
 
 ### Catch card (signature)
-The start page's catch is a filed card on the oak: the tilted Not true stamp, a full-width red rule under it, the sentence with its key phrase underlit in pale red, and the primary button.
+The start page's catch is a filed card on the field: the tilted Not true stamp, a full-width red rule under it, the sentence with its key phrase underlit in pale red, and the primary button.
 
 ## Do's and Don'ts
 
 ### Do:
 - **Do** keep signal red (#B3202A) to Not true, its selected frame, and its fix.
 - **Do** give every card head a 2px ruling-cyan line, and switch it to red only on the card that is not true.
-- **Do** frame labels in brass with a zero-blur ring (2px, 4px on numeral plates).
+- **Do** frame labels in pale cyan with a zero-blur ring (2px, 4px on numeral plates).
 - **Do** carry state in the stamp's frame form (filled, double, dashed, thin, bare) so it reads without colour.
-- **Do** set anything on the oak in the on-field tokens and anything on a card in the card tokens.
+- **Do** set anything on the field in the on-field tokens and anything on a card in the card tokens.
 - **Do** push related-away cards back to stock-back (#E9E2D6) instead of lowering opacity.
 - **Do** restyle within the frozen DOM contract; add colours and families as tokens.
 
 ### Don't:
-- **Don't** add wood grain, texture images, glow, or blurred shadows; depth is material and frame.
+- **Don't** add blueprint grids, texture images, glow, or blurred shadows; depth is material and frame.
 - **Don't** round corners on any card, button, stamp or plate.
 - **Don't** use red for Stale, Confirm or Held, or as decoration.
 - **Don't** set body copy in Archivo, or entries in the body face.
-- **Don't** read theme 1 tokens (--field, --brass, --rule-cyan, the stamp inks) from an alternate theme.
+- **Don't** read theme 1 tokens (--field, --frame, --rule-cyan, the stamp inks) from an alternate theme.
 - **Don't** rename, re-nest or remove an element in the frozen DOM contract.

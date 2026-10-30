@@ -1,8 +1,8 @@
 /* Theme 1, Catalogue. Its tokens are the defaults in app.css (:root), so this file carries only the arrangement and
-   the decoration, scoped to "no data-theme" and data-theme="c1". Material: a flat quarter-sawn oak field; each
-   endpoint a drawer label in a brass frame; each answer a ruled index card; the state is a rubber
+   the decoration, scoped to "no data-theme" and data-theme="c1". Material: a flat Prussian-blue field; each
+   endpoint a drawer label in a pale cyanotype frame; each answer a ruled index card; the state is a rubber
    stamp whose form (filled box, double rule, dashed, thin pencil, bare tick) carries it as much as its ink. Red is
-   kept for Not true and its fix. No wood grain, no glow, no shadow beyond a card's 1px edge. */
+   kept for Not true and its fix. No grid or texture, no glow, no shadow beyond a card's 1px edge. */
 :root[data-theme="c1"]{color-scheme:light}
 
 :is(:root:not([data-theme]),:root[data-theme="c1"]){
@@ -11,15 +11,15 @@
   --stock-back:#E9E2D6;
   --on-field-line:rgba(255,255,255,.22);
   --link-quiet:rgba(255,255,255,.55);
-  --link-signal:#F2B8B0;
+  --link-signal:#F4B6AE;
   --hit:#F1EADC;
   background:var(--field);
 
-  ::selection{background:#F2D9A0;color:#1E1A16}
-  body{background:var(--field);color:var(--on-field);font-size:15.5px;line-height:1.55;letter-spacing:0;scrollbar-color:var(--brass) var(--field)}
+  ::selection{background:#BFD9EA;color:#1E1A16}
+  body{background:var(--field);color:var(--on-field);font-size:15.5px;line-height:1.55;letter-spacing:0;scrollbar-color:var(--frame) var(--field)}
   a{text-underline-offset:4px;text-decoration-thickness:1px}
 
-  /* Field context: anything set straight on the oak reads the field tokens */
+  /* Field context: anything set straight on the field reads the field tokens */
   .top,.catch,.ph,.tabs,.legends,.foot,.jg > section > h2,.story,.jg .also{
     --ink:var(--on-field);--muted:var(--on-field-muted);--cite:var(--on-field-muted);--edge:var(--on-field-muted);--line:var(--on-field-line);--focus:#FFFFFF;
     color:var(--ink);
@@ -27,31 +27,31 @@
   /* Card context: everything filed on a card reads the card tokens again */
   .ans,.ep-row,.pages,.menu,.summary,.judge-page .catchline,.judge-page .ev,.judge-page .paths{color:var(--ink)}
 
-  /* Header: the wordmark as a label card in a brass frame */
+  /* Header: the wordmark as a label card in a cyanotype frame */
   .top{border-bottom:var(--hair) solid var(--on-field-line);padding-block:14px;font-size:13.5px}
-  .word{display:inline-block;font:800 19px/1 var(--display);font-stretch:125%;letter-spacing:.01em;color:#1E1A16;background:var(--bg);padding:6px 10px 5px;box-shadow:0 0 0 2px var(--brass);text-decoration:none}
+  .word{display:inline-block;font:800 19px/1 var(--display);font-stretch:125%;letter-spacing:.01em;color:#1E1A16;background:var(--bg);padding:6px 10px 5px;box-shadow:0 0 0 2px var(--frame);text-decoration:none}
   .top .judge,.top .replay.judge{font-weight:600}
   .theme-switch label > span:not(.sr){font-family:var(--display);font-stretch:75%;font-weight:700}
-  .theme-switch input:checked + span{color:#1E1A16;background:var(--brass);box-shadow:none}
-  .theme-switch label:hover input:checked + span{background:var(--brass)}
+  .theme-switch input:checked + span{color:#0E2138;background:var(--frame);box-shadow:none}
+  .theme-switch label:hover input:checked + span{background:var(--frame)}
   .theme-switch label:hover > span:not(.sr){background:rgba(255,255,255,.12)}
-  .theme-select{background:var(--bg);color:#1E1A16;border:2px solid var(--brass);font-family:var(--sans)}
+  .theme-select{background:var(--bg);color:#1E1A16;border:2px solid var(--frame);font-family:var(--sans)}
   .catch .bar{background:rgba(255,255,255,.16)}
 
-  /* The finding: a main entry set straight on the oak */
+  /* The finding: a main entry set straight on the field */
   .catch > h1{order:-1;margin-top:0}
   .kicker{order:0;margin-top:16px;font:500 15px/1.4 var(--sans);color:var(--on-field)}
   .kicker b{font-weight:800;color:#FFFFFF}
-  .kicker svg{color:#F2B8B0}
+  .kicker svg{color:var(--link-signal)}
   .kicker.calm svg{color:var(--on-field-muted)}
   h1{font-family:var(--display);font-weight:700;font-stretch:112%;letter-spacing:-.012em;font-size:44px;line-height:1.08;margin-top:14px}
-  h1 .ep{font-family:var(--mono);font-weight:700;font-size:.84em;letter-spacing:-.02em;box-shadow:inset 0 -.12em 0 rgba(242,184,176,.55)}
+  h1 .ep{font-family:var(--mono);font-weight:700;font-size:.84em;letter-spacing:-.02em;box-shadow:inset 0 -.12em 0 rgba(244,182,174,.55)}
   .lede.delta{color:var(--on-field);margin-top:12px;font-size:15.5px}
   .todo{margin-top:28px}
-  .todo .link{color:var(--on-field);text-decoration-color:var(--brass)}
+  .todo .link{color:var(--on-field);text-decoration-color:var(--frame)}
   .todo .link:hover{text-decoration-color:var(--on-field)}
   .status{color:var(--on-field-muted)}
-  .catch > .rule-draw{height:2px;background:var(--brass);opacity:.65}
+  .catch > .rule-draw{height:2px;background:var(--frame);opacity:.65}
 
   /* Buttons: square, set in the label face */
   .btn{font-family:var(--display);font-weight:700;letter-spacing:.01em}
@@ -65,7 +65,7 @@
   .btn:disabled{color:var(--muted)}
 
   /* The tally: a filed card in the top right, one line per state */
-  .summary{--ink:#1E1A16;--muted:#5E5A55;--cite:#3A3631;--line:#C9DCE4;position:relative;background:var(--bg);color:var(--ink);padding:16px var(--card-pad) 18px;box-shadow:0 0 0 2px var(--brass)}
+  .summary{--ink:#1E1A16;--muted:#5E5A55;--cite:#3A3631;--line:#C9DCE4;position:relative;background:var(--bg);color:var(--ink);padding:16px var(--card-pad) 18px;box-shadow:0 0 0 2px var(--frame)}
   .summary h2{font:700 12px/1.3 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding-bottom:10px;margin-bottom:0;border-bottom:2px solid var(--rule-cyan)}
   .summary dl{border-top:0}
   .summary .sm{padding:8px 0;border-bottom:var(--hair) solid var(--line)}
@@ -78,16 +78,16 @@
   .summary .sm.zero .num-tile{color:var(--muted)}
   .summary p{color:var(--muted);font-size:13px}
 
-  /* Pane heads and mobile tabs on the oak */
+  /* Pane heads and mobile tabs on the field */
   .ph h2{font:700 13px/1.3 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.08em;color:var(--on-field)}
   .tabs{border-bottom-color:var(--on-field-line)}
   .tabs button{color:var(--on-field-muted);font-family:var(--display);font-weight:700}
-  .tabs button[aria-selected=true]{color:var(--on-field);border-bottom-color:var(--brass);border-bottom-width:3px}
+  .tabs button[aria-selected=true]{color:var(--on-field);border-bottom-color:var(--frame);border-bottom-width:3px}
   .tabs .ct{color:var(--on-field-muted);font-family:var(--mono)}
 
-  /* Endpoints: drawer labels, a white card in a brass frame */
+  /* Endpoints: drawer labels, a white card in a cyanotype frame */
   #endpoints{gap:14px}
-  .ep-row{background:var(--bg);border:0;box-shadow:0 0 0 2px var(--brass);padding:14px 16px 16px}
+  .ep-row{background:var(--bg);border:0;box-shadow:0 0 0 2px var(--frame);padding:14px 16px 16px}
   .ep-row:hover{background:var(--surface)}
   .ep-row.sel{background:var(--surface);box-shadow:0 0 0 2px var(--act)}
   .ep-row .path{font:700 15px/1.3 var(--mono);color:var(--ink)}
@@ -98,7 +98,7 @@
   /* Pushed back, not faded: a related-away or recomputing card keeps opaque stock in a darker shade */
   .dimmed,.recomputing .ep-row,.recomputing .ans{opacity:1}
   .ans.dimmed,.recomputing .ans{background:var(--stock-back)}
-  .ep-row.dimmed,.recomputing .ep-row{background:var(--stock-back);box-shadow:0 0 0 2px rgba(185,139,62,.45)}
+  .ep-row.dimmed,.recomputing .ep-row{background:var(--stock-back);box-shadow:0 0 0 2px rgba(164,198,222,.45)}
 
   /* Stamps: badges and chips share one grammar; the state is in the frame as much as the ink */
   .badge,.chip{font:700 12.5px/1 var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.07em;background:none;padding:5px 7px 4px;border:2px solid currentColor;border-radius:0;color:var(--ink);gap:5px}
@@ -159,24 +159,24 @@
   .pages li a{color:var(--ink);font-weight:600}
   .pages .reset{color:var(--muted);border-top:var(--hair) solid var(--line);padding:6px 0 10px;margin-top:0}
   .legends{margin-top:16px}
-  .legend{color:#F3E8DA;font-size:13px}
+  .legend{color:#DCE7F2;font-size:13px}
   .legend .lh{color:var(--on-field);font-family:var(--display);font-stretch:75%;text-transform:uppercase;letter-spacing:.06em}
   .legend i{color:var(--on-field)}
 
-  /* Connectors run over the oak: pale red for Not true, chalk for Stale */
+  /* Connectors run over the field: pale red for Not true, chalk for Stale */
   #link path{stroke:var(--link-signal);stroke-width:2}
   #link circle{fill:var(--link-signal);stroke:var(--field)}
   #link .quiet{stroke:var(--link-quiet);stroke-dasharray:4 3}
   #link circle.quiet{fill:var(--link-quiet)}
 
   /* Menu and toast */
-  .menu{background:var(--bg);border:0;box-shadow:0 0 0 2px var(--brass),0 10px 24px -8px rgba(0,0,0,.45)}
+  .menu{background:var(--bg);border:0;box-shadow:0 0 0 2px var(--frame),0 10px 24px -8px rgba(0,0,0,.45)}
   .menu button:hover,.menu button:focus-visible{background:var(--raise)}
   .menu b{font-family:var(--display)}
-  .toast{background:#1E1A16;color:#FFFFFF;border:0;box-shadow:0 0 0 2px var(--brass)}
-  .foot{color:#F3E8DA;font-size:13.5px;max-width:96ch}
+  .toast{background:#1E1A16;color:#FFFFFF;border:0;box-shadow:0 0 0 2px var(--frame)}
+  .foot{color:#DCE7F2;font-size:13.5px;max-width:96ch}
 
-  /* Start page: the opening line on the oak, the catch on a filed card, the numbers on drawer fronts */
+  /* Start page: the opening line on the field, the catch on a filed card, the numbers on drawer fronts */
   .judge-page .story .kick{display:none}
   .judge-page .story h1{font-stretch:108%;font-size:clamp(30px,3.3vw,48px);line-height:1.1;grid-column:1/span 11;margin-top:0}
   .judge-page .lede{margin-top:44px;padding-top:0;align-items:start}
@@ -190,14 +190,14 @@
   .catch-text{color:var(--ink)}
   .judge-page .catchline .act{margin-top:18px}
 
-  /* Drawer fronts: the board band in darker oak, each number on a label card held by a brass frame, a pull below */
+  /* Drawer fronts: the board band in deeper Prussian blue, each number on a label card held by a cyanotype frame, a pull below */
   .judge-page .stat-board{--ink:#FFFFFF;--muted:var(--on-field-muted);--cite:var(--on-field-muted);--line:rgba(0,0,0,.35);margin-top:80px;padding:34px 0 40px}
   .judge-page .jg .big{color:var(--on-field);font:500 16px/1.45 var(--sans);margin-bottom:28px;max-width:none}
   .judge-page .stats{gap:var(--col)}
   .judge-page .stat,.judge-page .stat + .stat{padding:36px 20px 30px;border:0;display:flex;flex-direction:column;align-items:center;text-align:center;background:var(--field);box-shadow:inset 0 0 0 1px rgba(0,0,0,.35),inset 0 2px 0 rgba(255,255,255,.07)}
   .judge-page .stat{--d:clamp(64px,7.4vw,112px)}
-  .judge-page .stat .v{position:relative;background:var(--bg);color:#1E1A16;padding:.1em .26em .04em;box-shadow:0 0 0 4px var(--brass),inset 0 0 0 1px rgba(0,0,0,.08);line-height:1}
-  .judge-page .stat .v::after{content:"";position:absolute;left:50%;top:calc(100% + 26px);width:72px;height:16px;margin-left:-36px;border:4px solid var(--brass);border-top:0;border-radius:0 0 36px 36px}
+  .judge-page .stat .v{position:relative;background:var(--bg);color:#1E1A16;padding:.1em .26em .04em;box-shadow:0 0 0 4px var(--frame),inset 0 0 0 1px rgba(0,0,0,.08);line-height:1}
+  .judge-page .stat .v::after{content:"";position:absolute;left:50%;top:calc(100% + 26px);width:72px;height:16px;margin-left:-36px;border:4px solid var(--frame);border-top:0;border-radius:0 0 36px 36px}
   .judge-page .num-row{gap:0}
   .judge-page .num-tile,.judge-page .num-sep{width:.5em;height:1.04em;background:none;border-radius:0;perspective:none}
   .judge-page .num-sep{width:.34em}
