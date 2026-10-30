@@ -114,103 +114,162 @@ def to_share(pack: dict) -> dict:
 
 
 _CSS = """
-@page { size: A4; margin: 16mm 14mm; }
-:root { --bg:#FFFFFF; --surface:#F4F3EE; --ink:#111111; --muted:#5E605C; --line:#D9D8D2; --edge:#8A8C88; --act:#FFD21F; }
+@page { size: A4; margin: 14mm 14mm 16mm; }
+:root { --prussian:#1B3A5E; --rule:#A4C6DE; --card:#FCFBF7; --paper:#FFFFFF; --ink:#1E1A16; --muted:#5E5A55;
+        --not-true:#B3202A; --outdated:#0F6B7F; --not-stated:#5E5A55; --review:#2D3E66; --verified:#1B3A5E; }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink); font: 400 14.5px/1.5 Archivo, "Helvetica Neue", Arial, sans-serif; }
-main { max-width: 760px; margin: 0 auto; padding: 28px 16px; }
-.mono, .num, code { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; }
-header { border-bottom: 1px solid var(--line); padding-bottom: 16px; margin-bottom: 12px; }
-h1 { font: 600 28px/1.22 Archivo, "Helvetica Neue", Arial, sans-serif; margin: 0 0 4px; }
-.meta { color: var(--muted); font-size: 13px; margin: 0; }
-.label { color: var(--muted); font-size: 12.5px; margin-top: 8px; }
-section.q { border-top: 1px solid var(--line); padding: 16px 0; break-inside: avoid; }
-.qhead { display: grid; grid-template-columns: 32px 1fr auto; gap: 0 12px; align-items: baseline; }
-.num { color: var(--muted); font-size: 14px; }
-h2 { font: 600 17px/1.35 Archivo, "Helvetica Neue", Arial, sans-serif; margin: 0; }
-.status { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
-.body { margin-left: 44px; }
-.answer { margin: 8px 0; font-size: 15px; }
-.note, .change { margin: 4px 0 6px; font-size: 13px; color: var(--muted); }
-.kv { margin: 0; font-size: 13px; border-left: 2px solid var(--edge); padding-left: 8px; }
-.kv div { display: grid; grid-template-columns: minmax(90px, 40%) 1fr; gap: 0 8px; }
-.kv dt { color: var(--muted); font-weight: 400; }
-.kv dd { margin: 0; }
-.kv .hit dd { font-weight: 600; }
-.kv .hit dt::after { content: " ◂"; color: var(--muted); }
-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
-th, td { text-align: left; vertical-align: top; padding: 6px 8px 6px 0; border-top: 1px solid var(--line); }
-th { color: var(--muted); font-weight: 500; font-size: 12.5px; }
-td.ep { white-space: nowrap; font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; }
-blockquote { margin: 0; padding-left: 8px; border-left: 2px solid var(--edge); font-size: 14px; }
-.src { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
-.src a { color: var(--muted); text-decoration: none; }
-footer { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 12px; color: var(--muted); font-size: 12.5px; }
-@media print { main { padding: 0; } a { color: inherit; } }
+body { margin: 0; background: var(--card); color: var(--ink);
+       font: 400 15px/1.5 "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", "Helvetica Neue", Arial, sans-serif; }
+.mono, .ep { font-family: "Atkinson Hyperlegible Mono", ui-monospace, Menlo, Consolas, monospace; }
+h1, h2, .chip, .qn { font-family: Parkinsans, "Atkinson Hyperlegible Next", "Helvetica Neue", Arial, sans-serif; }
+.band { background: var(--prussian); color: var(--paper); }
+.band .in { max-width: 760px; margin: 0 auto; padding: 28px 24px 24px; }
+.company { margin: 0 0 6px; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--rule); }
+h1 { font-weight: 600; font-size: 30px; line-height: 1.15; margin: 0 0 10px; }
+.asof { margin: 0; font-size: 14px; color: var(--paper); }
+main { max-width: 760px; margin: 0 auto; padding: 8px 24px 32px; background: var(--paper); }
+section.q { padding: 22px 0 20px; border-bottom: 1px solid var(--rule); break-inside: avoid; }
+.qtop { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 4px; }
+.qn { font-size: 13px; font-weight: 500; color: var(--prussian); }
+.chip { display: inline-block; font-size: 12.5px; font-weight: 600; line-height: 1; padding: 6px 10px; border-radius: 4px;
+        border: 1.5px solid currentColor; white-space: nowrap; }
+.chip.not_true { background: var(--not-true); border-color: var(--not-true); color: var(--paper); }
+.chip.stale { background: var(--outdated); border-color: var(--outdated); color: var(--paper); }
+.chip.confirm { background: var(--review); border-color: var(--review); color: var(--paper); }
+.chip.held_unspecified { background: var(--not-stated); border-color: var(--not-stated); color: var(--paper); }
+.chip.still_true { background: var(--paper); color: var(--verified); }
+h2 { font-weight: 600; font-size: 19px; line-height: 1.3; margin: 0 0 8px; color: var(--ink); }
+.answer { margin: 0 0 4px; font-size: 16px; }
+.note { margin: 0 0 4px; font-size: 13.5px; color: var(--muted); }
+.ev { margin-top: 12px; padding: 10px 0 0 14px; border-left: 3px solid var(--rule); break-inside: avoid; }
+.eps { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0 0 6px; padding: 0; list-style: none; font-size: 13px; color: var(--prussian); }
+.eps .pending { font-weight: 700; color: var(--review); }
+blockquote { margin: 0 0 6px; font-size: 15px; overflow-wrap: anywhere; }
+.none { margin: 0 0 6px; font-size: 14px; color: var(--muted); }
+.kv { margin: 0 0 6px; font-size: 14px; }
+.kv div { display: grid; grid-template-columns: minmax(0, 38%) minmax(0, 1fr); gap: 0 12px; padding: 2px 0; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; overflow-wrap: anywhere; }
+.kv .hit dd { font-weight: 700; }
+.was { color: var(--muted); font-weight: 400; }
+.src { margin: 0; font-size: 13px; color: var(--muted); }
+.src a { color: var(--prussian); }
+footer { max-width: 760px; margin: 0 auto; padding: 14px 24px 28px; font-size: 12.5px; color: var(--muted); }
+@media (max-width: 480px) {
+  .band .in, main, footer { padding-left: 16px; padding-right: 16px; }
+  h1 { font-size: 25px; }
+  .kv div { grid-template-columns: 1fr; }
+}
+@media print {
+  body, main { background: none; }
+  .band { background: none; color: var(--prussian); border-bottom: 3px solid var(--prussian); }
+  .band .in, main, footer { max-width: none; padding-left: 0; padding-right: 0; }
+  .band .in { padding-top: 0; padding-bottom: 12px; }
+  .company { color: var(--muted); }
+  .asof { color: var(--ink); }
+  .chip.not_true, .chip.stale, .chip.confirm, .chip.held_unspecified, .chip.still_true { background: none; }
+  .chip.not_true { color: var(--not-true); } .chip.stale { color: var(--outdated); }
+  .chip.confirm { color: var(--review); } .chip.held_unspecified { color: var(--not-stated); }
+  .src a { color: inherit; text-decoration: none; }
+  section.q, .ev { break-inside: avoid; page-break-inside: avoid; }
+  h2, .qtop { break-after: avoid; }
+}
 """
+
+# The status chip on each question, in the same plain words the app uses.
+CHIP_LABEL = {"not_true": "Not true", "stale": "Outdated", "confirm": "Needs review",
+              "held_unspecified": "Not stated", "still_true": "Verified"}
+
 
 def _e(s) -> str:
     return html.escape("" if s is None else str(s))
 
 
 def _evidence_html(c: dict) -> str:
-    """The vendor's evidence as the buyer should see it: a sentence as a quote, a table row as key/value rows with
-    the answering cell marked, a changed list entry as its cells. Never a flattened "a · b · c" row."""
+    """The vendor's evidence, verbatim: a sentence as a quote; a table row as the row's first cell plus the cell that
+    answers the question; a changed list entry as its cells. Never a flattened "a · b · c" row."""
     ev = c.get("evidence")
     if c.get("list_evidence"):
         parts = []
         for e in c["list_evidence"]:
-            rows = "".join(f"<div class=\"{'hit' if r['match'] else ''}\"><dt>{_e(r['key'])}</dt><dd>{_e(r['value'])}"
-                           + (f" <span class=\"src\">(was: {_e(r['was'])})</span>" if r.get("was") else "") + "</dd></div>"
-                           for r in e["rows"])
-            parts.append(f"<dl class=\"kv\"><div><dt>Entry</dt><dd>{_e(e['entity'])} ({_e(e['change'])})</dd></div>{rows}</dl>")
+            rows = [r for r in e["rows"] if r["match"]] or e["rows"]
+            body = "".join(f"<div class=\"{'hit' if r['match'] else ''}\"><dt>{_e(r['key'])}</dt><dd>{_e(r['value'])}"
+                           + (f" <span class=\"was\">(was: {_e(r['was'])})</span>" if r.get("was") else "") + "</dd></div>"
+                           for r in rows)
+            parts.append(f"<dl class=\"kv\"><div><dt>Entry</dt><dd>{_e(e['entity'])} ({_e(e['change'])})</dd></div>{body}</dl>")
         return "".join(parts)
     if not c["quote"]:
         return ""
     if ev and ev["kind"] == "table_row":
-        rows = "".join(f"<div class=\"{'hit' if r['match'] else ''}\"><dt>{_e(r['key'] or '')}</dt><dd>{_e(r['value'])}</dd></div>"
-                       for r in ev["rows"] if r["value"])
-        return f"<dl class=\"kv\">{rows}</dl>"
+        rows = [r for r in ev["rows"] if r["value"]]
+        keep = [r for i, r in enumerate(rows) if i == 0 or r["match"]]
+        body = "".join(f"<div class=\"{'hit' if r['match'] else ''}\"><dt>{_e(r['key'] or '')}</dt><dd>{_e(r['value'])}</dd></div>"
+                       for r in keep)
+        return f"<dl class=\"kv\">{body}</dl>"
     text = ev["text"] if ev and ev["kind"] == "list_entry" else c["quote"].strip()
     return f"<blockquote>“{_e(text)}”</blockquote>"
 
 
+def _no_quote(a: dict, c: dict) -> str:
+    if c.get("pending_confirmation"):
+        return "Needs review by the company."
+    if a["number"] == "05":
+        return "No further third party is named on this page."
+    return "Not stated on the vendor's page."
+
+
+def _short_note(pack: dict, a: dict) -> str | None:
+    """One short line under the answer, only where the chip alone would not explain it."""
+    if a["status"] == "not_true" and a["note"] and a["note"].startswith("Wording revised"):
+        return f"Revised on {pack['as_of_local'][:10]} to match the vendors' pages."
+    if a["status"] == "not_true":
+        return "Being revised: a vendor's page does not support it as written."
+    return None
+
+
 def to_html(pack: dict) -> str:
-    """Print-ready buyer document (light print variant). Open in a browser and print to PDF."""
+    """Print-ready buyer report. Open in a browser and print to PDF."""
     share = to_share(pack)
     out = ["<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">",
            f"<title>{_e(pack['company'])}: security review, AI and data</title>",
            "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
-           "<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap\">",
-           f"<style>{_CSS}</style></head><body><main>",
-           "<header>", f"<h1>Security review: AI and data</h1>",
-           f"<p class=\"meta\">{_e(pack['company'])} · answers as of <span class=\"mono\">{_e(pack['as_of_local'])}</span> · "
-           f"reference <span class=\"mono\">{_e(pack['pack_id'])}</span></p>",
-           f"<p class=\"label\">{_e(share['label'])}</p>", "</header>"]
+           "<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>",
+           "<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;500"
+           "&family=Atkinson+Hyperlegible+Next:wght@400;700&family=Parkinsans:wght@500;600&display=swap\">",
+           f"<style>{_CSS}</style></head><body>",
+           "<header class=\"band\"><div class=\"in\">",
+           f"<p class=\"company\">{_e(pack['company'])}</p>",
+           "<h1>Security review: AI and data</h1>",
+           f"<p class=\"asof\">Answers as of {_e(pack['as_of_local'][:10])}. Every quote is the vendor's own text.</p>",
+           "</div></header><main>"]
     by_num = {a["number"]: a for a in share["answers"]}
     for num in sorted(by_num):
         a = by_num[num]
-        out.append(f"<section class=\"q\"><div class=\"qhead\"><span class=\"num\">{_e(num)}</span>"
-                   f"<h2>{_e(a['question'])}</h2><span class=\"status\">{_e(a['buyer_status'])}</span></div>")
-        out.append("<div class=\"body\">")
-        out.append(f"<p class=\"answer\">{_e(a['answer'])}</p>")
-        if a.get("note"):
-            out.append(f"<p class=\"note\">{_e(a['note'])}</p>")
+        out.append(f"<section class=\"q\"><div class=\"qtop\"><span class=\"qn\">Question {int(num)}</span>"
+                   f"<span class=\"chip {_e(a['status'])}\">{_e(CHIP_LABEL[a['status']])}</span></div>"
+                   f"<h2>{_e(a['question'])}</h2><p class=\"answer\">{_e(a['answer'])}</p>")
+        note = _short_note(pack, a)
+        if note:
+            out.append(f"<p class=\"note\">{_e(note)}</p>")
         for ch in a["changes"]:
-            out.append(f"<p class=\"change\">{_e(ch['text'])}</p>")
-        out.append("<table><thead><tr><th>Endpoint</th><th>Vendor page says</th><th>On the vendor's page</th></tr></thead><tbody>")
+            out.append(f"<p class=\"note\">{_e(ch['text'])}</p>")
+        # Endpoints that share the same vendor evidence are listed together under one quote.
+        groups: dict[str, list[dict]] = {}
         for c in a["endpoints"]:
-            ev = _evidence_html(c)
-            if not ev:
-                ev = ("<span class=\"src\">Pending the company's review.</span>" if c.get("pending_confirmation") else
-                      "<span class=\"src\">The page does not state this.</span>" if c["vendor_says"].startswith("Page does not say") else
-                      "<span class=\"src\">No further third party is named on this page.</span>" if a["number"] == "05" else
-                      "<span class=\"src\">See the vendor's page.</span>")
-            src = (f"<div class=\"src\"><a href=\"{_e(c['source_url'])}\">{_e(c['source_label'])}</a> · fetched "
-                   f"{_e(c['fetched_at_local'])}</div>")
-            out.append(f"<tr><td class=\"ep\">{_e(c['endpoint'])}</td><td>{_e(c['vendor_says'])}</td><td>{ev}{src}</td></tr>")
-        out.append("</tbody></table></div></section>")
-    out.append(f"<footer>Every quotation and table row above is taken verbatim from the vendor's own page, with its link and the "
-               f"time it was fetched. Prepared with Owin. Read-only share id <span class=\"mono\">{_e(share['share_id'])}</span>.</footer>")
-    out.append("</main></body></html>")
+            ev = _evidence_html(c) or f"<p class=\"none\">{_e(_no_quote(a, c))}</p>"
+            groups.setdefault(ev, []).append(c)
+        for ev, cells in groups.items():
+            eps = "".join(f"<li class=\"ep\">{_e(c['endpoint'])}</li>" for c in cells)
+            if any(c.get("pending_confirmation") for c in cells):
+                eps += "<li class=\"pending\">Needs review</li>"
+            srcs = {}
+            for c in cells:
+                srcs.setdefault((c["source_url"], c["source_label"]), (c["fetched_at_local"] or "")[:10])
+            src = "<br>".join(f"<a href=\"{_e(u)}\">{_e(l)}</a> · fetched {_e(d)}" for (u, l), d in srcs.items())
+            out.append(f"<div class=\"ev\"><ul class=\"eps\">{eps}</ul>{ev}<p class=\"src\">{src}</p></div>")
+        out.append("</section>")
+    out.append("</main>")
+    out.append(f"<footer>Prepared with Owin. {_e(pack['company'])} is a demo company. "
+               f"Reference <span class=\"mono\">{_e(share['share_id'][:8])}</span></footer>")
+    out.append("</body></html>")
     return "\n".join(out) + "\n"
