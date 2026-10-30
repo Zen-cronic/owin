@@ -116,7 +116,7 @@ const seen = (el) => new Promise((done) => {
   } catch (e) {
     $('big').textContent = 'Couldn’t recompute the numbers right now.';
     $('stats').replaceChildren();
-    $('sub').textContent = 'Run the command in the Method row, or reload. No number is shown that was not recomputed.';
+    $('qual').textContent = 'Run the command in the Method row, or reload. No number is shown that was not recomputed.';
   } finally {
     $('judge').setAttribute('aria-busy', 'false');
   }
@@ -133,7 +133,7 @@ const seen = (el) => new Promise((done) => {
       const r = await fetch('/api/selective', { cache: 'no-store' });
       const s = (await r.json()).selective;
       const ms = Math.round(performance.now() - t0);
-      out.textContent = `Recomputed just now: ${s.auto_answered} answered on its own, ${s.auto_correct} right, ${s.sent_to_confirm} handed to a person (${ms} ms, no key, no network).`;
+      out.textContent = `Recomputed just now: ${s.auto_answered} answered on its own, ${s.auto_correct} right, ${s.sent_to_confirm} handed to a person.`;
     } catch (e) { out.textContent = 'Could not recompute right now. The raw data link still works.'; }
     btn.disabled = false;
   });

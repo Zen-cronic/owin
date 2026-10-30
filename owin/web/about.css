@@ -175,19 +175,20 @@ html:not(.motion) .loop{display:none}
 .motion .catch.s2 .evidence,.motion .catch.s3 .evidence{background:var(--wash)}
 .motion .catch.s2 .evidence::before,.motion .catch.s3 .evidence::before{opacity:1}
 .motion .catch.s2 .evidence > *,.motion .catch.s3 .evidence > *{clip-path:inset(0)}
-.motion .catch .land{opacity:0;transform:scale(1.35)}
-.motion .catch.s3 .land{opacity:1;transform:none;transition:opacity .12s linear,transform .34s var(--ease-out)}
+.motion .catch .land{opacity:0}
+.motion .catch.s3 .land{opacity:1;transition:opacity .2s linear}
 .catch.s3 .qhead,html:not(.motion) .catch .qhead{border-bottom-color:var(--act)}
 .catch.s3 .tab .mono,html:not(.motion) .catch .tab .mono{color:var(--act)}
 
 /* The stamps ledger: a sheet of card stock the width of the page, ruled like an index card */
 .stamps{background:var(--field);padding-inline:clamp(8px, 1.2vw, 18px)}
-.sheet{background:var(--stock);color:var(--ink);border-radius:var(--r-sheet);padding-block:var(--section)}
+.sheet{background:var(--stamp-stale);color:var(--on-field);border-radius:var(--r-sheet);padding-block:var(--section)}
 .sheet > .wrap{padding-inline:calc(var(--gutter) - clamp(8px, 1.2vw, 18px))}
-.sheet h2{color:var(--ink)}
-.sheet .sub{margin-top:18px;color:var(--cite)}
+.sheet h2{color:var(--on-field)}
+.sheet .sub{margin-top:18px;color:var(--wash)}
 .sub{font-size:18px;line-height:1.55;color:var(--on-field-muted);max-width:52ch}
-.ledger{margin-top:52px;border-top:2px solid var(--rule-cyan)}
+.ledger{margin-top:44px;background:var(--stock);color:var(--ink);border-radius:var(--r-card);padding:6px clamp(18px, 2.4vw, 36px)}
+.ledger .row:last-child{border-bottom:0}
 .row{display:grid;grid-template-columns:168px minmax(0, 1fr) 250px;gap:20px 36px;align-items:center;padding:28px 0;border-bottom:1px solid var(--ruled)}
 .row .m{font:600 19.5px/1.32 var(--display);letter-spacing:-.006em;color:var(--ink);text-wrap:pretty}
 .row .ex{margin-top:6px;font-size:16px;line-height:1.55;color:var(--cite);max-width:62ch}
@@ -219,8 +220,8 @@ html:not(.motion) .loop{display:none}
 @supports (animation-timeline: view()){
   .motion .ledger .row{animation:ledger-t linear both;animation-timeline:view();animation-range:entry 0% cover 45%}
 }
-.motion .ledger .row .stamp{opacity:.18;transform:scale(1.18);transition:opacity .14s linear,transform .34s var(--ease-out)}
-.motion .ledger .row.inked .stamp{opacity:1;transform:none}
+.motion .ledger .row .stamp{opacity:.18;transition:opacity .2s linear}
+.motion .ledger .row.inked .stamp{opacity:1}
 .motion .ledger .strike::after{transform:scaleX(clamp(0, (var(--t) - .15) / .4, 1))}
 .motion .ledger .blank::after{clip-path:inset(0 calc((1 - clamp(0, (var(--t) - .15) / .4, 1)) * 100%) 0 0)}
 .motion .ledger .held-ok svg path{stroke-dasharray:16px;stroke-dashoffset:calc(16px * (1 - clamp(0, (var(--t) - .2) / .35, 1)))}
@@ -294,14 +295,14 @@ html:not(.motion) .loop{display:none}
 .recompute .links{display:flex;flex-wrap:wrap;gap:10px 12px;margin-top:4px}
 .recompute a{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:999px;font:600 15px/1 var(--display);color:var(--on-field);text-decoration:none;box-shadow:inset 0 0 0 1.5px var(--on-field-muted)}
 .recompute a:hover{background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1.5px var(--on-field)}
-.tally{background:var(--stock);color:var(--ink);border-radius:var(--r-card);padding:22px 30px 10px;box-shadow:0 1px 0 rgba(0,0,0,.25)}
-.tally > .lbl{padding-bottom:12px;border-bottom:2px solid var(--rule-cyan)}
-.trow{display:flex;align-items:baseline;gap:14px;padding:20px 0 14px;border-bottom:1px solid var(--ruled)}
+.tally{background:var(--frame);color:var(--ink);border-radius:var(--r-card);padding:22px 30px 10px;box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.tally > .lbl{padding-bottom:12px;border-bottom:2px solid var(--field);color:var(--field)}
+.trow{display:flex;align-items:baseline;gap:14px;padding:20px 0 14px;border-bottom:1px solid rgba(27,58,94,.25)}
 .trow:last-child{border-bottom:0}
 .tl{font:600 19px/1.2 var(--display);color:var(--ink)}
-.lead{flex:1;min-width:20px;border-bottom:2px dotted var(--ruled);transform:translateY(-7px)}
+.lead{flex:1;min-width:20px;border-bottom:2px dotted rgba(27,58,94,.4);transform:translateY(-7px)}
 .num{display:inline-block;font:800 clamp(48px, 5vw, 74px)/1 var(--display);letter-spacing:-.03em;color:var(--ink);font-variant-numeric:tabular-nums}
-.num .sl{color:var(--muted);font-weight:500;margin:0 .03em}
+.num .sl{color:var(--field);font-weight:500;margin:0 .03em}
 .motion .tally.rv .num{clip-path:inset(0 0 100% 0);transform:translateY(30%)}
 .motion .tally.rv.in .num{clip-path:inset(0);transform:none;transition:clip-path .55s var(--ease-out),transform .55s var(--ease-out)}
 .motion .tally.rv.in .trow:nth-child(3) .num{transition-delay:.08s}
@@ -309,13 +310,14 @@ html:not(.motion) .loop{display:none}
 
 /* Limits, said first */
 .limits{background:var(--field);padding-bottom:var(--section)}
-.limits .wrap{display:grid;grid-template-columns:5fr 7fr;gap:40px 80px;align-items:start}
+.limits .wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:40px;align-items:start}
 .limits .wrap::before{content:"";grid-column:1/-1;border-top:1px solid var(--line-on-field);margin-bottom:clamp(24px, 4vw, 56px)}
-.limits h2{position:sticky;top:104px}
-.said{list-style:none}
-.said li{padding:22px 0;border-top:1px solid var(--line-on-field);font-size:17px;line-height:1.55;color:var(--on-field-muted)}
-.said li:first-child{border-top:0;padding-top:0}
-.said b{display:block;font:600 20px/1.3 var(--display);color:var(--on-field);margin-bottom:6px}
+.limits h2{max-width:22ch}
+.said{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 48px}
+.said li{padding:22px 0;font-size:17px;line-height:1.55;color:var(--on-field-muted)}
+.said li{border-top:2px solid var(--frame)}
+.said li:nth-child(n+4){border-top-color:var(--line-on-field)}
+.said b{display:block;font:600 20px/1.3 var(--display);color:var(--frame);margin-bottom:6px}
 
 /* Close */
 .close{position:relative;isolation:isolate;min-height:86vh;display:flex;align-items:center;padding-block:var(--section);background:var(--field-deep);overflow:hidden}
@@ -351,6 +353,7 @@ html:not(.motion) .loop{display:none}
   .number .wrap,.limits .wrap,.why-in{grid-template-columns:1fr}
   .print{max-width:340px}
   .number .tally{order:0}
+  .said{grid-template-columns:1fr 1fr}
   .limits h2{position:static}
   .catch .stage-in{grid-template-columns:1fr;grid-template-rows:auto 1fr;align-items:start;gap:16px;padding-block:88px 24px}
   .steps h2{font-size:28px;margin-bottom:12px}
@@ -372,6 +375,7 @@ html:not(.motion) .loop{display:none}
   .motion .how .rail{margin-top:24px}
 }
 @media (max-width: 600px){
+  .said{grid-template-columns:1fr}
   .nav-in{height:52px;gap:16px;padding-left:18px}
   .hero{padding-top:0}
   .hero .still img{height:58%;object-position:50% 0}
