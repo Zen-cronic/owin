@@ -9,6 +9,7 @@ GET /api/pack?set=/api/crm-sync=anthropic-messages&format=json|brief|share|csv|h
 POST /api/pack  (body: a stack manifest, docs/CONTRACT.md)    ->  answer pack for that stack
 GET /pack/print                                               ->  print-ready HTML (save as PDF)
 GET /                                                         ->  the answer screen (owin/web/, owin/webui.py)
+GET /about                                                    ->  the product page (owin/web/about.html) and its stills (/img/)
 GET /api/catalog, /api/watch                                  ->  features for the swap control; per-page watch status
 GET /debug                                                    ->  unstyled replay debug page
 POST /api/recheck  (body: {"endpoint": "/api/crm-sync"})      ->  re-fetch that endpoint's vendor page through Tavily now
@@ -47,7 +48,7 @@ go();
 </script>"""
 
 
-def handle(path: str, qs: dict) -> tuple[int, str, str]:
+def handle(path: str, qs: dict) -> tuple[int, str, str | bytes]:
     q = {k: v[0] for k, v in qs.items()}
     if path == "/healthz":
         return 200, "application/json", json.dumps(healthz())
@@ -188,10 +189,12 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         u = urlparse(self.path)
         code, ctype, body = handle(u.path, parse_qs(u.query))
-        data = body.encode()
+        data = body if isinstance(body, bytes) else body.encode()
         self.send_response(code)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(data)))
+        if ctype.startswith("image/"):
+            self.send_header("Cache-Control", "public, max-age=86400")
         self.send_header("X-Owin-Mode", config.mode())
         self.end_headers()
         self.wfile.write(data)
@@ -201,7 +204,7 @@ class Handler(BaseHTTPRequestHandler):
         code, ctype, body = handle(u.path, parse_qs(u.query))
         self.send_response(code)
         self.send_header("Content-Type", ctype)
-        self.send_header("Content-Length", str(len(body.encode())))
+        self.send_header("Content-Length", str(len(body if isinstance(body, bytes) else body.encode())))
         self.end_headers()
 
     def log_message(self, fmt, *args):  # access log without query strings

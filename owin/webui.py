@@ -4,12 +4,14 @@ GET /                 ->  owin/web/index.html (the answer screen; binds to /api/
 GET /app.css, /app.js ->  static assets (also /theme.js and /theme-c1.css … /theme-c5.css, the five looks)
 GET /api/catalog      ->  the features an endpoint can be switched to (the "change one input" control)
 GET /api/watch        ->  per vendor page: what Owin can watch on it, from data/datause/observations.json
+GET /about            ->  owin/web/about.html (the product page; /about.css, /about.js and the stills under /img/)
 
 No keys, no network: everything here reads committed files. The UI never sees a secret.
 """
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -22,12 +24,23 @@ STATIC = {"/": ("index.html", "text/html; charset=utf-8"),
           "/judge": ("judge.html", "text/html; charset=utf-8"),
           "/judge.js": ("judge.js", "text/javascript; charset=utf-8"),
           "/theme.js": ("theme.js", "text/javascript; charset=utf-8"),
+          "/about": ("about.html", "text/html; charset=utf-8"),
+          "/about.css": ("about.css", "text/css; charset=utf-8"),
+          "/about.js": ("about.js", "text/javascript; charset=utf-8"),
           **{f"/theme-c{i}.css": (f"theme-c{i}.css", "text/css; charset=utf-8") for i in range(1, 6)}}
+# The product page's stills, served as bytes. The allowlist is the files in owin/web/img/ whose names match, read
+# once at import, so a request path is only ever looked up, never joined onto the filesystem.
+IMAGE_TYPES = {".avif": "image/avif", ".webp": "image/webp"}
+IMAGES = {f"/img/{f.name}": (f"img/{f.name}", IMAGE_TYPES[f.suffix])
+          for f in sorted((WEB / "img").glob("*")) if f.suffix in IMAGE_TYPES and re.fullmatch(r"[a-z0-9-]+\.(avif|webp)", f.name)}
 DOCS = {"/README.md": "README.md", "/FACTS.md": "FACTS.md"}  # repo-root docs, served read-only as plain text
 ET = ZoneInfo("America/New_York")
 
 
-def static(path: str) -> tuple[int, str, str] | None:
+def static(path: str) -> tuple[int, str, str | bytes] | None:
+    if path in IMAGES:
+        name, ctype = IMAGES[path]
+        return 200, ctype, (WEB / name).read_bytes()
     if path in DOCS:
         f = ROOT / DOCS[path]
         return (200, "text/plain; charset=utf-8", f.read_text(encoding="utf-8")) if f.exists() else None
