@@ -1,12 +1,12 @@
 """Minimal JSON API and unstyled debug page. The real UI is designed separately (docs/design/).
 
-GET /api/replay?promise_days=10&as_of=now&decision=accepted  ->  replay event JSON (docs/CONTRACT.md)
+GET /api/replay?promise_days=10&as_of=now&decision=accepted  ->  replay event JSON
 GET /api/score                                                ->  P1 DPA measurement headline (recomputed)
 GET /api/selective                                            ->  the line-one number, recomputed keyless from recorded runs
 GET /judge                                                    ->  judge start page (owin/web/judge.html)
 GET /README.md, /FACTS.md                                     ->  the repo's README and claims ledger, as plain text
 GET /api/pack?set=/api/crm-sync=anthropic-messages&format=json|brief|share|csv|html  ->  answer pack (A3)
-POST /api/pack  (body: a stack manifest, docs/CONTRACT.md)    ->  answer pack for that stack
+POST /api/pack  (body: a stack manifest)    ->  answer pack for that stack
 GET /pack/print                                               ->  print-ready HTML (save as PDF)
 GET /                                                         ->  the answer screen (owin/web/, owin/webui.py)
 GET /about                                                    ->  the product page (owin/web/about.html) and its stills (/img/)

@@ -1,4 +1,4 @@
-// Owin answer screen. Binds to the owin JSON contract (docs/CONTRACT.md):
+// Owin answer screen. Binds to the owin JSON API:
 // GET /api/pack[?set=PATH=FEATURE], GET /api/catalog, GET /api/watch, GET /pack/print, ?format=csv.
 // Every sentence, quote, date and link shown comes from the API; this file only arranges it.
 'use strict';

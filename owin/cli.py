@@ -1,4 +1,4 @@
-"""owin CLI. Every command prints JSON to stdout (the stable contract in docs/CONTRACT.md)."""
+"""owin CLI. Every command prints JSON to stdout."""
 from __future__ import annotations
 
 import argparse

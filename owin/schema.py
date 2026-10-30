@@ -1,4 +1,4 @@
-"""The fixed extraction schema (data contract v1). See docs/CONTRACT.md."""
+"""The fixed extraction schema (data contract v1)."""
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
