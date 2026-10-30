@@ -296,3 +296,6 @@ def test_every_cited_preregistration_commit_exists_and_labels_precede_the_prompt
     assert subprocess.run(["git", "-C", str(ROOT), "merge-base", "--is-ancestor", labels, prompt]).returncode == 0
     touched = _git("show", "--name-only", "--format=", labels).split()
     assert "eval/datause/preregistration-v3.json" in touched
+    assert "owin/datause/extract.py" in _git("show", "--name-only", "--format=", prompt).split()
+    esc = json.loads((ROOT / "eval" / "datause" / "escalation-preregistration.json").read_text())
+    assert esc["frozen"]["labels"]["labels_commit"] == labels
