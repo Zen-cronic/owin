@@ -65,26 +65,19 @@
   }
 
   function sourceLine(href, label, fetched, updated) {
-    const box = el("div", "src");
-    const line = el("p", "src-line", "Source: ");
+    const line = el("p", "src");
     const a = el("a", "src-link", label + " page");
     a.href = href;
     a.rel = "noopener";
     line.appendChild(a);
-    box.appendChild(line);
-    const meta = el("p", "src-meta");
-    meta.appendChild(el("span", null, "fetched " + (fetched || "date not recorded")));
-    meta.appendChild(el("span", null, updated ? "Last updated on the page: " + updated : "The page shows no last-updated date"));
-    box.appendChild(meta);
-    return box;
+    const meta = el("span", "src-meta", "fetched " + (fetched || "date not recorded")
+      + (updated ? " · page last updated " + updated : ""));
+    line.appendChild(meta);
+    return line;
   }
 
-  function quote(text, who) {
-    const fig = el("figure", "quote");
-    const bq = el("blockquote", null, text);
-    fig.appendChild(bq);
-    fig.appendChild(el("figcaption", null, who));
-    return fig;
+  function quote(text) {
+    return el("blockquote", "quote", text);
   }
 
   function listChange(cell, vendor) {
@@ -150,7 +143,7 @@
     } else {
       const q = cell.quote_display || cell.quote;
       if (q) {
-        body.appendChild(quote(q, vendor + ", " + cell.source_label.replace(/^[^,]+,\s*/, "") + " page"));
+        body.appendChild(quote(q));
       } else if (answer.field === "third_party_access") {
         body.appendChild(el("p", "none", "This endpoint sends data to " + vendor + "."));
       } else {
@@ -171,15 +164,9 @@
     const h = el("h2", "path", ep.path);
     h.id = "ep-" + ep.path.replace(/\W+/g, "-");
     head.appendChild(h);
-    head.appendChild(el("p", "purpose", ep.purpose));
-    const dl = el("dl", "calls");
-    [["Vendor", ep.provider_display], ["Feature", ep.label]].forEach(([k, v]) => {
-      const div = el("div");
-      div.appendChild(el("dt", null, k));
-      div.appendChild(el("dd", null, v));
-      dl.appendChild(div);
-    });
-    head.appendChild(dl);
+    const sub = el("p", "purpose", ep.label);
+    sub.title = ep.purpose;
+    head.appendChild(sub);
     art.appendChild(head);
     const list = el("div", "rows");
     list.setAttribute("role", "list");
@@ -201,7 +188,6 @@
     const updated = {};
     ((watch && watch.pages) || []).forEach((p) => { updated[p.url] = p.trusted_last_updated; });
 
-    const counts = Object.fromEntries(ORDER.map((o) => [o, 0]));
     const cols = [$("col-a"), $("col-b")];
     cols.forEach((c) => { c.textContent = ""; });
     const found = $("findings");
@@ -212,7 +198,6 @@
         return cell && { answer: a, cell, status: statusOf(cell) };
       }).filter(Boolean);
       rows.forEach((r) => {
-        counts[r.status] += 1;
         if (r.status === "not_true" || r.status === "stale") found.appendChild(finding(r.answer, r.cell, r.status, ep.provider_display, company));
       });
       const c = card(ep, rows, { company, updated });
@@ -220,19 +205,6 @@
       cols[i % 2].appendChild(c);
     });
 
-    const tally = $("tally");
-    tally.textContent = "";
-    const total = ORDER.reduce((n, o) => n + counts[o], 0);
-    const lead = el("li", "tally-total");
-    lead.appendChild(el("strong", null, String(total)));
-    lead.appendChild(el("span", null, " checks across " + pack.stack.endpoints.length + " endpoints"));
-    tally.appendChild(lead);
-    ORDER.filter((o) => counts[o]).forEach((o) => {
-      const li = el("li", "tally-item");
-      li.appendChild(el("strong", null, String(counts[o])));
-      li.appendChild(tag(o));
-      tally.appendChild(li);
-    });
   }
 
   function fail() {
