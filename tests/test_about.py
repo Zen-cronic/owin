@@ -126,7 +126,7 @@ def test_about_copy_rules():
 def test_about_calls_to_action():
     for href in ('href="/judge"', 'href="/app"', 'href="https://github.com/Zen-cronic/owin"'):
         assert href in ABOUT, href
-    assert "Try it: no login, no key" in ABOUT
+    assert "no login, no key" not in ABOUT
 
 
 def test_about_client_code_carries_no_secrets():

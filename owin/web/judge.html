@@ -59,9 +59,11 @@
     <ul class="ev method reveal" style="--i:5">
       <li><b>Method</b><span class="mx">
         <span class="sub qual" id="qual"></span>
-        <span class="sub" id="sub"></span>
         <span class="recompute"><button type="button" class="btn ghost" id="recompute-btn">Recompute the number now</button><span class="recompute-out" id="recompute-out" role="status" aria-live="polite"></span><a class="raw" href="/api/selective">Raw data</a><code class="cmd" tabindex="0" aria-label="Command to recompute locally">owin eval selective <span class="nw">--corpus datause</span> <span class="nw">--split v3fresh</span></code></span>
-        <span class="fn" id="fn"></span>
+        <details class="more"><summary>Split, cost and the one miss</summary>
+          <span class="sub" id="sub"></span>
+          <span class="fn" id="fn"></span>
+        </details>
       </span></li>
     </ul>
   </section>
@@ -69,44 +71,45 @@
   <section aria-labelledby="paths-h" class="reveal">
     <h2 id="paths-h">Three guided paths, about a minute each</h2>
     <ol class="paths">
-      <li class="reveal" style="--i:1">
+      <li class="reveal p1" style="--i:1">
         <a class="path-card" href="/app">
           <span class="step mono">1</span>
           <span class="t">Replay a real change</span>
-          <span class="d">Lumen Notes (fictional) wrote its answers on Sep 1, 2026. Answer 3 is not true for <span class="mono nw">/api/crm-sync</span>, because Anthropic’s MCP connector is outside ZDR; answer 5 became outdated when OpenAI changed its sub-processor list on Oct 14, 2026.</span>
+          <span class="tag"><span class="badge bad"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 15 14H1z"/><path d="M8 6v3.6M8 11.6v.1"/></svg>Not true</span></span>
+          <span class="d">Answer 3 is not true for <span class="mono nw">/api/crm-sync</span>: Anthropic’s MCP connector is outside ZDR. Answer 5 became outdated when OpenAI changed its sub-processor list on Oct 14, 2026.</span>
           <span class="go">Open the replay<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></span>
         </a>
       </li>
-      <li class="reveal" style="--i:2">
+      <li class="reveal p2" style="--i:2">
         <a class="path-card" href="/app?set=/api/crm-sync=anthropic-messages">
           <span class="step mono">2</span>
           <span class="t">Change one input</span>
-          <span class="tag">Live recompute · same rules, your change</span>
-          <span class="d">Point <span class="mono nw">/api/crm-sync</span> at Anthropic’s plain Messages API. The server runs the rules again and answer 3 becomes true. The picker under any endpoint tries others.</span>
+          <span class="tag"><span class="badge ok"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>Verified</span></span>
+          <span class="d">Point <span class="mono nw">/api/crm-sync</span> at Anthropic’s plain Messages API. The rules run again on the server and answer 3 becomes true.</span>
           <span class="go">Change it<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></span>
         </a>
       </li>
-      <li class="reveal" style="--i:3">
+      <li class="reveal p3" style="--i:3">
         <a class="path-card" href="/app?set=/api/crm-sync=thin-anthropic-rate-limits">
           <span class="step mono">3</span>
           <span class="t">Try thin evidence</span>
-          <span class="tag">A real page with no data-use terms</span>
-          <span class="d">Point <span class="mono nw">/api/crm-sync</span> at Anthropic’s rate-limits page, which says nothing about retention, training or ZDR. Owin marks those answers Not stated for that endpoint. It never invents one.</span>
+          <span class="tag"><span class="badge held"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M5.5 8h5"/></svg>Not stated</span></span>
+          <span class="d">Point <span class="mono nw">/api/crm-sync</span> at Anthropic’s rate-limits page, which says nothing about data use. Owin marks those answers Not stated. It never invents one.</span>
           <span class="go">See it marked Not stated<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></span>
         </a>
       </li>
     </ol>
-    <p class="also">Also: <a href="/app?set=/api/embed=openai-responses">see an answer that needs review</a>, where Owin’s three readings of OpenAI’s page split 2-to-1 on who else sees the data for Responses, so answer 5’s <code>/api/embed</code> cell goes to you for review instead of Owin picking a side.</p>
+    <p class="also">Also: <a href="/app?set=/api/embed=openai-responses">see an answer that needs review</a>, where three readings of OpenAI’s page split 2-to-1, so Owin hands the <code>/api/embed</code> cell to you.</p>
   </section>
 
   <section aria-labelledby="ev-h" class="reveal">
     <h2 id="ev-h">Evidence</h2>
-    <ul class="ev">
-      <li><a href="/FACTS.md">Claims ledger (FACTS.md)</a><span>Every number on this page and in the README, with the command or file it comes from. A test fails if any drifts.</span></li>
-      <li><a href="/README.md">README: what we’ll tell you before you find it</a><span>Earlier prompts that failed, the labelling limit (an AI coding agent labelled every item, a second agent pass spot-checked, no independent human audit yet), the label error we found ourselves, what is fictional.</span></li>
-      <li><a href="/pack/print">The buyer’s copy</a><span>The buyer report as a buyer would receive it (print to PDF). No internal reasons, no fix drafts.</span></li>
-      <li><a href="/api/pack?format=csv">CSV</a><span>One row per question and endpoint, with the vendor sentence and its link.</span></li>
-      <li id="sponsor"><b>What runs it</b><span>Tavily <span class="mono">extract</span> fetched each vendor page, and re-fetches on a sweep or from “Re-check this page” when the server has a key. NVIDIA Nemotron 3 Super, an open-weight model on Nebius Token Factory, read each page three times; this page replays those recorded runs. Code, not the model, decides every answer.</span></li>
+    <ul class="ev docs">
+      <li><a href="/FACTS.md">Claims ledger<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></a><span>Every number here, with the command behind it. A test fails if one drifts.</span></li>
+      <li><a href="/README.md">README<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></a><span>What failed, the labelling limit, the label error we found ourselves, and what is fictional.</span></li>
+      <li><a href="/pack/print">The buyer’s copy<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></a><span>The buyer report as a buyer receives it. No internal reasons, no fix drafts.</span></li>
+      <li><a href="/api/pack?format=csv">CSV<svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></a><span>One row per question and endpoint, with the vendor sentence and its link.</span></li>
+      <li id="sponsor"><b>What runs it</b><span>Tavily <span class="mono">extract</span> fetches each vendor page. NVIDIA Nemotron 3 Super, an open-weight model on Nebius Token Factory, reads each page three times; this page replays those recorded runs. Code, not the model, decides every answer.</span></li>
     </ul>
   </section>
   <p class="foot">Lumen Notes, its endpoints, settings and trust-page answers are fictional; every vendor sentence, link and fetch time is real. ZDR settings are as the company states them; Owin cannot see vendor consoles. Owin is not legal advice.</p>
