@@ -214,7 +214,7 @@ html:not(.motion) .loop{display:none}
 @property --t{syntax:'<number>';inherits:true;initial-value:0}
 @keyframes ledger-t{from{--t:0}to{--t:1}}
 @supports (animation-timeline: view()){
-  .motion .ledger .row{animation:ledger-t linear both;animation-timeline:view();animation-range:entry 10% cover 55%}
+  .motion .ledger .row{animation:ledger-t linear both;animation-timeline:view();animation-range:entry 0% cover 45%}
 }
 .motion .ledger .row .stamp{opacity:.18;transform:scale(1.18);transition:opacity .14s linear,transform .34s var(--ease-out)}
 .motion .ledger .row.inked .stamp{opacity:1;transform:none}
@@ -222,9 +222,9 @@ html:not(.motion) .loop{display:none}
 .motion .ledger .blank::after{clip-path:inset(0 calc((1 - clamp(0, (var(--t) - .15) / .4, 1)) * 100%) 0 0)}
 .motion .ledger .held-ok svg path{stroke-dasharray:16px;stroke-dashoffset:calc(16px * (1 - clamp(0, (var(--t) - .2) / .35, 1)))}
 .motion .ledger .reads li{opacity:clamp(0, (var(--t) - var(--at)) / .1, 1);transform:translateX(calc((1 - clamp(0, (var(--t) - var(--at)) / .1, 1)) * 16px))}
-.reads li:nth-child(1){--at:.08}
-.reads li:nth-child(2){--at:.22}
-.reads li:nth-child(3){--at:.36}
+.reads li:nth-child(1){--at:.06}
+.reads li:nth-child(2){--at:.18}
+.reads li:nth-child(3){--at:.3}
 .motion .ledger .clock .lu .d0{transform:none}
 .motion .ledger .clock .lu .d1{transform:translateY(110%)}
 .motion .ledger .row.hit .clock .lu .d0{transform:translateY(-110%)}

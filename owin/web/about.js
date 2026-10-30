@@ -48,20 +48,20 @@
       if (NATIVE) t = parseFloat(getComputedStyle(r.el).getPropertyValue('--t')) || 0;
       else {
         const b = r.el.getBoundingClientRect();
-        t = clamp((innerHeight * 0.9 - b.top) / (innerHeight * 0.55));
+        t = clamp((innerHeight - b.top) / (innerHeight * 0.55 + b.height * 0.45));
         r.el.style.setProperty('--t', t.toFixed(3));
       }
-      let inked = t >= 0.62;
+      let inked = t >= 0.5;
       if (r.state === 'stale') {
         // The replay's clock runs from the day the answer was written to the replay's as-of date; the page's
         // "Last updated" changes when the clock reaches October 14, and only then is the answer stale.
-        const now = ANSWERED + Math.round(clamp(t / 0.72) * (AS_OF - ANSWERED) / DAY) * DAY;
+        const now = ANSWERED + Math.round(clamp(t / 0.62) * (AS_OF - ANSWERED) / DAY) * DAY;
         const label = fmt(now);
         if (label !== r.last) { r.last = label; r.asof.textContent = label; }
         inked = now >= CHANGED;
         r.el.classList.toggle('hit', inked);
       } else if (r.state === 'confirm') {
-        inked = t >= 0.56;
+        inked = t >= 0.46;
       }
       r.el.classList.toggle('inked', inked);
     }
