@@ -452,7 +452,7 @@ function renderPages(p) {
   const items = pages.map((w) => {
     const [ic, txt] = STATUS[w.status] || STATUS.watching;
     return el('li', { 'data-status': w.status }, icon(ic),
-      el('a', { href: w.url, target: '_blank', rel: 'noopener' }, w.label, ' ↗'),
+      el('a', { href: w.url, target: '_blank', rel: 'noopener' }, w.label),
       el('span', { class: 'note' }, txt(w)));
   });
   const kids = [
@@ -470,7 +470,7 @@ function renderPages(p) {
 function sourceLine(cells) {
   const seen = new Map();
   for (const c of cells) if (c.source_url && !seen.has(c.source_url)) seen.set(c.source_url, c);
-  const kids = [...seen.values()].map((c) => el('a', { class: 'nw', href: c.source_url, target: '_blank', rel: 'noopener' }, `${c.source_label} ↗`));
+  const kids = [...seen.values()].map((c) => el('a', { class: 'nw', href: c.source_url, target: '_blank', rel: 'noopener' }, `${c.source_label}`));
   const t = cells.find((c) => c.fetched_at_local && c.fetched_at_local !== (state.pack && state.pack.as_of_local));
   if (t) kids.push(el('span', { class: 'nw' }, `fetched ${fmtLocal(t.fetched_at_local)}`));
   return el('p', { class: 'src' }, kids);
@@ -542,7 +542,7 @@ function confirmBlock(a) {
           : o.quote && o.value != null && o.value !== 'unspecified'
             ? evidenceView(o.evidence, o.quote_display || o.quote)
             : el('p', { class: 'dim' }, o.no_terms ? 'This reading returned no value for this question.' : 'This reading found nothing on the page that answers it.')))),
-      el('p', { class: 'src' }, el('a', { class: 'nw', href: c.source_url, target: '_blank', rel: 'noopener' }, `Open ${c.source_label} ↗`),
+      el('p', { class: 'src' }, el('a', { class: 'nw', href: c.source_url, target: '_blank', rel: 'noopener' }, `Open ${c.source_label}`),
         c.fetched_at_local ? el('span', { class: 'nw' }, `fetched ${fmtLocal(c.fetched_at_local)}`) : null));
   });
 }
@@ -568,7 +568,7 @@ function answerRow(p, a, staleEv) {
     if (entries.length) body.append(el('div', { class: 'entries' }, entries.map(listEntryView)));
     else body.append(...quoteBlock(sc));
     const ls = sc.map((c) => c.list_source).find(Boolean);
-    if (ls) body.append(el('p', { class: 'src' }, el('a', { class: 'nw', href: ls.url, target: '_blank', rel: 'noopener' }, `${ls.label} ↗`),
+    if (ls) body.append(el('p', { class: 'src' }, el('a', { class: 'nw', href: ls.url, target: '_blank', rel: 'noopener' }, `${ls.label}`),
       el('span', { class: 'nw' }, `updated ${fmtLong(ls.last_updated)} (was ${fmtLong(ls.was, false)})`)));
     const ev = (a.stale_events || [])[0];
     if (ev) {
@@ -630,8 +630,8 @@ function changePanel(a, ev) {
     rows.push(el('dt', {}, 'Changed'), el('dd', {}, ev.changed.join('; ') || 'none'));
     rows.push(el('dt', {}, 'Added'), el('dd', {}, ev.added.join('; ') || 'none'));
     rows.push(el('dt', {}, 'Removed'), el('dd', {}, ev.removed.join('; ') || 'none'));
-    rows.push(el('dt', {}, 'Before'), el('dd', {}, el('a', { href: ev.before.url, target: '_blank', rel: 'noopener' }, `“Last updated ${ev.before.last_updated}”, captured ${fmtIsoDay(ev.before.observed_at)} ↗`)));
-    rows.push(el('dt', {}, 'After'), el('dd', {}, el('a', { href: ev.after.url, target: '_blank', rel: 'noopener' }, `“Last updated ${ev.after.last_updated}”, captured ${fmtIsoDay(ev.after.observed_at)} ↗`)));
+    rows.push(el('dt', {}, 'Before'), el('dd', {}, el('a', { href: ev.before.url, target: '_blank', rel: 'noopener' }, `“Last updated ${ev.before.last_updated}”, captured ${fmtIsoDay(ev.before.observed_at)}`)));
+    rows.push(el('dt', {}, 'After'), el('dd', {}, el('a', { href: ev.after.url, target: '_blank', rel: 'noopener' }, `“Last updated ${ev.after.last_updated}”, captured ${fmtIsoDay(ev.after.observed_at)}`)));
     const lead = `${ev.provider_display} changed ${ev.changed.length} ${ev.changed.length === 1 ? 'entry' : 'entries'}${ex && ex.kind === 'changed' ? `, including ${ex.entity} (${ex.fields.join(', ')})` : ''}, added ${ev.added.length} and removed ${ev.removed.length}.`;
     const held = (ev.held_observations || []).map((o) => el('p', { class: 'hint' }, `A fetch on ${fmtIsoDay(o.observed_at)} served an older copy (“Last updated ${o.last_updated}”). Owin set it aside and did not use it.`));
     return el('div', { class: 'panel', id: `change-${a.id}`, hidden: true },

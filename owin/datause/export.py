@@ -206,7 +206,7 @@ def to_html(pack: dict) -> str:
                       "<span class=\"src\">The page does not state this.</span>" if c["vendor_says"].startswith("Page does not say") else
                       "<span class=\"src\">No further third party is named on this page.</span>" if a["number"] == "05" else
                       "<span class=\"src\">See the vendor's page.</span>")
-            src = (f"<div class=\"src\"><a href=\"{_e(c['source_url'])}\">{_e(c['source_label'])} ↗</a> · fetched "
+            src = (f"<div class=\"src\"><a href=\"{_e(c['source_url'])}\">{_e(c['source_label'])}</a> · fetched "
                    f"{_e(c['fetched_at_local'])}</div>")
             out.append(f"<tr><td class=\"ep\">{_e(c['endpoint'])}</td><td>{_e(c['vendor_says'])}</td><td>{ev}{src}</td></tr>")
         out.append("</tbody></table></div></section>")
