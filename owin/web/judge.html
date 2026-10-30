@@ -27,15 +27,28 @@
 
 <main class="wrap jg" id="judge" aria-busy="true">
   <section class="story" aria-labelledby="story-h">
+    <picture class="hero-art" aria-hidden="true">
+      <source type="image/avif" srcset="/img/about-close-1100.avif 1100w, /img/about-close-1800.avif 1800w" sizes="100vw">
+      <img src="/img/about-close-1800.webp" srcset="/img/about-close-1100.webp 1100w, /img/about-close-1800.webp 1800w" sizes="100vw" width="1800" height="1012" alt="" decoding="async" fetchpriority="high">
+    </picture>
     <p class="kick reveal">Why it exists</p>
     <h1 id="story-h" class="reveal" style="--i:1">I built Owin because a buyer’s security questionnaire asks whether your AI providers keep customer data, and the true answer differs per endpoint.</h1>
     <div class="lede">
     <i class="rule-draw" aria-hidden="true"></i>
-    <p class="what reveal" style="--i:2">Anthropic’s Messages API can run under zero data retention, its MCP connector is not covered, and Message Batches keep data for 29 days. For each endpoint you run, Owin fills the AI section from the vendor’s own page: retention, training, ZDR, region, who sees it. An answer is marked Outdated when that page changes after you wrote it, and when Owin’s three readings disagree, it asks you to review it.</p>
+    <div class="what reveal" style="--i:2">
+      <p>Owin reads the vendor’s own page and marks each answer per endpoint:</p>
+      <ul class="status-key" aria-label="The five statuses">
+        <li><span class="badge bad"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 15 14H1z"/><path d="M8 6v3.6M8 11.6v.1"/></svg>Not true</span></li>
+        <li><span class="badge stale"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6"/><path d="M13 2.5v2.8h-2.8"/></svg>Outdated</span></li>
+        <li><span class="badge confirm"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M6.2 6.3a1.9 1.9 0 1 1 2.5 1.8c-.5.2-.7.5-.7 1v.4"/><path d="M8 11.3v.1"/></svg>Needs review</span></li>
+        <li><span class="badge held"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M5.5 8h5"/></svg>Not stated</span></li>
+        <li><span class="badge ok"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>Verified</span></li>
+      </ul>
+    </div>
 
     <p class="catchline reveal" style="--i:3">
       <span class="badge bad flap catch-mark"><span class="lbl"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 15 14H1z"/><path d="M8 6v3.6M8 11.6v.1"/></svg>Not true</span></span>
-      <span class="cl">The finding, on real vendor text: Lumen Notes’ trust page says “<span class="catch-phrase">zero data retention</span>”, but <span class="mono nw">/api/crm-sync</span> calls Anthropic’s MCP connector, and Anthropic’s page says <span class="catch-text">“The MCP connector is <span class="catch-phrase">not covered by ZDR arrangements</span>.”</span><span class="act"><a class="btn primary" href="/">Open answer 3</a></span></span>
+      <span class="cl"><span class="cl-row"><span class="who">Lumen Notes’ trust page</span><span class="said">“<span class="catch-phrase">zero data retention</span>”</span></span><span class="cl-row"><span class="who">Anthropic</span><span class="said catch-text">“The MCP connector is <span class="catch-phrase">not covered by ZDR arrangements</span>.”</span></span><span class="cl-row why-row"><span class="mono nw">/api/crm-sync</span> uses the MCP connector.</span><span class="act"><a class="btn primary" href="/">Open answer 3</a></span></span>
     </p>
     </div>
 
