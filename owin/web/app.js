@@ -284,7 +284,13 @@ function renderCatch(p, byId, staleEv) {
   if (c.confirm) bits.push(el('span', { class: 'st' }, `${c.confirm} ${c.confirm === 1 ? 'needs' : 'need'} review`));
   if (!c.not_true && c.held_unspecified) bits.push(el('span', {}, `${c.held_unspecified} not stated`));
   if (!bits.length) bits.push(el('span', {}, `All ${p.answers.length} answers verified`));
-  const parts = [icon(c.not_true || c.stale ? 'warn' : 'check')];
+  // With a finding, the headline and the tally already carry the counts; the line keeps only the date they lack.
+  if (p.catch && c.stale) {
+    const sa = p.answers.find((a) => a.badge === 'stale');
+    bits.length = 0;
+    bits.push(el('span', { class: 'st' }, `Answer ${+sa.number} outdated${staleEv ? ' since ' + fmtLong(staleEv.after.last_updated, false) : ''}`));
+  }
+  const parts = [icon(c.not_true || c.stale ? (p.catch && c.stale ? 'stale' : 'warn') : 'check')];
   bits.forEach((b, i) => { if (i) parts.push(el('span', { class: 'sep', 'aria-hidden': 'true' }, '·')); parts.push(b); });
   k.className = 'kicker' + (c.not_true ? '' : ' calm');
   k.replaceChildren(...parts);
@@ -322,12 +328,10 @@ function heldEverywhere(p) {
 }
 
 function legend(p) {
-  const nums = el('p', { class: 'legend' }, el('span', { class: 'lh' }, 'Answers'),
-    el('span', { class: 'li' }, [...p.answers].sort((x, y) => x.number.localeCompare(y.number)).map((a) => el('span', {}, el('i', {}, a.number), QSHORT[a.number] || a.question))));
-  const kids = [nums];
-  const he = heldEverywhere(p);
+  const kids = [];
+  const he = heldEverywhere(p).map((n) => String(+n));
   if (he.length) kids.push(el('p', { class: 'legend note' }, el('span', { class: 'lh' }, 'Not stated'),
-    el('span', {}, `No vendor page states answer${he.length > 1 ? 's' : ''} ${he.join(', ')} for any endpoint, so Owin leaves ${he.length > 1 ? 'them' : 'it'} for you to answer.`)));
+    el('span', {}, `No vendor page states answer${he.length > 1 ? 's' : ''} ${he.join(' and ')} for any endpoint, so Owin leaves ${he.length > 1 ? 'them' : 'it'} for you to answer.`)));
   return el('div', { class: 'legends' }, kids);
 }
 
@@ -358,7 +362,7 @@ function endpointRow(p, s, staleEv) {
     if (c.verdict === 'held' && !he.has(n)) states.push('held');
     for (const v of states) {
       const k = CHIP[v];
-      chips.push(el('li', { class: 'chip ' + k.cls, title: `Answer ${n} (${QSHORT[n] || ''}): ${k.word.toLowerCase()}` }, icon(k.icon), el('span', { class: 'mono' }, n), ' ', k.word));
+      chips.push(el('li', { class: 'chip ' + k.cls, title: `Answer ${+n} (${QSHORT[n] || ''}): ${k.word.toLowerCase()}` }, icon(k.icon), el('span', { class: 'mono' }, `Answer ${+n}`), ' · ', k.word));
     }
   }
   const ORDER = ['bad', 'stale', 'confirm', 'held'];
@@ -504,14 +508,15 @@ function quoteBlock(cells) {
   return [evidenceView(c.evidence, c.quote_display || c.quote), sourceLine([c])];
 }
 
-function perEndpoint(a) {
+function perEndpoint(a, extra = []) {
   const short = (path) => path.replace(/^\/api/, '');
-  return el('dl', { class: 'per' }, a.cells.map((c) => {
+  const per = el('dl', { class: 'per' }, a.cells.map((c) => {
     const v = c.stale ? 'stale' : c.verdict;
     const vv = c.verdict === 'confirm' ? 'confirm' : v;
     return el('div', { class: vv === 'contradicts' ? 'x' : vv === 'held' ? 'h' : vv === 'confirm' ? 'c' : null },
       el('dt', {}, short(c.endpoint)), el('dd', {}, vv === 'held' ? 'Page does not say' : vv === 'confirm' ? 'Needs review' : c.value_label));
   }));
+  return el('details', { class: 'per-more' }, el('summary', {}, extra.length ? `Vendor sentence and each endpoint (${a.cells.length})` : `By endpoint (${a.cells.length})`), extra, per);
 }
 
 // The other reading that shows the same evidence, so a gated-out reading does not repeat the table.
@@ -565,7 +570,7 @@ function answerRow(p, a, staleEv) {
   } else if (a.badge === 'stale') {
     const sc = a.cells.filter((c) => c.stale);
     const entries = sc.flatMap((c) => c.list_evidence || []);
-    if (entries.length) body.append(el('div', { class: 'entries' }, entries.map(listEntryView)));
+    if (entries.length) body.append(el('details', { class: 'ev-more' }, el('summary', {}, `Show the changed list ${entries.length === 1 ? 'entry' : 'entries'}`), el('div', { class: 'entries' }, entries.map(listEntryView))));
     else body.append(...quoteBlock(sc));
     const ls = sc.map((c) => c.list_source).find(Boolean);
     if (ls) body.append(el('p', { class: 'src' }, el('a', { class: 'nw', href: ls.url, target: '_blank', rel: 'noopener' }, `${ls.label}`),
@@ -581,14 +586,14 @@ function answerRow(p, a, staleEv) {
   } else if (a.badge === 'held_unspecified') {
     const reasons = [...new Set(a.cells.filter((c) => c.verdict === 'held' && c.reason).map((c) => c.reason))];
     reasons.forEach((r) => body.append(el('p', { class: 'dim' }, r.charAt(0).toUpperCase() + r.slice(1) + '.')));
-    if (mixed) { body.append(...quoteBlock(a.cells.filter((c) => c.verdict === 'holds'))); body.append(perEndpoint(a)); }
+    if (mixed) body.append(perEndpoint(a, quoteBlock(a.cells.filter((c) => c.verdict === 'holds'))));
   } else {
     const seen = new Set(), picks = [];
     for (const c of a.cells) {
       const q = c.quote_display || c.quote;
       if (q && !seen.has(c.source_url)) { seen.add(c.source_url); picks.push(c); }
     }
-    picks.slice(0, 2).forEach((c) => body.append(...quoteBlock([c])));
+    picks.slice(0, 1).forEach((c) => body.append(...quoteBlock([c])));
   }
   // A confirm cell inside an answer whose badge is driven by something else still shows its readings.
   if (a.badge !== 'confirm' && a.cells.some((c) => c.verdict === 'confirm')) {
@@ -597,7 +602,7 @@ function answerRow(p, a, staleEv) {
   }
 
   const art = el('article', { class: 'ans' + (isCatch ? ' sel' : '') + (a.badge === 'stale' ? ' stale' : '') + (ch ? ' changed' : ''), id: 'q-' + a.id, 'data-badge': a.badge, tabindex: '-1', 'aria-labelledby': `h-${a.id}` },
-    el('span', { class: 'n' }, a.number),
+    el('span', { class: 'n' }, `Answer ${+a.number}`),
     el('h3', { id: `h-${a.id}` }, a.question),
     el('span', { class: 'badge ' + b.cls + (a.badge === 'not_true' ? ' catch-mark' : '') }, icon(b.icon), a.badge_label),
     body);
@@ -616,7 +621,7 @@ function fixPanel(p, a) {
     el('p', { class: 'was' }, withPaths(a.stated.text)),
     el('label', { for: `fix-text-${a.id}` }, `Answer ${+a.number}, true for every endpoint`),
     ta,
-    el('p', { class: 'hint' }, 'Owin wrote this from the per-endpoint values above. Edit it before you send.'),
+    el('p', { class: 'hint' }, 'Owin wrote this from the per-endpoint values. Edit it before you send.'),
     el('div', { class: 'row' },
       el('button', { class: 'btn ghost small', id: `copy-answer-${a.id}`, onclick: () => copy(ta.value, 'Answer copied') }, 'Copy answer'),
       el('button', { class: 'btn ghost small', id: `copy-trust-${a.id}`, onclick: () => copy(`Replace:\n${a.stated.text}\n\nWith:\n${ta.value}`, 'Trust-page change copied') }, 'Copy as trust-page change'),

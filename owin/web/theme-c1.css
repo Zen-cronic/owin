@@ -337,3 +337,81 @@
 @keyframes c1-stamp{0%{opacity:0;transform:scale(1.35)}60%{opacity:1}}
 @keyframes c1-rise{from{transform:translateY(.5em);clip-path:inset(0 0 50% 0)}to{transform:none;clip-path:inset(0)}}
 @keyframes c1-draw{from{transform:scaleX(0)}}
+
+/* Answer screen: three surfaces instead of one. The stack and the vendor pages are deep Prussian drawers, the tally
+   is a pale cyanotype card, and each answer card carries its state as a faint wash. Scoped to #app, so /judge and
+   /about are untouched. */
+#app{
+  --ep-bg:#122A46;
+  --ep-hover:#16314F;
+  --ep-ink:#FFFFFF;
+  --ep-muted:#C7D8EA;
+  --ep-line:rgba(164,198,222,.32);
+  --wash-bad:#F9ECEA;
+  --wash-stale:#E4EEF0;
+  --wash-slate:#ECEDF0;
+  --wash-ok:#DDEAF2;
+  --wash-tally:#D9E8F1;
+}
+#app .catch > h1{font-size:40px;line-height:1.1;max-width:22em}
+#app .kicker .st{color:var(--on-field)}
+#app .kicker svg{color:var(--frame)}
+#app #link{display:none}
+
+/* Tally */
+#app .summary{--ink:#1E1A16;--muted:#4A5560;--cite:#33404C;--line:#B4CCDB;background:var(--wash-tally);box-shadow:none}
+#app .summary h2{border-bottom-color:#7FB6CF}
+#app .summary .sm.zero .num-tile{color:var(--muted)}
+
+/* Stack: endpoint drawers on deep Prussian */
+#app .ep-row{--ink:var(--ep-ink);--muted:var(--ep-muted);--cite:var(--ep-muted);--edge:var(--ep-muted);--line:var(--ep-line);--focus:#FFFFFF;background:var(--ep-bg);color:var(--ep-ink);box-shadow:inset 0 0 0 1px var(--ep-line)}
+#app .ep-row:hover{background:var(--ep-hover)}
+#app .ep-row.sel{background:var(--ep-bg);box-shadow:inset 0 0 0 2px var(--link-signal)}
+#app .ep-row .via{color:var(--ep-muted);text-decoration-color:var(--frame)}
+#app .ep-row .via:hover{color:var(--ep-ink)}
+#app .ep-row .finding{color:#E6EEF6}
+#app .ep-row .finding.dim{color:var(--ep-muted)}
+#app .ep-row .chip.stale{color:var(--frame);background:rgba(164,198,222,.1)}
+#app .ep-row .chip.confirm,#app .ep-row .chip.held{color:var(--ep-muted);background:transparent}
+#app .ep-row.changed .path::after{color:var(--frame)}
+#app .ep-row:not(.sel) .recheck{display:none}
+#app .ep-row .recheck .btn.ghost{background:transparent;border-color:var(--ep-muted);color:var(--ep-ink)}
+#app .ep-row .recheck .btn.ghost:hover{background:rgba(255,255,255,.1)}
+#app .ep-row.dimmed,#app.recomputing .ep-row{background:var(--ep-bg);opacity:.5;box-shadow:inset 0 0 0 1px var(--ep-line)}
+#app .pages{--ink:var(--ep-ink);--muted:var(--ep-muted);--cite:var(--ep-muted);--line:var(--ep-line);--focus:#FFFFFF;background:var(--ep-bg);color:var(--ep-ink);box-shadow:inset 0 0 0 1px var(--ep-line)}
+#app .pages li a{color:var(--ep-ink)}
+#app .pages .reset button{color:var(--ep-ink)}
+#app .legend.note{color:var(--on-field-muted)}
+
+/* Answers: the state as a wash, the head rule in the state's ink */
+#app .ans[data-badge="not_true"]{background:var(--wash-bad);box-shadow:0 0 0 2px var(--act)}
+#app .ans[data-badge="not_true"] .body{border-top-color:var(--act)}
+#app .ans[data-badge="stale"]{background:var(--wash-stale);box-shadow:0 0 0 1.5px var(--stamp-stale)}
+#app .ans[data-badge="stale"] .body{border-top-color:var(--stamp-stale)}
+#app .ans[data-badge="confirm"],#app .ans[data-badge="held_unspecified"]{--muted:#545B66;background:var(--wash-slate)}
+#app .ans[data-badge="confirm"] .body,#app .ans[data-badge="held_unspecified"] .body{border-top-color:#AEB6C2}
+#app .ans[data-badge="still_true"]{background:var(--wash-ok)}
+#app .ans[data-badge="still_true"] .body{border-top-color:var(--rule-cyan)}
+#app .ans.dimmed,#app.recomputing .ans{opacity:.62}
+#app .ans .n{font:700 12px/1.3 var(--display);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+#app .confirm-box{background:rgba(255,255,255,.6)}
+#app details.per-more,#app details.ev-more{margin-top:14px}
+#app details.per-more > summary,#app details.ev-more > summary{cursor:pointer;width:fit-content;font:600 13px/1.4 var(--sans);color:var(--stamp-confirm);padding:4px 0}
+#app details.per-more > summary:hover,#app details.ev-more > summary:hover{color:var(--ink)}
+#app details.per-more .per{margin-top:8px}
+@media (min-width:901px){
+  #app .ans{grid-template-columns:minmax(0,1fr) auto;row-gap:4px}
+  #app .ans .n{grid-column:1;grid-row:1}
+  #app .ans h3{grid-column:1;grid-row:2}
+  #app .ans .badge{grid-column:2;grid-row:1/3;align-self:center}
+  #app .ans .body{grid-column:1/-1;margin:16px calc(var(--card-pad) * -1) 0;padding:14px var(--card-pad) 0}
+}
+@media (max-width:900px){
+  #app .catch > h1{font-size:27px}
+  #app .ans .n{align-self:center}
+}
+#app .summary > p{display:none}
+#app .ep-row .chip{text-transform:none;letter-spacing:.01em;font-size:12px}
+#app .ep-row .chip .mono{letter-spacing:.01em}
+#app .legend.note{display:block;font-size:13px;line-height:1.5}
+#app .legend.note .lh{display:none}
