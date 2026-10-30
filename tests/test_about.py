@@ -163,7 +163,7 @@ def test_without_motion_nothing_is_hidden():
 def test_logo_and_icons_are_served_and_linked_on_every_page():
     for path, kind in (("/img/favicon.ico", "image/x-icon"), ("/img/favicon.svg", "image/svg+xml"),
                        ("/img/apple-touch-icon.png", "image/png"), ("/img/logo.svg", "image/svg+xml"),
-                       ("/img/logo-dark.svg", "image/svg+xml")):
+                       ("/img/logo-dark.svg", "image/svg+xml"), ("/img/social-card.png", "image/png")):
         code, ctype, body = server.handle(path, {})
         assert code == 200 and ctype == kind and isinstance(body, bytes) and body, path
     for page in ("index.html", "judge.html", "about.html"):
