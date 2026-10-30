@@ -124,7 +124,7 @@ def test_about_copy_rules():
 
 
 def test_about_calls_to_action():
-    for href in ('href="/judge"', 'href="/"', 'href="https://github.com/Zen-cronic/owin"'):
+    for href in ('href="/judge"', 'href="/app"', 'href="https://github.com/Zen-cronic/owin"'):
         assert href in ABOUT, href
     assert "Try it: no login, no key" in ABOUT
 

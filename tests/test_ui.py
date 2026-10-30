@@ -42,7 +42,7 @@ def test_client_code_carries_no_secrets():
 def test_judge_page_and_selective_api():
     code, ctype, body = server.handle("/judge", {})
     assert code == 200 and ctype.startswith("text/html") and 'src="/judge.js"' in body
-    for path in ("/", "/?set=/api/crm-sync=anthropic-messages", "/?set=/api/crm-sync=thin-anthropic-rate-limits"):
+    for path in ("/app", "/app?set=/api/crm-sync=anthropic-messages", "/app?set=/api/crm-sync=thin-anthropic-rate-limits"):
         assert f'href="{path}"' in body
     assert server.handle("/judge.js", {})[0] == 200
     code, _, body = server.handle("/api/selective", {})
@@ -74,3 +74,12 @@ def test_both_pages_carry_one_theme_and_no_picker():
     text = (webui.WEB / "theme-c1.css").read_text()
     for needle in ("tvly-", "sk-", "nvapi-", "TAVILY_API_KEY", "Bearer "):
         assert needle not in text, needle
+
+
+def test_app_is_served_at_app_too_and_pages_link_there():
+    code, ctype, body = server.handle("/app", {})
+    assert code == 200 and "html" in ctype and body == server.handle("/", {})[2]
+    for path in ("/judge", "/about"):
+        page = server.handle(path, {})[2]
+        assert 'href="/"' not in page and 'href="/?' not in page, path
+        assert 'href="/app' in page, path

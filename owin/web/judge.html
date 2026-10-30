@@ -18,7 +18,7 @@
 <header class="top">
   <a class="word" href="/judge" aria-label="Owin, start here">owin</a>
   <span class="ctx">Start here</span>
-  <a class="replay judge" href="/">Open the app</a>
+  <a class="replay judge" href="/app">Open the app</a>
 </header>
 
 <main class="wrap jg" id="judge" aria-busy="true">
@@ -44,7 +44,7 @@
 
     <p class="catchline reveal" style="--i:3">
       <span class="badge bad flap catch-mark"><span class="lbl"><svg class="i" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.8 15 14H1z"/><path d="M8 6v3.6M8 11.6v.1"/></svg>Not true</span></span>
-      <span class="cl"><span class="cl-row"><span class="who">Lumen Notes’ trust page</span><span class="said">“<span class="catch-phrase">zero data retention</span>”</span></span><span class="cl-row"><span class="who">Anthropic</span><span class="said catch-text">“The MCP connector is <span class="catch-phrase">not covered by ZDR arrangements</span>.”</span></span><span class="cl-row why-row"><span class="mono nw">/api/crm-sync</span> uses the MCP connector.</span><span class="act"><a class="btn primary" href="/">Open answer 3</a></span></span>
+      <span class="cl"><span class="cl-row"><span class="who">Lumen Notes’ trust page</span><span class="said">“<span class="catch-phrase">zero data retention</span>”</span></span><span class="cl-row"><span class="who">Anthropic</span><span class="said catch-text">“The MCP connector is <span class="catch-phrase">not covered by ZDR arrangements</span>.”</span></span><span class="cl-row why-row"><span class="mono nw">/api/crm-sync</span> uses the MCP connector.</span><span class="act"><a class="btn primary" href="/app">Open answer 3</a></span></span>
     </p>
     </div>
 
@@ -70,7 +70,7 @@
     <h2 id="paths-h">Three guided paths, about a minute each</h2>
     <ol class="paths">
       <li class="reveal" style="--i:1">
-        <a class="path-card" href="/">
+        <a class="path-card" href="/app">
           <span class="step mono">1</span>
           <span class="t">Replay a real change</span>
           <span class="d">Lumen Notes (fictional) wrote its answers on Sep 1, 2026. Answer 3 is not true for <span class="mono nw">/api/crm-sync</span>, because Anthropic’s MCP connector is outside ZDR; answer 5 became outdated when OpenAI changed its sub-processor list on Oct 14, 2026.</span>
@@ -78,7 +78,7 @@
         </a>
       </li>
       <li class="reveal" style="--i:2">
-        <a class="path-card" href="/?set=/api/crm-sync=anthropic-messages">
+        <a class="path-card" href="/app?set=/api/crm-sync=anthropic-messages">
           <span class="step mono">2</span>
           <span class="t">Change one input</span>
           <span class="tag">Live recompute · same rules, your change</span>
@@ -87,7 +87,7 @@
         </a>
       </li>
       <li class="reveal" style="--i:3">
-        <a class="path-card" href="/?set=/api/crm-sync=thin-anthropic-rate-limits">
+        <a class="path-card" href="/app?set=/api/crm-sync=thin-anthropic-rate-limits">
           <span class="step mono">3</span>
           <span class="t">Try thin evidence</span>
           <span class="tag">A real page with no data-use terms</span>
@@ -96,7 +96,7 @@
         </a>
       </li>
     </ol>
-    <p class="also">Also: <a href="/?set=/api/embed=openai-responses">see an answer that needs review</a>, where Owin’s three readings of OpenAI’s page split 2-to-1 on who else sees the data for Responses, so answer 5’s <code>/api/embed</code> cell goes to you for review instead of Owin picking a side.</p>
+    <p class="also">Also: <a href="/app?set=/api/embed=openai-responses">see an answer that needs review</a>, where Owin’s three readings of OpenAI’s page split 2-to-1 on who else sees the data for Responses, so answer 5’s <code>/api/embed</code> cell goes to you for review instead of Owin picking a side.</p>
   </section>
 
   <section aria-labelledby="ev-h" class="reveal">
