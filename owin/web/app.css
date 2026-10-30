@@ -459,6 +459,18 @@ code.cmd{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;font:13
 .judge-page .badge.catch-mark{position:relative;height:34px;margin-top:-2px;padding:0;perspective:240px;font:600 14px/1 var(--sans)}
 .judge-page .badge.catch-mark .lbl{display:inline-flex;align-items:center;gap:7px;height:100%;padding:0 12px}
 
+/* The one-line explanation, the five statuses as a key, and the finding as three short rows. The cyanotype
+   still behind the opening is theme 1's; the other themes keep their own ground. */
+.judge-page .hero-art{display:none}
+.judge-page .what > p{margin:0}
+.judge-page .status-key{display:flex;flex-wrap:wrap;gap:8px 10px;margin:16px 0 0;padding:0;list-style:none}
+.judge-page .status-key .badge{cursor:default}
+:root[data-theme]:not([data-theme="c1"]) .judge-page .status-key .badge.bad{background:var(--mark);color:var(--on-mark);box-shadow:none}
+:root[data-theme]:not([data-theme="c1"]) .judge-page .status-key .badge.bad svg{color:inherit}
+.judge-page .catchline .cl-row{display:block}
+.judge-page .catchline .cl-row + .cl-row{margin-top:10px}
+.judge-page .catchline .who{display:block;margin-bottom:2px;font:700 12px/1.4 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
 /* The board: a full-bleed housing, three numbers on tiles, captions in the body face */
 .judge-page .stat-board{margin-top:72px;padding:28px 0 36px;background:var(--board);box-shadow:0 0 0 100vmax var(--board);clip-path:inset(0 -100vmax)}
 .judge-page .jg .big{margin:0 0 24px;font:500 14px/1.4 var(--sans);color:var(--muted)}
