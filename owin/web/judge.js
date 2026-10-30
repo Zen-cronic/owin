@@ -121,3 +121,20 @@ const seen = (el) => new Promise((done) => {
     $('judge').setAttribute('aria-busy', 'false');
   }
 })();
+
+// Recompute on demand: ask the server again and show the result in place, not as raw data.
+(() => {
+  const btn = document.getElementById('recompute-btn'), out = document.getElementById('recompute-out');
+  if (!btn || !out) return;
+  btn.addEventListener('click', async () => {
+    btn.disabled = true; out.textContent = 'Recomputing from recorded runs…';
+    try {
+      const t0 = performance.now();
+      const r = await fetch('/api/selective', { cache: 'no-store' });
+      const s = (await r.json()).selective;
+      const ms = Math.round(performance.now() - t0);
+      out.textContent = `Recomputed just now: ${s.auto_answered} answered on its own, ${s.auto_correct} right, ${s.sent_to_confirm} handed to a person (${ms} ms, no key, no network).`;
+    } catch (e) { out.textContent = 'Could not recompute right now. The raw data link still works.'; }
+    btn.disabled = false;
+  });
+})();
