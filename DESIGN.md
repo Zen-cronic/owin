@@ -290,7 +290,7 @@ Flat. Depth is material, not light: card stock sits on the blueprint field, the 
 
 ## Shapes
 
-Square corners throughout (0 radius on buttons, cards, stamps, fields and numeral plates). Lines are 1px hairlines on cards, 2px for ruled header lines and frames, 4px for numeral-plate frames and the double-rule Stale stamp. Stamps on answer cards and the Not true count in the tally sit at a -2deg tilt, as if inked by hand. The one curved form is the drawer pull under each numeral plate: a 4px cyanotype U (72px by 16px, 36px bottom radius).
+Square corners throughout (0 radius on buttons, cards, stamps, fields and numeral plates). Lines are 1px hairlines on cards, 2px for ruled header lines and frames, 4px for numeral-plate frames and the double-rule Stale stamp. Stamps on answer cards and the Not true count in the tally sit square, never tilted. The one curved form is the drawer pull under each numeral plate: a 4px cyanotype U (72px by 16px, 36px bottom radius).
 
 ## Components
 
@@ -322,7 +322,7 @@ One grammar for every state; the frame form carries the state as much as the ink
 A white card held in a 2px cyanotype frame. The endpoint path in bold mono, the vendor feature as a dotted-underlined picker, the finding, the state chips, and a ghost Re-check button. Selected: fresh white with a red frame. Pushed back: stock-back ground with a 45% cyanotype frame.
 
 ### Tally card
-A filed card at top right of the answer screen in a cyanotype frame, its head in label caps over a cyan rule, one line per state with a condensed numeral; the Not true count sits in a tilted red box.
+A filed card at top right of the answer screen in a cyanotype frame, its head in label caps over a cyan rule, one line per state with a condensed numeral; the Not true count sits in a red box.
 
 ### Inputs / Fields
 - **Style:** fresh white, 1px edge border, square, 15px body face.
@@ -336,7 +336,7 @@ The header sits on the field with a hairline below. The wordmark is an expanded 
 On the start page, three drawer fronts in Prussian blue sit inside a full-bleed deep-Prussian band. Each holds a card-stock plate in a 4px cyanotype frame with the number in condensed Archivo 800; the ratio slash is set in muted card ink. A pale cyan pull hangs below and the caption sits under it in white. On entry each number rises into its plate once (0.55s, 80ms stagger); static under reduced motion.
 
 ### Catch card (signature)
-The start page's catch is a filed card on the field: the tilted Not true stamp, a full-width red rule under it, the sentence with its key phrase underlit in pale red, and the primary button.
+The start page's catch is a filed card on the field: the Not true stamp, a full-width red rule under it, the sentence with its key phrase underlit in pale red, and the primary button.
 
 ## Do's and Don'ts
 
