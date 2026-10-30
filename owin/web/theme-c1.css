@@ -181,7 +181,7 @@
   .judge-page .story h1{font-stretch:108%;font-size:clamp(30px,3.3vw,48px);line-height:1.1;grid-column:1/span 11;margin-top:0}
   .judge-page .lede{margin-top:44px;padding-top:0;align-items:start}
   .judge-page .lede > .rule-draw{display:none}
-  .judge-page .story .what{color:var(--on-field-muted);font-size:17px;line-height:1.6;grid-column:1/span 5}
+  .judge-page .story .what{color:#DCE7F2;font-size:17px;line-height:1.6;grid-column:1/span 5}
   .judge-page .catchline{--ink:#1E1A16;--muted:#5E5A55;--cite:#3A3631;--line:#C9DCE4;--edge:#6A645C;--focus:#2D3E66;grid-column:7/-1;position:relative;background:var(--bg);color:var(--ink);padding:24px var(--card-pad) 26px;grid-template-columns:minmax(0,1fr);gap:16px;font-size:17px}
   .judge-page .catchline::before{content:"";position:absolute;left:0;right:0;top:74px;height:2px;background:var(--act)}
   .judge-page .badge.catch-mark{justify-self:start;height:auto;padding:0;margin:0 0 6px;font:800 15px/1 var(--display);font-stretch:75%;letter-spacing:.08em;transform:rotate(var(--stamp-tilt));transform-origin:0 50%}
