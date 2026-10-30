@@ -70,31 +70,28 @@ h2{font-weight:700;font-size:clamp(32px, 3.4vw, 50px);line-height:1.06;letter-sp
 .btn.primary:hover{background:var(--stock-fresh)}
 .go{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .18s var(--ease)}
 .btn:hover .go{transform:translateX(2px)}
-.txt{font:700 16.5px/1.3 var(--display);color:var(--on-field);text-decoration:underline;text-decoration-color:var(--frame);text-decoration-thickness:1.5px;text-underline-offset:6px;padding:12px 4px}
+.txt{font:700 16.5px/1.3 var(--display);color:var(--on-field);text-decoration:underline;text-decoration-color:var(--frame);text-decoration-thickness:1.5px;text-underline-offset:6px;padding:12px 0}
 .txt:hover{text-decoration-color:var(--on-field)}
 .ctas{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
 
 /* Navigation: the wordmark, small catalogue-label links, and one button once the hero has gone */
-.nav{position:fixed;inset:0 0 auto;z-index:50;transition:background-color .25s var(--ease),box-shadow .25s var(--ease)}
-.nav.solid{background:var(--field);box-shadow:0 1px 0 var(--line-on-field)}
-.nav-in{display:flex;align-items:center;gap:28px;height:68px}
-.word{font:800 24px/1 var(--display);letter-spacing:-.025em;color:var(--on-field);text-decoration:none;padding:6px 2px}
-.nav-links{display:flex;gap:24px;margin-left:auto}
+.nav{position:fixed;top:14px;left:50%;z-index:50;transform:translateX(-50%);width:max-content;max-width:calc(100% - 24px)}
+.nav-in{display:flex;align-items:center;gap:24px;height:56px;padding:0 8px 0 22px;background:var(--field-deep);border-radius:999px;box-shadow:0 0 0 1px rgba(164,198,222,.3),0 14px 34px -20px rgba(14,33,56,.9)}
+.word{font:800 23px/1 var(--display);letter-spacing:-.025em;color:var(--on-field);text-decoration:none;padding:6px 2px}
+.nav-links{display:flex;gap:22px}
 .nav-links a{font:700 12px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--on-field);text-decoration:none;padding:8px 0 6px;border-bottom:1.5px dotted transparent}
 .nav-links a:hover,.nav-links a[aria-current="true"]{color:var(--on-field);border-bottom-color:var(--frame)}
-.nav-try{margin-left:4px}
-.nav:not(.past) .nav-try{opacity:0;visibility:hidden;transform:translateY(-6px)}
+.nav-try{margin-left:2px}
 
 /* Hero: a cyanotype still seen from above, the question set on its calm side */
 .hero{position:relative;isolation:isolate;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;padding:140px 0 clamp(64px, 11vh, 120px);background:var(--field-deep);overflow:hidden}
-.hero .still img,.hero .loop{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:72% 50%;z-index:-2}
+.hero .still img,.hero .loop{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:0% 50%;z-index:-2}
 html:not(.motion) .loop{display:none}
 .motion .loop{opacity:0;transition:opacity 1.4s var(--ease)}
 .motion .loop.on{opacity:1}
 .hero::before{content:"";position:absolute;inset:0;z-index:-1;background:
-  linear-gradient(90deg, rgba(18,42,70,.86) 0%, rgba(18,42,70,.66) 34%, rgba(18,42,70,.12) 54%, rgba(18,42,70,0) 64%),
-  linear-gradient(180deg, rgba(18,42,70,.9) 0%, rgba(18,42,70,.66) 9%, rgba(18,42,70,0) 22%)}
-.hero h1{font-weight:800;font-size:clamp(48px, 6.4vw, 96px);line-height:1.02;letter-spacing:-.022em;max-width:11.5ch}
+  linear-gradient(90deg, rgba(18,42,70,.55) 0%, rgba(18,42,70,.4) 36%, rgba(18,42,70,0) 54%)}
+.hero h1{font-weight:800;font-size:clamp(48px, 6vw, 88px);line-height:1.02;letter-spacing:-.022em;max-width:11.5ch}
 .hero .lede{margin-top:26px;max-width:44ch;font-size:clamp(18px, 1.4vw, 20.5px);line-height:1.5;color:var(--on-field)}
 .hero .ctas{margin-top:38px}
 
@@ -105,6 +102,10 @@ html:not(.motion) .loop{display:none}
 .motion .ink.split .w{color:var(--ink-faint)}
 .motion .ink.split .w.on{color:var(--field-deep)}
 .for{margin-top:40px;max-width:52ch;font-size:19px;line-height:1.55;color:var(--field)}
+.why-in{display:grid;grid-template-columns:minmax(0, 7fr) minmax(0, 4fr);gap:clamp(40px, 6vw, 104px);align-items:center}
+.print img{width:100%;height:auto;border-radius:var(--r-media);box-shadow:0 1px 0 rgba(0,0,0,.2),0 40px 70px -46px rgba(14,33,56,.85)}
+.motion .print img{filter:brightness(1.5) contrast(.55);transition:filter 1.6s var(--ease-out)}
+.motion .print.in img{filter:none}
 
 /* Pinned stories (the catch, how it works): a sticky stage stepped by scroll. Without motion they read as lists. */
 .pin{position:relative}
@@ -131,7 +132,7 @@ html:not(.motion) .loop{display:none}
 .motion .catch .beats li:not(.on)::before{background:rgba(164,198,222,.3);transform:scale(.75)}
 .motion .catch .beats li:not(.on) b{color:var(--on-field-muted)}
 
-.desk{display:flex;justify-content:center}
+.desk{display:flex;justify-content:flex-end}
 .qcard{position:relative;width:min(620px, 100%);margin-top:44px;background:var(--stock);color:var(--ink);border-radius:var(--r-card);padding:22px 30px 30px;box-shadow:0 1px 0 rgba(0,0,0,.25),0 34px 70px -40px rgba(14,33,56,.9)}
 .tab{position:absolute;left:30px;bottom:calc(100% - 2px);z-index:-1;display:flex;align-items:baseline;gap:12px;background:var(--stock);border-radius:14px 14px 0 0;padding:11px 18px 9px;white-space:nowrap;transition:transform .45s var(--ease-out)}
 .tab .mono{font-size:15.5px;color:var(--ink);transition:color .3s var(--ease)}
@@ -153,7 +154,7 @@ html:not(.motion) .loop{display:none}
 .evidence figcaption{margin-top:9px;font:500 12.5px/1.4 var(--mono);color:var(--muted)}
 
 /* Stamps: one grammar for every state; the frame form carries the state as much as the ink */
-.stamp{display:inline-flex;align-items:center;gap:6px;width:max-content;font:800 13px/1 var(--display);letter-spacing:.075em;text-transform:uppercase;padding:8px 11px 7px;border-radius:var(--r-stamp);transform-origin:50% 55%}
+.stamp{display:inline-flex;align-items:center;gap:6px;width:max-content;font:800 13px/1 var(--display);letter-spacing:.1em;text-transform:uppercase;padding:8px 11px 7px;border-radius:var(--r-stamp);transform-origin:50% 55%}
 .stamp .i{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .stamp.bad{background:var(--act);color:var(--on-field)}
 .stamp.stale{color:var(--stamp-stale);box-shadow:inset 0 0 0 1.5px var(--stamp-stale),inset 0 0 0 4px var(--stock),inset 0 0 0 5.5px var(--stamp-stale);padding:10px 13px 9px}
@@ -165,7 +166,7 @@ html:not(.motion) .loop{display:none}
 /* Catch steps: what the reader has reached is shown, the rest waits */
 .motion .catch .tab{transform:translateY(100%)}
 .motion .catch.s1 .tab,.motion .catch.s2 .tab,.motion .catch.s3 .tab{transform:none}
-.motion .catch .evidence{background:transparent}
+.motion .catch .evidence{background:repeating-linear-gradient(180deg, transparent 0 29px, var(--ruled) 29px 30px)}
 .motion .catch .evidence::before{opacity:0}
 .motion .catch .evidence > *{clip-path:inset(0 100% 0 0);transition:clip-path .7s var(--ease-out)}
 .motion .catch.s2 .evidence,.motion .catch.s3 .evidence{background:var(--wash)}
@@ -179,7 +180,8 @@ html:not(.motion) .loop{display:none}
 /* The stamps ledger: a sheet of card stock the width of the page, ruled like an index card */
 .stamps{background:var(--field);padding-inline:clamp(8px, 1.2vw, 18px)}
 .sheet{background:var(--stock);color:var(--ink);border-radius:var(--r-sheet);padding-block:var(--section)}
-.sheet h2{color:var(--ink);max-width:16ch}
+.sheet > .wrap{padding-inline:calc(var(--gutter) - clamp(8px, 1.2vw, 18px))}
+.sheet h2{color:var(--ink)}
 .sheet .sub{margin-top:18px;color:var(--cite)}
 .sub{font-size:18px;line-height:1.55;color:var(--on-field-muted);max-width:52ch}
 .ledger{margin-top:52px;border-top:2px solid var(--rule-cyan)}
@@ -214,7 +216,7 @@ html:not(.motion) .loop{display:none}
 @supports (animation-timeline: view()){
   .motion .ledger .row{animation:ledger-t linear both;animation-timeline:view();animation-range:entry 10% cover 55%}
 }
-.motion .ledger .row .stamp{opacity:0;transform:scale(1.35);transition:opacity .12s linear,transform .34s var(--ease-out)}
+.motion .ledger .row .stamp{opacity:.18;transform:scale(1.18);transition:opacity .14s linear,transform .34s var(--ease-out)}
 .motion .ledger .row.inked .stamp{opacity:1;transform:none}
 .motion .ledger .strike::after{transform:scaleX(clamp(0, (var(--t) - .15) / .4, 1))}
 .motion .ledger .blank::after{clip-path:inset(0 calc((1 - clamp(0, (var(--t) - .15) / .4, 1)) * 100%) 0 0)}
@@ -233,14 +235,14 @@ html:not(.motion) .loop{display:none}
 .how .frame{position:absolute;inset:0;z-index:-2;overflow:hidden;background:var(--field-deep)}
 .motion .how .frame{clip-path:inset(var(--inset, 7%) var(--inset, 7%) round var(--round, 32px))}
 .how .still img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 50%}
-.how .stage::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg, rgba(18,42,70,.94) 0%, rgba(18,42,70,.82) 42%, rgba(18,42,70,.6) 100%)}
+.how .stage::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg, rgba(18,42,70,.94) 0%, rgba(18,42,70,.8) 40%, rgba(18,42,70,.42) 100%)}
 .how .stage-in{position:relative;padding-block:112px 72px}
 .motion .how .stage-in{height:100%;display:flex;flex-direction:column;justify-content:center}
-.how h2{max-width:12ch}
+.how h2{max-width:none}
 .how .beats{margin-top:36px}
 .how .beats > li{display:grid;grid-template-columns:minmax(0, 1fr) minmax(0, 470px);gap:28px 64px;align-items:center;padding:28px 0;border-top:1px solid var(--line-on-field)}
 .how .say{font-size:17px;line-height:1.55;color:var(--on-field-muted);max-width:46ch}
-.how .say b{display:block;font:700 clamp(21px, 1.9vw, 27px)/1.2 var(--display);color:var(--on-field);margin-bottom:10px;letter-spacing:-.01em}
+.how .say b{display:block;font:600 clamp(19px, 1.5vw, 22px)/1.3 var(--display);color:var(--on-field);margin-bottom:8px;letter-spacing:-.005em}
 .proof{position:relative;background:var(--stock);color:var(--ink);border-radius:var(--r-card);padding:22px 24px;box-shadow:0 1px 0 rgba(0,0,0,.25),0 34px 70px -40px rgba(14,33,56,.9)}
 .proof::before{content:"";position:absolute;inset:-10px;pointer-events:none;background:
   linear-gradient(var(--frame),var(--frame)) left top/16px 2px no-repeat,linear-gradient(var(--frame),var(--frame)) left top/2px 16px no-repeat,
@@ -279,7 +281,8 @@ html:not(.motion) .loop{display:none}
 
 /* The number: a tally card, as in the app, one ruled line per count */
 .number{background:var(--field);padding-block:var(--section)}
-.number .wrap{display:grid;grid-template-columns:6fr 5fr;gap:56px 80px;align-items:center}
+.number .wrap{display:grid;grid-template-columns:5fr 6fr;gap:56px 88px;align-items:center}
+.number .tally{order:-1}
 .nsay .sub{margin-top:22px}
 .recompute{margin-top:34px;display:grid;gap:12px;justify-items:start}
 .recompute .lbl{color:var(--on-field-muted)}
@@ -303,7 +306,7 @@ html:not(.motion) .loop{display:none}
 .limits{background:var(--field);padding-bottom:var(--section)}
 .limits .wrap{display:grid;grid-template-columns:5fr 7fr;gap:40px 80px;align-items:start}
 .limits .wrap::before{content:"";grid-column:1/-1;border-top:1px solid var(--line-on-field);margin-bottom:clamp(24px, 4vw, 56px)}
-.limits h2{position:sticky;top:104px;max-width:12ch}
+.limits h2{position:sticky;top:104px}
 .said{list-style:none}
 .said li{padding:22px 0;border-top:1px solid var(--line-on-field);font-size:17px;line-height:1.55;color:var(--on-field-muted)}
 .said li:first-child{border-top:0;padding-top:0}
@@ -312,18 +315,17 @@ html:not(.motion) .loop{display:none}
 /* Close */
 .close{position:relative;isolation:isolate;min-height:86vh;display:flex;align-items:center;padding-block:var(--section);background:var(--field-deep);overflow:hidden}
 .close .still img,.close .loop{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:80% 50%;z-index:-2}
-.close::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg, rgba(18,42,70,.94) 0%, rgba(18,42,70,.84) 38%, rgba(18,42,70,.35) 62%, rgba(18,42,70,.15) 100%)}
+.close::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg, rgba(18,42,70,.8) 0%, rgba(18,42,70,.6) 34%, rgba(18,42,70,0) 58%)}
 .close h2{font-weight:800;font-size:clamp(40px, 5.2vw, 80px);line-height:1.02;letter-spacing:-.022em;max-width:12ch}
 .close .ctas{margin-top:40px}
 
 /* Footer: the wordmark, large, cut by the bottom edge like a drawer label */
-.foot{background:var(--field-deep);padding-top:56px;overflow:hidden}
+.foot{background:var(--field-deep);padding-block:44px 52px}
 .foot-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px 48px}
 .foot-row p{font-size:15px;color:var(--on-field-muted);max-width:68ch}
 .foot-row nav{display:flex;flex-wrap:wrap;gap:4px 22px}
 .foot-row nav a{font:600 15px/1 var(--display);color:var(--on-field);text-decoration:none;padding:8px 0}
 .foot-row nav a:hover{text-decoration:underline;text-decoration-color:var(--frame);text-underline-offset:5px}
-.giant{font:800 40vw/.74 var(--display);letter-spacing:-.06em;color:var(--frame);text-align:center;white-space:nowrap;margin:56px 0 -.15em;user-select:none}
 
 /* Hero entrance: the print develops (ink deepens from a pale exposure) and the words rise once */
 @keyframes develop{from{filter:brightness(1.6) contrast(.5) saturate(.5)}to{filter:none}}
@@ -339,7 +341,9 @@ html:not(.motion) .loop{display:none}
   .viz{grid-column:2;justify-self:start}
 }
 @media (max-width: 900px){
-  .number .wrap,.limits .wrap{grid-template-columns:1fr}
+  .number .wrap,.limits .wrap,.why-in{grid-template-columns:1fr}
+  .print{max-width:340px}
+  .number .tally{order:0}
   .limits h2{position:static}
   .catch .stage-in{grid-template-columns:1fr;grid-template-rows:auto 1fr;align-items:start;gap:16px;padding-block:88px 24px}
   .steps h2{font-size:28px;margin-bottom:12px}
@@ -361,11 +365,11 @@ html:not(.motion) .loop{display:none}
   .motion .how .rail{margin-top:24px}
 }
 @media (max-width: 600px){
-  .nav-in{height:62px}
+  .nav-in{height:52px;gap:16px;padding-left:18px}
   .hero{padding-top:0}
   .hero .still img{height:58%;object-position:50% 0}
   .loop{display:none}
-  .hero::before{background:linear-gradient(180deg, rgba(18,42,70,.7) 0%, rgba(18,42,70,0) 13%, rgba(18,42,70,0) 34%, rgba(18,42,70,.8) 50%, var(--field-deep) 58%)}
+  .hero::before{background:linear-gradient(180deg, rgba(18,42,70,.7) 0%, rgba(18,42,70,0) 13%, rgba(18,42,70,0) 30%, rgba(18,42,70,.86) 44%, var(--field-deep) 52%)}
   .hero h1{font-size:44px}
   .hero .lede{margin-top:18px;font-size:17.5px}
   .hero .ctas{margin-top:26px}
@@ -385,5 +389,4 @@ html:not(.motion) .loop{display:none}
   .tl{font-size:17px}
   .close::before{background:linear-gradient(0deg, rgba(18,42,70,.95) 0%, rgba(18,42,70,.82) 55%, rgba(18,42,70,.5) 100%)}
   .close{align-items:flex-end}
-  .giant{margin-top:40px}
 }

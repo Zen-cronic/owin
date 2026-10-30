@@ -157,6 +157,4 @@ def test_without_motion_nothing_is_hidden():
                 sel = sel.strip()
                 if sel in ("from", "to") or re.fullmatch(r"[\d.]+%", sel):
                     continue  # a keyframe step; its animation is only applied under .motion
-                if sel == ".nav:not(.past) .nav-try":
-                    continue  # the nav's button steps aside only while the hero, which carries the same button, is in view
                 assert sel.startswith(".motion"), sel

@@ -5,15 +5,12 @@
 //    and how it works (fetch, read, decide, pack), whose photogram opens from an inset print to the full page;
 //  - each row of the stamps ledger acts out its state as it crosses the screen, then its stamp is inked;
 //  - the counts on the tally card count up once, and the background loops play only while on screen.
-// The nav takes the field colour as soon as the page scrolls, shows its button once the hero's own button has gone,
-// and marks the section being read. The tally is refreshed
+// The floating nav marks the section being read. The tally is refreshed
 // from GET /api/selective, the same recomputation the start page shows.
 'use strict';
 (() => {
   const root = document.documentElement;
   const MOTION = root.classList.contains('motion');
-  const nav = document.getElementById('nav');
-  const hero = document.querySelector('.hero');
   const clamp = (v) => Math.min(1, Math.max(0, v));
 
   // The founder's line, one span per word, so each word can be inked as the reader reaches it.
@@ -79,8 +76,6 @@
   let inked = -1;
   function frame() {
     queued = false;
-    nav.classList.toggle('solid', !hero || scrollY > 8);
-    nav.classList.toggle('past', !hero || hero.getBoundingClientRect().bottom < 72);
     const mid = innerHeight * 0.4;
     let current = null;
     for (const s of spy) { const r = s.sec.getBoundingClientRect(); if (r.top <= mid && r.bottom > mid) current = s; }
@@ -119,6 +114,15 @@
   addEventListener('resize', queue);
   frame();
   if (MOTION && NATIVE) setTimeout(queue, 100); // read the first values of the CSS timelines once they have run
+
+  // The card print beside the founder's line develops once, as it comes on screen.
+  const prints = document.querySelectorAll('.dev');
+  if (MOTION && 'IntersectionObserver' in window) {
+    const pio = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('in'); pio.unobserve(e.target); }
+    }), { threshold: 0.35 });
+    prints.forEach((n) => pio.observe(n));
+  }
 
   // Tally: the counts count up once, when the card is mostly on screen.
   const tally = document.querySelector('.tally');
